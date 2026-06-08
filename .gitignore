@@ -12,25 +12,6 @@ venv/
 env/
 .env
 
-data/raw/*
-!data/raw/.gitkeep
-data/processed/*
-!data/processed/.gitkeep
-data/external/*
-!data/external/.gitkeep
-
-checkpoints/
-*.pt
-*.pth
-*.ckpt
-*.onnx
-
-runs/
-wandb/
-outputs/
-logs/
-experiments/*
-!experiments/.gitkeep
 
 *.html
 *.log
