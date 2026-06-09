@@ -10,7 +10,7 @@ sys.path.insert(0, str(DATA_DIR))
 from ldctiqac2023 import LDCTIQAC2023Dataset
 from transforms import ConvNeXtDataPreprocess
 
-image_dir = PROJECT_ROOT / "data" / "raw" / "ldctiqac2023" / "image"
+image_dir = PROJECT_ROOT / "data" / "raw" / "ldctiqac2023" / "images"
 
 training_dataset_label_path = PROJECT_ROOT / "data" / "processed" / "ldctiqac2023" / "splits" / "train.json"
 validation_dataset_label_path = PROJECT_ROOT / "data" / "processed" / "ldctiqac2023" / "splits" / "val.json"
