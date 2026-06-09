@@ -8,10 +8,10 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.medagentx.models.convnext_baseline import ConvNeXtQualityRegressor
 from data.ldctiqac2023 import LDCTIQAC2023Dataset
-from data.transforms import ConvNeXtPreprocess
+from data.transforms import ConvNeXtDataPreprocess
 
 
-image_dir = PROJECT_ROOT / "data" / "raw" / "ldctiqac2023" / "image"
+image_dir = PROJECT_ROOT / "data" / "raw" / "ldctiqac2023" / "images"
 
 train_label_path = (
     PROJECT_ROOT
@@ -19,10 +19,10 @@ train_label_path = (
     / "processed"
     / "ldctiqac2023"
     / "splits"
-    / "train_split.json"
+    / "train.json"
 )
 
-transform = ConvNeXtPreprocess(image_size=224)
+transform = ConvNeXtDataPreprocess(image_size=224)
 
 train_dataset = LDCTIQAC2023Dataset(
     image_dir=image_dir,
@@ -39,7 +39,7 @@ model = ConvNeXtQualityRegressor(pretrained=True)
 
 batch = next(iter(training_loader))
 
-images = batch["images"]
+images = batch["image"]
 target = batch["quality_score"]
 
 predictions = model(images)
