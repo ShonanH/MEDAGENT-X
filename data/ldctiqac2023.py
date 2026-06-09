@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-
+from typing import Optional, Callable
 import numpy as np
 import torch
 from PIL import Image
@@ -12,7 +12,7 @@ class LDCTIQAC2023Dataset(Dataset):
       self.root_dir = root_dir
       self.transform = transform
       self.image_dir = root_dir / "images"
-      self.labels_path = root_dir / "labels.json"
+      self.labels_path = root_dir / "train.json"
 
       with open(self.labels_path, "r") as f:
          self.labels = json.load(f)

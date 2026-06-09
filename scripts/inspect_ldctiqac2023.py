@@ -5,18 +5,27 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SRC_DIR = PROJECT_ROOT / "data"
 sys.path.insert(0, str(SRC_DIR))
+<<<<<<< Updated upstream
 
 from medagentx.data.ldctiqac2023 import LDCTIQAC2023Dataset
 
 
 dataset_root = PROJECT_ROOT / "data" / "raw" / "ldctiqac2023"
 dataset = LDCTIQAC2023Dataset(root_dir=dataset_root)
+=======
+>>>>>>> Stashed changes
 
-print(len(dataset))
+from ldctiqac2023 import LDCTIQAC2023Dataset
+
+
+dataset_root = PROJECT_ROOT / "data" / "raw" / "ldctiqac2023"
+dataset = LDCTIQAC2023Dataset(root_dir=dataset_root)
+
+# print(len(dataset))
 
 sample = dataset[0]
 
-print(sample["filename"])
+print("Filename:",  sample["filename"])
 print(sample["image"].shape)
 print(sample["raw_score"])
 print(sample["quality_score"])
