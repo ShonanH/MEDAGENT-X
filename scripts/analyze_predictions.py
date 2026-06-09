@@ -70,62 +70,64 @@ def main():
 
    print(f"Saved confusion matrix to: {confusion_matrix_path}")
 
-   def plot_confusion_matrix(confusion_matrix, output_path):
-      level_labels = [
-         "1\nNon-diagnostic",
-         "2\nLimited",
-         "3\nAdequate",
-         "4\nGood",
-         "5\nExcellent",
-      ]
+   plot_confusion_matrix(confusion_matrix=confusion_matrix, output_path=figure_dir/"convnext_v1_confusion_matrix.png")
 
-      fig, ax = plt.subplots(figsize=(8,7))
+def plot_confusion_matrix(confusion_matrix, output_path):
+   level_labels = [
+      "1\nNon-diagnostic",
+      "2\nLimited",
+      "3\nAdequate",
+      "4\nGood",
+      "5\nExcellent",
+   ]
 
-      image = ax.imshow(confusion_matrix.values, cmap="Blues")
+   fig, ax = plt.subplots(figsize=(8,7))
 
-      ax.set_title("ConvNeXt Baseline Results Confusion Matrix")
-      ax.set_xlabel("Predicted Clinical Level")
-      ax.set_ylabel("True Clinical Level")
+   image = ax.imshow(confusion_matrix.values, cmap="Blues")
 
-      ax.set_xticks(range(len(level_labels)))
-      ax.set_yticks(range(len(level_labels)))
+   ax.set_title("ConvNeXt Baseline Results Confusion Matrix")
+   ax.set_xlabel("Predicted Clinical Level")
+   ax.set_ylabel("True Clinical Level")
 
-      ax.set_xticklabels(level_labels)
-      ax.set_yticklabels(level_labels)
+   ax.set_xticks(range(len(level_labels)))
+   ax.set_yticks(range(len(level_labels)))
 
-      plt.setp(
-         ax.get_xticklabels(),
-         rotation=30,
-         ha="right",
-         rotation_mode="anchor",
-      )
+   ax.set_xticklabels(level_labels)
+   ax.set_yticklabels(level_labels)
 
-      max_value = confusion_matrix.values.max()
+   plt.setp(
+      ax.get_xticklabels(),
+      rotation=30,
+      ha="right",
+      rotation_mode="anchor",
+   )
 
-      for row_idx in range(confusion_matrix.shape[0]):
-         for col_idx in range(confusion_matrix.shape[1]):
-            value = confusion_matrix.values[row_idx, col_idx]
+   max_value = confusion_matrix.values.max()
 
-            text_color = "white" if value > max_value / 2 else "black"
+   for row_idx in range(confusion_matrix.shape[0]):
+      for col_idx in range(confusion_matrix.shape[1]):
+         value = confusion_matrix.values[row_idx, col_idx]
 
-            ax.text(
-               col_idx,
-               row_idx,
-               str(value),
-               ha="center",
-               va="center",
-               color=text_color,
-               fontsize=11,
-               fontweight="bold"
-            )
+         text_color = "white" if value > max_value / 2 else "black"
 
-      fig.colorbar(image, ax=ax, fraction=0.046, pad=0.04)
+         ax.text(
+            col_idx,
+            row_idx,
+            str(value),
+            ha="center",
+            va="center",
+            color=text_color,
+            fontsize=11,
+            fontweight="bold"
+         )
 
-      fig.tight_layout()
-      fig.savefig(output_path, dpi=300)
-      plt.close(fig)
+   fig.colorbar(image, ax=ax, fraction=0.046, pad=0.04)
 
-      print(f"Saved confusion matrix figure to: {output_path}")
+   fig.tight_layout()
+   fig.savefig(output_path, dpi=300)
+   plt.close(fig)
+
+   print(f"Saved confusion matrix figure to: {output_path}")
 
    
 if __name__ == "__main__":
