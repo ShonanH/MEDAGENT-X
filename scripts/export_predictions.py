@@ -3,8 +3,6 @@ import sys
 from pathlib import Path
 
 from numpy import absolute
-from scripts.evaluate_convnext import val_label_path
-from scripts.test_convnext import image_dir
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
@@ -29,7 +27,7 @@ def quality_score_to_clinical_level(score):
 
    
 def main():
-   if not torch.cuda.is_availabe():
+   if not torch.cuda.is_available():
       raise RuntimeError("CUDA is not available")
    
    device = torch.device("cuda")
@@ -86,24 +84,23 @@ def main():
       for batch in val_loader:
          images = batch["image"].to(device)
          true_quality_scores = batch["quality_score"]
-         true_clinical_levels = batch["clinical_level"]
          filenames = batch["filename"]
 
-         predctions = model(images)
+         predictions = model(images)
          predictions = predictions.clamp(1.0, 5.0)
 
          predictions = predictions.cpu()
 
          for filename, true_score, predicted_score, true_level in zip(
             filenames,
-            true_clinical_levels,
             true_quality_scores,
-            predctions,
+            predictions,
          ):
             true_score = float(true_score.item())
             predicted_score = float(predicted_score.item())
             absolute_error = abs(predicted_score - true_score)
 
+            true_level = quality_score_to_clinical_level(true_score)
             predicted_level = quality_score_to_clinical_level(predicted_score)
 
             rows.append(
@@ -112,7 +109,7 @@ def main():
                   "true_quality_score": round(true_score, 4),
                   "predicted_quality_score": round(predicted_score, 4),
                   "absolute_error": round(absolute_error, 4),
-                  "true_clinical_level": int(true_level.item()),
+                  "true_clinical_level": true_level,
                   "predicted_clinical_level": predicted_level,
                }
             )
