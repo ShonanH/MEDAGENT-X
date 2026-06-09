@@ -8,13 +8,13 @@ from torch.utils.data import Dataset
 
 from typing import Optional, Callable
 class LDCTIQAC2023Dataset(Dataset):
-   def __init__(self, root_dir: Path, transform: Optional[Callable] = None):
+   def __init__(self, root_dir: Path, label_path: Path, transform: Optional[Callable] = None):
       self.root_dir = root_dir
       self.transform = transform
-      self.image_dir = root_dir / "images"
-      self.labels_path = root_dir / "train.json"
+      self.image_dir = root_dir / "raw" / "ldctiqac2023" / "images"
+      self.label_path = label_path
 
-      with open(self.labels_path, "r") as f:
+      with open(self.label_path, "r") as f:
          self.labels = json.load(f)
       
       self.filenames = list(self.labels.keys())
