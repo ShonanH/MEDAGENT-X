@@ -3,8 +3,8 @@ import sys
 from pathlib import Path
 
 from numpy import absolute
-from scripts.inspect_ldctiqac2023 import PROJECT_ROOT, training_loader, validation_dataset
-from scripts.test_convnext_forward import predictions
+from inspect_ldctiqac2023 import PROJECT_ROOT, training_loader, validation_dataset
+from test_convnext_forward import predictions
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
@@ -74,7 +74,7 @@ def main():
    
    device = torch.device("cuda")
 
-   image_dir = PROJECT_ROOT / "data" / "raw" / "ldctiqac2023" / "image"
+   image_dir = PROJECT_ROOT / "data" / "raw" / "ldctiqac2023" / "images"
 
    train_label_path = (
       PROJECT_ROOT
@@ -132,8 +132,14 @@ def main():
 
    loss_fn = nn.MSELoss()
    optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
+   scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+      optimizer,
+      mode = "min",
+      factor = 0.5,
+      patience = 2,
+   )
 
-   num_epochs = 5
+   num_epochs = 10
    best_validation_loss = float('inf')
 
    for epoch in range(num_epochs):
@@ -152,10 +158,14 @@ def main():
          device=device
       )
 
+      scheduler.step(val_loss)
+      current_lr = optimizer.param_groups[0]["lr"]
+
       print(f"Epoch {epoch + 1}/{num_epochs}")
       print(f"Train loss: {train_loss:.4f}")
       print(f"Val loss:   {val_loss:.4f}")
       print(f"Val MAE:    {val_mae:.4f}")
+      print(f"Learning rate: {current_lr:.6f}")
 
       if val_loss < best_validation_loss:
          best_validation_loss = val_loss
