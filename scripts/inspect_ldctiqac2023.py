@@ -1,6 +1,16 @@
 from torch.utils.data import DataLoader
+import sys
+from pathlib import Path
 
-dataset = LDCTIQAC2023Dataset(root_dir="data/raw/ldctiqac2023")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SRC_DIR = PROJECT_ROOT / "data"
+sys.path.insert(0, str(SRC_DIR))
+
+from medagentx.data.ldctiqac2023 import LDCTIQAC2023Dataset
+
+
+dataset_root = PROJECT_ROOT / "data" / "raw" / "ldctiqac2023"
+dataset = LDCTIQAC2023Dataset(root_dir=dataset_root)
 
 print(len(dataset))
 
@@ -20,3 +30,4 @@ print(batch["filename"])
 print(batch["raw_score"])
 print(batch["quality_score"])
 print(batch["clinical_level"])
+

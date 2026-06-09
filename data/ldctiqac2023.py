@@ -6,6 +6,7 @@ import torch
 from PIL import Image
 from torch.utils.data import Dataset
 
+from typing import Optional, Callable
 class LDCTIQAC2023Dataset(Dataset):
    def __init__(self, root_dir: Path, transform: Optional[Callable] = None):
       self.root_dir = root_dir
@@ -55,7 +56,7 @@ class LDCTIQAC2023Dataset(Dataset):
 
 
    @staticmethod
-   def raw_score_to_confidence(raw_score):
+   def raw_score_to_clinical_level(raw_score):
       if raw_score < 0.5:
          return 1
       if raw_score < 1.5:
