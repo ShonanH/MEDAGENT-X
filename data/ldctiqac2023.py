@@ -5,14 +5,13 @@ import numpy as np
 import torch
 from PIL import Image
 from torch.utils.data import Dataset
-
 from typing import Optional, Callable
+
 class LDCTIQAC2023Dataset(Dataset):
-   def __init__(self, root_dir: Path, label_path: Path, transform: Optional[Callable] = None):
-      self.root_dir = root_dir
+   def __init__(self, image_dir: Path, label_path: Path, transform: Optional[Callable] = None):
       self.transform = transform
-      self.image_dir = root_dir / "raw" / "ldctiqac2023" / "images"
-      self.label_path = label_path
+      self.image_dir = Path(image_dir)
+      self.label_path = Path(label_path)
 
       with open(self.label_path, "r") as f:
          self.labels = json.load(f)

@@ -1,5 +1,4 @@
 from random import shuffle
-from scripts.create_train_val_split import label_path
 from torch.utils.data import DataLoader
 import sys
 from pathlib import Path
@@ -9,23 +8,23 @@ SRC_DIR = PROJECT_ROOT / "src"
 sys.path.insert(0, str(SRC_DIR))
 
 from ldctiqac2023 import LDCTIQAC2023Dataset
+from transforms import ConvNeXtDataPreprocess
 
 
-dataset_root = PROJECT_ROOT / "data" 
+image_dir = PROJECT_ROOT / "data" / "raw" / "ldctiqac2023" / "image"
 
 training_dataset_label_path = PROJECT_ROOT / "data" / "processed" / "ldctiqac2023" / "splits" / "train_split.json"
-training_dataset = LDCTIQAC2023Dataset(root_dir=dataset_root, label_path=training_dataset_label_path)
-
 validation_dataset_label_path = PROJECT_ROOT / "data" / "processed" / "ldctiqac2023" / "splits" / "val_split.json"
-validation_dataset = LDCTIQAC2023Dataset(root_dir=dataset_root, label_path=validation_dataset_label_path)
+
+transform = ConvNeXtDataPreprocess(image_size=224)
 
 
+training_dataset = LDCTIQAC2023Dataset(image_dir=image_dir, label_path=training_dataset_label_path, transform=transform)
+validation_dataset = LDCTIQAC2023Dataset(image_dir=image_dir, label_path=validation_dataset_label_path, transform=transform)
 
 
 # print(len(dataset))
-
 # sample = dataset[0]
-
 # print("Filename:",  sample["filename"])
 # print(sample["image"].shape)
 # print(sample["raw_score"])
@@ -33,8 +32,7 @@ validation_dataset = LDCTIQAC2023Dataset(root_dir=dataset_root, label_path=valid
 # print(sample["clinical_level"])
 
 training_loader = DataLoader(training_dataset, batch_size=8, shuffle=True)
-validation_loader = DataLoader(validation_dataset, batch_size=8, shuffle=True)
-
+validation_loader = DataLoader(validation_dataset, batch_size=8, shuffle=False)
 
 
 train_batch = next(iter(training_loader))
