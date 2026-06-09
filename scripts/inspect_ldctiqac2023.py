@@ -4,20 +4,18 @@ import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-SRC_DIR = PROJECT_ROOT / "src"
-sys.path.insert(0, str(SRC_DIR))
+DATA_DIR = PROJECT_ROOT / "data"
+sys.path.insert(0, str(DATA_DIR))
 
 from ldctiqac2023 import LDCTIQAC2023Dataset
 from transforms import ConvNeXtDataPreprocess
 
-
 image_dir = PROJECT_ROOT / "data" / "raw" / "ldctiqac2023" / "image"
 
-training_dataset_label_path = PROJECT_ROOT / "data" / "processed" / "ldctiqac2023" / "splits" / "train_split.json"
-validation_dataset_label_path = PROJECT_ROOT / "data" / "processed" / "ldctiqac2023" / "splits" / "val_split.json"
+training_dataset_label_path = PROJECT_ROOT / "data" / "processed" / "ldctiqac2023" / "splits" / "train.json"
+validation_dataset_label_path = PROJECT_ROOT / "data" / "processed" / "ldctiqac2023" / "splits" / "val.json"
 
 transform = ConvNeXtDataPreprocess(image_size=224)
-
 
 training_dataset = LDCTIQAC2023Dataset(image_dir=image_dir, label_path=training_dataset_label_path, transform=transform)
 validation_dataset = LDCTIQAC2023Dataset(image_dir=image_dir, label_path=validation_dataset_label_path, transform=transform)
