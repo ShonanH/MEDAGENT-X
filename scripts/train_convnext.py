@@ -3,8 +3,6 @@ import sys
 from pathlib import Path
 
 from numpy import absolute
-from inspect_ldctiqac2023 import PROJECT_ROOT, training_loader, validation_dataset
-from test_convnext_forward import predictions
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
