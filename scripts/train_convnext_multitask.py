@@ -191,6 +191,8 @@ def main():
 
     num_epochs = 10
     best_val_loss = float("inf")
+    best_val_mae = float("inf")
+    best_clinical_accuracy = 0.0
 
     for epoch in range(num_epochs):
         train_metrics = train_one_epoch(
@@ -244,6 +246,42 @@ def main():
             )
 
             print(f"Saved best checkpoint to: {checkpoint_path}")
+
+        if val_metrics["mae"] < best_val_mae:
+            best_val_mae = val_metrics["mae"]
+
+            checkpoint_path = checkpoint_dir / "convnext_multitask_best_mae.pt"
+
+            torch.save(
+                {
+                    "epoch": epoch + 1,
+                    "model_state_dict": model.state_dict(),
+                    "optimizer_state_dict": optimizer.state_dict(),
+                    "best_val_mae": best_val_mae,
+                    "val_metrics": val_metrics,
+                },
+                checkpoint_path,
+            )
+
+            print(f"Saved best MAE checkpoint to: {checkpoint_path}")
+
+        if val_metrics["clinical_accuracy"] > best_clinical_accuracy:
+            best_clinical_accuracy = val_metrics["clinical_accuracy"]
+
+            checkpoint_path = checkpoint_dir / "convnext_multitask_best_clinical_accuracy.pt"
+
+            torch.save(
+                {
+                    "epoch": epoch + 1,
+                    "model_state_dict": model.state_dict(),
+                    "optimizer_state_dict": optimizer.state_dict(),
+                    "best_clinical_accuracy": best_clinical_accuracy,
+                    "val_metrics": val_metrics,
+                },
+                checkpoint_path,
+            )
+
+            print(f"Saved best clinical accuracy checkpoint to: {checkpoint_path}")
 
         print("-" * 50)
 

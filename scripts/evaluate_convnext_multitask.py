@@ -107,7 +107,9 @@ def main():
         PROJECT_ROOT
         / "experiments"
         / "checkpoints"
-        / "convnext_multitask_best.pt"
+        / "convnext_multitask_best_loss.pt"
+        # / "convnext_multitask_best_mae.pt"
+        # / "convnext_multitask_best_clinical_accuracy.pt"
     )
 
     prediction_dir = PROJECT_ROOT / "experiments" / "predictions"
