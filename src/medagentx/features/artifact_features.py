@@ -7,7 +7,7 @@ def prepare_grayscale_image(image):
    if image.ndim == 3:
       image = image.mean(axis=-1)
 
-   image = np.nan_to_num(image, nan=0.0, posinf=1.0, negind=0.0)
+   image = np.nan_to_num(image, nan=0.0, posinf=1.0, neginf=0.0)
 
    return image
 
