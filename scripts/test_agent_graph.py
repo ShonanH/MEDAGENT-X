@@ -21,10 +21,10 @@ def parse_args():
       "--csv-path",
       type=Path,
       default=(
-         PROJECT_ROOT,
-         "experiments",
-         "predictions",
-         "convnext_multitask_val_agent_inputs.csv",
+         PROJECT_ROOT
+         / "experiments"
+         / "predictions"
+         / "convnext_multitask_val_agent_inputs.csv"
       ),
       help="Path to the combined validation agent-input CSV.",
    )
