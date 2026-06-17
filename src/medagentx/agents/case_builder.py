@@ -59,7 +59,7 @@ def build_case_state_from_row(row: Mapping[str, Any]) -> MedAgentXState:
    return {
       "case_metadata": {
          "case_id": get_case_id(filename),
-         "dataset": "LDCTIQA2023",
+         "dataset": "LDCTIQAC2023",
          "modality": "CT",
          "image_file": filename,
       },
