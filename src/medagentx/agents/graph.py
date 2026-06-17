@@ -140,6 +140,10 @@ Rules:
 - Return valid JSON only.
 - Do not wrap the output in Markdown.
 - Do not wrap the output in a code block.
+- Do not use the phrases "diagnostic use", "diagnostic purposes", or "clinical purposes".
+- Refer only to "image-quality gate", "quality review", or "quality-based routing".
+- Do not classify uncertainty as low, moderate, or high unless using the provided routing or thresholds.
+- If discussing uncertainty, report the numeric value and say it contributes to confidence estimation.
 
 Return exactly this JSON structure:
 {{
@@ -149,7 +153,9 @@ Return exactly this JSON structure:
     "case-specific limitation 2",
     "case-specific limitation 3"
   ],
-  "conclusion": "Write a 1-2 sentence conclusion about image-quality gate routing."
+  "conclusion": "Write a 1-2 sentence conclusion about image-quality gate routing. 
+  The image passes the MEDAGENT-X quality gate with a proceed routing decision. 
+  This output should be interpreted as an image-quality assessment only, not a diagnostic decision."
 }}
 
 State information:
