@@ -1,4 +1,8 @@
 from typing import TypedDict, Literal
+try:
+    from typing import NotRequired
+except ImportError:
+    from typing_extensions import NotRequired
 
 class CaseMetadata(TypedDict):
    case_id: str
@@ -40,6 +44,31 @@ class Routing(TypedDict):
    ]
    requires_human_review: bool
 
+class ArtifactAssessment(TypedDict):
+    artifact_severity: Literal["low", "moderate", "high"]
+    artifact_flags: list[str]
+    summary: str
+
+
+class ClinicalAssessment(TypedDict):
+    usability_category: Literal[
+        "acceptable",
+        "usable_with_caution",
+        "limited",
+        "not_usable",
+    ]
+    summary: str
+
+
+class RoutingAssessment(TypedDict):
+    final_gate: Literal[
+        "proceed",
+        "proceed_with_caution",
+        "human_review",
+        "reject_or_repeat",
+    ]
+    requires_human_review: bool
+    rationale: list[str]
 class MedAgentXState(TypedDict):
    case_metadata: CaseMetadata
    ground_truth: GroundTruth
@@ -47,3 +76,6 @@ class MedAgentXState(TypedDict):
    artifact_features: ArtifactFeatures
    clinical_quality: ClinicalQuality
    routing: Routing
+   artifact_assessment: NotRequired[ArtifactAssessment]
+   clinical_assessment: NotRequired[ClinicalAssessment]
+   routing_assessment: NotRequired[RoutingAssessment]
