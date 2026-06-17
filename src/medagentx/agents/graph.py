@@ -1,6 +1,16 @@
 from langgraph.graph import END, START, StateGraph
+import os
+from langchain.chat_models import init_chat_model
 from src.medagentx.agents.state import MedAgentXState
 
+
+def get_report_llm():
+   model_name = os.environ.get("MEDAGENTX_LLM_MODEL")
+
+   if model_name is None:
+      raise RuntimeError("MEDAGENTX_LLM_MODEL environment variable is not set")
+   
+   return init_chat_model(model_name, temperature=0.0)
 
 def artifact_review_node(state: MedAgentXState) -> dict:
    features = state["artifact_features"]
@@ -103,6 +113,117 @@ def routing_node(state: MedAgentXState) -> dict:
       }
    }
 
+def report_agent_node(state: MedAgentXState) -> dict:
+   llm = get_report_llm()
+
+   model_outputs = state["model_outputs"]
+   clinical_quality = state["clinical_quality"]
+   routing_assessment = state["routing_assessment"]
+   artifact_assessment = state["artifact_assessment"]
+   clinical_assessment = state["clinical_assessment"]
+
+   prompt = f"""
+      You are the MEDAGENT-X image quality report agent. You are an expert in medical imaging and quality assessment.
+
+      Goal: Generate a concise medical image quality report before diagnosis.
+
+      Rules:
+      - Do not change the raw model outputs.
+      - Do not make any diagnosis.
+      - Do not invent any artifact information.
+      - Only explain the image quality and routing decision.
+      - Use the provided values only
+      - Use impeccable grammar and punctuation related to medical imaging.
+
+      Format:
+      You will create a final report in JSON and Markdown format. Make sure that you follow the format strictly.
+
+      Information which will be provided to you:
+      1. Raw model outputs:
+         - predicted_quality_score: {model_outputs['predicted_quality_score']}
+         - predicted_clinical_level: {model_outputs['predicted_clinical_level']}
+         - uncertainty: {model_outputs['uncertainty']}
+
+      2. Clinical quality:
+         - label: {clinical_quality['label']}
+         - recommendation: {clinical_quality['recommendation']}
+
+      3. Clinical assessment:
+         - usability_category: {clinical_assessment['usability_category']}
+         - summary: {clinical_assessment['summary']}
+
+      4. Routing assessment:
+         - final_gate: {routing_assessment['final_gate']}
+         - rationale: {routing_assessment['rationale']}
+         - requires_human_review: {routing_assessment['requires_human_review']}
+
+      5. Artifact assessment:
+         - severity: {artifact_assessment['artifact_severity']}
+         - flags: {artifact_assessment['artifact_flags']}
+         - summary: {artifact_assessment['summary']}
+   """
+
+   response = llm.invoke(prompt)
+   confidence = max(0.0, min(1.0, 1.0 - float(model_outputs['uncertainty']))),
+
+
+   markdown_content = f"""# MEDAGENT-X Image Quality Report
+      ## Case
+      - Case ID: {state["case_metadata"]["case_id"]}
+      - Dataset: {state["case_metadata"]["dataset"]}
+      - Modality: {state["case_metadata"]["modality"]}
+      - Image file: {state["case_metadata"]["image_file"]}
+
+      ## Model Outputs
+      - Predicted quality score: {model_outputs["predicted_quality_score"]:.4f}
+      - Predicted clinical level: {model_outputs["predicted_clinical_level"]}
+      - Uncertainty: {model_outputs["uncertainty"]:.4f}
+
+      ## Clinical Quality
+      - Label: {clinical_quality["label"]}
+      - Recommendation: {clinical_quality["recommendation"]}
+
+      ## Artifact Assessment
+      - Severity: {artifact_assessment["artifact_severity"]}
+      - Flags: {", ".join(artifact_assessment["artifact_flags"]) if artifact_assessment["artifact_flags"] else "None"}
+      - Summary: {artifact_assessment["summary"]}
+
+      ## Routing
+      - Diagnosis gate: {routing_assessment["final_gate"]}
+      - Requires human review: {routing_assessment["requires_human_review"]}
+
+      ## Explanation
+      {response.content}
+
+      ## Limitations
+      - Explain the limitations of the individual case (if any)
+
+      ## Conclusion
+      - Conclusion based on the explanation and limitations
+      """
+
+   return {
+      "final_report":{
+         "quality_score": float(model_outputs['predicted_quality_score']),
+         "clinical_usability_level": int(model_outputs['predicted_clinical_level']),
+         "clinical_usability_label": clinical_quality['label'],
+         "recommendation": clinical_quality['recommendation'],
+         "confidence": confidence,
+         "requires_human_review": routing_assessment['requires_human_review'],
+         "diagnosis_gate": routing_assessment['final_gate'],
+         "explanation": response.content,
+         # "limitations": [
+         #    "This report evaluates image quality only.",
+         #    "No diagnosis is generated in MEDAGENT-X v1.",
+         #    "Ground truth labels are for validation only.",
+         # ],
+      },
+      "markdown_report":{
+         "content": markdown_content,
+      }
+   }
+
+
 
 def build_medagentx_graph():
    graph_builder = StateGraph(MedAgentXState)
@@ -110,11 +231,13 @@ def build_medagentx_graph():
    graph_builder.add_node("artifact_review", artifact_review_node)
    graph_builder.add_node("clinical_quality_review", clinical_quality_node)
    graph_builder.add_node("routing_review", routing_node)
+   graph_builder.add_node("report_agent", report_agent_node)
 
    graph_builder.add_edge(START, "artifact_review")
    graph_builder.add_edge("artifact_review", "clinical_quality_review")
    graph_builder.add_edge("clinical_quality_review", "routing_review")
-   graph_builder.add_edge("routing_review", END)
+   graph_builder.add_edge("routing_review", "report_agent")
+   graph_builder.add_edge("report_agent", END)
 
    return graph_builder.compile()
       

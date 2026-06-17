@@ -69,6 +69,19 @@ class RoutingAssessment(TypedDict):
     ]
     requires_human_review: bool
     rationale: list[str]
+
+class FinalReport(TypedDict):
+   quality_score: float
+   clinical_usability_level: int
+   clinical_usability_label: str
+   recommendation: str
+   confidence: float
+   requires_human_review: bool
+   diagnosis_gate: Literal["proceed", "proceed_with_caution", "human_review", "reject_or_repeat"]
+   explanation: str
+
+class MarkdownReport(TypedDict):
+   content: str
 class MedAgentXState(TypedDict):
    case_metadata: CaseMetadata
    ground_truth: GroundTruth
@@ -79,3 +92,5 @@ class MedAgentXState(TypedDict):
    artifact_assessment: NotRequired[ArtifactAssessment]
    clinical_assessment: NotRequired[ClinicalAssessment]
    routing_assessment: NotRequired[RoutingAssessment]
+   final_report: NotRequired[FinalReport]
+   markdown_report: NotRequired[MarkdownReport]
