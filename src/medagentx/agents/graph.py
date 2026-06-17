@@ -69,7 +69,7 @@ def clinical_quality_node(state: MedAgentXState) -> dict:
 
 def routing_node(state: MedAgentXState) -> dict:
    routing = state["routing"]
-   artifact_assessment = state["artifact_features"]
+   artifact_assessment = state["artifact_assessment"]
    model_outputs = state["model_outputs"]
 
    rationale = []
