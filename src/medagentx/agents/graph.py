@@ -169,42 +169,44 @@ def report_agent_node(state: MedAgentXState) -> dict:
 
 
    markdown_content = dedent(f"""
-      # MEDAGENT-X Image Quality Report
+# MEDAGENT-X Image Quality Report
 
-      ## Case
-      - Case ID: {state["case_metadata"]["case_id"]}
-      - Dataset: {state["case_metadata"]["dataset"]}
-      - Modality: {state["case_metadata"]["modality"]}
-      - Image file: {state["case_metadata"]["image_file"]}
+## Case
+- Case ID: {state["case_metadata"]["case_id"]}
+- Dataset: {state["case_metadata"]["dataset"]}
+- Modality: {state["case_metadata"]["modality"]}
+- Image file: {state["case_metadata"]["image_file"]}
 
-      ## Model Outputs
-      - Predicted quality score: {model_outputs["predicted_quality_score"]:.4f}
-      - Predicted clinical level: {model_outputs["predicted_clinical_level"]}
-      - Uncertainty: {model_outputs["uncertainty"]:.4f}
+## Model Outputs
+- Predicted quality score: {model_outputs["predicted_quality_score"]:.4f}
+- Predicted clinical level: {model_outputs["predicted_clinical_level"]}
+- Uncertainty: {model_outputs["uncertainty"]:.4f}
 
-      ## Clinical Quality
-      - Label: {clinical_quality["label"]}
-      - Recommendation: {clinical_quality["recommendation"]}
+## Clinical Quality
+- Label: {clinical_quality["label"]}
+- Recommendation: {clinical_quality["recommendation"]}
 
-      ## Artifact Assessment
-      - Severity: {artifact_assessment["artifact_severity"]}
-      - Flags: {", ".join(artifact_assessment["artifact_flags"]) if artifact_assessment["artifact_flags"] else "None"}
-      - Summary: {artifact_assessment["summary"]}
+## Artifact Assessment
+- Severity: {artifact_assessment["artifact_severity"]}
+- Flags: {", ".join(artifact_assessment["artifact_flags"]) if artifact_assessment["artifact_flags"] else "None"}
+- Summary: {artifact_assessment["summary"]}
 
-      ## Routing
-      - Diagnosis gate: {routing_assessment["final_gate"]}
-      - Requires human review: {routing_assessment["requires_human_review"]}
+## Routing
+- Diagnosis gate: {routing_assessment["final_gate"]}
+- Requires human review: {routing_assessment["requires_human_review"]}
 
-      ## Explanation
-      {response.content}
+## Explanation
+{response.content}
 
-      ## Limitations
-      - Explain the limitations of the individual case (if any)
+## Limitations
+- This report evaluates image quality only.
+- No diagnosis is generated in MEDAGENT-X v1.
+- Ground truth labels are for validation only.
 
-      ## Conclusion
-      - Conclusion based on the explanation and limitations
-      - {clinical_quality['recommendation']}
-      """).strip()
+## Conclusion
+- Conclusion based on the explanation and limitations
+- {clinical_quality['recommendation']}
+""").strip()
 
    return {
       "final_report":{
@@ -216,11 +218,11 @@ def report_agent_node(state: MedAgentXState) -> dict:
          "requires_human_review": routing_assessment['requires_human_review'],
          "diagnosis_gate": routing_assessment['final_gate'],
          "explanation": response.content,
-         # "limitations": [
-         #    "This report evaluates image quality only.",
-         #    "No diagnosis is generated in MEDAGENT-X v1.",
-         #    "Ground truth labels are for validation only.",
-         # ],
+         "limitations": [
+            "This report evaluates image quality only.",
+            "No diagnosis is generated in MEDAGENT-X v1.",
+            "Ground truth labels are for validation only.",
+         ],
       },
       "markdown_report":{
          "content": markdown_content,
