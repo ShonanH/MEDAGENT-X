@@ -57,11 +57,11 @@ def clinical_quality_node(state: MedAgentXState) -> dict:
       usability_category = "limited"
       summary = f"Predicted clinical quality is {label}, so the image is limited. Consider repeat or alternative imaging."
    else:
-      usability_category = "non_usable"
+      usability_category = "not_usable"
       summary = f"Predicted clinical quality is {label}, so the image is non-diagnostic. Consider reject or repeat unless no alternative exists."
    
    return {
-      "clinical_quality_assessment":{
+      "clinical_assessment":{
          "usability_category": usability_category,
          "summary": summary,
       }
