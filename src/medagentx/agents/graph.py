@@ -1,5 +1,6 @@
 from langgraph.graph import END, START, StateGraph
 import os
+from textwrap import dedent
 from langchain.chat_models import init_chat_model
 from src.medagentx.agents.state import MedAgentXState
 
@@ -130,13 +131,13 @@ def report_agent_node(state: MedAgentXState) -> dict:
       Rules:
       - Do not change the raw model outputs.
       - Do not make any diagnosis.
-      - Do not invent any artifact information.
-      - Only explain the image quality and routing decision.
-      - Use the provided values only
-      - Use impeccable grammar and punctuation related to medical imaging.
-
-      Format:
-      You will create a final report in JSON and Markdown format. Make sure that you follow the format strictly.
+      - Do not invent artifact information.
+      - Only explain image quality and routing.
+      - Use the provided values only.
+      - Write 10-12 concise sentences.
+      - Do not output JSON.
+      - Do not output Markdown headings.
+      - Do not output bullet points.
 
       Information which will be provided to you:
       1. Raw model outputs:
@@ -164,10 +165,12 @@ def report_agent_node(state: MedAgentXState) -> dict:
    """
 
    response = llm.invoke(prompt)
-   confidence = max(0.0, min(1.0, 1.0 - float(model_outputs['uncertainty']))),
+   confidence = round(max(0.0, min(1.0, 1.0 - float(model_outputs['uncertainty']))),4)
 
 
-   markdown_content = f"""# MEDAGENT-X Image Quality Report
+   markdown_content = dedent(f"""
+      # MEDAGENT-X Image Quality Report
+
       ## Case
       - Case ID: {state["case_metadata"]["case_id"]}
       - Dataset: {state["case_metadata"]["dataset"]}
@@ -200,7 +203,8 @@ def report_agent_node(state: MedAgentXState) -> dict:
 
       ## Conclusion
       - Conclusion based on the explanation and limitations
-      """
+      - {clinical_quality['recommendation']}
+      """).strip()
 
    return {
       "final_report":{
