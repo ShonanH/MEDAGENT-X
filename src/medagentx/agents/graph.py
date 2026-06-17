@@ -3,6 +3,7 @@ import os
 from textwrap import dedent
 from langchain.chat_models import init_chat_model
 from src.medagentx.agents.state import MedAgentXState
+import json
 
 
 def get_report_llm():
@@ -124,49 +125,79 @@ def report_agent_node(state: MedAgentXState) -> dict:
    clinical_assessment = state["clinical_assessment"]
 
    prompt = f"""
-      You are the MEDAGENT-X image quality report agent. You are an expert in medical imaging and quality assessment.
+You are the MEDAGENT-X image quality report agent. You are an expert in medical imaging quality assessment.
 
-      Goal: Generate a concise medical image quality report before diagnosis.
+Goal:
+Generate the narrative parts of a CT image quality report before diagnosis.
 
-      Rules:
-      - Do not change the raw model outputs.
-      - Do not make any diagnosis.
-      - Do not invent artifact information.
-      - Only explain image quality and routing.
-      - Use the provided values only.
-      - Write 10-12 concise sentences.
-      - Do not output JSON.
-      - Do not output Markdown headings.
-      - Do not output bullet points.
+Rules:
+- Use only the provided state information.
+- Do not change raw model outputs.
+- Do not make diagnosis claims.
+- Do not mention disease, pathology, or anatomical findings.
+- Do not invent artifact information.
+- Focus only on image quality, uncertainty, artifact evidence, and routing.
+- Return valid JSON only.
+- Do not wrap the output in Markdown.
+- Do not wrap the output in a code block.
 
-      Information which will be provided to you:
-      1. Raw model outputs:
-         - predicted_quality_score: {model_outputs['predicted_quality_score']}
-         - predicted_clinical_level: {model_outputs['predicted_clinical_level']}
-         - uncertainty: {model_outputs['uncertainty']}
+Return exactly this JSON structure:
+{{
+  "explanation": "Write 10-12 concise sentences explaining the image quality assessment.",
+  "limitations": [
+    "case-specific limitation 1",
+    "case-specific limitation 2",
+    "case-specific limitation 3"
+  ],
+  "conclusion": "Write a 1-2 sentence conclusion about image-quality gate routing."
+}}
 
-      2. Clinical quality:
-         - label: {clinical_quality['label']}
-         - recommendation: {clinical_quality['recommendation']}
+State information:
 
-      3. Clinical assessment:
-         - usability_category: {clinical_assessment['usability_category']}
-         - summary: {clinical_assessment['summary']}
+1. Raw model outputs:
+- predicted_quality_score: {model_outputs['predicted_quality_score']}
+- predicted_clinical_level: {model_outputs['predicted_clinical_level']}
+- uncertainty: {model_outputs['uncertainty']}
 
-      4. Routing assessment:
-         - final_gate: {routing_assessment['final_gate']}
-         - rationale: {routing_assessment['rationale']}
-         - requires_human_review: {routing_assessment['requires_human_review']}
+2. Clinical quality:
+- label: {clinical_quality['label']}
+- recommendation: {clinical_quality['recommendation']}
 
-      5. Artifact assessment:
-         - severity: {artifact_assessment['artifact_severity']}
-         - flags: {artifact_assessment['artifact_flags']}
-         - summary: {artifact_assessment['summary']}
-   """
+3. Clinical assessment:
+- usability_category: {clinical_assessment['usability_category']}
+- summary: {clinical_assessment['summary']}
+
+4. Routing assessment:
+- final_gate: {routing_assessment['final_gate']}
+- rationale: {routing_assessment['rationale']}
+- requires_human_review: {routing_assessment['requires_human_review']}
+
+5. Artifact assessment:
+- severity: {artifact_assessment['artifact_severity']}
+- flags: {artifact_assessment['artifact_flags']}
+- summary: {artifact_assessment['summary']}
+"""
 
    response = llm.invoke(prompt)
-   confidence = round(max(0.0, min(1.0, 1.0 - float(model_outputs['uncertainty']))),4)
+   report_text = response.content.strip()
 
+   if report_text.startswith("```json"):
+      report_text = report_text.removeprefix("```json").removesuffix("```").strip()
+   elif report_text.startswith("```"):
+      report_text = report_text.removeprefix("```").removesuffix("```").strip()
+
+   report_parts = json.loads(report_text)
+
+   explanation = report_parts["explanation"]
+   limitations = report_parts["limitations"]
+   conclusion = report_parts["conclusion"]
+
+   confidence = round(
+      max(0.0, min(1.0, 1.0 - float(model_outputs["uncertainty"]))),
+      4,
+   )
+
+   limitations_markdown = "\n".join(f"- {limitation}" for limitation in limitations)
 
    markdown_content = dedent(f"""
 # MEDAGENT-X Image Quality Report
@@ -196,37 +227,31 @@ def report_agent_node(state: MedAgentXState) -> dict:
 - Requires human review: {routing_assessment["requires_human_review"]}
 
 ## Explanation
-{response.content}
+{explanation}
 
 ## Limitations
-- This report evaluates image quality only.
-- No diagnosis is generated in MEDAGENT-X v1.
-- Ground truth labels are for validation only.
+{limitations_markdown}
 
 ## Conclusion
-- Conclusion based on the explanation and limitations
-- {clinical_quality['recommendation']}
+{conclusion}
 """).strip()
 
    return {
-      "final_report":{
-         "quality_score": float(model_outputs['predicted_quality_score']),
-         "clinical_usability_level": int(model_outputs['predicted_clinical_level']),
-         "clinical_usability_label": clinical_quality['label'],
-         "recommendation": clinical_quality['recommendation'],
+      "final_report": {
+         "quality_score": float(model_outputs["predicted_quality_score"]),
+         "clinical_usability_level": int(model_outputs["predicted_clinical_level"]),
+         "clinical_usability_label": clinical_quality["label"],
+         "recommendation": clinical_quality["recommendation"],
          "confidence": confidence,
-         "requires_human_review": routing_assessment['requires_human_review'],
-         "diagnosis_gate": routing_assessment['final_gate'],
-         "explanation": response.content,
-         "limitations": [
-            "This report evaluates image quality only.",
-            "No diagnosis is generated in MEDAGENT-X v1.",
-            "Ground truth labels are for validation only.",
-         ],
+         "requires_human_review": routing_assessment["requires_human_review"],
+         "diagnosis_gate": routing_assessment["final_gate"],
+         "explanation": explanation,
+         "limitations": limitations,
+         "conclusion": conclusion,
       },
-      "markdown_report":{
+      "markdown_report": {
          "content": markdown_content,
-      }
+      },
    }
 
 

@@ -79,6 +79,8 @@ class FinalReport(TypedDict):
    requires_human_review: bool
    diagnosis_gate: Literal["proceed", "proceed_with_caution", "human_review", "reject_or_repeat"]
    explanation: str
+   limitations: list[str]
+   conclusion: str
 
 class MarkdownReport(TypedDict):
    content: str
