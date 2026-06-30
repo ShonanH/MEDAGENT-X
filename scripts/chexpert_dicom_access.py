@@ -69,3 +69,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# python scripts/chexpert_dicom_access.py \
+#   --manifest-path data/processed/chexpert_plus_50_study_manifest.csv \
+#   --row-index 0
