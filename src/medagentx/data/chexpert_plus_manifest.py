@@ -1,86 +1,116 @@
-from numpy.ma import count
-import pandas as pd
-
 CHEXPERT_PLUS_TABLE = "df_chexpert_plus_240401"
 
 MANIFEST_COLUMNS = [
-   "path_to_image",
-   "path_to_dcm",
-   "frontal_lateral",
-   "ap_pa",
-   "deid_patient_id",
-   "patient_report_date_order",
-   "age",
-   "sex",
-   "race",
-   "ethnicity",
-   "split",
-   "report",
-   "section_findings",
-   "section_impression",
+    "path_to_image",
+    "path_to_dcm",
+    "frontal_lateral",
+    "ap_pa",
+    "deid_patient_id",
+    "patient_report_date_order",
+    "age",
+    "sex",
+    "race",
+    "ethnicity",
+    "split",
+    "report",
+    "section_findings",
+    "section_impression",
 ]
 
-def query_chexpert_rows(dataset, row_limit=500):
-   query = f"""
-   SELECT
-      {", ".join(MANIFEST_COLUMNS)}
-   FROM `{CHEXPERT_PLUS_TABLE}`
-   WHERE path_to_dcm IS NOT NULL
-   LIMIT {int(row_limit)}
-   """
 
-   return dataset.query(query).to_pandas_dataframe()
+def build_query(row_limit):
+    selected_columns = ",\n        ".join(MANIFEST_COLUMNS)
 
-
-def add_study_key(df):
-    df = df.copy()
-
-    study_key_pattern = r"(?P<study_key>patient\d+/study\d+)"
-
-    extracted = df["path_to_dcm"].astype(str).str.extract(study_key_pattern)
-
-    df["study_key"] = extracted["study_key"]
-
-    return df
+    return f"""
+    SELECT
+        {selected_columns}
+    FROM `{CHEXPERT_PLUS_TABLE}`
+    WHERE path_to_dcm IS NOT NULL
+    LIMIT {int(row_limit)}
+    """
 
 
-def build_study_manifest(df, study_limit=50):
-    df = add_study_key(df)
+def extract_study_key(path_to_dcm):
+    if path_to_dcm is None:
+        return None
 
-    df = df.dropna(subset=["study_key"])
+    parts = str(path_to_dcm).split("/")
 
-    grouped = (
-        df.groupby("study_key", as_index=False)
-        .agg(
-            {
-                "deid_patient_id": "first",
-                "split": "first",
-                "age": "first",
-                "sex": "first",
-                "race": "first",
-                "ethnicity": "first",
-                "path_to_dcm": list,
-                "path_to_image": list,
-                "frontal_lateral": list,
-                "ap_pa": list,
-                "report": "first",
-                "section_findings": "first",
-                "section_impression": "first",
+    if len(parts) < 4:
+        return None
+
+    patient_id = parts[1]
+    study_id = parts[2]
+
+    if not patient_id.startswith("patient"):
+        return None
+
+    if not study_id.startswith("study"):
+        return None
+
+    return f"{patient_id}/{study_id}"
+
+
+def row_to_plain_dict(row):
+    plain = {}
+
+    for column in MANIFEST_COLUMNS:
+        value = row.get(column)
+
+        if value is None:
+            plain[column] = ""
+        else:
+            plain[column] = value
+
+    plain["study_key"] = extract_study_key(plain["path_to_dcm"])
+
+    return plain
+
+
+def build_study_manifest_records(rows, study_limit):
+    studies = {}
+
+    for row in rows:
+        row = row_to_plain_dict(row)
+        study_key = row["study_key"]
+
+        if study_key is None:
+            continue
+
+        if study_key not in studies:
+            studies[study_key] = {
+                "study_key": study_key,
+                "deid_patient_id": row["deid_patient_id"],
+                "split": row["split"],
+                "age": row["age"],
+                "sex": row["sex"],
+                "race": row["race"],
+                "ethnicity": row["ethnicity"],
+                "dicom_paths": [],
+                "image_paths": [],
+                "frontal_lateral_views": [],
+                "ap_pa_views": [],
+                "report": row["report"],
+                "section_findings": row["section_findings"],
+                "section_impression": row["section_impression"],
             }
-        )
-    )
 
-    grouped = grouped.rename(
-        columns={
-            "path_to_dcm": "dicom_paths",
-            "path_to_image": "image_paths",
-            "frontal_lateral": "frontal_lateral_views",
-            "ap_pa": "ap_pa_views",
-        }
-    )
+        studies[study_key]["dicom_paths"].append(row["path_to_dcm"])
+        studies[study_key]["image_paths"].append(row["path_to_image"])
+        studies[study_key]["frontal_lateral_views"].append(row["frontal_lateral"])
+        studies[study_key]["ap_pa_views"].append(row["ap_pa"])
 
-    grouped["image_count"] = grouped["dicom_paths"].apply(len)
+        if len(studies) >= int(study_limit):
+            break
 
-    grouped = grouped.head(int(study_limit))
+    manifest = []
 
-    return grouped
+    for study in studies.values():
+        study["image_count"] = len(study["dicom_paths"])
+        study["dicom_paths"] = "|".join(study["dicom_paths"])
+        study["image_paths"] = "|".join(study["image_paths"])
+        study["frontal_lateral_views"] = "|".join(study["frontal_lateral_views"])
+        study["ap_pa_views"] = "|".join(study["ap_pa_views"])
+        manifest.append(study)
+
+    return manifest
