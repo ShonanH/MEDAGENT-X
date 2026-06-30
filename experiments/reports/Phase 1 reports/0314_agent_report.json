@@ -1,0 +1,77 @@
+{
+  "case_metadata": {
+    "case_id": "0314",
+    "dataset": "LDCTIQAC2023",
+    "modality": "CT",
+    "image_file": "0314.tif"
+  },
+  "ground_truth": {
+    "quality_score": 1.0,
+    "clinical_level": 1
+  },
+  "model_outputs": {
+    "predicted_quality_score": 1.025,
+    "predicted_clinical_level": 1,
+    "uncertainty": 0.2235
+  },
+  "artifact_features": {
+    "intensity_min": 0.0,
+    "intensity_max": 1.0,
+    "intensity_mean": 0.302774965763092,
+    "intensity_std": 0.3358811140060425,
+    "contrast_proxy": 0.8674098163843141,
+    "noise_proxy": 0.0606943927705287,
+    "blur_proxy": 0.9184698329183942,
+    "sharpness_proxy": 0.0887673869729042,
+    "edge_density": 0.0493202209472656,
+    "entropy": 4.6871490478515625
+  },
+  "clinical_quality": {
+    "label": "Non-diagnostic",
+    "recommendation": "Reject or repeat unless no alternative exists."
+  },
+  "routing": {
+    "diagnosis_gate": "reject_or_repeat",
+    "requires_human_review": true
+  },
+  "artifact_assessment": {
+    "artifact_severity": "moderate",
+    "artifact_flags": [
+      "high_noise_proxy"
+    ],
+    "summary": "Moderate artifact concerns were detected. Consider further review."
+  },
+  "clinical_assessment": {
+    "usability_category": "not_usable",
+    "summary": "Predicted clinical quality is Non-diagnostic, so the image is non-diagnostic. Consider reject or repeat unless no alternative exists."
+  },
+  "routing_assessment": {
+    "final_gate": "reject_or_repeat",
+    "rationale": [
+      "Predicted clinical level is 1",
+      "Model uncertainty is 0.2235",
+      "Artifact severity is moderate",
+      "Routing decision requires human review."
+    ],
+    "requires_human_review": true
+  },
+  "final_report": {
+    "quality_score": 1.025,
+    "clinical_usability_level": 1,
+    "clinical_usability_label": "Non-diagnostic",
+    "recommendation": "Reject or repeat unless no alternative exists.",
+    "confidence": 0.7765,
+    "requires_human_review": true,
+    "diagnosis_gate": "reject_or_repeat",
+    "explanation": "The image quality assessment indicates a predicted quality score of 1.025, which suggests that the image does not meet the necessary standards for usability. The clinical quality label is classified as Non-diagnostic, leading to a recommendation to reject or repeat the image unless no alternative exists. The uncertainty value of 0.2235 contributes to confidence estimation, indicating a moderate level of uncertainty in the assessment. Additionally, moderate artifact concerns were detected, specifically flagged for high noise, which may impact the overall quality of the image. The usability category is marked as not usable, reinforcing the need for caution in interpretation. The routing assessment concludes with a final gate decision of reject or repeat, necessitating human review due to the predicted clinical level and the presence of artifacts. This highlights the importance of further evaluation before any potential use of the image. Overall, the assessment underscores the need for careful consideration regarding the image's quality and usability.",
+    "limitations": [
+      "The image is classified as non-diagnostic, limiting its usability.",
+      "Moderate artifact severity may affect the quality of the image.",
+      "The presence of high noise could obscure important details."
+    ],
+    "conclusion": "The image does not pass the MEDAGENT-X quality gate and is subject to a reject or repeat routing decision. This output should be interpreted as an image-quality assessment only, not a diagnostic decision."
+  },
+  "markdown_report": {
+    "content": "# MEDAGENT-X Image Quality Report\n\n## Case\n- Case ID: 0314\n- Dataset: LDCTIQAC2023\n- Modality: CT\n- Image file: 0314.tif\n\n## Model Outputs\n- Predicted quality score: 1.0250\n- Predicted clinical level: 1\n- Uncertainty: 0.2235\n\n## Clinical Quality\n- Label: Non-diagnostic\n- Recommendation: Reject or repeat unless no alternative exists.\n\n## Artifact Assessment\n- Severity: moderate\n- Flags: high_noise_proxy\n- Summary: Moderate artifact concerns were detected. Consider further review.\n\n## Routing\n- Diagnosis gate: reject_or_repeat\n- Requires human review: True\n\n## Explanation\nThe image quality assessment indicates a predicted quality score of 1.025, which suggests that the image does not meet the necessary standards for usability. The clinical quality label is classified as Non-diagnostic, leading to a recommendation to reject or repeat the image unless no alternative exists. The uncertainty value of 0.2235 contributes to confidence estimation, indicating a moderate level of uncertainty in the assessment. Additionally, moderate artifact concerns were detected, specifically flagged for high noise, which may impact the overall quality of the image. The usability category is marked as not usable, reinforcing the need for caution in interpretation. The routing assessment concludes with a final gate decision of reject or repeat, necessitating human review due to the predicted clinical level and the presence of artifacts. This highlights the importance of further evaluation before any potential use of the image. Overall, the assessment underscores the need for careful consideration regarding the image's quality and usability.\n\n## Limitations\n- The image is classified as non-diagnostic, limiting its usability.\n- Moderate artifact severity may affect the quality of the image.\n- The presence of high noise could obscure important details.\n\n## Conclusion\nThe image does not pass the MEDAGENT-X quality gate and is subject to a reject or repeat routing decision. This output should be interpreted as an image-quality assessment only, not a diagnostic decision."
+  }
+}

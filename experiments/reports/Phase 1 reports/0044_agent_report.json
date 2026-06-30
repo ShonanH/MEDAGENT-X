@@ -1,0 +1,75 @@
+{
+  "case_metadata": {
+    "case_id": "0044",
+    "dataset": "LDCTIQAC2023",
+    "modality": "CT",
+    "image_file": "0044.tif"
+  },
+  "ground_truth": {
+    "quality_score": 2.8,
+    "clinical_level": 3
+  },
+  "model_outputs": {
+    "predicted_quality_score": 3.4253,
+    "predicted_clinical_level": 3,
+    "uncertainty": 0.423
+  },
+  "artifact_features": {
+    "intensity_min": 0.0,
+    "intensity_max": 1.0,
+    "intensity_mean": 0.3857230842113495,
+    "intensity_std": 0.3462076187133789,
+    "contrast_proxy": 0.8230866372585295,
+    "noise_proxy": 0.0232268888503313,
+    "blur_proxy": 0.993176849451219,
+    "sharpness_proxy": 0.006870025768876,
+    "edge_density": 0.0366134643554687,
+    "entropy": 4.310558319091797
+  },
+  "clinical_quality": {
+    "label": "Adequate with caution",
+    "recommendation": "Use with caution; subtle findings may be limited."
+  },
+  "routing": {
+    "diagnosis_gate": "proceed_with_caution",
+    "requires_human_review": true
+  },
+  "artifact_assessment": {
+    "artifact_severity": "low",
+    "artifact_flags": [],
+    "summary": "No significant artifact concerns were detected."
+  },
+  "clinical_assessment": {
+    "usability_category": "usable_with_caution",
+    "summary": "Predicted clinical quality is Adequate with caution, so the image is usable with caution. Consider further review."
+  },
+  "routing_assessment": {
+    "final_gate": "proceed_with_caution",
+    "rationale": [
+      "Predicted clinical level is 3",
+      "Model uncertainty is 0.423",
+      "Artifact severity is low",
+      "Routing decision requires human review."
+    ],
+    "requires_human_review": true
+  },
+  "final_report": {
+    "quality_score": 3.4253,
+    "clinical_usability_level": 3,
+    "clinical_usability_label": "Adequate with caution",
+    "recommendation": "Use with caution; subtle findings may be limited.",
+    "confidence": 0.577,
+    "requires_human_review": true,
+    "diagnosis_gate": "proceed_with_caution",
+    "explanation": "The image quality assessment indicates a predicted quality score of 3.4253, which suggests that the image is adequate but should be approached with caution. The clinical quality label reflects this, indicating that while the image is usable, subtle findings may be limited. The uncertainty value of 0.423 contributes to the confidence estimation, suggesting that there is some variability in the quality assessment. The usability category confirms that the image is usable with caution, and further review is recommended. The artifact assessment shows low severity, with no significant artifact concerns detected. This supports the overall quality of the image, although the presence of uncertainty necessitates careful interpretation. The routing assessment indicates a final gate decision of proceed with caution, emphasizing the need for human review due to the predicted clinical level and model uncertainty. Overall, the image quality assessment suggests that while the image is usable, it requires careful consideration and potential further evaluation.",
+    "limitations": [
+      "Subtle findings may be limited due to the quality assessment.",
+      "The presence of uncertainty may affect confidence in the assessment.",
+      "Human review is required to confirm the quality and usability of the image."
+    ],
+    "conclusion": "The image passes the MEDAGENT-X quality gate with a proceed routing decision. This output should be interpreted as an image-quality assessment only, not a diagnostic decision."
+  },
+  "markdown_report": {
+    "content": "# MEDAGENT-X Image Quality Report\n\n## Case\n- Case ID: 0044\n- Dataset: LDCTIQAC2023\n- Modality: CT\n- Image file: 0044.tif\n\n## Model Outputs\n- Predicted quality score: 3.4253\n- Predicted clinical level: 3\n- Uncertainty: 0.4230\n\n## Clinical Quality\n- Label: Adequate with caution\n- Recommendation: Use with caution; subtle findings may be limited.\n\n## Artifact Assessment\n- Severity: low\n- Flags: None\n- Summary: No significant artifact concerns were detected.\n\n## Routing\n- Diagnosis gate: proceed_with_caution\n- Requires human review: True\n\n## Explanation\nThe image quality assessment indicates a predicted quality score of 3.4253, which suggests that the image is adequate but should be approached with caution. The clinical quality label reflects this, indicating that while the image is usable, subtle findings may be limited. The uncertainty value of 0.423 contributes to the confidence estimation, suggesting that there is some variability in the quality assessment. The usability category confirms that the image is usable with caution, and further review is recommended. The artifact assessment shows low severity, with no significant artifact concerns detected. This supports the overall quality of the image, although the presence of uncertainty necessitates careful interpretation. The routing assessment indicates a final gate decision of proceed with caution, emphasizing the need for human review due to the predicted clinical level and model uncertainty. Overall, the image quality assessment suggests that while the image is usable, it requires careful consideration and potential further evaluation.\n\n## Limitations\n- Subtle findings may be limited due to the quality assessment.\n- The presence of uncertainty may affect confidence in the assessment.\n- Human review is required to confirm the quality and usability of the image.\n\n## Conclusion\nThe image passes the MEDAGENT-X quality gate with a proceed routing decision. This output should be interpreted as an image-quality assessment only, not a diagnostic decision."
+  }
+}

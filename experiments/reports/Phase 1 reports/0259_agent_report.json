@@ -1,0 +1,77 @@
+{
+  "case_metadata": {
+    "case_id": "0259",
+    "dataset": "LDCTIQAC2023",
+    "modality": "CT",
+    "image_file": "0259.tif"
+  },
+  "ground_truth": {
+    "quality_score": 1.8,
+    "clinical_level": 2
+  },
+  "model_outputs": {
+    "predicted_quality_score": 1.3526,
+    "predicted_clinical_level": 2,
+    "uncertainty": 0.3154
+  },
+  "artifact_features": {
+    "intensity_min": 0.0,
+    "intensity_max": 1.0,
+    "intensity_mean": 0.2430676817893982,
+    "intensity_std": 0.327320784330368,
+    "contrast_proxy": 0.8468241065740585,
+    "noise_proxy": 0.0415202006697654,
+    "blur_proxy": 0.96314291353166,
+    "sharpness_proxy": 0.0382675155997276,
+    "edge_density": 0.0338897705078125,
+    "entropy": 4.17086124420166
+  },
+  "clinical_quality": {
+    "label": "Limited",
+    "recommendation": "Restricted diagnostic value; consider repeat or alternative imaging."
+  },
+  "routing": {
+    "diagnosis_gate": "human_review",
+    "requires_human_review": true
+  },
+  "artifact_assessment": {
+    "artifact_severity": "moderate",
+    "artifact_flags": [
+      "high_noise_proxy"
+    ],
+    "summary": "Moderate artifact concerns were detected. Consider further review."
+  },
+  "clinical_assessment": {
+    "usability_category": "limited",
+    "summary": "Predicted clinical quality is Limited, so the image is limited. Consider repeat or alternative imaging."
+  },
+  "routing_assessment": {
+    "final_gate": "human_review",
+    "rationale": [
+      "Predicted clinical level is 2",
+      "Model uncertainty is 0.3154",
+      "Artifact severity is moderate",
+      "Routing decision requires human review."
+    ],
+    "requires_human_review": true
+  },
+  "final_report": {
+    "quality_score": 1.3526,
+    "clinical_usability_level": 2,
+    "clinical_usability_label": "Limited",
+    "recommendation": "Restricted diagnostic value; consider repeat or alternative imaging.",
+    "confidence": 0.6846,
+    "requires_human_review": true,
+    "diagnosis_gate": "human_review",
+    "explanation": "The image quality assessment indicates a predicted quality score of 1.3526, which suggests limited image quality. The clinical quality label is also marked as limited, indicating restricted diagnostic value. The uncertainty value of 0.3154 contributes to confidence estimation in the quality assessment. The usability category is classified as limited, reinforcing the need for caution in interpretation. Moderate artifact concerns were detected, specifically flagged by high noise proxy, which may affect the overall image clarity. Given these factors, the recommendation is to consider repeat or alternative imaging. The routing assessment indicates that the final gate requires human review due to the predicted clinical level of 2 and the moderate artifact severity. This necessitates a careful evaluation by a qualified professional. Overall, the image quality assessment highlights the need for further scrutiny before proceeding.",
+    "limitations": [
+      "The predicted quality score indicates limited image quality.",
+      "Moderate artifact severity may impact image interpretation.",
+      "The uncertainty value suggests a need for cautious evaluation."
+    ],
+    "conclusion": "The image does not pass the MEDAGENT-X quality gate and requires human review for further assessment. This output should be interpreted as an image-quality assessment only, not a diagnostic decision."
+  },
+  "markdown_report": {
+    "content": "# MEDAGENT-X Image Quality Report\n\n## Case\n- Case ID: 0259\n- Dataset: LDCTIQAC2023\n- Modality: CT\n- Image file: 0259.tif\n\n## Model Outputs\n- Predicted quality score: 1.3526\n- Predicted clinical level: 2\n- Uncertainty: 0.3154\n\n## Clinical Quality\n- Label: Limited\n- Recommendation: Restricted diagnostic value; consider repeat or alternative imaging.\n\n## Artifact Assessment\n- Severity: moderate\n- Flags: high_noise_proxy\n- Summary: Moderate artifact concerns were detected. Consider further review.\n\n## Routing\n- Diagnosis gate: human_review\n- Requires human review: True\n\n## Explanation\nThe image quality assessment indicates a predicted quality score of 1.3526, which suggests limited image quality. The clinical quality label is also marked as limited, indicating restricted diagnostic value. The uncertainty value of 0.3154 contributes to confidence estimation in the quality assessment. The usability category is classified as limited, reinforcing the need for caution in interpretation. Moderate artifact concerns were detected, specifically flagged by high noise proxy, which may affect the overall image clarity. Given these factors, the recommendation is to consider repeat or alternative imaging. The routing assessment indicates that the final gate requires human review due to the predicted clinical level of 2 and the moderate artifact severity. This necessitates a careful evaluation by a qualified professional. Overall, the image quality assessment highlights the need for further scrutiny before proceeding.\n\n## Limitations\n- The predicted quality score indicates limited image quality.\n- Moderate artifact severity may impact image interpretation.\n- The uncertainty value suggests a need for cautious evaluation.\n\n## Conclusion\nThe image does not pass the MEDAGENT-X quality gate and requires human review for further assessment. This output should be interpreted as an image-quality assessment only, not a diagnostic decision."
+  }
+}

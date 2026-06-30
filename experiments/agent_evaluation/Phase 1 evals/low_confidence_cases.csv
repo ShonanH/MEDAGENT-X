@@ -1,0 +1,67 @@
+case_id,image_file,quality_score,clinical_usability_level,clinical_usability_label,confidence,diagnosis_gate,requires_human_review,artifact_severity,artifact_flags
+521,0521.tif,4.3395,4,Good,0.5766,proceed,False,low,
+411,0411.tif,4.0768,4,Good,0.539,proceed,False,low,
+973,0973.tif,4.6574,4,Good,0.3662,proceed_with_caution,True,low,
+938,0938.tif,4.2511,4,Good,0.5624,proceed,False,low,
+899,0899.tif,4.4956,4,Good,0.5116,proceed,False,low,
+280,0280.tif,5.0,5,Excellent,0.572,proceed,False,low,
+883,0883.tif,4.1452,4,Good,0.5033,proceed,False,low,
+319,0319.tif,2.9999,3,Adequate with caution,0.5989,proceed_with_caution,True,moderate,moderate_noise_proxy
+346,0346.tif,4.7592,5,Excellent,0.577,proceed,False,low,
+687,0687.tif,3.9808,3,Adequate with caution,0.5277,proceed_with_caution,True,low,
+59,0059.tif,4.4964,4,Good,0.5732,proceed,False,low,
+974,0974.tif,4.3552,4,Good,0.4346,proceed_with_caution,True,low,
+924,0924.tif,4.4489,4,Good,0.5216,proceed,False,low,
+439,0439.tif,2.5068,2,Limited,0.5967,human_review,True,moderate,high_noise_proxy
+570,0570.tif,3.9228,3,Adequate with caution,0.5412,proceed_with_caution,True,low,
+879,0879.tif,3.0874,3,Adequate with caution,0.5892,proceed_with_caution,True,moderate,moderate_noise_proxy
+261,0261.tif,4.673,4,Good,0.5726,proceed,False,moderate,low_sharpness_proxy
+23,0023.tif,3.8108,3,Adequate with caution,0.5672,proceed_with_caution,True,moderate,moderate_noise_proxy
+30,0030.tif,4.4555,4,Good,0.5537,proceed,False,low,
+10,0010.tif,5.0,5,Excellent,0.5572,proceed,False,moderate,low_sharpness_proxy
+692,0692.tif,3.4227,3,Adequate with caution,0.5946,proceed_with_caution,True,moderate,moderate_noise_proxy
+866,0866.tif,5.0,5,Excellent,0.5457,proceed,False,moderate,low_sharpness_proxy
+39,0039.tif,3.5986,3,Adequate with caution,0.5999,proceed_with_caution,True,low,
+307,0307.tif,4.496,4,Good,0.5822,proceed,False,low,
+275,0275.tif,4.9056,4,Good,0.551,proceed,False,low,
+548,0548.tif,4.0357,4,Good,0.5333,proceed,False,low,
+753,0753.tif,4.5939,4,Good,0.5064,proceed,False,low,
+451,0451.tif,4.5092,4,Good,0.5292,proceed,False,low,
+436,0436.tif,3.0928,3,Adequate with caution,0.5364,proceed_with_caution,True,moderate,moderate_noise_proxy
+716,0716.tif,4.0055,3,Adequate with caution,0.5825,proceed_with_caution,True,low,
+635,0635.tif,2.3422,2,Limited,0.5803,human_review,True,moderate,high_noise_proxy
+644,0644.tif,4.4136,4,Good,0.5954,proceed,False,low,
+959,0959.tif,4.4719,4,Good,0.4482,proceed_with_caution,True,low,
+528,0528.tif,2.9267,3,Adequate with caution,0.5935,proceed_with_caution,True,moderate,moderate_noise_proxy
+985,0985.tif,3.6007,3,Adequate with caution,0.5617,proceed_with_caution,True,moderate,moderate_noise_proxy
+816,0816.tif,4.5611,4,Good,0.5372,proceed,False,low,
+432,0432.tif,3.9089,4,Good,0.5831,proceed,False,moderate,moderate_noise_proxy
+892,0892.tif,4.6492,4,Good,0.5751,proceed,False,low,
+260,0260.tif,4.4703,4,Good,0.4977,proceed_with_caution,True,low,
+237,0237.tif,3.4347,3,Adequate with caution,0.5982,proceed_with_caution,True,moderate,moderate_noise_proxy
+583,0583.tif,4.031,4,Good,0.5306,proceed,False,low,
+265,0265.tif,3.5793,3,Adequate with caution,0.5517,proceed_with_caution,True,moderate,moderate_noise_proxy
+55,0055.tif,4.7029,4,Good,0.4993,proceed_with_caution,True,low,
+120,0120.tif,3.2704,3,Adequate with caution,0.5769,proceed_with_caution,True,moderate,moderate_noise_proxy
+44,0044.tif,3.4253,3,Adequate with caution,0.577,proceed_with_caution,True,low,
+247,0247.tif,4.3975,4,Good,0.5101,proceed,False,low,
+158,0158.tif,4.6056,4,Good,0.4533,proceed_with_caution,True,low,
+941,0941.tif,4.5351,4,Good,0.4849,proceed_with_caution,True,low,
+309,0309.tif,3.411,3,Adequate with caution,0.5941,proceed_with_caution,True,moderate,moderate_noise_proxy
+697,0697.tif,4.2968,4,Good,0.5765,proceed,False,low,
+595,0595.tif,4.319,4,Good,0.5908,proceed,False,low,
+650,0650.tif,4.439,4,Good,0.4026,proceed_with_caution,True,low,
+310,0310.tif,4.3631,4,Good,0.5798,proceed,False,low,
+110,0110.tif,4.2505,4,Good,0.5939,proceed,False,low,
+486,0486.tif,3.0132,3,Adequate with caution,0.5644,proceed_with_caution,True,moderate,high_noise_proxy
+254,0254.tif,4.2371,4,Good,0.3994,proceed_with_caution,True,low,
+802,0802.tif,4.7269,4,Good,0.5411,proceed,False,low,
+677,0677.tif,3.3031,3,Adequate with caution,0.5971,proceed_with_caution,True,moderate,moderate_noise_proxy
+494,0494.tif,5.0,5,Excellent,0.5775,proceed,False,low,
+137,0137.tif,2.2106,2,Limited,0.5752,human_review,True,moderate,high_noise_proxy
+942,0942.tif,5.0,5,Excellent,0.5851,proceed,False,moderate,low_sharpness_proxy
+948,0948.tif,4.7397,4,Good,0.5104,proceed,False,low,
+829,0829.tif,4.5259,4,Good,0.4673,proceed_with_caution,True,low,
+408,0408.tif,4.9809,5,Excellent,0.5799,proceed,False,moderate,low_sharpness_proxy
+613,0613.tif,5.0,5,Excellent,0.5566,proceed,False,moderate,low_sharpness_proxy
+78,0078.tif,4.3275,4,Good,0.5474,proceed,False,low,

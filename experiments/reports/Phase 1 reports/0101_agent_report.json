@@ -1,0 +1,77 @@
+{
+  "case_metadata": {
+    "case_id": "0101",
+    "dataset": "LDCTIQAC2023",
+    "modality": "CT",
+    "image_file": "0101.tif"
+  },
+  "ground_truth": {
+    "quality_score": 5.0,
+    "clinical_level": 5
+  },
+  "model_outputs": {
+    "predicted_quality_score": 5.0,
+    "predicted_clinical_level": 5,
+    "uncertainty": 0.3628
+  },
+  "artifact_features": {
+    "intensity_min": 0.0,
+    "intensity_max": 1.0,
+    "intensity_mean": 0.3717114925384521,
+    "intensity_std": 0.3489406704902649,
+    "contrast_proxy": 0.7880018293857572,
+    "noise_proxy": 0.0150771215558052,
+    "blur_proxy": 0.9978860565053326,
+    "sharpness_proxy": 0.0021184217184782,
+    "edge_density": 0.0387229919433593,
+    "entropy": 3.8787999153137207
+  },
+  "clinical_quality": {
+    "label": "Excellent",
+    "recommendation": "Accept for diagnostic interpretation."
+  },
+  "routing": {
+    "diagnosis_gate": "proceed",
+    "requires_human_review": false
+  },
+  "artifact_assessment": {
+    "artifact_severity": "moderate",
+    "artifact_flags": [
+      "low_sharpness_proxy"
+    ],
+    "summary": "Moderate artifact concerns were detected. Consider further review."
+  },
+  "clinical_assessment": {
+    "usability_category": "acceptable",
+    "summary": "Predicted clinical quality is Excellent, so the image is acceptable for diagnostic workflow."
+  },
+  "routing_assessment": {
+    "final_gate": "proceed",
+    "rationale": [
+      "Predicted clinical level is 5",
+      "Model uncertainty is 0.3628",
+      "Artifact severity is moderate",
+      "Routing decision does not require human review."
+    ],
+    "requires_human_review": false
+  },
+  "final_report": {
+    "quality_score": 5.0,
+    "clinical_usability_level": 5,
+    "clinical_usability_label": "Excellent",
+    "recommendation": "Accept for diagnostic interpretation.",
+    "confidence": 0.6372,
+    "requires_human_review": false,
+    "diagnosis_gate": "proceed",
+    "explanation": "The image quality assessment indicates a predicted quality score of 5.0, which corresponds to an excellent clinical quality label. The usability category is acceptable, suggesting that the image is suitable for the intended workflow. However, moderate artifact concerns were detected, specifically related to low sharpness. The model uncertainty is measured at 0.3628, which contributes to the overall confidence estimation in the image quality. Despite the presence of moderate artifacts, the predicted clinical level remains high at 5, supporting the decision to proceed without requiring human review. The rationale for this routing decision is based on the combination of the predicted clinical level, the level of uncertainty, and the severity of artifacts. It is important to note that while the image is acceptable, the moderate artifact severity may warrant further review in specific contexts. Overall, the assessment reflects a balance between quality and potential limitations due to artifacts.",
+    "limitations": [
+      "Moderate artifact severity may affect certain aspects of image interpretation.",
+      "The presence of low sharpness could impact the clarity of fine details.",
+      "Uncertainty in the model output may influence confidence in specific assessments."
+    ],
+    "conclusion": "The image passes the MEDAGENT-X quality gate with a proceed routing decision. This output should be interpreted as an image-quality assessment only, not a diagnostic decision."
+  },
+  "markdown_report": {
+    "content": "# MEDAGENT-X Image Quality Report\n\n## Case\n- Case ID: 0101\n- Dataset: LDCTIQAC2023\n- Modality: CT\n- Image file: 0101.tif\n\n## Model Outputs\n- Predicted quality score: 5.0000\n- Predicted clinical level: 5\n- Uncertainty: 0.3628\n\n## Clinical Quality\n- Label: Excellent\n- Recommendation: Accept for diagnostic interpretation.\n\n## Artifact Assessment\n- Severity: moderate\n- Flags: low_sharpness_proxy\n- Summary: Moderate artifact concerns were detected. Consider further review.\n\n## Routing\n- Diagnosis gate: proceed\n- Requires human review: False\n\n## Explanation\nThe image quality assessment indicates a predicted quality score of 5.0, which corresponds to an excellent clinical quality label. The usability category is acceptable, suggesting that the image is suitable for the intended workflow. However, moderate artifact concerns were detected, specifically related to low sharpness. The model uncertainty is measured at 0.3628, which contributes to the overall confidence estimation in the image quality. Despite the presence of moderate artifacts, the predicted clinical level remains high at 5, supporting the decision to proceed without requiring human review. The rationale for this routing decision is based on the combination of the predicted clinical level, the level of uncertainty, and the severity of artifacts. It is important to note that while the image is acceptable, the moderate artifact severity may warrant further review in specific contexts. Overall, the assessment reflects a balance between quality and potential limitations due to artifacts.\n\n## Limitations\n- Moderate artifact severity may affect certain aspects of image interpretation.\n- The presence of low sharpness could impact the clarity of fine details.\n- Uncertainty in the model output may influence confidence in specific assessments.\n\n## Conclusion\nThe image passes the MEDAGENT-X quality gate with a proceed routing decision. This output should be interpreted as an image-quality assessment only, not a diagnostic decision."
+  }
+}
