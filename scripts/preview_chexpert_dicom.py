@@ -95,7 +95,7 @@ def main():
 
    normalized = normalize_to_uint8(pixel_array)
 
-   if photometric == "MONOCHROME":
+   if photometric == "MONOCHROME1":
       normalized = 255 - normalized
    
    args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -120,3 +120,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# python scripts/preview_chexpert_dicom.py \
+#   --manifest-path data/processed/chexpert_plus_50_study_manifest.csv \
+#   --row-index 0

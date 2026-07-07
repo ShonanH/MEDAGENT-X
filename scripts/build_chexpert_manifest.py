@@ -9,7 +9,7 @@ import redivis
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.medagentx.data.chexpert_plus_manifest import (
+from src.medagentx.helpers.chexpert_plus_manifest import (
     build_query,
     build_study_manifest_records,
 )
