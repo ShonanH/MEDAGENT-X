@@ -1,0 +1,1498 @@
+study_key,deid_patient_id,split,age,sex,race,ethnicity,dicom_paths,image_paths,frontal_lateral_views,ap_pa_views,report,section_findings,section_impression,image_count
+patient00003/study1,patient00003,train,41.0,Male,White,Non-Hispanic/Non-Latino,train/patient00003/study1/view1_frontal.dcm,train/patient00003/study1/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+CHEST, ONE VIEW: 2-10-2001
+FINDINGS: Costophrenic angles sharp, without evidence of effusion.
+The cardiomediastinal silhouette is normal. Vessels mildly
+indistinct with prominence of interstitial structures, suggesting
+mild, pulmonary edema. Left subclavian central venous catheter is
+seen, tip in mid SVC. No pneumothorax.
+IMPRESSION:
+1. NO EVIDENCE OF PNEUMOTHORAX.
+2. MILD INTERSTITIAL PULMONARY EDEMA.
+END OF IMPRESSION:
+SUMMARY: 2
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Dr. Juarez Tucker N  on: 2-10-2001
+ __________________________________
+ 
+ACCESSION NUMBER:
+LFEWOZWVDRX
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."," Costophrenic angles sharp, without evidence of effusion.
+The cardiomediastinal silhouette is normal. Vessels mildly
+indistinct with prominence of interstitial structures, suggesting
+mild, pulmonary edema. Left subclavian central venous catheter is
+seen, tip in mid SVC. No pneumothorax.
+","
+1. NO EVIDENCE OF PNEUMOTHORAX.
+2. MILD INTERSTITIAL PULMONARY EDEMA.
+",1
+patient00007/study1,patient00007,train,69.0,Male,Other,Hispanic/Latino,train/patient00007/study1/view1_frontal.dcm,train/patient00007/study1/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+Chest 1 View: 12-28-2000
+ 
+HISTORY: Male, 69 years old, Check tube placement.
+ 
+COMPARISON: None.
+ 
+IMPRESSION: 
+ 
+Low lung volumes, and overlying trauma board limit evaluation.  There 
+is prominence of the cardiac shadow, likely reflecting cardiomegaly, 
+and retrocardiac opacity, likely representing atelectasis.  No 
+definite pleural fluid.  The left costophrenic sulcus is not 
+included, limiting evaluation for pneumothorax.
+ 
+Endotracheal tube tip is in the mid trachea, overlying the T4 
+vertebral body.
+ 
+No fracture identified.
+ 
+SUMMARY:4-POSSIBLY SIGNIFICANT FINDING, MAY NEED ACTION 
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+RN
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",," 
+ 
+Low lung volumes, and overlying trauma board limit evaluation.  There 
+is prominence of the cardiac shadow, likely reflecting cardiomegaly, 
+and retrocardiac opacity, likely representing atelectasis.  No 
+definite pleural fluid.  The left costophrenic sulcus is not 
+included, limiting evaluation for pneumothorax.
+ 
+Endotracheal tube tip is in the mid trachea, overlying the T4 
+vertebral body.
+ 
+No fracture identified.
+ 
+",1
+patient00007/study2,patient00007,train,69.0,Male,Other,Hispanic/Latino,train/patient00007/study2/view1_frontal.dcm,train/patient00007/study2/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+Chest 1 View: July 20
+ 
+HISTORY: Male, 69 years old, intubated.
+ 
+COMPARISON: 7/20/2020.
+ 
+IMPRESSION: 
+ 
+Low lung volumes.  Stable moderate enlargement of the 
+cardiomediastinal silhouette.  Normal pulmonary vascularity.  Patchy 
+opacity at the left lung base, likely atelectasis.  No pleural 
+effusion or pneumothorax.  No fractures identified.
+ 
+Endotracheal tube tip is in the mid trachea, overlying the T4 
+vertebral body.
+ 
+SUMMARY:4-POSSIBLY SIGNIFICANT FINDING, MAY NEED ACTION
+ 
+ACCESSION NUMBER:
+485K2I4588
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",," 
+ 
+Low lung volumes.  Stable moderate enlargement of the 
+cardiomediastinal silhouette.  Normal pulmonary vascularity.  Patchy 
+opacity at the left lung base, likely atelectasis.  No pleural 
+effusion or pneumothorax.  No fractures identified.
+ 
+Endotracheal tube tip is in the mid trachea, overlying the T4 
+vertebral body.
+ 
+",1
+patient00009/study1,patient00009,train,76.0,Male,Asian,Non-Hispanic/Non-Latino,train/patient00009/study1/view2_lateral.dcm|train/patient00009/study1/view1_frontal.dcm,train/patient00009/study1/view2_lateral.jpg|train/patient00009/study1/view1_frontal.jpg,Lateral|Frontal,|PA,"NARRATIVE:
+CHEST X-RAY: 2/21/2006
+COMPARISON: 2/21/2006.
+CLINICAL HISTORY: Dyspnea. Multiple myeloma.
+IMPRESSION:
+1. PA AND LATERAL CHEST RADIOGRAPH. THE HEART IS ENLARGED, WITH
+A CTR OF 16/29. NO CEPHALIZATION OR OVERT PULMONARY EDEMA. LINEAR
+SHADOWING IS SEEN AT BOTH LUNG BASES, SUGGESTING ATELECTASIS, MOST
+MARKED ON THE RIGHT. ON THE LATERAL VIEW, THIS APPEARS TO LIE
+WITHIN THE RIGHT MIDDLE LOBE. THE LUNG APICES APPEAR CLEAR.
+2. DISC DEGENERATION IS SEEN THROUGHOUT THE THORACIC SPINE,
+WITHOUT SIGNIFICANT VERTEBRAL BODY COLLAPSE.
+END OF IMPRESSION:
+ __________________________________
+ 
+ACCESSION NUMBER:
+6340977630
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. PA AND LATERAL CHEST RADIOGRAPH. THE HEART IS ENLARGED, WITH
+A CTR OF 16/29. NO CEPHALIZATION OR OVERT PULMONARY EDEMA. LINEAR
+SHADOWING IS SEEN AT BOTH LUNG BASES, SUGGESTING ATELECTASIS, MOST
+MARKED ON THE RIGHT. ON THE LATERAL VIEW, THIS APPEARS TO LIE
+WITHIN THE RIGHT MIDDLE LOBE. THE LUNG APICES APPEAR CLEAR.
+2. DISC DEGENERATION IS SEEN THROUGHOUT THE THORACIC SPINE,
+WITHOUT SIGNIFICANT VERTEBRAL BODY COLLAPSE.
+",2
+patient00016/study1,patient00016,train,54.0,Female,Asian,Non-Hispanic/Non-Latino,train/patient00016/study1/view2_lateral.dcm|train/patient00016/study1/view1_frontal.dcm,train/patient00016/study1/view2_lateral.jpg|train/patient00016/study1/view1_frontal.jpg,Lateral|Frontal,|PA,"NARRATIVE:
+Exam: Chest 2 Views, 08-06-2015
+ 
+Clinical History: 53 years old Female with Fell 2 days ago, poss left 
+lower posterior rib fx's.  Rule out pneumothorax, hemothorax
+ 
+Comparison: None
+ 
+Impression:
+ 
+1. ACUTE TO SUBACUTE LEFT POSTERIOR SIXTH RIB FRACTURE.
+ 
+2.NO EVIDENCE OF PNEUMOTHORAX.  MINIMAL LEFT PLEURAL THICKENING MAY 
+REPRESENT SMALL AMOUNT OF BLOOD IN THE PLEURAL SPACE.
+ 
+3.SUBTLE OPACITY JUST LATERAL TO THE CARDIAC APEX IN THE LEFT BASE 
+MAY REPRESENT A SMALL AREA OF PULMONARY CONTUSION OR OTHER CAUSE FOR 
+SMALL FOCUS OF CONSOLIDATION.
+ 
+4.RIGHT LUNG IS CLEAR.
+ 
+5.LOW LUNG VOLUMES.
+ 
+SUMMARY:4-POSSIBLY SIGNIFICANT FINDING, MAY NEED ACTION
+ 
+ACCESSION NUMBER:
+9944467
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+ 
+1. ACUTE TO SUBACUTE LEFT POSTERIOR SIXTH RIB FRACTURE.
+ 
+2.NO EVIDENCE OF PNEUMOTHORAX.  MINIMAL LEFT PLEURAL THICKENING MAY 
+REPRESENT SMALL AMOUNT OF BLOOD IN THE PLEURAL SPACE.
+ 
+3.SUBTLE OPACITY JUST LATERAL TO THE CARDIAC APEX IN THE LEFT BASE 
+MAY REPRESENT A SMALL AREA OF PULMONARY CONTUSION OR OTHER CAUSE FOR 
+SMALL FOCUS OF CONSOLIDATION.
+ 
+4.RIGHT LUNG IS CLEAR.
+ 
+5.LOW LUNG VOLUMES.
+ 
+",2
+patient00021/study1,patient00021,train,36.0,Female,Asian,Non-Hispanic/Non-Latino,train/patient00021/study1/view1_frontal.dcm,train/patient00021/study1/view1_frontal.jpg,Frontal,PA,"NARRATIVE:
+SINGLE VIEW CHEST X-RAY: 12-3-04 AT 1532 HOURS.
+CLINICAL HISTORY: 35-year-old male for employee health evaluation.
+COMPARISON: None.
+IMPRESSION:
+1. NO FOCAL CONSOLIDATION OR EVIDENCE OF LYMPHADENOPATHY. NORMAL
+CHEST.
+END OF IMPRESSION:
+SUMMARY:1-NO SIGNIFICANT ABNORMALITY
+ 
+ACCESSION NUMBER:
+6340977630
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. NO FOCAL CONSOLIDATION OR EVIDENCE OF LYMPHADENOPATHY. NORMAL
+CHEST.
+",1
+patient00026/study1,patient00026,train,42.0,Female,Unknown,Unknown,train/patient00026/study1/view1_frontal.dcm|train/patient00026/study1/view2_lateral.dcm,train/patient00026/study1/view1_frontal.jpg|train/patient00026/study1/view2_lateral.jpg,Frontal|Lateral,PA|,"NARRATIVE:
+CHEST TWO VIEW: 10/12/2004
+COMPARISON: Chest two view 10/12/2004.
+HISTORY: 42-year-old female with continued dyspnea after surgery,
+check for infiltrate.
+FINDINGS:
+Low lung volumes. Discoid atelectasis and consolidation seen in
+the left lower lobe with an elevated left hemidiaphragm. This is
+unchanged from the previous chest x-ray.
+IMPRESSION:
+DISCOID CONSOLIDATION AND ATELECTASIS OF THE LEFT LOWER LOBE.
+UNCHANGED FROM THE PREVIOUS CHEST X-RAY.
+END OF IMPRESSION:
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Schwartz Emmett, MD  on: 10-12-2004
+ __________________________________
+ 
+ACCESSION NUMBER:
+6340977630
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","
+Low lung volumes. Discoid atelectasis and consolidation seen in
+the left lower lobe with an elevated left hemidiaphragm. This is
+unchanged from the previous chest x-ray.
+","
+DISCOID CONSOLIDATION AND ATELECTASIS OF THE LEFT LOWER LOBE.
+UNCHANGED FROM THE PREVIOUS CHEST X-RAY.
+",2
+patient00027/study1,patient00027,train,56.0,Male,Other,Non-Hispanic/Non-Latino,train/patient00027/study1/view1_frontal.dcm|train/patient00027/study1/view2_lateral.dcm,train/patient00027/study1/view1_frontal.jpg|train/patient00027/study1/view2_lateral.jpg,Frontal|Lateral,PA|,"NARRATIVE:
+Exam: Chest 2 Views, 6-27-2010
+ 
+Clinical History: 55 years Male with Chest Pain
+ 
+Comparison: None
+ 
+IMPRESSION:
+ 
+1.FRONTAL AND LATERAL VIEWS OF THE CHEST DEMONSTRATE LOW LUNG VOLUMES 
+WITH BIBASILAR OPACITIES LIKELY REFLECTING ATELECTASIS.  NO EVIDENCE 
+OF FOCAL CONSOLIDATION, PLEURAL EFFUSIONS OR PNEUMOTHORAX.
+ 
+2.THE CARDIOMEDIASTINAL SILHOUETTE AND PULMONARY VASCULATURE ARE 
+WITHIN NORMAL LIMITS.
+ 
+3.VISUALIZED OSSEOUS STRUCTURES ARE INTACT.
+ 
+SUMMARY:1-NO SIGNIFICANT ABNORMALITY
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+8795694723
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+ 
+1.FRONTAL AND LATERAL VIEWS OF THE CHEST DEMONSTRATE LOW LUNG VOLUMES 
+WITH BIBASILAR OPACITIES LIKELY REFLECTING ATELECTASIS.  NO EVIDENCE 
+OF FOCAL CONSOLIDATION, PLEURAL EFFUSIONS OR PNEUMOTHORAX.
+ 
+2.THE CARDIOMEDIASTINAL SILHOUETTE AND PULMONARY VASCULATURE ARE 
+WITHIN NORMAL LIMITS.
+ 
+3.VISUALIZED OSSEOUS STRUCTURES ARE INTACT.
+ 
+",2
+patient00031/study3,patient00031,train,88.0,Male,Unknown,Unknown,train/patient00031/study3/view1_frontal.dcm,train/patient00031/study3/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+PORTABLE CHEST SINGLE VIEW:  4-29-2003 USC Center for Body Computing 1002 HOURS AND 39 SECONDS
+COMPARISON:  Chest dated 4/29/2003 USC Center for Body Computing 1904 hours.
+CLINICAL HISTORY:  Hypoxia, history of metastatic prostate cancer.
+FINDINGS:  Single frontal portable digital radiograph chest
+demonstrates rightward rotation and cardiomediastinal silhouette
+unchanged in size and contour.   There is new blunting of the right
+costophrenic sulcus suggesting right pleural effusion with an
+associated veiling opacity.  No definite area of consolidation or
+pneumothorax.  Diffuse sclerotic foci are present throughout the
+osseous and appendicular skeleton, unchanged.
+IMPRESSION:
+1.  NEW RIGHT PLEURAL EFFUSION.
+2.  DIFFUSE OSSEOUS SCLEROTIC DISEASE LIKELY METASTATIC FOCI.
+END OF IMPRESSION:
+SUMMARY:2-ABNORMAL, PREVIOUSLY REPORTED
+ 
+ACCESSION NUMBER:
+52282814
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","  Single frontal portable digital radiograph chest
+demonstrates rightward rotation and cardiomediastinal silhouette
+unchanged in size and contour.   There is new blunting of the right
+costophrenic sulcus suggesting right pleural effusion with an
+associated veiling opacity.  No definite area of consolidation or
+pneumothorax.  Diffuse sclerotic foci are present throughout the
+osseous and appendicular skeleton, unchanged.
+","
+1.  NEW RIGHT PLEURAL EFFUSION.
+2.  DIFFUSE OSSEOUS SCLEROTIC DISEASE LIKELY METASTATIC FOCI.
+",1
+patient00031/study1,patient00031,train,88.0,Male,Unknown,Unknown,train/patient00031/study1/view1_frontal.dcm,train/patient00031/study1/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+PORTABLE AP VIEW OF THE CHEST: 1-2-2016.
+CLINICAL HISTORY: 88-year-old male presents with periumbilical
+pain.
+COMPARISON: None.
+IMPRESSION:
+1. SINGLE PORTABLE AP VIEW OF THE CHEST IS LIMITED BY PATIENT
+POSITION WITH ROTATION TO THE RIGHT. CONSIDER REPEAT IMAGING WITH
+PA AND LATERAL VIEWS IF CLINICALLY WARRANTED.
+2. ILL-DEFINED, FLUFFY PERIHILAR OPACITIES, RIGHT GREATER THAN LEFT,
+WHICH MAY REPRESENT EARLY INFILTRATES OR ATELECTASIS.
+3. INTERSTITIAL PROMINENCE AND PERIBRONCHIAL CUFFING THAT
+MAY BE CHRONIC IN NATURE.
+4. MILD CEPHALIZATION OF THE PULMONARY VASCULATURE, CONSISTENT WITH
+MILD EDEMA.
+5. LEFT SUBCLAVIAN CENTRAL VENOUS LINE WITH TIP IN THE RIGHT ATRIUM.
+END OF IMPRESSION:
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Morrison, Alexa  on: 1/2/2016
+ 
+ACCESSION NUMBER:
+#04376790
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. SINGLE PORTABLE AP VIEW OF THE CHEST IS LIMITED BY PATIENT
+POSITION WITH ROTATION TO THE RIGHT. CONSIDER REPEAT IMAGING WITH
+PA AND LATERAL VIEWS IF CLINICALLY WARRANTED.
+2. ILL-DEFINED, FLUFFY PERIHILAR OPACITIES, RIGHT GREATER THAN LEFT,
+WHICH MAY REPRESENT EARLY INFILTRATES OR ATELECTASIS.
+3. INTERSTITIAL PROMINENCE AND PERIBRONCHIAL CUFFING THAT
+MAY BE CHRONIC IN NATURE.
+4. MILD CEPHALIZATION OF THE PULMONARY VASCULATURE, CONSISTENT WITH
+MILD EDEMA.
+5. LEFT SUBCLAVIAN CENTRAL VENOUS LINE WITH TIP IN THE RIGHT ATRIUM.
+",1
+patient00031/study2,patient00031,train,88.0,Male,Unknown,Unknown,train/patient00031/study2/view1_frontal.dcm,train/patient00031/study2/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+ONE-VIEW CHEST: 9/1/2020
+CLINICAL DATA: Systemic infection. Rule out sepsis.
+COMPARISON: Chest x-ray performed 9/1/20.
+IMPRESSION:
+1. INTERVAL REPLACEMENT OF THE LEFT-SIDED CENTRAL VENOUS LINE,
+WITH TIP WITHIN THE SUPERIOR VENA CAVA. NO EVIDENCE FOR
+PNEUMOTHORAX. INTERVAL RESOLUTION OF MILD PULMONARY EDEMA SEEN ON
+PRIOR EXAM. RIGHT LOWER LOBE HAZY OPACITY, LIKELY ATELECTASIS.
+STABLE CARDIOMEDIASTINAL SILHOUETTE.
+END OF IMPRESSION:
+SUMMARY 2: ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Jasmine, Potts  on: 9-1-2020
+ 
+ACCESSION NUMBER:
+456646565
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. INTERVAL REPLACEMENT OF THE LEFT-SIDED CENTRAL VENOUS LINE,
+WITH TIP WITHIN THE SUPERIOR VENA CAVA. NO EVIDENCE FOR
+PNEUMOTHORAX. INTERVAL RESOLUTION OF MILD PULMONARY EDEMA SEEN ON
+PRIOR EXAM. RIGHT LOWER LOBE HAZY OPACITY, LIKELY ATELECTASIS.
+STABLE CARDIOMEDIASTINAL SILHOUETTE.
+",1
+patient00034/study1,patient00034,train,45.0,Male,Asian,Non-Hispanic/Non-Latino,train/patient00034/study1/view1_frontal.dcm,train/patient00034/study1/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+RADIOGRAPHIC EXAMINATION OF THE CHEST: 11 January 24th
+ 
+CLINICAL HISTORY: 45 years of age, Male, Stroke Protocol.
+ 
+COMPARISON: None.
+ 
+PROCEDURE COMMENTS: Single view of the chest. 
+ 
+FINDINGS:
+ 
+Diffuse reticular opacities which are nonspecific and could be 
+related to interstitial lung disease, pulmonary edema, or atypical 
+infection. No focal consolidation. No pleural effusion or 
+pneumothorax. The cardiomediastinal silhouette is within normal 
+limits. No acute osseous abnormality.
+ 
+IMPRESSION:
+ 
+1.  Diffuse reticular opacities which are nonspecific and could be 
+related to interstitial lung disease, pulmonary edema, or atypical 
+infection. 
+ 
+ 
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+hwZpMDqr
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","
+ 
+Diffuse reticular opacities which are nonspecific and could be 
+related to interstitial lung disease, pulmonary edema, or atypical 
+infection. No focal consolidation. No pleural effusion or 
+pneumothorax. The cardiomediastinal silhouette is within normal 
+limits. No acute osseous abnormality.
+ 
+","
+ 
+1.  Diffuse reticular opacities which are nonspecific and could be 
+related to interstitial lung disease, pulmonary edema, or atypical 
+infection. 
+ 
+ 
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+",1
+patient00038/study1,patient00038,train,78.0,Male,Native American,Hispanic/Latino,train/patient00038/study1/view1_frontal.dcm,train/patient00038/study1/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+PORTABLE CHEST, SINGLE VIEW:   11/05/07
+COMPARISON:   None.
+CLINICAL HISTORY:   AM x-ray.
+IMPRESSION:
+1.  AP SEMI-ERECT CHEST RADIOGRAPH.  THE PATIENT IS INTUBATED, WITH
+THE TIP OF THE ENDOTRACHEAL TUBE APPROXIMATELY 5.5 CM ABOVE THE
+CARINA.  A NASOGASTRIC TUBE IS PRESENT, WITH THE TIP AND SIDE PORT
+BELOW THE LEFT HEMIDIAPHRAGM.  A LEFT SUBCLAVIAN VENOUS LINE IS
+PRESENT WITH THE TIP IN MID SUPERIOR VENA CAVA.
+2.  LUNG VOLUMES ARE LOW, WITH OPACIFICATION IN THE RETROCARDIAC
+REGION WHICH COULD REFLECT ATELECTASIS, EARLY INFILTRATE OR
+ASPIRATION.  THERE IS ALSO A  LIKELY SMALL PLEURAL EFFUSION ON THIS
+SIDE.  MINIMAL ATELECTASIS IS ALSO SEEN AT THE RIGHT BASE.  NO
+EVIDENCE OF A PNEUMOTHORAX.
+SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+ 
+ACCESSION NUMBER:
+#226.435.949.823.7
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1.  AP SEMI-ERECT CHEST RADIOGRAPH.  THE PATIENT IS INTUBATED, WITH
+THE TIP OF THE ENDOTRACHEAL TUBE APPROXIMATELY 5.5 CM ABOVE THE
+CARINA.  A NASOGASTRIC TUBE IS PRESENT, WITH THE TIP AND SIDE PORT
+BELOW THE LEFT HEMIDIAPHRAGM.  A LEFT SUBCLAVIAN VENOUS LINE IS
+PRESENT WITH THE TIP IN MID SUPERIOR VENA CAVA.
+2.  LUNG VOLUMES ARE LOW, WITH OPACIFICATION IN THE RETROCARDIAC
+REGION WHICH COULD REFLECT ATELECTASIS, EARLY INFILTRATE OR
+ASPIRATION.  THERE IS ALSO A  LIKELY SMALL PLEURAL EFFUSION ON THIS
+SIDE.  MINIMAL ATELECTASIS IS ALSO SEEN AT THE RIGHT BASE.  NO
+EVIDENCE OF A PNEUMOTHORAX.
+",1
+patient00038/study2,patient00038,train,78.0,Male,Native American,Hispanic/Latino,train/patient00038/study2/view1_frontal.dcm,train/patient00038/study2/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+CHEST X-RAY:  3/12/2012.
+COMPARISON:  3/12/12.
+CLINICAL HISTORY:  A.M. x-ray.
+IMPRESSION:
+1.  AP SUPINE CHEST RADIOGRAPH DATED 12/03.  THE PATIENT REMAINS
+INTUBATED, WITH A NASOGASTRIC TUBE AND LEFT SUBCLAVIAN VENOUS LINE.
+2.  INCREASED OPACIFICATION IS SEEN IN THE RETROCARDIAC REGION, WITH
+A LIKELY SMALL PLEURAL EFFUSION ON THIS SIDE.  THIS APPEARS
+ESSENTIALLY UNCHANGED SINCE PRIOR FILMS.  THERE IS ALSO MINIMAL RIGHT
+BASAL ATELECTASIS.  NO SIGNIFICANT INTERVAL CHANGE.
+SUMMARY:2-ABNORMAL, PREVIOUSLY REPORTED
+ 
+ACCESSION NUMBER:
+7154407945477
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1.  AP SUPINE CHEST RADIOGRAPH DATED 12/03.  THE PATIENT REMAINS
+INTUBATED, WITH A NASOGASTRIC TUBE AND LEFT SUBCLAVIAN VENOUS LINE.
+2.  INCREASED OPACIFICATION IS SEEN IN THE RETROCARDIAC REGION, WITH
+A LIKELY SMALL PLEURAL EFFUSION ON THIS SIDE.  THIS APPEARS
+ESSENTIALLY UNCHANGED SINCE PRIOR FILMS.  THERE IS ALSO MINIMAL RIGHT
+BASAL ATELECTASIS.  NO SIGNIFICANT INTERVAL CHANGE.
+",1
+patient00038/study3,patient00038,train,78.0,Male,Native American,Hispanic/Latino,train/patient00038/study3/view1_frontal.dcm,train/patient00038/study3/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+CHEST X-RAY:  8/28/2002.
+COMPARISON:  8-28-2002.
+CLINICAL HISTORY:  77-year-old male, follow-up.
+IMPRESSION:
+1.  SINGLE FRONTAL SEMI-UPRIGHT VIEW OF THE CHEST DEMONSTRATES STABLE
+POSITION OF LINES AND TUBES.  THE ENDOTRACHEAL TUBE TIP IS HIGH,
+ALMOST 9 CM ABOVE THE CARINA.
+2.  NO OTHER SIGNIFICANT INTERVAL CHANGE FROM THE PRIOR EXAMINATION,
+WITH REDEMONSTRATION OF BIBASILAR OPACITIES, LEFT GREATER THAN RIGHT
+AND BILATERAL PLEURAL EFFUSIONS.
+SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+27743597930
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1.  SINGLE FRONTAL SEMI-UPRIGHT VIEW OF THE CHEST DEMONSTRATES STABLE
+POSITION OF LINES AND TUBES.  THE ENDOTRACHEAL TUBE TIP IS HIGH,
+ALMOST 9 CM ABOVE THE CARINA.
+2.  NO OTHER SIGNIFICANT INTERVAL CHANGE FROM THE PRIOR EXAMINATION,
+WITH REDEMONSTRATION OF BIBASILAR OPACITIES, LEFT GREATER THAN RIGHT
+AND BILATERAL PLEURAL EFFUSIONS.
+",1
+patient00044/study4,patient00044,train,49.0,Female,White,Non-Hispanic/Non-Latino,train/patient00044/study4/view1_frontal.dcm,train/patient00044/study4/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+PORTABLE CHEST, 2-1-2009:
+COMPARISON: 2-1-2009.
+CLINICAL HISTORY: Mitral stenosis and tricuspid regurgitation.
+Chest tube.
+IMPRESSION:
+AP ERECT CHEST RADIOGRAPH. THERE HAS BEEN A MEDIAN STERNOTOMY,
+WITH PROSTHETIC VALVE REPLACEMENT. A RIGHT IJ VENOUS LINE REMAINS
+IN PLACE. THERE HAS BEEN INTERVAL PLACEMENT OF A RIGHT-SIDED CHEST
+TUBE WITH A PERSISTENT SMALL RIGHT PLEURAL EFFUSION, SLIGHTLY
+DECREASED IN SIZE IN COMPARISON TO PRIOR FILMS. MARKED
+CARDIOMEGALY IS PRESENT, WITH INCREASED OPACIFICATION SEEN IN THE
+RETROCARDIAC REGION, AND A LIKELY SMALL LEFT PLEURAL EFFUSION.
+END OF IMPRESSION:
+SUMMARY:2-ABNORMAL, PREVIOUSLY REPORTED
+ 
+ACCESSION NUMBER:
+43I14856
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+AP ERECT CHEST RADIOGRAPH. THERE HAS BEEN A MEDIAN STERNOTOMY,
+WITH PROSTHETIC VALVE REPLACEMENT. A RIGHT IJ VENOUS LINE REMAINS
+IN PLACE. THERE HAS BEEN INTERVAL PLACEMENT OF A RIGHT-SIDED CHEST
+TUBE WITH A PERSISTENT SMALL RIGHT PLEURAL EFFUSION, SLIGHTLY
+DECREASED IN SIZE IN COMPARISON TO PRIOR FILMS. MARKED
+CARDIOMEGALY IS PRESENT, WITH INCREASED OPACIFICATION SEEN IN THE
+RETROCARDIAC REGION, AND A LIKELY SMALL LEFT PLEURAL EFFUSION.
+",1
+patient00044/study5,patient00044,train,49.0,Female,White,Non-Hispanic/Non-Latino,train/patient00044/study5/view1_frontal.dcm,train/patient00044/study5/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+SINGLE RADIOGRAPH OF THE CHEST: 12/17/2019
+CLINICAL HISTORY: 48-year-old woman with history of mitral
+stenosis and tricuspid regurgitation.
+COMPARISON: 12-2019.
+FINDINGS: The 0705 hours radiograph demonstrates no significant
+interval change in the chest allowing for technique. The lines and
+tubes are stable. Enlarged cardiomediastinal silhouette and
+moderate pulmonary edema are unchanged with patchy right lower lobe
+consolidation versus atelectasis.
+The 2310 hours examination demonstrates stable position of lines
+and tubes. Again seen are tricuspid and mitral annular rings. The
+right basilar consolidation versus atelectasis demonstrates mild
+interval increase in density. Stable marked cardiomegaly.
+IMPRESSION:
+MILD INCREASE IN RIGHT BASILAR CONSOLIDATION VERSUS ATELECTASIS.
+THE REMAINDER OF THE CHEST IS NOT SIGNIFICANTLY CHANGED.
+END OF IMPRESSION
+SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: GENESIS, KIM  on: 2019-12-17
+ 
+ACCESSION NUMBER:
+5146550WX8
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."," The 0705 hours radiograph demonstrates no significant
+interval change in the chest allowing for technique. The lines and
+tubes are stable. Enlarged cardiomediastinal silhouette and
+moderate pulmonary edema are unchanged with patchy right lower lobe
+consolidation versus atelectasis.
+The 2310 hours examination demonstrates stable position of lines
+and tubes. Again seen are tricuspid and mitral annular rings. The
+right basilar consolidation versus atelectasis demonstrates mild
+interval increase in density. Stable marked cardiomegaly.
+","
+MILD INCREASE IN RIGHT BASILAR CONSOLIDATION VERSUS ATELECTASIS.
+THE REMAINDER OF THE CHEST IS NOT SIGNIFICANTLY CHANGED.
+",1
+patient00044/study6,patient00044,train,49.0,Female,White,Non-Hispanic/Non-Latino,train/patient00044/study6/view1_frontal.dcm|train/patient00044/study6/view2_lateral.dcm,train/patient00044/study6/view1_frontal.jpg|train/patient00044/study6/view2_lateral.jpg,Frontal|Lateral,PA|,"NARRATIVE:
+CHEST TWO VIEWS: 2010 December
+CLINICAL HISTORY: 48-year-old woman with mitral stenosis and
+tricuspid regurgitation.
+COMPARISON: 12/1/2010.
+IMPRESSION:
+1. INTERVAL DECREASE IN PULMONARY EDEMA WITH MILD TO MODERATE
+EDEMA REMAINING. BIBASILAR ATELECTASIS AND SMALL BILATERAL
+EFFUSIONS ARE UNCHANGED.
+2. STABLE CARDIOMEGALY.
+3. POSTSURGICAL CHANGES FROM PRIOR MEDIAN STERNOTOMY AND MULTIPLE
+VALVE REPLACEMENTS.
+END OF IMPRESSION:
+SUMMARY:2-ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Lucille, PA  on: 12/1/10
+ 
+ACCESSION NUMBER:
+057-709
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. INTERVAL DECREASE IN PULMONARY EDEMA WITH MILD TO MODERATE
+EDEMA REMAINING. BIBASILAR ATELECTASIS AND SMALL BILATERAL
+EFFUSIONS ARE UNCHANGED.
+2. STABLE CARDIOMEGALY.
+3. POSTSURGICAL CHANGES FROM PRIOR MEDIAN STERNOTOMY AND MULTIPLE
+VALVE REPLACEMENTS.
+",2
+patient00044/study7,patient00044,train,49.0,Female,White,Non-Hispanic/Non-Latino,train/patient00044/study7/view2_lateral.dcm|train/patient00044/study7/view1_frontal.dcm,train/patient00044/study7/view2_lateral.jpg|train/patient00044/study7/view1_frontal.jpg,Lateral|Frontal,|PA,"NARRATIVE:
+CHEST 2 VIEWS
+DATE OF STUDY: 1/11/2010
+CLINICAL HISTORY: 48-year-old woman with mitral stenosis,
+tricuspid regurg, evaluate pleural effusion.
+COMPARISON STUDY: 6-15-2002 and 6-15-2002.
+IMPRESSION:
+1. INTERVAL REMOVAL OF RIGHT INTERNAL JUGULAR CENTRAL VENOUS LINE.
+2. CARDIOMEGALY AND MILD PULMONARY EDEMA. THE PULMONARY EDEMA HAS
+BEEN GRADUALLY IMPROVING OVER THE LAST SEVERAL CHEST RADIOGRAPHS.
+3. STABLE PATCHY OPACITIES IN BILATERAL PERIHILAR REGIONS WHICH
+COULD REPRESENT FLUID OR ATELECTASIS.
+END OF IMPRESSION:
+SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: KenDrick, BEck  on: 3/9/200
+ 
+ACCESSION NUMBER:
+49405268
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. INTERVAL REMOVAL OF RIGHT INTERNAL JUGULAR CENTRAL VENOUS LINE.
+2. CARDIOMEGALY AND MILD PULMONARY EDEMA. THE PULMONARY EDEMA HAS
+BEEN GRADUALLY IMPROVING OVER THE LAST SEVERAL CHEST RADIOGRAPHS.
+3. STABLE PATCHY OPACITIES IN BILATERAL PERIHILAR REGIONS WHICH
+COULD REPRESENT FLUID OR ATELECTASIS.
+",2
+patient00044/study3,patient00044,train,49.0,Female,White,Non-Hispanic/Non-Latino,train/patient00044/study3/view1_frontal.dcm,train/patient00044/study3/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+SINGLE VIEW OF THE CHEST: 5/20/21
+CLINICAL HISTORY: Forty-eight-year-old female with history of
+mitral stenosis and tricuspid regurgitation. Status post surgery.
+COMPARISON: May 20th.
+IMPRESSION:
+1. INTERVAL REMOVAL OF RIGHT INTERNAL JUGULAR LINE SHEATH. THE
+REMAINING LINES AND TUBES ARE UNCHANGED.
+2. LARGE RIGHT PLEURAL EFFUSION HAS INCREASED SINCE THE PRIOR
+EXAM. STABLE MODERATE LEFT PLEURAL EFFUSION.
+3. ENLARGED POSTOPERATIVE CARDIOMEDIASTINAL SILHOUETTE IS
+UNCHANGED WITH MITRAL ANNULAR RING.
+END OF IMPRESSION:
+SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+ 
+ACCESSION NUMBER:
+53571
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. INTERVAL REMOVAL OF RIGHT INTERNAL JUGULAR LINE SHEATH. THE
+REMAINING LINES AND TUBES ARE UNCHANGED.
+2. LARGE RIGHT PLEURAL EFFUSION HAS INCREASED SINCE THE PRIOR
+EXAM. STABLE MODERATE LEFT PLEURAL EFFUSION.
+3. ENLARGED POSTOPERATIVE CARDIOMEDIASTINAL SILHOUETTE IS
+UNCHANGED WITH MITRAL ANNULAR RING.
+",1
+patient00044/study1,patient00044,train,49.0,Female,White,Non-Hispanic/Non-Latino,train/patient00044/study1/view1_frontal.dcm,train/patient00044/study1/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+SINGLE VIEW PORTABLE CHEST: 10-15-2003
+CLINICAL HISTORY: 48-year-old woman with history of mitral
+stenosis and tricuspid regurgitation.
+COMPARISON: 10-15-2003
+FINDINGS: Interval placement of ET tube with tip at the level of
+the clavicular heads. NG tube courses into the abdomen. Interval
+placement of right internal jugular venous central line with tip in
+the mid SVC. A right IJ sheath is also present. A mitral valve
+ring is unchanged. A right chest tube and mediastinal drain are in
+place.
+Moderate cardiomegaly. Bibasilar opacities, likely representing
+atelectasis. Mild interstitial pulmonary edema.
+IMPRESSION:
+1. INTERVAL PLACEMENT OF LINES AND TUBES AS DESCRIBED.
+2. PERSISTENT CARDIOMEGALY WITH MODERATE INTERSTITIAL PULMONARY
+EDEMA AND BIBASILAR ATELECTASIS.
+END OF IMPRESSION:
+SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MADDEN, SKYE MALAKAI  on: October 15th, 2003
+ 
+ACCESSION NUMBER:
+1366196893
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."," Interval placement of ET tube with tip at the level of
+the clavicular heads. NG tube courses into the abdomen. Interval
+placement of right internal jugular venous central line with tip in
+the mid SVC. A right IJ sheath is also present. A mitral valve
+ring is unchanged. A right chest tube and mediastinal drain are in
+place.
+Moderate cardiomegaly. Bibasilar opacities, likely representing
+atelectasis. Mild interstitial pulmonary edema.
+","
+1. INTERVAL PLACEMENT OF LINES AND TUBES AS DESCRIBED.
+2. PERSISTENT CARDIOMEGALY WITH MODERATE INTERSTITIAL PULMONARY
+EDEMA AND BIBASILAR ATELECTASIS.
+",1
+patient00044/study2,patient00044,train,49.0,Female,White,Non-Hispanic/Non-Latino,train/patient00044/study2/view1_frontal.dcm,train/patient00044/study2/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+PORTABLE CHEST SINGLE VIEW: 12-30-2014
+CLINICAL HISTORY: 48-year-old woman with history of mitral
+stenosis and tricuspid regurgitation, postoperative.
+COMPARISON: 12/30/14.
+IMPRESSION:
+1. INTERVAL EXTUBATION AND REMOVAL OF NASOGASTRIC TUBE. REMAINING
+LINES AND TUBES ARE UNCHANGED.
+2. MODERATE RIGHT PLEURAL EFFUSION, INCREASED SINCE PRIOR EXAM.
+3. BILATERAL LOW LUNG VOLUMES WITH INCREASE IN BIBASILAR ATELECTASIS.
+MODERATE INTERSTITIAL PULMONARY EDEMA IS UNCHANGED.
+END OF IMPRESSION:
+SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Troy M.D.  on: 12-30-2014
+ 
+ACCESSION NUMBER:
+2485681
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. INTERVAL EXTUBATION AND REMOVAL OF NASOGASTRIC TUBE. REMAINING
+LINES AND TUBES ARE UNCHANGED.
+2. MODERATE RIGHT PLEURAL EFFUSION, INCREASED SINCE PRIOR EXAM.
+3. BILATERAL LOW LUNG VOLUMES WITH INCREASE IN BIBASILAR ATELECTASIS.
+MODERATE INTERSTITIAL PULMONARY EDEMA IS UNCHANGED.
+",1
+patient00045/study1,patient00045,train,69.0,Female,Unknown,Unknown,train/patient00045/study1/view2_lateral.dcm|train/patient00045/study1/view1_frontal.dcm,train/patient00045/study1/view2_lateral.jpg|train/patient00045/study1/view1_frontal.jpg,Lateral|Frontal,|PA,"NARRATIVE:
+TWO VIEWS OF THE CHEST:  March 10
+ COMPARISON:  None.
+ CLINICAL HISTORY:   A 69-year-old woman with atrial tachycardia.
+Bandemia status post procedure, rule out pneumonia or aspiration.
+ FINDINGS:
+ Upright PA and lateral chest radiographs demonstrate a single lead
+AICD in place with the tip in the right ventricle.  Minimal linear
+stranding opacities are noted at bilateral lung bases, likely due to
+atelectasis.  No focal areas of consolidation.  No pneumothorax,
+pleural effusions, or pulmonary edema.  Calcified plaque is seen
+within the aortic arch.  The descending thoracic aorta is mildly
+tortuous. The cardiac silhouette size is within normal limits and
+otherwise the remainder of the cardiomediastinal silhouette is
+unremarkable.  The skeletal structures are grossly unremarkable.
+ IMPRESSION:
+ 1.  SINGLE LEAD AICD IN PLACE WITH THE TIP IN THE RIGHT VENTRICLE.
+ 2.  MINIMAL BIBASILAR ATELECTASIS.  NO FOCAL CONSOLIDATION.
+ END OF IMPRESSION:
+ SUMMARY: 1-NO SIGNIFICANT ABNORMALITY
+ 
+ACCESSION NUMBER:
+8725831
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","
+ Upright PA and lateral chest radiographs demonstrate a single lead
+AICD in place with the tip in the right ventricle.  Minimal linear
+stranding opacities are noted at bilateral lung bases, likely due to
+atelectasis.  No focal areas of consolidation.  No pneumothorax,
+pleural effusions, or pulmonary edema.  Calcified plaque is seen
+within the aortic arch.  The descending thoracic aorta is mildly
+tortuous. The cardiac silhouette size is within normal limits and
+otherwise the remainder of the cardiomediastinal silhouette is
+unremarkable.  The skeletal structures are grossly unremarkable.
+ ","
+ 1.  SINGLE LEAD AICD IN PLACE WITH THE TIP IN THE RIGHT VENTRICLE.
+ 2.  MINIMAL BIBASILAR ATELECTASIS.  NO FOCAL CONSOLIDATION.
+ ",2
+patient00048/study1,patient00048,train,45.0,Female,Unknown,Unknown,train/patient00048/study1/view1_frontal.dcm,train/patient00048/study1/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+PORTABLE CHEST, SINGLE VIEW, #227-862-903-031: 9/22/2005.
+FINDINGS: The left chest tube remains in place. There is now a small
+loculated pneumothorax at the lung base.
+PORTABLE CHEST, SINGLE VIEW, #0336146: 9-22-2005.
+FINDINGS: The loculated basilar pneumothorax is minimally larger
+after removal of the chest tube.
+IMPRESSION:
+1.  SMALL LEFT PNEUMOTHORAX AFTER REMOVAL OF THE CHEST TUBE.
+SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION.
+ 
+ACCESSION NUMBER:
+0336146
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."," The left chest tube remains in place. There is now a small
+loculated pneumothorax at the lung base.
+PORTABLE CHEST, SINGLE VIEW, #0336146: 9-22-2005.
+FINDINGS: The loculated basilar pneumothorax is minimally larger
+after removal of the chest tube.
+","
+1.  SMALL LEFT PNEUMOTHORAX AFTER REMOVAL OF THE CHEST TUBE.
+",1
+patient00049/study3,patient00049,train,63.0,Male,White,Non-Hispanic/Non-Latino,train/patient00049/study3/view1_frontal.dcm,train/patient00049/study3/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+SINGLE VIEW PORTABLE CHEST, 4/25/2011 usc center for body computing 0556 HOURS:
+COMPARISON:  4/25/11.
+CLINICAL HISTORY:  62 -year-old male with ureteral abscess.
+IMPRESSION:
+AP VIEW OF THE SEMI-ERECT CHEST ON 4/25/2011 USC Center for Body Computing 0556 HOURS SHOWS
+RIGHT INTERNAL JUGULAR VENOUS CATHETER IN PLACE.  THE LUNG VOLUMES
+ARE AGAIN LOW.  INTERVAL INCREASE IN PULMONARY VASCULATURE DEFINITION
+CONSISTENT WITH IMPROVING PULMONARY EDEMA.  NO EVIDENCE OF EFFUSIONS.
+SUMMARY:2-ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+#53314727
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+AP VIEW OF THE SEMI-ERECT CHEST ON 4/25/2011 USC Center for Body Computing 0556 HOURS SHOWS
+RIGHT INTERNAL JUGULAR VENOUS CATHETER IN PLACE.  THE LUNG VOLUMES
+ARE AGAIN LOW.  INTERVAL INCREASE IN PULMONARY VASCULATURE DEFINITION
+CONSISTENT WITH IMPROVING PULMONARY EDEMA.  NO EVIDENCE OF EFFUSIONS.
+",1
+patient00049/study1,patient00049,train,63.0,Male,White,Non-Hispanic/Non-Latino,train/patient00049/study1/view1_frontal.dcm,train/patient00049/study1/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+PORTABLE CHEST RADIOGRAPH ONE VIEW: 5-25-2001:
+CLINICAL HISTORY: 62-year-old male presents with weakness.
+COMPARISON:  None.
+TECHNIQUE:  Portable AP upright view of the chest.
+FINDINGS:
+Lung volumes are decreased.  Trachea is midline.  Cardiomediastinal
+silhouette is normal in size and configuration.  Minimal
+atherosclerotic calcifications of the aortic knob are noted.  The
+bilateral hila are unremarkable.  The lung fields are clear, without
+focal opacities.  There is no evidence of pneumothorax, pulmonary
+edema or pleural effusions.  The visualized osseous structures reveal
+no acute abnormalities.
+IMPRESSION:
+1.  LOW LUNG VOLUMES.
+2.  NO EVIDENCE OF FOCAL PULMONARY PARENCHYMAL CONSOLIDATION OR OTHER
+ACUTE CARDIOPULMONARY ABNORMALITIES.
+SUMMARY: 4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+X830G995434
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","
+Lung volumes are decreased.  Trachea is midline.  Cardiomediastinal
+silhouette is normal in size and configuration.  Minimal
+atherosclerotic calcifications of the aortic knob are noted.  The
+bilateral hila are unremarkable.  The lung fields are clear, without
+focal opacities.  There is no evidence of pneumothorax, pulmonary
+edema or pleural effusions.  The visualized osseous structures reveal
+no acute abnormalities.
+","
+1.  LOW LUNG VOLUMES.
+2.  NO EVIDENCE OF FOCAL PULMONARY PARENCHYMAL CONSOLIDATION OR OTHER
+ACUTE CARDIOPULMONARY ABNORMALITIES.
+",1
+patient00049/study2,patient00049,train,63.0,Male,White,Non-Hispanic/Non-Latino,train/patient00049/study2/view1_frontal.dcm,train/patient00049/study2/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+SINGLE AP VIEW OF THE CHEST:  11/19/2006 AT 2019 HOURS
+ COMPARISON:  11-19-06 at 1548 hours.
+ CLINICAL HISTORY:  62-year-old male with periureteral abscess status
+post line placement.
+ IMPRESSION:
+1.  AP VIEW OF THE SEMIERECT CHEST DATED 11-19 AT 2019 HOURS SHOWS
+INTERVAL PLACEMENT OF RIGHT INTERNAL JUGULAR VENOUS CATHETER.  NO
+PNEUMOTHORAX.
+ 2.  LUNG VOLUMES ARE LOW AND THERE ARE BILATERAL PATCHY OPACITIES
+PREDOMINANTLY IN THE MID LUNG ZONES, WHICH CAN BE CONSISTENT WITH THE
+LOW LUNG VOLUMES VERSUS PULMONARY EDEMA VERSUS INFILTRATES.
+ SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+04_37_67_90
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1.  AP VIEW OF THE SEMIERECT CHEST DATED 11-19 AT 2019 HOURS SHOWS
+INTERVAL PLACEMENT OF RIGHT INTERNAL JUGULAR VENOUS CATHETER.  NO
+PNEUMOTHORAX.
+ 2.  LUNG VOLUMES ARE LOW AND THERE ARE BILATERAL PATCHY OPACITIES
+PREDOMINANTLY IN THE MID LUNG ZONES, WHICH CAN BE CONSISTENT WITH THE
+LOW LUNG VOLUMES VERSUS PULMONARY EDEMA VERSUS INFILTRATES.
+ ",1
+patient00055/study1,patient00055,train,43.0,Female,White,Non-Hispanic/Non-Latino,train/patient00055/study1/view1_frontal.dcm,train/patient00055/study1/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+PORTABLE CHEST RADIOGRAPH: 11/12/2003
+COMPARISON: 11-12-2003
+IMPRESSION:
+1. INTERVAL PLACEMENT OF RIGHT IJ VENOUS CATHETER WITH THE TIP IN
+THE SUPERIOR VENA CAVA. INTERVAL PLACEMENT OF NASOGASTRIC TUBE
+WITH THE TIP IN THE STOMACH AND SIDE PORT IN THE DISTAL ESOPHAGUS.
+NEW INTRA-ABDOMINAL DRAIN ALSO PARTIALLY VISUALIZED.
+2. THE LUNGS ARE CLEAR. NO CONSOLIDATION OR PLEURAL EFFUSION.
+3. CARDIOMEDIASTINAL SILHOUETTE WITHIN NORMAL LIMITS.
+END OF IMPRESSION:
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: KNAPP, MADISYN G  on: 11-12-2003
+ 
+ACCESSION NUMBER:
+mmsm_q1
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. INTERVAL PLACEMENT OF RIGHT IJ VENOUS CATHETER WITH THE TIP IN
+THE SUPERIOR VENA CAVA. INTERVAL PLACEMENT OF NASOGASTRIC TUBE
+WITH THE TIP IN THE STOMACH AND SIDE PORT IN THE DISTAL ESOPHAGUS.
+NEW INTRA-ABDOMINAL DRAIN ALSO PARTIALLY VISUALIZED.
+2. THE LUNGS ARE CLEAR. NO CONSOLIDATION OR PLEURAL EFFUSION.
+3. CARDIOMEDIASTINAL SILHOUETTE WITHIN NORMAL LIMITS.
+",1
+patient00055/study3,patient00055,train,43.0,Female,White,Non-Hispanic/Non-Latino,train/patient00055/study3/view1_frontal.dcm,train/patient00055/study3/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+PORTABLE CHEST, SINGLE VIEW: 7-3-2016
+COMPARISON: 2016 JULY 3
+IMPRESSION:
+1. THERE HAS BEEN INTERVAL PLACEMENT OF A LEFT CHEST TUBE WITH
+ONLY A RESIDUAL AMOUNT OF LUCENCY SURROUNDING THE TIP OF THE CHEST
+TUBE, CONSISTENT WITH RESIDUAL PNEUMOTHORAX. THE LEFT LUNG IS
+ALMOST COMPLETELY RE-EXPANDED.
+2. SOME PATCHY OPACITIES PERSIST IN THE LEFT LUNG BASE AND THE
+PERIPHERY OF THE LEFT LUNG, LIKELY RESIDUAL ATELECTASIS FOLLOWING
+RE-EXPANSION.
+3. RIGHT LUNG IS CLEAR.
+END OF IMPRESSION.
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Sarah, MD  on: 7/3/2016
+ 
+ACCESSION NUMBER:
+59.97.18.35.93
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. THERE HAS BEEN INTERVAL PLACEMENT OF A LEFT CHEST TUBE WITH
+ONLY A RESIDUAL AMOUNT OF LUCENCY SURROUNDING THE TIP OF THE CHEST
+TUBE, CONSISTENT WITH RESIDUAL PNEUMOTHORAX. THE LEFT LUNG IS
+ALMOST COMPLETELY RE-EXPANDED.
+2. SOME PATCHY OPACITIES PERSIST IN THE LEFT LUNG BASE AND THE
+PERIPHERY OF THE LEFT LUNG, LIKELY RESIDUAL ATELECTASIS FOLLOWING
+RE-EXPANSION.
+3. RIGHT LUNG IS CLEAR.
+",1
+patient00055/study2,patient00055,train,43.0,Female,White,Non-Hispanic/Non-Latino,train/patient00055/study2/view1_frontal.dcm|train/patient00055/study2/view2_lateral.dcm,train/patient00055/study2/view1_frontal.jpg|train/patient00055/study2/view2_lateral.jpg,Frontal|Lateral,PA|,"NARRATIVE:
+CHEST, PA AND LATERAL PROJECTION:
+CLINICAL INFORMATION: 42-year-old female patient with cough and
+wheeze, postoperative right hepatic lobectomy.
+COMPARISON: 10-9-2017
+FINDINGS: A significant left pneumothorax has developed. There is
+no evidence of left-to-right shift of the midline structures. The
+right lung is clear. The cardiac configuration is normal.
+IMPRESSION:
+LEFT PNEUMOTHORAX. RESULTS CALLED TO md grimes AT 1118
+HOURS.
+END OF IMPRESSION:
+ 
+ACCESSION NUMBER:
+7734-5864-4
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."," A significant left pneumothorax has developed. There is
+no evidence of left-to-right shift of the midline structures. The
+right lung is clear. The cardiac configuration is normal.
+","
+LEFT PNEUMOTHORAX. RESULTS CALLED TO md grimes AT 1118
+HOURS.
+",2
+patient00058/study1,patient00058,train,65.0,Male,Unknown,Unknown,train/patient00058/study1/view1_frontal.dcm|train/patient00058/study1/view2_lateral.dcm,train/patient00058/study1/view1_frontal.jpg|train/patient00058/study1/view2_lateral.jpg,Frontal|Lateral,PA|,"NARRATIVE:
+CHEST: 5-17-01.
+COMPARISON: 2001/5/17.
+FINDINGS:
+On the current chest examination, there is fracture deformity of
+the right posterolateral eighth rib again noted. This is at upper
+limits of normal. Soft tissues are within normal limits. The
+lungs are clear. The previously possible lung nodule is no longer
+evident and may represent a confluence of normal shadows.
+IMPRESSION:
+1. CHEST IS WITHIN NORMAL LIMITS. COMPARISON FROM THE PRIOR DAY'S
+EXAMINATION INDICATES NO LUNG NODULES ARE NOW EVIDENT. AGAIN SEEN
+ARE MULTIPLE RIB FRACTURE DEFORMITIES ON THE RIGHT.
+END OF IMPRESSION:
+SUMMARY: 1 NO SIGNIFICANT ABNORMALITY
+ 
+ACCESSION NUMBER:
+5450501
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","
+On the current chest examination, there is fracture deformity of
+the right posterolateral eighth rib again noted. This is at upper
+limits of normal. Soft tissues are within normal limits. The
+lungs are clear. The previously possible lung nodule is no longer
+evident and may represent a confluence of normal shadows.
+","
+1. CHEST IS WITHIN NORMAL LIMITS. COMPARISON FROM THE PRIOR DAY'S
+EXAMINATION INDICATES NO LUNG NODULES ARE NOW EVIDENT. AGAIN SEEN
+ARE MULTIPLE RIB FRACTURE DEFORMITIES ON THE RIGHT.
+",2
+patient00064/study1,patient00064,train,63.0,Male,Other,Non-Hispanic/Non-Latino,train/patient00064/study1/view1_frontal.dcm,train/patient00064/study1/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+SINGLE VIEW OF THE CHEST:   2/6/2007 at 2154 hours
+ CLINICAL HISTORY:   A 63-year-old male with a subdural hematoma.
+ COMPARISON:   None.
+ FINDINGS:
+ Portable AP supine view of the chest demonstrates an endotracheal
+tube  approximately 5 cm above the carina.  External pacer pads
+overlying the right hemithorax and the left costophrenic angle.
+Cardiomediastinal silhouette is unremarkable.  Ground-glass opacities
+bilaterally with mild peribronchial cuffing, cannot exclude
+interstitial edema.  Bony structures and soft tissues appear normal.
+ IMPRESSION:
+ 1.  ENDOTRACHEAL TUBE  WITH DISTAL TIP BETWEEN THE CLAVICLES AND
+CARINA.
+ 2.  GROUND-GLASS OPACITY AND MILD PERIBRONCHIAL CUFFING, CANNOT
+EXCLUDE INTERSTITIAL EDEMA.
+ END OF IMPRESSION:
+SUMMARY: 4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+86401466638
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","
+ Portable AP supine view of the chest demonstrates an endotracheal
+tube  approximately 5 cm above the carina.  External pacer pads
+overlying the right hemithorax and the left costophrenic angle.
+Cardiomediastinal silhouette is unremarkable.  Ground-glass opacities
+bilaterally with mild peribronchial cuffing, cannot exclude
+interstitial edema.  Bony structures and soft tissues appear normal.
+ ","
+ 1.  ENDOTRACHEAL TUBE  WITH DISTAL TIP BETWEEN THE CLAVICLES AND
+CARINA.
+ 2.  GROUND-GLASS OPACITY AND MILD PERIBRONCHIAL CUFFING, CANNOT
+EXCLUDE INTERSTITIAL EDEMA.
+ ",1
+patient00067/study3,patient00067,train,56.0,Female,White,Non-Hispanic/Non-Latino,train/patient00067/study3/view1_frontal.dcm|train/patient00067/study3/view2_lateral.dcm,train/patient00067/study3/view1_frontal.jpg|train/patient00067/study3/view2_lateral.jpg,Frontal|Lateral,PA|,"NARRATIVE:
+CHEST, TWO VIEWS: 3/22/2004.
+COMPARISON: 3-22-04.
+IMPRESSION:
+1. LEFT IJ LINE REMAINS IN PLACE.
+2. THERE IS INTERVAL DEVELOPMENT OF A SMALL CAVITARY LESION IN THE
+LEFT MID LUNG ZONE, IN AN AREA WHERE A SMALL CONSOLIDATION WAS SEEN
+ON THE PRIOR CHEST FILMS ON 6/17/1998 THROUGH 6-20-1998.
+3. A LINEAR SHADOW IN THE LEFT LOWER LATERAL HEMITHORAX MAY
+REPRESENT THE PATIENT'S BREAST SHADOW, ALTHOUGH A PNEUMOTHORAX IS
+NOT ENTIRELY EXCLUDED. RECOMMEND REPEAT PA AND LATERAL CHEST FILMS.
+LUNG FIELDS ARE OTHERWISE CLEAR.
+FINDINGS COMMUNICATED TO THE NURSE (Simmons Lucille, PA) TAKING CARE OF THE
+PATIENT.
+END OF IMPRESSION.
+SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION.
+ 
+ACCESSION NUMBER:
+50578134
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. LEFT IJ LINE REMAINS IN PLACE.
+2. THERE IS INTERVAL DEVELOPMENT OF A SMALL CAVITARY LESION IN THE
+LEFT MID LUNG ZONE, IN AN AREA WHERE A SMALL CONSOLIDATION WAS SEEN
+ON THE PRIOR CHEST FILMS ON 6/17/1998 THROUGH 6-20-1998.
+3. A LINEAR SHADOW IN THE LEFT LOWER LATERAL HEMITHORAX MAY
+REPRESENT THE PATIENT'S BREAST SHADOW, ALTHOUGH A PNEUMOTHORAX IS
+NOT ENTIRELY EXCLUDED. RECOMMEND REPEAT PA AND LATERAL CHEST FILMS.
+LUNG FIELDS ARE OTHERWISE CLEAR.
+FINDINGS COMMUNICATED TO THE NURSE (Simmons Lucille, PA) TAKING CARE OF THE
+PATIENT.
+",2
+patient00067/study2,patient00067,train,56.0,Female,White,Non-Hispanic/Non-Latino,train/patient00067/study2/view1_frontal.dcm,train/patient00067/study2/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+SINGLE RADIOGRAPH OF THE CHEST: april 2018
+COMPARISON: Prior chest dated 4/24/2018.
+CLINICAL HISTORY: This is a 56-year-old female with history of
+hepatic encephalopathy.
+IMPRESSION:
+1. THE PATIENT IS ROTATED TO THE RIGHT ON THIS FILM. OTHERWISE,
+THERE IS GROSSLY NO SIGNIFICANT INTERVAL CHANGE WITH STABLE
+POSITION OF SUPPORTIVE DEVICES AND PERSISTENT LOW LUNG VOLUMES.
+2. REDEMONSTRATION OF SMALL RIGHT PLEURAL EFFUSION. THE LUNGS
+ARE, OTHERWISE, CLEAR BILATERALLY.
+END OF IMPRESSION
+SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Dr. Kendrick Beck  on: 4/24/2018
+ 
+ACCESSION NUMBER:
+#802205368
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. THE PATIENT IS ROTATED TO THE RIGHT ON THIS FILM. OTHERWISE,
+THERE IS GROSSLY NO SIGNIFICANT INTERVAL CHANGE WITH STABLE
+POSITION OF SUPPORTIVE DEVICES AND PERSISTENT LOW LUNG VOLUMES.
+2. REDEMONSTRATION OF SMALL RIGHT PLEURAL EFFUSION. THE LUNGS
+ARE, OTHERWISE, CLEAR BILATERALLY.
+",1
+patient00067/study4,patient00067,train,56.0,Female,White,Non-Hispanic/Non-Latino,train/patient00067/study4/view1_frontal.dcm,train/patient00067/study4/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+SINGLE AP PORTABLE CHEST:
+DATE OF EXAMINATION: 1/30/2009
+COMPARISON: 1/30/2009
+HISTORY: 56 year old female pre-liver. Ascites. Concern for SBP.
+Status post thoracentesis of left pleural effusion.
+TECHNIQUE: Single AP semi-upright portable view of the chest.
+IMPRESSION:
+1. LEFT SIDED INTERNAL JUGULAR LINE THAT HAS BEEN REMOVED.
+2. SMALL RIGHT SIDED PLEURAL EFFUSION.
+3. BILATERAL LOWER LUNG FIELD NODULAR DENSITIES WHICH MAY REPRESENT
+NIPPLE SHADOWS BUT IF CONCERN FOR OTHER ETIOLOGY, SUGGEST REPEAT
+STUDY WITH NIPPLE MARKERS.
+4. LOW LUNG VOLUMES.
+5. PREVIOUSLY NOTED LEFT SIDED CAVITARY LESION IS NOT VISUALIZED ON
+THE CURRENT STUDY, IN ITS LOCATION THERE IS A LINEAR DENSITY WHICH
+MAY REPRESENT AN INFECTIOUS PROCESS OR SCAR.
+6. OTHERWISE, NO SIGNIFICANT INTERVAL CHANGE OF THE CHEST.
+END OF IMPRESSION:
+SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Maynard, Brynn  on: 1/30/09
+ 
+ACCESSION NUMBER:
+kMsLYTtma
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. LEFT SIDED INTERNAL JUGULAR LINE THAT HAS BEEN REMOVED.
+2. SMALL RIGHT SIDED PLEURAL EFFUSION.
+3. BILATERAL LOWER LUNG FIELD NODULAR DENSITIES WHICH MAY REPRESENT
+NIPPLE SHADOWS BUT IF CONCERN FOR OTHER ETIOLOGY, SUGGEST REPEAT
+STUDY WITH NIPPLE MARKERS.
+4. LOW LUNG VOLUMES.
+5. PREVIOUSLY NOTED LEFT SIDED CAVITARY LESION IS NOT VISUALIZED ON
+THE CURRENT STUDY, IN ITS LOCATION THERE IS A LINEAR DENSITY WHICH
+MAY REPRESENT AN INFECTIOUS PROCESS OR SCAR.
+6. OTHERWISE, NO SIGNIFICANT INTERVAL CHANGE OF THE CHEST.
+",1
+patient00067/study1,patient00067,train,56.0,Female,White,Non-Hispanic/Non-Latino,train/patient00067/study1/view1_frontal.dcm,train/patient00067/study1/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+CHEST: 11-16-2015 0832 hours
+COMPARISON: 11/16/2015 0640 hours
+CLINICAL HISTORY: 56 -year-old female, cirrhosis and hepatic
+encephalopathy.
+IMPRESSION:
+1. INTERVAL PLACEMENT OF A LEFT INTERNAL JUGULAR LINE WITH ITS TIP
+IN THE LOW-SVC. NO PNEUMOTHORAX IS APPARENT.
+2. ELEVATED RIGHT HEMIDIAPHRAGM WITH A POSSIBLE TINY RIGHT PLEURAL
+EFFUSION. THE LUNGS ARE OTHERWISE CLEAR. NO SIGNIFICANT INTERVAL
+CHANGE.
+END OF IMPRESSION:
+SUMMARY:2-ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Dalton, Christensen  on: 11-16-2015
+ 
+ACCESSION NUMBER:
+19400
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. INTERVAL PLACEMENT OF A LEFT INTERNAL JUGULAR LINE WITH ITS TIP
+IN THE LOW-SVC. NO PNEUMOTHORAX IS APPARENT.
+2. ELEVATED RIGHT HEMIDIAPHRAGM WITH A POSSIBLE TINY RIGHT PLEURAL
+EFFUSION. THE LUNGS ARE OTHERWISE CLEAR. NO SIGNIFICANT INTERVAL
+CHANGE.
+",1
+patient00068/study1,patient00068,train,76.0,Male,White,Hispanic/Latino,train/patient00068/study1/view1_frontal.dcm,train/patient00068/study1/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+PORTABLE CHEST, SINGLE AP VIEW: 12/5/2019.
+COMPARISON:
+None.
+FINDINGS:
+Single AP portable view of the chest demonstrates cephalization of
+the central vessels consistent with pulmonary venous hypertension.
+No evidence of frank pulmonary edema is noted. Cardiomediastinal
+silhouette appears unremarkable. Lungs are clear bilaterally.
+Visualized bones are intact. No soft tissue abnormalities are
+appreciated.
+IMPRESSION:
+1. NO EVIDENCE OF PNEUMOTHORAX.
+2. CEPHALIZATION OF CENTRAL VESSELS SUGGESTIVE OF PULMONARY VENOUS
+HYPERTENSION WITH NO FRANK PULMONARY EDEMA.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: STEVENS NICODEMUS, MD  on: 12-5-19
+ __________________________________
+ 
+ACCESSION NUMBER:
+#H71667I2981
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","
+Single AP portable view of the chest demonstrates cephalization of
+the central vessels consistent with pulmonary venous hypertension.
+No evidence of frank pulmonary edema is noted. Cardiomediastinal
+silhouette appears unremarkable. Lungs are clear bilaterally.
+Visualized bones are intact. No soft tissue abnormalities are
+appreciated.
+","
+1. NO EVIDENCE OF PNEUMOTHORAX.
+2. CEPHALIZATION OF CENTRAL VESSELS SUGGESTIVE OF PULMONARY VENOUS
+HYPERTENSION WITH NO FRANK PULMONARY EDEMA.
+",1
+patient00070/study1,patient00070,train,42.0,Male,Unknown,Unknown,train/patient00070/study1/view1_frontal.dcm,train/patient00070/study1/view1_frontal.jpg,Frontal,PA,"NARRATIVE:
+EXAM: CHEST 1 VIEW 1/9/2009
+ 
+CLINICAL HISTORY: (+) PPD R/O ACTIVE TB
+ 
+COMPARISON: NONE
+ 
+ 
+IMPRESSION:
+ 
+1.SINGLE FRONTAL VIEW OF THE CHEST DEMONSTRATES NO EVIDENCE OF FOCAL 
+AIR SPACE CONSOLIDATION, PLEURAL EFFUSION, OR PNEUMOTHORAX.
+ 
+2.THE CARDIOMEDIASTINAL SILHOUETTE AND PULMONARY VASCULARITY ARE 
+WITHIN NORMAL LIMITS.
+ 
+3.THE OSSEOUS STRUCTURES ARE NORMAL IN APPEARANCE.
+ 
+ 
+SUMMARY:1-NO SIGNIFICANT ABNORMALITY
+ 
+ACCESSION NUMBER:
+7088267
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+ 
+1.SINGLE FRONTAL VIEW OF THE CHEST DEMONSTRATES NO EVIDENCE OF FOCAL 
+AIR SPACE CONSOLIDATION, PLEURAL EFFUSION, OR PNEUMOTHORAX.
+ 
+2.THE CARDIOMEDIASTINAL SILHOUETTE AND PULMONARY VASCULARITY ARE 
+WITHIN NORMAL LIMITS.
+ 
+3.THE OSSEOUS STRUCTURES ARE NORMAL IN APPEARANCE.
+ 
+ 
+",1
+patient00076/study1,patient00076,train,39.0,Female,Unknown,Unknown,train/patient00076/study1/view1_frontal.dcm,train/patient00076/study1/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+PORTABLE CHEST, 5-4-2007
+CLINICAL HISTORY:
+Intracranial aneurysm. Rule out subarachnoid hemorrhage. Status
+post central venous catheter placement.
+FINDINGS:
+AP portable chest, 5/4/2007 at 1536 hours is compared with 5/4/2007, 1/29/2013 two view chest.
+Substantially lower lung volumes. Focal right upper lobe
+peripheral parenchymal airspace opacity adjacent to the minor
+fissure may represent focal infection. Probable left pleural
+effusion. New right internal jugular central venous catheter in
+superior vena cava. Low lung volumes. No definite pneumothorax
+although motion artifact degrades image quality.
+IMPRESSION:
+1. RIGHT IJ CENTRAL VENOUS PRESSURE SATISFACTORY.
+2. NEW AIRSPACE OPACITY RIGHT UPPER LOBE AS DESCRIBED.
+3. LIMITED BY MOTION ARTIFACT.
+4. LOW LUNG VOLUMES AND POSSIBLE LEFT PLEURAL EFFUSION.
+END OF IMPRESSION:
+SUMMARY 4: Possible significant abnormality/change, may need
+action.
+ 
+ACCESSION NUMBER:
+797027882896
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","
+AP portable chest, 5/4/2007 at 1536 hours is compared with 5/4/2007, 1/29/2013 two view chest.
+Substantially lower lung volumes. Focal right upper lobe
+peripheral parenchymal airspace opacity adjacent to the minor
+fissure may represent focal infection. Probable left pleural
+effusion. New right internal jugular central venous catheter in
+superior vena cava. Low lung volumes. No definite pneumothorax
+although motion artifact degrades image quality.
+","
+1. RIGHT IJ CENTRAL VENOUS PRESSURE SATISFACTORY.
+2. NEW AIRSPACE OPACITY RIGHT UPPER LOBE AS DESCRIBED.
+3. LIMITED BY MOTION ARTIFACT.
+4. LOW LUNG VOLUMES AND POSSIBLE LEFT PLEURAL EFFUSION.
+",1
+patient00078/study8,patient00078,train,25.0,Male,Asian,Non-Hispanic/Non-Latino,train/patient00078/study8/view1_frontal.dcm,train/patient00078/study8/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+PORTABLE CHEST RADIOGRAPH: 1/20/16.
+COMPARISON: 1/20/2016.
+IMPRESSION:
+1. REDEMONSTRATED LEFT PLEURAL PIGTAIL CATHETER IN THE LEFT APEX.
+2. STABLE SMALL LEFT APICAL PNEUMOTHORAX.
+3. THE LUNGS ARE CLEAR.
+4. CARDIOMEDIASTINAL SILHOUETTE WITHIN NORMAL LIMITS.
+END OF IMPRESSION:
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Beck, Kendrick  on: 1/20/2016
+ 
+ACCESSION NUMBER:
+362952502370
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. REDEMONSTRATED LEFT PLEURAL PIGTAIL CATHETER IN THE LEFT APEX.
+2. STABLE SMALL LEFT APICAL PNEUMOTHORAX.
+3. THE LUNGS ARE CLEAR.
+4. CARDIOMEDIASTINAL SILHOUETTE WITHIN NORMAL LIMITS.
+",1
+patient00078/study4,patient00078,train,25.0,Male,Asian,Non-Hispanic/Non-Latino,train/patient00078/study4/view1_frontal.dcm,train/patient00078/study4/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+19952991367 SINGLE VIEW PORTABLE CHEST: 12/16/2005 AT 1550 HOURS.
+COMPARISON: December 16 AT 1432 HOURS.
+FINDINGS:
+The left pneumothorax has significantly decreased in size. No new
+abnormalities.
+#5153155048 SINGLE VIEW PORTABLE CHEST: 12-16-2005 at 0600 HOURS.
+FINDINGS:
+The left pneumothorax has increased slightly in size.
+IMPRESSION:
+1. SLIGHT INCREASE IN LEFT APICAL PNEUMOTHORAX ON THE MOST RECENT
+FILM.
+END OF IMPRESSION:
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION.
+ 
+ACCESSION NUMBER:
+51.53.15.50.48
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","
+The left pneumothorax has significantly decreased in size. No new
+abnormalities.
+#5153155048 SINGLE VIEW PORTABLE CHEST: 12-16-2005 at 0600 HOURS.
+FINDINGS:
+The left pneumothorax has increased slightly in size.
+","
+1. SLIGHT INCREASE IN LEFT APICAL PNEUMOTHORAX ON THE MOST RECENT
+FILM.
+",1
+patient00078/study9,patient00078,train,25.0,Male,Asian,Non-Hispanic/Non-Latino,train/patient00078/study9/view1_frontal.dcm,train/patient00078/study9/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+SINGLE RADIOGRAPH OF THE CHEST: 4/5/2000
+FINDINGS: The left chest tube is again noted. The volume of
+pneumothorax has increased slightly.
+7172 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: No interval change.
+2911246394 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: The chest tube has been replaced by an apical pigtail
+catheter. The pneumothorax is not identified.
+IMPRESSION:
+DIMINISHED PNEUMOTHORAX AFTER PLACEMENT OF PIGTAIL CATHETER.
+END OF IMPRESSION
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED.
+ 
+ACCESSION NUMBER:
+#7172
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."," The left chest tube is again noted. The volume of
+pneumothorax has increased slightly.
+7172 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: No interval change.
+2911246394 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: The chest tube has been replaced by an apical pigtail
+catheter. The pneumothorax is not identified.
+","
+DIMINISHED PNEUMOTHORAX AFTER PLACEMENT OF PIGTAIL CATHETER.
+",1
+patient00078/study7,patient00078,train,25.0,Male,Asian,Non-Hispanic/Non-Latino,train/patient00078/study7/view1_frontal.dcm,train/patient00078/study7/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+SINGLE RADIOGRAPH OF THE CHEST: 1/14/2015
+FINDINGS: The left chest tube is again noted. The volume of
+pneumothorax has increased slightly.
+49335592 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: No interval change.
+402809495 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: The chest tube has been replaced by an apical pigtail
+catheter. The pneumothorax is not identified.
+IMPRESSION:
+DIMINISHED PNEUMOTHORAX AFTER PLACEMENT OF PIGTAIL CATHETER.
+END OF IMPRESSION
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED.
+ 
+ACCESSION NUMBER:
+402-809-495
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."," The left chest tube is again noted. The volume of
+pneumothorax has increased slightly.
+49335592 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: No interval change.
+402809495 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: The chest tube has been replaced by an apical pigtail
+catheter. The pneumothorax is not identified.
+","
+DIMINISHED PNEUMOTHORAX AFTER PLACEMENT OF PIGTAIL CATHETER.
+",1
+patient00078/study1,patient00078,train,25.0,Male,Asian,Non-Hispanic/Non-Latino,train/patient00078/study1/view1_frontal.dcm,train/patient00078/study1/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+PORTABLE CHEST, SINGLE VIEW: December 2008.
+COMPARISON: None.
+CLINICAL HISTORY: 24-year-old man with spontaneous pneumothorax.
+Postoperative chest x-ray.
+FINDINGS: Portable upright chest radiograph obtained in the
+recovery room demonstrates a left chest tube in place. The end of
+the chest tube is bent at the apex with the tip directed toward the
+mediastinum. Surgical suture material is seen to project over the
+right upper lung zone as well as the left upper lung zone. There
+are multiple linear densities projecting over the upper chest,
+likely external to the patient related to the sheets. This limits
+the evaluation for a pneumothorax; however, there may be a possible
+small left apical pneumothorax present. The lungs are otherwise
+clear with no pleural effusions or pulmonary edema. The
+cardiomediastinal silhouette is unremarkable. The skeletal
+structures are grossly unremarkable.
+IMPRESSION:
+1. LEFT CHEST TUBE IN PLACE WITH THE TIP DIRECTED TOWARD THE
+MEDIASTINUM.
+2. POSTOPERATIVE CHEST WITH ARTIFACTS PROJECTING OVER THE CHEST,
+WHICH LIMITS THE EVALUATION FOR AN UNDERLYING PNEUMOTHORAX. THERE
+MAY BE A POSSIBLE SMALL LEFT APICAL PNEUMOTHORAX. RECOMMEND
+CLINICAL CORRELATION AND ATTENTION ON FOLLOW-UP DEDICATED UPRIGHT PA
+AND LATERAL CHEST RADIOGRAPHS.
+END OF IMPRESSION.
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION.
+ 
+ACCESSION NUMBER:
+#6340977630
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."," Portable upright chest radiograph obtained in the
+recovery room demonstrates a left chest tube in place. The end of
+the chest tube is bent at the apex with the tip directed toward the
+mediastinum. Surgical suture material is seen to project over the
+right upper lung zone as well as the left upper lung zone. There
+are multiple linear densities projecting over the upper chest,
+likely external to the patient related to the sheets. This limits
+the evaluation for a pneumothorax; however, there may be a possible
+small left apical pneumothorax present. The lungs are otherwise
+clear with no pleural effusions or pulmonary edema. The
+cardiomediastinal silhouette is unremarkable. The skeletal
+structures are grossly unremarkable.
+","
+1. LEFT CHEST TUBE IN PLACE WITH THE TIP DIRECTED TOWARD THE
+MEDIASTINUM.
+2. POSTOPERATIVE CHEST WITH ARTIFACTS PROJECTING OVER THE CHEST,
+WHICH LIMITS THE EVALUATION FOR AN UNDERLYING PNEUMOTHORAX. THERE
+MAY BE A POSSIBLE SMALL LEFT APICAL PNEUMOTHORAX. RECOMMEND
+CLINICAL CORRELATION AND ATTENTION ON FOLLOW-UP DEDICATED UPRIGHT PA
+AND LATERAL CHEST RADIOGRAPHS.
+",1
+patient00078/study3,patient00078,train,25.0,Male,Asian,Non-Hispanic/Non-Latino,train/patient00078/study3/view1_frontal.dcm,train/patient00078/study3/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+#61158122 SINGLE VIEW PORTABLE CHEST: 12, July 13 AT 1550 HOURS.
+COMPARISON: 7-13-2012 AT 1432 HOURS.
+FINDINGS:
+The left pneumothorax has significantly decreased in size. No new
+abnormalities.
+X830G995434 SINGLE VIEW PORTABLE CHEST: 2012/7/13 at 0600 HOURS.
+FINDINGS:
+The left pneumothorax has increased slightly in size.
+IMPRESSION:
+1. SLIGHT INCREASE IN LEFT APICAL PNEUMOTHORAX ON THE MOST RECENT
+FILM.
+END OF IMPRESSION:
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION.
+ 
+ACCESSION NUMBER:
+611-581-22
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","
+The left pneumothorax has significantly decreased in size. No new
+abnormalities.
+X830G995434 SINGLE VIEW PORTABLE CHEST: 2012/7/13 at 0600 HOURS.
+FINDINGS:
+The left pneumothorax has increased slightly in size.
+","
+1. SLIGHT INCREASE IN LEFT APICAL PNEUMOTHORAX ON THE MOST RECENT
+FILM.
+",1
+patient00078/study6,patient00078,train,25.0,Male,Asian,Non-Hispanic/Non-Latino,train/patient00078/study6/view1_frontal.dcm,train/patient00078/study6/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+9587870496: SINGLE VIEW PORTABLE CHEST: 5/6/10 Health Plus Xpress 0615 HOURS
+COMPARISON: MAY 2010
+FINDINGS: The left-sided pneumothorax appears slightly increased
+in size. No additional interval change.
+6340977630: SINGLE VIEW PORTABLE CHEST: 5-6-2010 Health Plus Xpress 0620 HOURS
+FINDINGS: The left pneumothorax has decreased in size. No new
+abnormalities.
+IMPRESSION:
+DECREASED SIZE OF LEFT PNEUMOTHORAX ON THE MOST RECENT FILM.
+END OF IMPRESSION:
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED
+ 
+ACCESSION NUMBER:
+634.097.763.0
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."," The left-sided pneumothorax appears slightly increased
+in size. No additional interval change.
+6340977630: SINGLE VIEW PORTABLE CHEST: 5-6-2010 Health Plus Xpress 0620 HOURS
+FINDINGS: The left pneumothorax has decreased in size. No new
+abnormalities.
+","
+DECREASED SIZE OF LEFT PNEUMOTHORAX ON THE MOST RECENT FILM.
+",1
+patient00078/study5,patient00078,train,25.0,Male,Asian,Non-Hispanic/Non-Latino,train/patient00078/study5/view1_frontal.dcm,train/patient00078/study5/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+397381515: SINGLE VIEW PORTABLE CHEST: 1-18-2017 usc center for body computing 0615 HOURS
+COMPARISON: 1/18/2017
+FINDINGS: The left-sided pneumothorax appears slightly increased
+in size. No additional interval change.
+865_804_567_991_957_3: SINGLE VIEW PORTABLE CHEST: 1/18/2017 USC Center for Body Computing 0620 HOURS
+FINDINGS: The left pneumothorax has decreased in size. No new
+abnormalities.
+IMPRESSION:
+DECREASED SIZE OF LEFT PNEUMOTHORAX ON THE MOST RECENT FILM.
+END OF IMPRESSION:
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED
+ 
+ACCESSION NUMBER:
+397381515
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."," The left-sided pneumothorax appears slightly increased
+in size. No additional interval change.
+865_804_567_991_957_3: SINGLE VIEW PORTABLE CHEST: 1/18/2017 USC Center for Body Computing 0620 HOURS
+FINDINGS: The left pneumothorax has decreased in size. No new
+abnormalities.
+","
+DECREASED SIZE OF LEFT PNEUMOTHORAX ON THE MOST RECENT FILM.
+",1
+patient00078/study2,patient00078,train,25.0,Male,Asian,Non-Hispanic/Non-Latino,train/patient00078/study2/view1_frontal.dcm,train/patient00078/study2/view1_frontal.jpg,Frontal,AP,"NARRATIVE:
+PORTABLE CHEST RADIOGRAPH, 8/27/2016 AT 1432:
+Compared with 8/27/2016 at 0911.
+IMPRESSION:
+1. RE-DEMONSTRATED LEFT CHEST TUBE.
+2. RE-DEMONSTRATED MULTIPLE SUTURE LINES IN THE BILATERAL LUNG
+APICES.
+3. INTERVAL MARKED INCREASE IN THE PREVIOUSLY NOTED LEFT
+PNEUMOTHORAX. NO EVIDENCE OF MEDIASTINAL SHIFT TO SUGGEST TENSION.
+4. FINDINGS WERE DISCUSSED WITH Moyer, Miguel AT 9 AM ON
+08/27/2016.
+END OF IMPRESSION
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Douglas Madeline Virginia, MD  on: 8/27/2016
+ 
+ACCESSION NUMBER:
+480882163
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. RE-DEMONSTRATED LEFT CHEST TUBE.
+2. RE-DEMONSTRATED MULTIPLE SUTURE LINES IN THE BILATERAL LUNG
+APICES.
+3. INTERVAL MARKED INCREASE IN THE PREVIOUSLY NOTED LEFT
+PNEUMOTHORAX. NO EVIDENCE OF MEDIASTINAL SHIFT TO SUGGEST TENSION.
+4. FINDINGS WERE DISCUSSED WITH Moyer, Miguel AT 9 AM ON
+08/27/2016.
+",1
+patient00079/study1,patient00079,train,43.0,Male,Unknown,Unknown,train/patient00079/study1/view2_lateral.dcm|train/patient00079/study1/view1_frontal.dcm,train/patient00079/study1/view2_lateral.jpg|train/patient00079/study1/view1_frontal.jpg,Lateral|Frontal,|PA,"NARRATIVE:
+CHEST TWO VIEWS: 22 april
+COMPARISON: 4-22-2008
+CLINICAL DATA: 42-year-old male for living related kidney donor.
+Preop chest x-ray.
+IMPRESSION:
+1. PA AND LATERAL VIEWS OF THE CHEST DEMONSTRATE CARDIOMEDIASTINAL
+SILHOUETTE WITHIN NORMAL LIMITS. THE LUNGS ARE CLEAR WITHOUT EDEMA,
+EFFUSION, FOCAL CONSOLIDATION. NO PNEUMOTHORAX. REGIONAL OSSEOUS
+STRUCTURES DEMONSTRATE NO GROSS ABNORMALITY.
+END OF IMPRESSION:
+SUMMARY: 1 NO SIGNIFICANT ABNORMALITY
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: matthew, hoover  on: 4-22
+ 
+ACCESSION NUMBER:
+X830G995434
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",,"
+1. PA AND LATERAL VIEWS OF THE CHEST DEMONSTRATE CARDIOMEDIASTINAL
+SILHOUETTE WITHIN NORMAL LIMITS. THE LUNGS ARE CLEAR WITHOUT EDEMA,
+EFFUSION, FOCAL CONSOLIDATION. NO PNEUMOTHORAX. REGIONAL OSSEOUS
+STRUCTURES DEMONSTRATE NO GROSS ABNORMALITY.
+",2
+patient00082/study1,patient00082,train,18.0,Male,White,Hispanic/Latino,train/patient00082/study1/view1_frontal.dcm,train/patient00082/study1/view1_frontal.jpg,Frontal,PA,"NARRATIVE:
+CHEST X-RAY, TWO VIEWS:  3/5/2009 at 1929 hours.  
+ 
+ COMPARISON:  3-5-2009 at 0938 hours.  
+ 
+ CLINICAL HISTORY:  A 17-year-old male with history of positive PPD.  
+Patient has fever and cough.  
+ 
+ IMPRESSION: 
+ 
+ CENTRAL AIRWAYS ARE PATENT.  CARDIOMEDIASTINAL SILHOUETTE IS 
+UNREMARKABLE.  THERE IS NO MEDIASTINAL OR HILAR LYMPHADENOPATHY.  
+LUNGS ARE CLEAR.  THERE IS NO PLEURAL EFFUSION OR PNEUMOTHORAX.  
+VISUALIZED OSSEOUS STRUCTURES ARE UNREMARKABLE.  
+ 
+ SUMMARY:1-NO SIGNIFICANT ABNORMALITY  
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+96486703307
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.",," 
+ 
+ CENTRAL AIRWAYS ARE PATENT.  CARDIOMEDIASTINAL SILHOUETTE IS 
+UNREMARKABLE.  THERE IS NO MEDIASTINAL OR HILAR LYMPHADENOPATHY.  
+LUNGS ARE CLEAR.  THERE IS NO PLEURAL EFFUSION OR PNEUMOTHORAX.  
+VISUALIZED OSSEOUS STRUCTURES ARE UNREMARKABLE.  
+ 
+ ",1
