@@ -52,6 +52,12 @@ def parse_args():
         / "chexpert_plus_50_artifact_features.csv",
     )
 
+    parser.add_argument(
+        "--local-dicom-root",
+        type=Path,
+        default=None,
+    )
+
     return parser.parse_args()
 
 def find_quality_hints(*texts):
@@ -69,8 +75,9 @@ def find_quality_hints(*texts):
 def main():
     args = parse_args()
     dataset = CheXpertPlusDicomDataset(
-        manifest_path = args.manifest_path,
+        manifest_path=args.manifest_path,
         transform=None,
+        local_dicom_root=args.local_dicom_root,
     )
 
     output_rows = []

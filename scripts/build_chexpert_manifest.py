@@ -13,7 +13,46 @@ from src.medagentx.helpers.chexpert_plus_manifest import (
     build_query,
     build_study_manifest_records,
 )
+DICOM_TRAIN_TABLE = "aimi.chexpert_plus:5yyj:v1_0.dicom_train:1934"
 
+def clean_redivis_dicom_path(path):
+    path = str(path).strip()
+
+    if path.startswith("train/"):
+        path = path.removeprefix("train/")
+
+    return path
+
+
+def filter_rows_with_available_dicoms(rows):
+    print("Checking DICOM availability in Redivis DICOM_train...")
+
+    dicom_table = redivis.table(DICOM_TRAIN_TABLE)
+    dicom_dir = dicom_table.to_directory()
+
+    available_rows = []
+    skipped_rows = 0
+
+    for row in rows:
+        dicom_path = row.get("path_to_dcm")
+
+        if not dicom_path:
+            skipped_rows += 1
+            continue
+
+        redivis_path = clean_redivis_dicom_path(dicom_path)
+
+        if dicom_dir.get(redivis_path) is None:
+            skipped_rows += 1
+            continue
+
+        available_rows.append(row)
+
+    print("Rows with available DICOMs:", len(available_rows))
+    print("Rows skipped because DICOM was missing:", skipped_rows)
+
+    return available_rows
+    
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Build a small CheXpert Plus study-level manifest from Redivis."
@@ -69,42 +108,43 @@ def write_manifest_csv(records, output_path):
       writer.writerows(records)
 
 def main():
-   args = parse_args()
+    args = parse_args()
 
-   print("Connecting to Redivis dataset: AIMI CheXpert Plus")
+    print("Connecting to Redivis dataset: AIMI CheXpert Plus")
 
-   organization = redivis.organization("AIMI")
-   dataset = organization.dataset("chexpert_plus")
+    organization = redivis.organization("AIMI")
+    dataset = organization.dataset("chexpert_plus")
 
-   query = build_query(row_limit=args.row_limit)
+    query = build_query(row_limit=args.row_limit)
 
-   print(f"Querying up to {args.row_limit} image-level rows.....")
-   df_rows = dataset.query(query).to_pandas_dataframe(dtype_backend="numpy")
+    print(f"Querying up to {args.row_limit} image-level rows.....")
+    df_rows = dataset.query(query).to_pandas_dataframe(dtype_backend="numpy")
 
-   print(f"Rows returned: {len(df_rows)}")
-   rows = dataframe_to_records(df_rows)
+    print(f"Rows returned: {len(df_rows)}")
+    rows = dataframe_to_records(df_rows)
+    rows = filter_rows_with_available_dicoms(rows)
+    
+    print(f"Building manifest with up to {args.study_limit} studies.....")
+    manifest_records = build_study_manifest_records(
+       rows=rows,
+       study_limit=args.study_limit,
+    )
 
-   print(f"Bulding manifest with up to {args.study_limit} studies.....")
-   manifest_records = build_study_manifest_records(
-      rows = rows,
-      study_limit=args.study_limit,
-   )
+    print(f"Studies created: {len(manifest_records)}")
 
-   print(f"Studies created: {len(manifest_records)}")
+    write_manifest_csv(
+       records=manifest_records,
+       output_path=args.output_path
+    )
 
-   write_manifest_csv(
-      records=manifest_records,
-      output_path=args.output_path
-   )
+    print(f"Saved manifest to: {args.output_path}")
 
-   print(f"Saved manifest to: {args.output_path}")
-
-   if len(manifest_records) > 0:
-      first_record = manifest_records[0]
-      print("First study preview: ")
-      print(f"    study_key: {first_record['study_key']}")
-      print(f"  image_count: {first_record['image_count']}")
-      print(f"  split: {first_record['split']}")
+    if len(manifest_records) > 0:
+       first_record = manifest_records[0]
+       print("First study preview: ")
+       print(f"    study_key: {first_record['study_key']}")
+       print(f"  image_count: {first_record['image_count']}")
+       print(f"  split: {first_record['split']}")
 
 
 if __name__ == "__main__":

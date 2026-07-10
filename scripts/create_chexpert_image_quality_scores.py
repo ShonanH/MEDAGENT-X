@@ -19,11 +19,10 @@ LABEL_TO_SCORE = {
 
 LABEL_TO_GATE = {
     "good": "proceed",
-    "usable": "review",
+    "usable": "proceed",
     "review": "review",
     "uncertain": "review",
 }
-
 
 SEVERE_HINTS = {
     "limited",
