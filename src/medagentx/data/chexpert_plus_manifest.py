@@ -1,5 +1,3 @@
-import pandas as pd
-
 CHEXPERT_PLUS_TABLE = "df_chexpert_plus_240401"
 
 MANIFEST_COLUMNS = [
@@ -28,10 +26,10 @@ def build_query(row_limit):
         {selected_columns}
     FROM `{CHEXPERT_PLUS_TABLE}`
     WHERE path_to_dcm IS NOT NULL
-      AND split = 'train'
     LIMIT {int(row_limit)}
     """
-    
+
+
 def extract_study_key(path_to_dcm):
     if path_to_dcm is None:
         return None
@@ -58,11 +56,11 @@ def row_to_plain_dict(row):
 
     for column in MANIFEST_COLUMNS:
         value = row.get(column)
-    
-        if value is None or pd.isna(value):
+
+        if value is None:
             plain[column] = ""
         else:
-            plain[column] = str(value)
+            plain[column] = value
 
     plain["study_key"] = extract_study_key(plain["path_to_dcm"])
 
