@@ -1,0 +1,200 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00009/study1,patient00009/study1/view1_frontal.dcm,76,Male,Asian,Non-Hispanic/Non-Latino,0.9977940847277491,1.869454642099961,2.3990218697854955,1.8715047004077532,0.0,10.610751152038574,-0.016405906528234482,0.3825308382511139,-6.897656440734863,1.0780253410339355,11.809165954589844,0.02106640674173832,0.42560550570487976,-1.654860019683838,1.7815937995910645,"Warning evidence: low entropy evidence (low_entropy_evidence_z=2.399); noise proxy outlier evidence (validation_noise_proxy_outlier_z=2.300); entropy outlier evidence (validation_entropy_outlier_z=2.399). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.11476695537567139,patient00545/study1,patient00545/study1/view1_frontal.dcm,train/patient00545/study1/view1_frontal.dcm,train/patient00545/study1/view1_frontal.jpg,60,Male,White,Non-Hispanic/Non-Latino,0.29537531793758903,0.0,0.0,0.0,1.2007734797916236,10.646432876586914,-0.020997965708374977,0.3835957944393158,-7.013517379760742,1.0968841314315796,11.541258811950684,0.021030426025390625,0.4159279763698578,-1.4077039957046509,1.2271238565444946,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 60
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Clinical history: 60-year-old with multiple myeloma, check for infiltrates.
+Comparison: 12-26-17, 12-26-17
+Impression: 1. PORTABLE UPRIGHT CHEST RADIOGRAPH DEMONSTRATES A LORDOTIC VIEW
+OF THE CHEST. STABLE POSITION OF RIGHT DOUBLE LUMEN CATHETER.
+2. INTERVAL SLIGHT INCREASE IN INTERSTITIAL PROMINENCE AND
+CEPHALIZATION CONSISTENT WITH MILD EDEMA, LESS LIKELY INFECTION.
+3. REDEMONSTRATION OF RETROCARDIAC OPACITY WHICH MAY REPRESENT
+HIATAL HERNIA VERSUS OTHER INTRAPULMONARY PROCESSES.
+Summary: 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: JAYDEN SPARKS  on: 2017-26
+ __________________________________
+Full report: NARRATIVE:
+CLINICAL HISTORY:
+60-year-old with multiple myeloma, check for infiltrates.
+COMPARISON:
+12-26-17, 12-26-17
+IMPRESSION:
+1. PORTABLE UPRIGHT CHEST RADIOGRAPH DEMONSTRATES A LORDOTIC VIEW
+OF THE CHEST. STABLE POSITION OF RIGHT DOUBLE LUMEN CATHETER.
+2. INTERVAL SLIGHT INCREASE IN INTERSTITIAL PROMINENCE AND
+CEPHALIZATION CONSISTENT WITH MILD EDEMA, LESS LIKELY INFECTION.
+3. REDEMONSTRATION OF RETROCARDIAC OPACITY WHICH MAY REPRESENT
+HIATAL HERNIA VERSUS OTHER INTRAPULMONARY PROCESSES.
+END OF IMPRESSION:
+SUMMARY 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: JAYDEN SPARKS  on: 2017-26
+ __________________________________
+ 
+ACCESSION NUMBER:
+bxKzKj
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""60"", ""deid_patient_id"": ""patient00545"", ""dicom_path"": ""patient00545/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00545/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00545/study1/view1_frontal.jpg"", ""patient_id"": ""patient00545"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\nbxKzKj\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00545/study1"", ""view_stem"": ""view1_frontal""}"
+patient00009/study1,patient00009/study1/view1_frontal.dcm,76,Male,Asian,Non-Hispanic/Non-Latino,0.9977940847277491,1.869454642099961,2.3990218697854955,1.8715047004077532,0.0,10.610751152038574,-0.016405906528234482,0.3825308382511139,-6.897656440734863,1.0780253410339355,11.809165954589844,0.02106640674173832,0.42560550570487976,-1.654860019683838,1.7815937995910645,"Warning evidence: low entropy evidence (low_entropy_evidence_z=2.399); noise proxy outlier evidence (validation_noise_proxy_outlier_z=2.300); entropy outlier evidence (validation_entropy_outlier_z=2.399). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.14225125312805176,patient00190/study2,patient00190/study2/view1_frontal.dcm,train/patient00190/study2/view1_frontal.dcm,train/patient00190/study2/view1_frontal.jpg,76,Female,Black,Non-Hispanic/Non-Latino,0.6181564155378119,0.0,0.0,0.0,0.08861558537131663,10.416594505310059,-0.017965108156204224,0.3754469156265259,-7.090239524841309,1.1694709062576294,13.412843704223633,0.01924821175634861,0.48361140489578247,-1.7434805631637573,1.8165055513381958,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 76
+Sex: Female
+Race: Black
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: December 6, 2019.
+CLINICAL DATA:
+Congestive heart failure. Rule out MI. Admitted with pulmonary
+edema.
+Impression: 1. AP SEMI-ERECT FILM, WITH THE PATIENT MARKEDLY ROTATED. LUNG
+VOLUMES ARE LOW, BUT THERE HAS BEEN SIGNIFICANT IMPROVEMENT IN THE
+PREVIOUSLY-NOTED PULMONARY EDEMA. PERSISTENT OPACIFICATION OF THE
+LEFT BASE SUGGESTS EITHER ATELECTASIS OR POSSIBLY EARLY INFILTRATE.
+THERE MAY ALSO BE A SMALL PLEURAL EFFUSION ON THIS SIDE.
+2. PROMINENT DEGENERATIVE CHANGES ARE PRESENT WITHIN THE
+GLENOHUMERAL JOINTS BILATERALLY.
+Summary: 2: Abnormal, previously reported.
+ __________________________________
+Narrative: CHEST X-RAY: 12-6-2019.
+Full report: NARRATIVE:
+CHEST X-RAY: 12-6-2019.
+COMPARISON:
+December 6, 2019.
+CLINICAL DATA:
+Congestive heart failure. Rule out MI. Admitted with pulmonary
+edema.
+IMPRESSION:
+1. AP SEMI-ERECT FILM, WITH THE PATIENT MARKEDLY ROTATED. LUNG
+VOLUMES ARE LOW, BUT THERE HAS BEEN SIGNIFICANT IMPROVEMENT IN THE
+PREVIOUSLY-NOTED PULMONARY EDEMA. PERSISTENT OPACIFICATION OF THE
+LEFT BASE SUGGESTS EITHER ATELECTASIS OR POSSIBLY EARLY INFILTRATE.
+THERE MAY ALSO BE A SMALL PLEURAL EFFUSION ON THIS SIDE.
+2. PROMINENT DEGENERATIVE CHANGES ARE PRESENT WITHIN THE
+GLENOHUMERAL JOINTS BILATERALLY.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal, previously reported.
+ __________________________________
+ 
+ACCESSION NUMBER:
+#2103726
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""76"", ""deid_patient_id"": ""patient00190"", ""dicom_path"": ""patient00190/study2/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00190/study2/view1_frontal.dcm"", ""path_to_image"": ""train/patient00190/study2/view1_frontal.jpg"", ""patient_id"": ""patient00190"", ""patient_report_date_order"": ""3"", ""race"": ""Black"", ""section_accession_number"": ""\n#2103726\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study2"", ""study_key"": ""patient00190/study2"", ""view_stem"": ""view1_frontal""}"
+patient00009/study1,patient00009/study1/view1_frontal.dcm,76,Male,Asian,Non-Hispanic/Non-Latino,0.9977940847277491,1.869454642099961,2.3990218697854955,1.8715047004077532,0.0,10.610751152038574,-0.016405906528234482,0.3825308382511139,-6.897656440734863,1.0780253410339355,11.809165954589844,0.02106640674173832,0.42560550570487976,-1.654860019683838,1.7815937995910645,"Warning evidence: low entropy evidence (low_entropy_evidence_z=2.399); noise proxy outlier evidence (validation_noise_proxy_outlier_z=2.300); entropy outlier evidence (validation_entropy_outlier_z=2.399). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.14741218090057373,patient00261/study2,patient00261/study2/view1_frontal.dcm,train/patient00261/study2/view1_frontal.dcm,train/patient00261/study2/view1_frontal.jpg,89,Male,White,Non-Hispanic/Non-Latino,0.4872168207745795,0.9126866631139429,0.0,0.9131800022537119,0.0,10.604364395141602,-0.019528502598404884,0.38215339183807373,-6.398289680480957,1.2565957307815552,11.125941276550293,0.018192945048213005,0.40106040239334106,-1.5089939832687378,1.64076566696167,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 89
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Clinical history: General malaise. Rule out MI.
+Comparison: Comparison is made to study dated January 3 00.
+Impression: 1. AP SITTING AND LATERAL CHEST RADIOGRAPH DEMONSTRATE A MILD
+THORACIC KYPHOSIS, WITH BRIDGING OSTEOPHYTOSIS THROUGHOUT THE
+MID AND LOWER THORACIC SPINE. THE DISC SPACES APPEAR WELL-
+PRESERVED, AND THESE APPEARANCES COULD REPRESENT EITHER DISH OR
+ANKYLOSING SPONDYLITIS.
+2. THERE IS A TINY 4 MM CALCIFIED GRANULOMA AT THE LEFT BASE,
+ADJACENT TO THE LEFT HEART BORDER. THE LUNGS OTHERWISE APPEAR
+CLEAR. THERE IS NO EVIDENCE FOR PULMONARY EDEMA.
+3. THERE IS A SEVERE DESTRUCTIVE ARTHROPATHY OF THE LEFT SHOULDER,
+WHICH IS LIKELY POST-TRAUMATIC. THERE WAS ALSO APPARENT ON THE
+PRIOR FILM AND APPEARS RELATIVELY UNCHANGED.
+Summary: 2 ABNORMAL, PREVIOUSLY REPORTED
+Narrative: TWO VIEW CHEST, 01-2000:
+Full report: NARRATIVE:
+TWO VIEW CHEST, 01-2000:
+COMPARISON: Comparison is made to study dated January 3 00.
+CLINICAL HISTORY: General malaise. Rule out MI.
+IMPRESSION:
+1. AP SITTING AND LATERAL CHEST RADIOGRAPH DEMONSTRATE A MILD
+THORACIC KYPHOSIS, WITH BRIDGING OSTEOPHYTOSIS THROUGHOUT THE
+MID AND LOWER THORACIC SPINE. THE DISC SPACES APPEAR WELL-
+PRESERVED, AND THESE APPEARANCES COULD REPRESENT EITHER DISH OR
+ANKYLOSING SPONDYLITIS.
+2. THERE IS A TINY 4 MM CALCIFIED GRANULOMA AT THE LEFT BASE,
+ADJACENT TO THE LEFT HEART BORDER. THE LUNGS OTHERWISE APPEAR
+CLEAR. THERE IS NO EVIDENCE FOR PULMONARY EDEMA.
+3. THERE IS A SEVERE DESTRUCTIVE ARTHROPATHY OF THE LEFT SHOULDER,
+WHICH IS LIKELY POST-TRAUMATIC. THERE WAS ALSO APPARENT ON THE
+PRIOR FILM AND APPEARS RELATIVELY UNCHANGED.
+END OF IMPRESSION:
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED
+ 
+ACCESSION NUMBER:
+6340977630
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""89"", ""deid_patient_id"": ""patient00261"", ""dicom_path"": ""patient00261/study2/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00261/study2/view1_frontal.dcm"", ""path_to_image"": ""train/patient00261/study2/view1_frontal.jpg"", ""patient_id"": ""patient00261"", ""patient_report_date_order"": ""2"", ""race"": ""White"", ""section_accession_number"": ""\n6340977630\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study2"", ""study_key"": ""patient00261/study2"", ""view_stem"": ""view1_frontal""}"
+patient00009/study1,patient00009/study1/view1_frontal.dcm,76,Male,Asian,Non-Hispanic/Non-Latino,0.9977940847277491,1.869454642099961,2.3990218697854955,1.8715047004077532,0.0,10.610751152038574,-0.016405906528234482,0.3825308382511139,-6.897656440734863,1.0780253410339355,11.809165954589844,0.02106640674173832,0.42560550570487976,-1.654860019683838,1.7815937995910645,"Warning evidence: low entropy evidence (low_entropy_evidence_z=2.399); noise proxy outlier evidence (validation_noise_proxy_outlier_z=2.300); entropy outlier evidence (validation_entropy_outlier_z=2.399). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.14772522449493408,patient00508/study4,patient00508/study4/view1_frontal.dcm,train/patient00508/study4/view1_frontal.dcm,train/patient00508/study4/view1_frontal.jpg,77,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.0951425842464699,9.558065414428711,-0.01671260967850685,0.3444918096065521,-5.752630233764648,0.9845229983329773,11.896296501159668,0.027716226875782013,0.4283749461174011,-1.94801664352417,1.6128140687942505,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 77
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 6-17-2010.
+Findings: AP, supine, portable view of the chest demonstrates a
+widened mediastinum that is unchanged. There is persistent
+opacification of the left lower lobe. Pulmonary vascularity
+remains mildly indistinct, unchanged. Small left sided effusion is
+noted. Cardiac silhouette is unchanged. The patient is rotated.
+Impression: 1. RIGHT INTERNAL JUGULAR LINE UNCHANGED.
+2. WIDENED MEDIASTINUM APPEARS UNCHANGED.
+3. PERSISTENT LEFT LOWER LOBE OPACIFICATION MAY REPRESENT
+ATELECTASIS VERSUS CONSOLIDATION UNCHANGED.
+4. MILD EDEMA STABLE.
+Summary: 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: sierra orr, pa  on: 6/17/10
+Narrative: PORTABLE CHEST: 6/17/2010
+Full report: NARRATIVE:
+PORTABLE CHEST: 6/17/2010
+COMPARISON: 6-17-2010.
+FINDINGS: AP, supine, portable view of the chest demonstrates a
+widened mediastinum that is unchanged. There is persistent
+opacification of the left lower lobe. Pulmonary vascularity
+remains mildly indistinct, unchanged. Small left sided effusion is
+noted. Cardiac silhouette is unchanged. The patient is rotated.
+IMPRESSION:
+1. RIGHT INTERNAL JUGULAR LINE UNCHANGED.
+2. WIDENED MEDIASTINUM APPEARS UNCHANGED.
+3. PERSISTENT LEFT LOWER LOBE OPACIFICATION MAY REPRESENT
+ATELECTASIS VERSUS CONSOLIDATION UNCHANGED.
+4. MILD EDEMA STABLE.
+END OF IMPRESSION:
+SUMMARY 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: sierra orr, pa  on: 6/17/10
+ 
+ACCESSION NUMBER:
+71_54_40_79_45_47_7
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""77"", ""deid_patient_id"": ""patient00508"", ""dicom_path"": ""patient00508/study4/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00508/study4/view1_frontal.dcm"", ""path_to_image"": ""train/patient00508/study4/view1_frontal.jpg"", ""patient_id"": ""patient00508"", ""patient_report_date_order"": ""4"", ""race"": ""White"", ""section_accession_number"": ""\n71_54_40_79_45_47_7\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study4"", ""study_key"": ""patient00508/study4"", ""view_stem"": ""view1_frontal""}"
+patient00009/study1,patient00009/study1/view1_frontal.dcm,76,Male,Asian,Non-Hispanic/Non-Latino,0.9977940847277491,1.869454642099961,2.3990218697854955,1.8715047004077532,0.0,10.610751152038574,-0.016405906528234482,0.3825308382511139,-6.897656440734863,1.0780253410339355,11.809165954589844,0.02106640674173832,0.42560550570487976,-1.654860019683838,1.7815937995910645,"Warning evidence: low entropy evidence (low_entropy_evidence_z=2.399); noise proxy outlier evidence (validation_noise_proxy_outlier_z=2.300); entropy outlier evidence (validation_entropy_outlier_z=2.399). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.14885592460632324,patient00114/study11,patient00114/study11/view1_frontal.dcm,train/patient00114/study11/view1_frontal.dcm,train/patient00114/study11/view1_frontal.jpg,55,Male,Unknown,Unknown,0.0,0.28168477549607107,0.1794866987388257,0.28173382657297,0.0,10.071211814880371,-0.016540316864848137,0.3630369305610657,-6.015442371368408,1.07845139503479,11.977245330810547,0.019759342074394226,0.4317396879196167,-1.4320825338363647,1.7794079780578613,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 55
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Comparison: Comparison is made to study dated August 2015.
+Impression: 1. SLIGHT INTERVAL DECREASE IN PULMONARY EDEMA, MODERATE EDEMA
+REMAINS. WIDENED MEDIASTINUM AGAIN NOTED. LEFT APICAL POSSIBLE
+HEMATOMA AGAIN NOTED. RETROCARDIAC AIRSPACE OPACITY AND BILATERAL
+PLEURAL EFFUSIONS APPEAR STABLE.
+2. NO SIGNIFICANT CHANGE IN SUPPORT EQUIPMENT.
+End of impression: I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MD FIGUEROA.  on: 8-21-2015
+Narrative: PORTABLE CHEST, 8/21/2015:
+Full report: NARRATIVE:
+PORTABLE CHEST, 8/21/2015:
+COMPARISON:
+Comparison is made to study dated August 2015.
+IMPRESSION:
+1. SLIGHT INTERVAL DECREASE IN PULMONARY EDEMA, MODERATE EDEMA
+REMAINS. WIDENED MEDIASTINUM AGAIN NOTED. LEFT APICAL POSSIBLE
+HEMATOMA AGAIN NOTED. RETROCARDIAC AIRSPACE OPACITY AND BILATERAL
+PLEURAL EFFUSIONS APPEAR STABLE.
+2. NO SIGNIFICANT CHANGE IN SUPPORT EQUIPMENT.
+END OF IMPRESSION:
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MD FIGUEROA.  on: 8-21-2015
+ 
+ACCESSION NUMBER:
+0 2 3 5 1 5
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""55"", ""deid_patient_id"": ""patient00114"", ""dicom_path"": ""patient00114/study11/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00114/study11/view1_frontal.dcm"", ""path_to_image"": ""train/patient00114/study11/view1_frontal.jpg"", ""patient_id"": ""patient00114"", ""patient_report_date_order"": ""11"", ""race"": ""Unknown"", ""section_accession_number"": ""\n0 2 3 5 1 5\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study11"", ""study_key"": ""patient00114/study11"", ""view_stem"": ""view1_frontal""}"

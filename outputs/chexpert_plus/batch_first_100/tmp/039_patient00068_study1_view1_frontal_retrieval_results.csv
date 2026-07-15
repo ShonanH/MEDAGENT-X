@@ -1,0 +1,190 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00068/study1,patient00068/study1/view1_frontal.dcm,76,Male,White,Hispanic/Latino,0.0,0.0,0.0,0.0,0.980504554631655,10.306680679321289,-0.024184921756386757,0.37112313508987427,-6.480683326721191,1.1809998750686646,11.692265510559082,0.01786826364696026,0.42152976989746094,-1.7625012397766113,2.0683372020721436,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.12152630090713501,patient00278/study1,patient00278/study1/view1_frontal.dcm,train/patient00278/study1/view1_frontal.dcm,train/patient00278/study1/view1_frontal.jpg,58,Male,Unknown,Unknown,0.0,0.0,0.0,0.0,0.37135227494305445,10.634623527526855,-0.019399000331759453,0.3832533061504364,-6.938210487365723,1.1004104614257812,11.68055248260498,0.015779027715325356,0.42119014263153076,-2.4239487648010254,1.4595707654953003,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 58
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Clinical history: Pulmonary hypertension, CHF.  Pulmonary embolism,
+volume overload.
+Comparison: None.
+Technique: AP portable upright single view of the chest.
+Findings: Mild cardiomegaly is seen but no evidence of pulmonary
+edema or pleural effusions.  Retrocardiac opacity is appreciated and
+may represent atelectasis versus infiltrate.  The right lung is
+unremarkable.  There are no bony or soft tissue abnormalities.
+Impression: 1.  MILD CARDIOMEGALY.
+ 2.  NO PULMONARY EDEMA OR PLEURAL EFFUSIONS.
+ 3.  RETROCARDIAC ATELECTASIS VERSUS INFILTRATES.
+Summary: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+Narrative: PORTABLE CHEST, 2/17/2019:
+Full report: NARRATIVE:
+PORTABLE CHEST, 2/17/2019:
+ CLINICAL HISTORY:  Pulmonary hypertension, CHF.  Pulmonary embolism,
+volume overload.
+ COMPARISON:   None.
+ TECHNIQUE:  AP portable upright single view of the chest.
+ FINDINGS:  Mild cardiomegaly is seen but no evidence of pulmonary
+edema or pleural effusions.  Retrocardiac opacity is appreciated and
+may represent atelectasis versus infiltrate.  The right lung is
+unremarkable.  There are no bony or soft tissue abnormalities.
+ IMPRESSION:
+ 1.  MILD CARDIOMEGALY.
+ 2.  NO PULMONARY EDEMA OR PLEURAL EFFUSIONS.
+ 3.  RETROCARDIAC ATELECTASIS VERSUS INFILTRATES.
+ END OF IMPRESSION:
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+70635
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""58"", ""deid_patient_id"": ""patient00278"", ""dicom_path"": ""patient00278/study1/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00278/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00278/study1/view1_frontal.jpg"", ""patient_id"": ""patient00278"", ""patient_report_date_order"": ""1"", ""race"": ""Unknown"", ""section_accession_number"": ""\n70635\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00278/study1"", ""view_stem"": ""view1_frontal""}"
+patient00068/study1,patient00068/study1/view1_frontal.dcm,76,Male,White,Hispanic/Latino,0.0,0.0,0.0,0.0,0.980504554631655,10.306680679321289,-0.024184921756386757,0.37112313508987427,-6.480683326721191,1.1809998750686646,11.692265510559082,0.01786826364696026,0.42152976989746094,-1.7625012397766113,2.0683372020721436,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.12593626976013184,patient00003/study1,patient00003/study1/view1_frontal.dcm,train/patient00003/study1/view1_frontal.dcm,train/patient00003/study1/view1_frontal.jpg,41,Male,White,Non-Hispanic/Non-Latino,0.5511641122622946,0.4532445400592735,0.49710859998988444,0.45336860531130524,0.0,10.440082550048828,-0.02016894333064556,0.37618377804756165,-6.117623329162598,1.0214790105819702,12.261709213256836,0.022758929058909416,0.4418705999851227,-1.6885544061660767,1.6523572206497192,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 41
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Findings: Costophrenic angles sharp, without evidence of effusion.
+The cardiomediastinal silhouette is normal. Vessels mildly
+indistinct with prominence of interstitial structures, suggesting
+mild, pulmonary edema. Left subclavian central venous catheter is
+seen, tip in mid SVC. No pneumothorax.
+Impression: 1. NO EVIDENCE OF PNEUMOTHORAX.
+2. MILD INTERSTITIAL PULMONARY EDEMA.
+Summary: 2
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Dr. Juarez Tucker N  on: 2-10-2001
+ __________________________________
+Narrative: CHEST, ONE VIEW: 2-10-2001
+Full report: NARRATIVE:
+CHEST, ONE VIEW: 2-10-2001
+FINDINGS: Costophrenic angles sharp, without evidence of effusion.
+The cardiomediastinal silhouette is normal. Vessels mildly
+indistinct with prominence of interstitial structures, suggesting
+mild, pulmonary edema. Left subclavian central venous catheter is
+seen, tip in mid SVC. No pneumothorax.
+IMPRESSION:
+1. NO EVIDENCE OF PNEUMOTHORAX.
+2. MILD INTERSTITIAL PULMONARY EDEMA.
+END OF IMPRESSION:
+SUMMARY: 2
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Dr. Juarez Tucker N  on: 2-10-2001
+ __________________________________
+ 
+ACCESSION NUMBER:
+LFEWOZWVDRX
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""41"", ""deid_patient_id"": ""patient00003"", ""dicom_path"": ""patient00003/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00003/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00003/study1/view1_frontal.jpg"", ""patient_id"": ""patient00003"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\nLFEWOZWVDRX\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00003/study1"", ""view_stem"": ""view1_frontal""}"
+patient00068/study1,patient00068/study1/view1_frontal.dcm,76,Male,White,Hispanic/Latino,0.0,0.0,0.0,0.0,0.980504554631655,10.306680679321289,-0.024184921756386757,0.37112313508987427,-6.480683326721191,1.1809998750686646,11.692265510559082,0.01786826364696026,0.42152976989746094,-1.7625012397766113,2.0683372020721436,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.12802284955978394,patient00031/study2,patient00031/study2/view1_frontal.dcm,train/patient00031/study2/view1_frontal.dcm,train/patient00031/study2/view1_frontal.jpg,88,Male,Unknown,Unknown,0.0,0.0,0.0,0.0,0.26385154437533215,11.074397087097168,-0.020564066246151924,0.3990834057331085,-7.434630393981934,1.2764049768447876,11.63155746459961,0.023570388555526733,0.41905534267425537,-1.4762474298477173,1.6319233179092407,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 88
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Comparison: Chest x-ray performed 9/1/20.
+Impression: 1. INTERVAL REPLACEMENT OF THE LEFT-SIDED CENTRAL VENOUS LINE,
+WITH TIP WITHIN THE SUPERIOR VENA CAVA. NO EVIDENCE FOR
+PNEUMOTHORAX. INTERVAL RESOLUTION OF MILD PULMONARY EDEMA SEEN ON
+PRIOR EXAM. RIGHT LOWER LOBE HAZY OPACITY, LIKELY ATELECTASIS.
+STABLE CARDIOMEDIASTINAL SILHOUETTE.
+Summary: 2: ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Jasmine, Potts  on: 9-1-2020
+Narrative: ONE-VIEW CHEST: 9/1/2020
+CLINICAL DATA: Systemic infection. Rule out sepsis.
+Full report: NARRATIVE:
+ONE-VIEW CHEST: 9/1/2020
+CLINICAL DATA: Systemic infection. Rule out sepsis.
+COMPARISON: Chest x-ray performed 9/1/20.
+IMPRESSION:
+1. INTERVAL REPLACEMENT OF THE LEFT-SIDED CENTRAL VENOUS LINE,
+WITH TIP WITHIN THE SUPERIOR VENA CAVA. NO EVIDENCE FOR
+PNEUMOTHORAX. INTERVAL RESOLUTION OF MILD PULMONARY EDEMA SEEN ON
+PRIOR EXAM. RIGHT LOWER LOBE HAZY OPACITY, LIKELY ATELECTASIS.
+STABLE CARDIOMEDIASTINAL SILHOUETTE.
+END OF IMPRESSION:
+SUMMARY 2: ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Jasmine, Potts  on: 9-1-2020
+ 
+ACCESSION NUMBER:
+456646565
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""88"", ""deid_patient_id"": ""patient00031"", ""dicom_path"": ""patient00031/study2/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00031/study2/view1_frontal.dcm"", ""path_to_image"": ""train/patient00031/study2/view1_frontal.jpg"", ""patient_id"": ""patient00031"", ""patient_report_date_order"": ""2"", ""race"": ""Unknown"", ""section_accession_number"": ""\n456646565\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study2"", ""study_key"": ""patient00031/study2"", ""view_stem"": ""view1_frontal""}"
+patient00068/study1,patient00068/study1/view1_frontal.dcm,76,Male,White,Hispanic/Latino,0.0,0.0,0.0,0.0,0.980504554631655,10.306680679321289,-0.024184921756386757,0.37112313508987427,-6.480683326721191,1.1809998750686646,11.692265510559082,0.01786826364696026,0.42152976989746094,-1.7625012397766113,2.0683372020721436,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.13052403926849365,patient00475/study1,patient00475/study1/view1_frontal.dcm,train/patient00475/study1/view1_frontal.dcm,train/patient00475/study1/view1_frontal.jpg,89,Female,White,Non-Hispanic/Non-Latino,0.5481188449815111,0.0,0.3560033122664087,0.0,0.3764381173681345,10.337029457092285,-0.018599549308419228,0.3725414276123047,-6.305034160614014,0.9802579283714294,12.556414604187012,0.026541495695710182,0.4523125886917114,-1.240196704864502,1.4704242944717407,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 89
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Impression: 1. RESOLUTION OF PULMONARY EDEMA. PULMONARY PARENCHYMA IS CLEAR.
+2. PROMINENCE OF THE RIGHT SUPERIOR MEDIASTINUM LIKELY SECONDARY TO
+SUPINE TECHNIQUE, LOW LUNG VOLUMES AND VASCULARITY. THE CARDIAC
+SILHOUETTE IS OTHERWISE UNREMARKABLE.
+3. PLEURA AND BONES ARE UNREMARKABLE.
+Summary: 2: ABNORMAL, PREVIOUSLY REPORTED.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: LUCERO, BRIELLA.  on: 2/17
+Narrative: PORTABLE SUPINE VIEW OF THE CHEST, March 2nd 17
+Full report: NARRATIVE:
+PORTABLE SUPINE VIEW OF THE CHEST, March 2nd 17
+IMPRESSION:
+1. RESOLUTION OF PULMONARY EDEMA. PULMONARY PARENCHYMA IS CLEAR.
+2. PROMINENCE OF THE RIGHT SUPERIOR MEDIASTINUM LIKELY SECONDARY TO
+SUPINE TECHNIQUE, LOW LUNG VOLUMES AND VASCULARITY. THE CARDIAC
+SILHOUETTE IS OTHERWISE UNREMARKABLE.
+3. PLEURA AND BONES ARE UNREMARKABLE.
+END OF IMPRESSION:
+SUMMARY 2: ABNORMAL, PREVIOUSLY REPORTED.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: LUCERO, BRIELLA.  on: 2/17
+ 
+ACCESSION NUMBER:
+779139
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""89"", ""deid_patient_id"": ""patient00475"", ""dicom_path"": ""patient00475/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00475/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00475/study1/view1_frontal.jpg"", ""patient_id"": ""patient00475"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\n779139\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study1"", ""study_key"": ""patient00475/study1"", ""view_stem"": ""view1_frontal""}"
+patient00068/study1,patient00068/study1/view1_frontal.dcm,76,Male,White,Hispanic/Latino,0.0,0.0,0.0,0.0,0.980504554631655,10.306680679321289,-0.024184921756386757,0.37112313508987427,-6.480683326721191,1.1809998750686646,11.692265510559082,0.01786826364696026,0.42152976989746094,-1.7625012397766113,2.0683372020721436,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.13097906112670898,patient00049/study1,patient00049/study1/view1_frontal.dcm,train/patient00049/study1/view1_frontal.dcm,train/patient00049/study1/view1_frontal.jpg,63,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.2814018802268534,10.900335311889648,-0.026188617572188377,0.3924591541290283,-6.703971862792969,1.0839070081710815,10.043787956237793,0.02529287338256836,0.3615403175354004,-1.0653475522994995,1.1826914548873901,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 63
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Clinical history: 62-year-old male presents with weakness.
+Comparison: None.
+Technique: Portable AP upright view of the chest.
+Findings: Lung volumes are decreased.  Trachea is midline.  Cardiomediastinal
+silhouette is normal in size and configuration.  Minimal
+atherosclerotic calcifications of the aortic knob are noted.  The
+bilateral hila are unremarkable.  The lung fields are clear, without
+focal opacities.  There is no evidence of pneumothorax, pulmonary
+edema or pleural effusions.  The visualized osseous structures reveal
+no acute abnormalities.
+Impression: 1.  LOW LUNG VOLUMES.
+2.  NO EVIDENCE OF FOCAL PULMONARY PARENCHYMAL CONSOLIDATION OR OTHER
+ACUTE CARDIOPULMONARY ABNORMALITIES.
+Summary: 4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+Narrative: PORTABLE CHEST RADIOGRAPH ONE VIEW: 5-25-2001:
+Full report: NARRATIVE:
+PORTABLE CHEST RADIOGRAPH ONE VIEW: 5-25-2001:
+CLINICAL HISTORY: 62-year-old male presents with weakness.
+COMPARISON:  None.
+TECHNIQUE:  Portable AP upright view of the chest.
+FINDINGS:
+Lung volumes are decreased.  Trachea is midline.  Cardiomediastinal
+silhouette is normal in size and configuration.  Minimal
+atherosclerotic calcifications of the aortic knob are noted.  The
+bilateral hila are unremarkable.  The lung fields are clear, without
+focal opacities.  There is no evidence of pneumothorax, pulmonary
+edema or pleural effusions.  The visualized osseous structures reveal
+no acute abnormalities.
+IMPRESSION:
+1.  LOW LUNG VOLUMES.
+2.  NO EVIDENCE OF FOCAL PULMONARY PARENCHYMAL CONSOLIDATION OR OTHER
+ACUTE CARDIOPULMONARY ABNORMALITIES.
+SUMMARY: 4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+X830G995434
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""63"", ""deid_patient_id"": ""patient00049"", ""dicom_path"": ""patient00049/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00049/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00049/study1/view1_frontal.jpg"", ""patient_id"": ""patient00049"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\nX830G995434\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00049/study1"", ""view_stem"": ""view1_frontal""}"

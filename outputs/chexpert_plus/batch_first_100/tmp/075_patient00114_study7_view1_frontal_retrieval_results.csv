@@ -1,0 +1,260 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00114/study7,patient00114/study7/view1_frontal.dcm,55,Male,Unknown,Unknown,0.6729682071294247,0.0,0.4789458253818239,0.0,0.2485935794576717,10.398131370544434,-0.013117700815200806,0.3749808967113495,-6.488898754119873,1.1917235851287842,12.954925537109375,0.01925031654536724,0.46707406640052795,-1.663924217224121,1.7085860967636108,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.11658042669296265,patient00521/study2,patient00521/study2/view1_frontal.dcm,train/patient00521/study2/view1_frontal.dcm,train/patient00521/study2/view1_frontal.jpg,34,Male,Unknown,Unknown,0.7612761735854321,0.0,0.9892680720746327,0.0,1.5614805407988943,10.458117485046387,-0.0172458216547966,0.37698057293891907,-6.482517719268799,0.9597408175468445,11.459227561950684,0.03098105825483799,0.4123370349407196,-1.4626225233078003,1.5169817209243774,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 34
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Comparison: 3/26/2008
+Impression: 1. REDEMONSTRATED RIGHT SUBCLAVIAN VENOUS CATHETER, TIP IN THE
+RIGHT ATRIUM.
+2. LARGE RIGHT PLEURAL EFFUSION.
+3. STABLE CARDIAC SILHOUETTE.
+4. INCREASED FOCAL OPACITY IN THE LEFT LOWER LUNG ZONE, CONSISTENT
+WITH WORSENING CONSOLIDATION. EVALUATION OF THE RIGHT LUNG IS
+DIFFICULT SECONDARY TO OPACIFICATION FROM EFFUSION.
+5. NO BONY CHANGES IDENTIFIED.
+Summary: 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MABEL AYERS, MD  on: 3-26-08
+Narrative: CHEST: One view.
+Full report: NARRATIVE:
+CHEST: One view.
+COMPARISON: 3/26/2008
+IMPRESSION:
+1. REDEMONSTRATED RIGHT SUBCLAVIAN VENOUS CATHETER, TIP IN THE
+RIGHT ATRIUM.
+2. LARGE RIGHT PLEURAL EFFUSION.
+3. STABLE CARDIAC SILHOUETTE.
+4. INCREASED FOCAL OPACITY IN THE LEFT LOWER LUNG ZONE, CONSISTENT
+WITH WORSENING CONSOLIDATION. EVALUATION OF THE RIGHT LUNG IS
+DIFFICULT SECONDARY TO OPACIFICATION FROM EFFUSION.
+5. NO BONY CHANGES IDENTIFIED.
+END OF IMPRESSION:
+SUMMARY 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MABEL AYERS, MD  on: 3-26-08
+ 
+ACCESSION NUMBER:
+X830G995434
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""34"", ""deid_patient_id"": ""patient00521"", ""dicom_path"": ""patient00521/study2/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00521/study2/view1_frontal.dcm"", ""path_to_image"": ""train/patient00521/study2/view1_frontal.jpg"", ""patient_id"": ""patient00521"", ""patient_report_date_order"": ""2"", ""race"": ""Unknown"", ""section_accession_number"": ""\nX830G995434\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study2"", ""study_key"": ""patient00521/study2"", ""view_stem"": ""view1_frontal""}"
+patient00114/study7,patient00114/study7/view1_frontal.dcm,55,Male,Unknown,Unknown,0.6729682071294247,0.0,0.4789458253818239,0.0,0.2485935794576717,10.398131370544434,-0.013117700815200806,0.3749808967113495,-6.488898754119873,1.1917235851287842,12.954925537109375,0.01925031654536724,0.46707406640052795,-1.663924217224121,1.7085860967636108,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.12615537643432617,patient00298/study3,patient00298/study3/view1_frontal.dcm,train/patient00298/study3/view1_frontal.dcm,train/patient00298/study3/view1_frontal.jpg,50,Female,Unknown,Unknown,0.44154018067955003,0.0,0.5829741057102522,0.0,0.01974598781319942,10.042860984802246,-0.01957820914685726,0.36186128854751587,-6.31119441986084,1.1174460649490356,11.910565376281738,0.0262617040425539,0.4289824366569519,-1.6873682737350464,1.5700007677078247,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 50
+Sex: Female
+Race: Unknown
+Ethnicity: Unknown
+History: 50 -year-old female with post-operative chest x-ray.
+Comparison: 6-10-2002
+Impression: 1. INTERVAL PLACEMENT OF NEW LEFT SIDED CHEST TUBE AND MEDIASTINAL
+DRAIN. NO PNEUMOTHORAX.
+2. LEFT SUBCLAVIAN LINE WITH TIP IN THE SUPERIOR VENA CAVA,
+UNCHANGED.
+3. INTERVAL DECREASE IN LEFT PLEURAL EFFUSION.
+4. PERSISTENT BILATERAL PULMONARY EDEMA.
+5. UNCHANGED OPACITY OF THE LEFT RETROCARDIAC REGION ATELECTASIS
+VERSUS CONSOLIDATION.
+Summary: 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MD Joy Douglas  on: 06/10/2002
+Narrative: CHEST: Frontal portable view, 6-10-2002
+Full report: NARRATIVE:
+CHEST: Frontal portable view, 6-10-2002
+COMPARISON: 6-10-2002
+HISTORY: 50 -year-old female with post-operative chest x-ray.
+IMPRESSION:
+1. INTERVAL PLACEMENT OF NEW LEFT SIDED CHEST TUBE AND MEDIASTINAL
+DRAIN. NO PNEUMOTHORAX.
+2. LEFT SUBCLAVIAN LINE WITH TIP IN THE SUPERIOR VENA CAVA,
+UNCHANGED.
+3. INTERVAL DECREASE IN LEFT PLEURAL EFFUSION.
+4. PERSISTENT BILATERAL PULMONARY EDEMA.
+5. UNCHANGED OPACITY OF THE LEFT RETROCARDIAC REGION ATELECTASIS
+VERSUS CONSOLIDATION.
+END OF IMPRESSION:
+SUMMARY 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MD Joy Douglas  on: 06/10/2002
+ 
+ACCESSION NUMBER:
+x830g995434
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""50"", ""deid_patient_id"": ""patient00298"", ""dicom_path"": ""patient00298/study3/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00298/study3/view1_frontal.dcm"", ""path_to_image"": ""train/patient00298/study3/view1_frontal.jpg"", ""patient_id"": ""patient00298"", ""patient_report_date_order"": ""4"", ""race"": ""Unknown"", ""section_accession_number"": ""\nx830g995434\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study3"", ""study_key"": ""patient00298/study3"", ""view_stem"": ""view1_frontal""}"
+patient00114/study7,patient00114/study7/view1_frontal.dcm,55,Male,Unknown,Unknown,0.6729682071294247,0.0,0.4789458253818239,0.0,0.2485935794576717,10.398131370544434,-0.013117700815200806,0.3749808967113495,-6.488898754119873,1.1917235851287842,12.954925537109375,0.01925031654536724,0.46707406640052795,-1.663924217224121,1.7085860967636108,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.13011819124221802,patient00546/study3,patient00546/study3/view1_frontal.dcm,train/patient00546/study3/view1_frontal.dcm,train/patient00546/study3/view1_frontal.jpg,81,Male,Unknown,Unknown,0.39586377285086594,0.0,0.0,0.0,0.0,9.408087730407715,-0.015435840003192425,0.3391340374946594,-5.334036350250244,1.155887484550476,10.993288040161133,0.02283691056072712,0.39602822065353394,-1.4485220909118652,1.413501501083374,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 81
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+History: Valvular heart disease.
+Comparison: 5/16/21.
+Findings: Portable view of the chest on 5/16/2021 at 1733 demonstrates interval
+development of large right pleural fluid collection, with possible
+underlying air space process such as atelectasis. There is also
+persistent retrocardiac opacity and probable small left pleural
+effusion. A tube in the subxiphoid region appears somewhat more
+kinked compared to the prior study. Other tubes and lines appear
+unchanged.
+Followup on 21-05-16 at 2030 demonstrates marked interval decrease
+in right pleural fluid collection. Retrocardiac opacity persists.
+Interstitial prominence consistent with edema also persists. Since
+the prior study, the tube previously located in tex subxiphoid
+region appears to have either been removed and replaced or
+repositioned. It now appears that there are two mediastinal
+drains. There is also a new right subclavian line which extends to
+the proximal right atrium, with no definite evidence of
+pneumothorax. Other tubes and lines are unchanged.
+Follow-up on 5/16/2021 at 0442 demonstrates interval increase in
+confluence of retrocardiac opacity. Interstitial edema and
+probable small bilateral pleural effusions persist. Multiple tubes
+and lines are unchanged.
+Impression: 1. SERIAL CHEST RADIOGRAPHS DEMONSTRATE INITIAL DEVELOPMENT OF
+LARGE RIGHT PLEURAL EFFUSION WHICH WAS MARKEDLY DECREASED
+SUBSEQUENTLY. ON THE MOST RECENT FILM, THERE ARE PROBABLE SMALL
+BILATERAL PLEURAL EFFUSIONS.
+2. PERSISTENT INTERSTITIAL EDEMA.
+3. RETROCARDIAC OPACITY APPEARS TO BE WORSENING ON THE MOST RECENT
+STUDY.
+4. TUBES AND LINES AS DESCRIBED ABOVE.
+Summary: 4: Possible significant abnormality/change, may need
+action.
+Narrative: CHEST AP PORTABLE: 5/16/21 AT 1733
+CHEST AP PORTABLE: 5-16-21 AT 2030
+CHEST AP PORTABLE: 5-16-2021 at 0442
+Full report: NARRATIVE:
+CHEST AP PORTABLE: 5/16/21 AT 1733
+CHEST AP PORTABLE: 5-16-21 AT 2030
+CHEST AP PORTABLE: 5-16-2021 at 0442
+COMPARISON:
+5/16/21.
+HISTORY:
+Valvular heart disease.
+FINDINGS:
+Portable view of the chest on 5/16/2021 at 1733 demonstrates interval
+development of large right pleural fluid collection, with possible
+underlying air space process such as atelectasis. There is also
+persistent retrocardiac opacity and probable small left pleural
+effusion. A tube in the subxiphoid region appears somewhat more
+kinked compared to the prior study. Other tubes and lines appear
+unchanged.
+Followup on 21-05-16 at 2030 demonstrates marked interval decrease
+in right pleural fluid collection. Retrocardiac opacity persists.
+Interstitial prominence consistent with edema also persists. Since
+the prior study, the tube previously located in tex subxiphoid
+region appears to have either been removed and replaced or
+repositioned. It now appears that there are two mediastinal
+drains. There is also a new right subclavian line which extends to
+the proximal right atrium, with no definite evidence of
+pneumothorax. Other tubes and lines are unchanged.
+Follow-up on 5/16/2021 at 0442 demonstrates interval increase in
+confluence of retrocardiac opacity. Interstitial edema and
+probable small bilateral pleural effusions persist. Multiple tubes
+and lines are unchanged.
+IMPRESSION:
+1. SERIAL CHEST RADIOGRAPHS DEMONSTRATE INITIAL DEVELOPMENT OF
+LARGE RIGHT PLEURAL EFFUSION WHICH WAS MARKEDLY DECREASED
+SUBSEQUENTLY. ON THE MOST RECENT FILM, THERE ARE PROBABLE SMALL
+BILATERAL PLEURAL EFFUSIONS.
+2. PERSISTENT INTERSTITIAL EDEMA.
+3. RETROCARDIAC OPACITY APPEARS TO BE WORSENING ON THE MOST RECENT
+STUDY.
+4. TUBES AND LINES AS DESCRIBED ABOVE.
+END OF IMPRESSION:
+SUMMARY 4: Possible significant abnormality/change, may need
+action.
+ 
+ACCESSION NUMBER:
+0_8_7_7_4_4_9_8_5_0_8_2_4
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""81"", ""deid_patient_id"": ""patient00546"", ""dicom_path"": ""patient00546/study3/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00546/study3/view1_frontal.dcm"", ""path_to_image"": ""train/patient00546/study3/view1_frontal.jpg"", ""patient_id"": ""patient00546"", ""patient_report_date_order"": ""3"", ""race"": ""Unknown"", ""section_accession_number"": ""\n0_8_7_7_4_4_9_8_5_0_8_2_4\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study3"", ""study_key"": ""patient00546/study3"", ""view_stem"": ""view1_frontal""}"
+patient00114/study7,patient00114/study7/view1_frontal.dcm,55,Male,Unknown,Unknown,0.6729682071294247,0.0,0.4789458253818239,0.0,0.2485935794576717,10.398131370544434,-0.013117700815200806,0.3749808967113495,-6.488898754119873,1.1917235851287842,12.954925537109375,0.01925031654536724,0.46707406640052795,-1.663924217224121,1.7085860967636108,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.13395047187805176,patient00147/study3,patient00147/study3/view1_frontal.dcm,train/patient00147/study3/view1_frontal.dcm,train/patient00147/study3/view1_frontal.jpg,52,Male,White,Non-Hispanic/Non-Latino,0.8252233953932425,0.0,0.8826401115280156,0.0,0.1677185753591802,9.75537395477295,-0.017780650407075882,0.3515673875808716,-6.4259419441223145,1.0259902477264404,11.127827644348145,0.022550443187355995,0.4009071886539459,-1.369484543800354,1.2180403470993042,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 52
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: Comparison is made with previous film from 10/4/2014 at 1242
+hours and 10-4-14 at 0644 hours.
+Findings: An endotracheal tube is present 6 cm above the carina. A
+nasogastric tube is in position. A left subclavian line has its
+distal tip in the brachycephalic vein. Again noted is moderate
+prominence of the transverse aorta. It appears to be more
+prominent than the previous examination. There is persistent left
+lower lobe atelectasis and increasing left pleural effusion.
+Multiple rib fractures are identified on the left side.
+Impression: 1. INCREASING SIZE OF THE TRANSVERSE THORACIC AORTA AND
+ INCREASING LEFT PLEURAL EFFUSION.
+Summary: 4: Possible significant abnormality/change, may need
+action.
+Narrative: AP CHEST, 10-4-2014 AT 0429 HOURS
+Full report: NARRATIVE:
+AP CHEST, 10-4-2014 AT 0429 HOURS
+COMPARISON:
+Comparison is made with previous film from 10/4/2014 at 1242
+hours and 10-4-14 at 0644 hours.
+FINDINGS:
+An endotracheal tube is present 6 cm above the carina. A
+nasogastric tube is in position. A left subclavian line has its
+distal tip in the brachycephalic vein. Again noted is moderate
+prominence of the transverse aorta. It appears to be more
+prominent than the previous examination. There is persistent left
+lower lobe atelectasis and increasing left pleural effusion.
+Multiple rib fractures are identified on the left side.
+IMPRESSION:
+1. INCREASING SIZE OF THE TRANSVERSE THORACIC AORTA AND
+ INCREASING LEFT PLEURAL EFFUSION.
+END OF IMPRESSION:
+SUMMARY 4: Possible significant abnormality/change, may need
+action.
+ 
+ACCESSION NUMBER:
+6340977630
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""52"", ""deid_patient_id"": ""patient00147"", ""dicom_path"": ""patient00147/study3/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00147/study3/view1_frontal.dcm"", ""path_to_image"": ""train/patient00147/study3/view1_frontal.jpg"", ""patient_id"": ""patient00147"", ""patient_report_date_order"": ""3"", ""race"": ""White"", ""section_accession_number"": ""\n6340977630\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study3"", ""study_key"": ""patient00147/study3"", ""view_stem"": ""view1_frontal""}"
+patient00114/study7,patient00114/study7/view1_frontal.dcm,55,Male,Unknown,Unknown,0.6729682071294247,0.0,0.4789458253818239,0.0,0.2485935794576717,10.398131370544434,-0.013117700815200806,0.3749808967113495,-6.488898754119873,1.1917235851287842,12.954925537109375,0.01925031654536724,0.46707406640052795,-1.663924217224121,1.7085860967636108,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.1353200078010559,patient00138/study5,patient00138/study5/view1_frontal.dcm,train/patient00138/study5/view1_frontal.dcm,train/patient00138/study5/view1_frontal.jpg,61,Male,Unknown,Unknown,2.528440263688996,1.8692381765067971,3.948177244368828,1.8712877621383166,0.0,11.559710502624512,-0.025034040212631226,0.41637322306632996,-7.85968542098999,1.069720983505249,12.955915451049805,0.014353136532008648,0.46728596091270447,-2.31825590133667,1.6875417232513428,"Critical evidence: low entropy evidence (low_entropy_evidence_z=3.948); entropy outlier evidence (validation_entropy_outlier_z=3.948). Warning evidence: low contrast evidence (low_contrast_evidence_z=2.528); intensity standard deviation outlier evidence (validation_intensity_std_outlier_z=2.732); contrast proxy outlier evidence (validation_contrast_proxy_outlier_z=2.528); noise proxy outlier evidence (validation_noise_proxy_outlier_z=2.258). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 61
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Comparison: 3/28/2014
+Findings: The right PICC line is more inferior in the region of the vena cava
+just above the right atrium. The trachea is midline. The
+mediastinum appears to be widened. The heart is normal in size and
+contour. Subsegmental atelectasis is present at the left lung
+base.
+There is an increased dense consolidation involving the right lower
+lobe.
+No effusion, contusion or pneumothorax. Minimal parenchymal
+infiltration is probably also present in the right middle lobe.
+Impression: 1. SIGNIFICANTLY INCREASED CONSOLIDATION PRESENT IN AN EXTENSIVE
+INFILTRATE IN THE RIGHT LOWER LOBE WHICH HAS SHOWN PROGRESS SINCE
+28 MARCH 2014.
+2. higgins, prince AT BEEPER 13963 NOTIFIED AT 1:20
+P.M.
+THE PATIENT IS TO BE ADMITTED TO THE HOSPITAL AND FOLLOW-UP
+EXAMINATIONS OBTAINED.
+Summary: 4: POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+Narrative: CHEST:
+Full report: NARRATIVE:
+CHEST:
+COMPARISON: 3/28/2014
+FINDINGS:
+The right PICC line is more inferior in the region of the vena cava
+just above the right atrium. The trachea is midline. The
+mediastinum appears to be widened. The heart is normal in size and
+contour. Subsegmental atelectasis is present at the left lung
+base.
+There is an increased dense consolidation involving the right lower
+lobe.
+No effusion, contusion or pneumothorax. Minimal parenchymal
+infiltration is probably also present in the right middle lobe.
+IMPRESSION:
+1. SIGNIFICANTLY INCREASED CONSOLIDATION PRESENT IN AN EXTENSIVE
+INFILTRATE IN THE RIGHT LOWER LOBE WHICH HAS SHOWN PROGRESS SINCE
+28 MARCH 2014.
+2. higgins, prince AT BEEPER 13963 NOTIFIED AT 1:20
+P.M.
+THE PATIENT IS TO BE ADMITTED TO THE HOSPITAL AND FOLLOW-UP
+EXAMINATIONS OBTAINED.
+END OF IMPRESSION:
+SUMMARY 4: POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+ 
+ACCESSION NUMBER:
+A1Z78D15
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""61"", ""deid_patient_id"": ""patient00138"", ""dicom_path"": ""patient00138/study5/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00138/study5/view1_frontal.dcm"", ""path_to_image"": ""train/patient00138/study5/view1_frontal.jpg"", ""patient_id"": ""patient00138"", ""patient_report_date_order"": ""5"", ""race"": ""Unknown"", ""section_accession_number"": ""\nA1Z78D15\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study5"", ""study_key"": ""patient00138/study5"", ""view_stem"": ""view1_frontal""}"

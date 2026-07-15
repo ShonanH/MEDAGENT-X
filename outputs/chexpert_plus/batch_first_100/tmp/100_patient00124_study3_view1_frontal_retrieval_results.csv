@@ -1,0 +1,161 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00124/study3,patient00124/study3/view1_frontal.dcm,45,Female,Native American,Non-Hispanic/Non-Latino,0.0,0.10689878949907121,0.0,0.1069065598025223,0.0,10.741772651672363,-0.025177421048283577,0.38679173588752747,-6.879512786865234,1.192704677581787,11.323238372802734,0.021067222580313683,0.40804868936538696,-1.6448190212249756,1.547005295753479,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.10815584659576416,patient00146/study24,patient00146/study24/view1_frontal.dcm,train/patient00146/study24/view1_frontal.dcm,train/patient00146/study24/view1_frontal.jpg,74,Female,White,Non-Hispanic/Non-Latino,0.8952609427229091,0.0,0.1418909722364626,0.0,0.316157689712274,10.499439239501953,-0.02204119600355625,0.3782241940498352,-7.197301387786865,1.160166621208191,11.399026870727539,0.022152824327349663,0.4107299745082855,-1.7513388395309448,1.5746417045593262,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 74
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 9-1-2001
+Impression: 1. STABLE TUBES AND LINES.
+2. NO SIGNIFICANT INTERVAL CHANGE IN CARDIOPULMONARY APPEARANCE.
+PERSISTENT PULMONARY EDEMA, BILATERAL PLEURAL EFFUSIONS, AND LEFT
+LOWER LOBE ATELECTASIS OR CONSOLIDATION, UNCHANGED.
+Summary: 2: Abnormal, previously reported.
+Narrative: SINGLE-VIEW CHEST: 9/1/2001
+Full report: NARRATIVE:
+SINGLE-VIEW CHEST: 9/1/2001
+COMPARISON: 9-1-2001
+IMPRESSION:
+1. STABLE TUBES AND LINES.
+2. NO SIGNIFICANT INTERVAL CHANGE IN CARDIOPULMONARY APPEARANCE.
+PERSISTENT PULMONARY EDEMA, BILATERAL PLEURAL EFFUSIONS, AND LEFT
+LOWER LOBE ATELECTASIS OR CONSOLIDATION, UNCHANGED.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal, previously reported.
+ 
+ACCESSION NUMBER:
+84870
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""74"", ""deid_patient_id"": ""patient00146"", ""dicom_path"": ""patient00146/study24/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00146/study24/view1_frontal.dcm"", ""path_to_image"": ""train/patient00146/study24/view1_frontal.jpg"", ""patient_id"": ""patient00146"", ""patient_report_date_order"": ""24"", ""race"": ""White"", ""section_accession_number"": ""\n84870\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study24"", ""study_key"": ""patient00146/study24"", ""view_stem"": ""view1_frontal""}"
+patient00124/study3,patient00124/study3/view1_frontal.dcm,45,Female,Native American,Non-Hispanic/Non-Latino,0.0,0.10689878949907121,0.0,0.1069065598025223,0.0,10.741772651672363,-0.025177421048283577,0.38679173588752747,-6.879512786865234,1.192704677581787,11.323238372802734,0.021067222580313683,0.40804868936538696,-1.6448190212249756,1.547005295753479,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.11385542154312134,patient00146/study25,patient00146/study25/view1_frontal.dcm,train/patient00146/study25/view1_frontal.dcm,train/patient00146/study25/view1_frontal.jpg,74,Female,White,Non-Hispanic/Non-Latino,0.0,0.0,0.00014222943265106006,0.0,0.14776733325657992,11.217957496643066,-0.02503603883087635,0.40401822328567505,-7.337923526763916,1.2679592370986938,11.624285697937012,0.02381777949631214,0.41877850890159607,-2.0680432319641113,1.8095957040786743,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 74
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 2012 january 22nd
+Impression: 1. INTERVAL REMOVAL OF THE NG TUBE. REMAINING TUBES AND LINES ARE
+STABLE.
+2. NO INTERVAL CHANGE IN CARDIOPULMONARY APPEARANCE. PERSISTENT
+MILD PULMONARY EDEMA, BILATERAL PLEURAL EFFUSIONS, AND LEFT LOWER
+LOBE ATELECTASIS OR CONSOLIDATION.
+Summary: 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Charlie, Bowen  on: 1-22-2012
+Narrative: SINGLE-VIEW CHEST: 1/22/12
+Full report: NARRATIVE:
+SINGLE-VIEW CHEST: 1/22/12
+COMPARISON: 2012 january 22nd
+IMPRESSION:
+1. INTERVAL REMOVAL OF THE NG TUBE. REMAINING TUBES AND LINES ARE
+STABLE.
+2. NO INTERVAL CHANGE IN CARDIOPULMONARY APPEARANCE. PERSISTENT
+MILD PULMONARY EDEMA, BILATERAL PLEURAL EFFUSIONS, AND LEFT LOWER
+LOBE ATELECTASIS OR CONSOLIDATION.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Charlie, Bowen  on: 1-22-2012
+ 
+ACCESSION NUMBER:
+52281389
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""74"", ""deid_patient_id"": ""patient00146"", ""dicom_path"": ""patient00146/study25/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00146/study25/view1_frontal.dcm"", ""path_to_image"": ""train/patient00146/study25/view1_frontal.jpg"", ""patient_id"": ""patient00146"", ""patient_report_date_order"": ""25"", ""race"": ""White"", ""section_accession_number"": ""\n52281389\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study25"", ""study_key"": ""patient00146/study25"", ""view_stem"": ""view1_frontal""}"
+patient00124/study3,patient00124/study3/view1_frontal.dcm,45,Female,Native American,Non-Hispanic/Non-Latino,0.0,0.10689878949907121,0.0,0.1069065598025223,0.0,10.741772651672363,-0.025177421048283577,0.38679173588752747,-6.879512786865234,1.192704677581787,11.323238372802734,0.021067222580313683,0.40804868936538696,-1.6448190212249756,1.547005295753479,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.11710202693939209,patient00146/study1,patient00146/study1/view1_frontal.dcm,train/patient00146/study1/view1_frontal.dcm,train/patient00146/study1/view1_frontal.jpg,74,Female,White,Non-Hispanic/Non-Latino,0.4933071230698011,0.0,0.0,0.0,0.0,9.966156959533691,-0.012539359740912914,0.359404057264328,-6.073123931884766,1.0290696620941162,11.610154151916504,0.013210189528763294,0.4187370240688324,-2.0685460567474365,1.2587002515792847,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 74
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 3-3-2014
+Impression: 1. NASOGASTRIC TUBE REMOVED. REMAINING LINES AND TUBES UNCHANGED.
+2. PERSISTENT LARGE PLEURAL EFFUSIONS AND MILD PULMONARY EDEMA.
+LEFT LOWER LOBE ATELECTASIS AND/OR CONSOLIDATION.
+End of impression: I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Sajid A. Chandler MD  on: 2014/03
+Narrative: PORTABLE CHEST:
+Full report: NARRATIVE:
+PORTABLE CHEST:
+COMPARISON:
+3-3-2014
+IMPRESSION:
+1. NASOGASTRIC TUBE REMOVED. REMAINING LINES AND TUBES UNCHANGED.
+2. PERSISTENT LARGE PLEURAL EFFUSIONS AND MILD PULMONARY EDEMA.
+LEFT LOWER LOBE ATELECTASIS AND/OR CONSOLIDATION.
+END OF IMPRESSION:
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Sajid A. Chandler MD  on: 2014/03
+ 
+ACCESSION NUMBER:
+lmqtu
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""74"", ""deid_patient_id"": ""patient00146"", ""dicom_path"": ""patient00146/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00146/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00146/study1/view1_frontal.jpg"", ""patient_id"": ""patient00146"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\nlmqtu\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study1"", ""study_key"": ""patient00146/study1"", ""view_stem"": ""view1_frontal""}"
+patient00124/study3,patient00124/study3/view1_frontal.dcm,45,Female,Native American,Non-Hispanic/Non-Latino,0.0,0.10689878949907121,0.0,0.1069065598025223,0.0,10.741772651672363,-0.025177421048283577,0.38679173588752747,-6.879512786865234,1.192704677581787,11.323238372802734,0.021067222580313683,0.40804868936538696,-1.6448190212249756,1.547005295753479,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.12342125177383423,patient00491/study2,patient00491/study2/view1_frontal.dcm,train/patient00491/study2/view1_frontal.dcm,train/patient00491/study2/view1_frontal.jpg,89,Female,White,Non-Hispanic/Non-Latino,0.5115775886494104,0.07596978081295935,0.4410869363997963,0.07597393927560173,0.021072481952267085,10.031837463378906,-0.007923736236989498,0.3619060218334198,-6.094938278198242,1.5844863653182983,12.115017890930176,0.01680188998579979,0.4368400573730469,-1.729659914970398,1.5966302156448364,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 89
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+History: Stroke, evaluate aspiration.
+Comparison: Comparison is made with 8/6/2013.
+Impression: 1. FEEDING TUBE IN PLACE, UNCHANGED.
+2. NO CHANGE IN CARDIOPULMONARY STATUS WITH PERSISTENT MILD
+PULMONARY EDEMA, PROBABLE LEFT PLEURAL EFFUSION, AND LEFT
+RETROCARDIAC OPACIFICATION.
+Summary: 2 ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: diana robinson, pa-c.  on: 8/6/2013
+Narrative: FRONTAL PORTABLE VIEW OF THE CHEST, August 6th, 2013:
+Full report: NARRATIVE:
+FRONTAL PORTABLE VIEW OF THE CHEST, August 6th, 2013:
+HISTORY: Stroke, evaluate aspiration.
+COMPARISON: Comparison is made with 8/6/2013.
+IMPRESSION:
+1. FEEDING TUBE IN PLACE, UNCHANGED.
+2. NO CHANGE IN CARDIOPULMONARY STATUS WITH PERSISTENT MILD
+PULMONARY EDEMA, PROBABLE LEFT PLEURAL EFFUSION, AND LEFT
+RETROCARDIAC OPACIFICATION.
+END OF IMPRESSION:
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: diana robinson, pa-c.  on: 8/6/2013
+ 
+ACCESSION NUMBER:
+7154407945477
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""89"", ""deid_patient_id"": ""patient00491"", ""dicom_path"": ""patient00491/study2/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00491/study2/view1_frontal.dcm"", ""path_to_image"": ""train/patient00491/study2/view1_frontal.jpg"", ""patient_id"": ""patient00491"", ""patient_report_date_order"": ""2"", ""race"": ""White"", ""section_accession_number"": ""\n7154407945477\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study2"", ""study_key"": ""patient00491/study2"", ""view_stem"": ""view1_frontal""}"
+patient00124/study3,patient00124/study3/view1_frontal.dcm,45,Female,Native American,Non-Hispanic/Non-Latino,0.0,0.10689878949907121,0.0,0.1069065598025223,0.0,10.741772651672363,-0.025177421048283577,0.38679173588752747,-6.879512786865234,1.192704677581787,11.323238372802734,0.021067222580313683,0.40804868936538696,-1.6448190212249756,1.547005295753479,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.1265549659729004,patient00308/study1,patient00308/study1/view1_frontal.dcm,train/patient00308/study1/view1_frontal.dcm,train/patient00308/study1/view1_frontal.jpg,77,Male,Unknown,Unknown,1.0383808633569709,0.0,0.6296998969695314,0.0,0.30125158929076834,9.515963554382324,-0.006085267290472984,0.34332382678985596,-5.761519432067871,1.3176052570343018,11.73371410369873,0.021208589896559715,0.4228724241256714,-1.285439372062683,1.695383071899414,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 77
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Comparison: 9/13/2006
+Impression: 1. INTERVAL POST SURGICAL CHANGES WITH NEW ENDOTRACHEAL TUBE WITH
+THE TIP APPROXIMATELY 1 CM FROM THE CARINA. RIGHT INTERNAL JUGULAR
+CATHETER TIP IS LIKELY IN THE SUPERIOR VENA CAVA. NASOGASTRIC TUBE
+TIP IS IN THE STOMACH. THERE IS A NEW LEFT SIDED CHEST TUBE AND A
+NEW MEDIASTINAL DRAIN. MULTIPLE MEDIAN STERNOTOMY WIRES ARE ALSO
+NOTED.
+2. DECREASED LUNG VOLUMES WITH SMALL LEFT PLEURAL EFFUSION AND
+ASSOCIATED BASILAR OPACITIES LIKELY REPRESENTING ATELECTASIS. THERE
+IS LIKELY MILD PULMONARY EDEMA.
+Summary: 4: POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Estrada, Brittany Matthew  on: 2006/9/13
+Narrative: SINGLE VIEW CHEST: september 13th
+Full report: NARRATIVE:
+SINGLE VIEW CHEST: september 13th
+COMPARISON: 9/13/2006
+IMPRESSION:
+1. INTERVAL POST SURGICAL CHANGES WITH NEW ENDOTRACHEAL TUBE WITH
+THE TIP APPROXIMATELY 1 CM FROM THE CARINA. RIGHT INTERNAL JUGULAR
+CATHETER TIP IS LIKELY IN THE SUPERIOR VENA CAVA. NASOGASTRIC TUBE
+TIP IS IN THE STOMACH. THERE IS A NEW LEFT SIDED CHEST TUBE AND A
+NEW MEDIASTINAL DRAIN. MULTIPLE MEDIAN STERNOTOMY WIRES ARE ALSO
+NOTED.
+2. DECREASED LUNG VOLUMES WITH SMALL LEFT PLEURAL EFFUSION AND
+ASSOCIATED BASILAR OPACITIES LIKELY REPRESENTING ATELECTASIS. THERE
+IS LIKELY MILD PULMONARY EDEMA.
+END OF IMPRESSION:
+SUMMARY 4: POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Estrada, Brittany Matthew  on: 2006/9/13
+ 
+ACCESSION NUMBER:
+24999.10
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""77"", ""deid_patient_id"": ""patient00308"", ""dicom_path"": ""patient00308/study1/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00308/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00308/study1/view1_frontal.jpg"", ""patient_id"": ""patient00308"", ""patient_report_date_order"": ""1"", ""race"": ""Unknown"", ""section_accession_number"": ""\n24999.10\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00308/study1"", ""view_stem"": ""view1_frontal""}"

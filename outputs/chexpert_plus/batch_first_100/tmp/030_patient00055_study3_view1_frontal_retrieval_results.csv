@@ -1,0 +1,176 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00055/study3,patient00055/study3/view1_frontal.dcm,43,Female,White,Non-Hispanic/Non-Latino,0.35323230713008247,0.0,0.0,0.0,0.8528770873556294,12.121212005615234,-0.021824069321155548,0.436841756105423,-7.782167911529541,1.0811772346496582,13.890189170837402,0.02748340368270874,0.5004649758338928,-1.8585314750671387,1.739646553993225,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.07101643085479736,patient00147/study10,patient00147/study10/view1_frontal.dcm,train/patient00147/study10/view1_frontal.dcm,train/patient00147/study10/view1_frontal.jpg,52,Male,White,Non-Hispanic/Non-Latino,1.0931927710817564,0.2994041485521647,1.2853091288227974,0.29945936467561873,0.0,9.37756633758545,-0.011108596809208393,0.3382013738155365,-5.47243070602417,1.044696569442749,11.866660118103027,0.01999794691801071,0.4277339577674866,-1.9585338830947876,1.4540685415267944,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 52
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 7/16/2019.
+Impression: 1. THE CHEST TUBE REMAINS AT THE LEFT LUNG BASE WITH THE SIDE PORT
+AT OR EXTERNAL TO THE CHEST WALL; OTHER LINES AND TUBES UNCHANGED.
+2. IMPROVED AERATION OF THE LEFT LUNG WITH PERSISTING LOCULATED
+PLEURAL FLUID.
+3. PERSISTING LEFT LOWER LOBE ATELECTASIS OR CONSOLIDATION,
+UNCHANGED.
+4. MILD PULMONARY EDEMA, UNCHANGED.
+5. PATCHY OPACITIES AT THE RIGHT LUNG BASE, WHICH MAY REPRESENT A
+SUPERIMPOSED PNEUMONIA OR ASPIRATION AND IS UNCHANGED.
+Summary: 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: peck john, md.  on: 7/16/2019
+ __________________________________
+Narrative: PORTABLE CHEST: 7/16/19.
+Full report: NARRATIVE:
+PORTABLE CHEST: 7/16/19.
+COMPARISON:
+7/16/2019.
+IMPRESSION:
+1. THE CHEST TUBE REMAINS AT THE LEFT LUNG BASE WITH THE SIDE PORT
+AT OR EXTERNAL TO THE CHEST WALL; OTHER LINES AND TUBES UNCHANGED.
+2. IMPROVED AERATION OF THE LEFT LUNG WITH PERSISTING LOCULATED
+PLEURAL FLUID.
+3. PERSISTING LEFT LOWER LOBE ATELECTASIS OR CONSOLIDATION,
+UNCHANGED.
+4. MILD PULMONARY EDEMA, UNCHANGED.
+5. PATCHY OPACITIES AT THE RIGHT LUNG BASE, WHICH MAY REPRESENT A
+SUPERIMPOSED PNEUMONIA OR ASPIRATION AND IS UNCHANGED.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: peck john, md.  on: 7/16/2019
+ __________________________________
+ 
+ACCESSION NUMBER:
+78Z771GB01
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""52"", ""deid_patient_id"": ""patient00147"", ""dicom_path"": ""patient00147/study10/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00147/study10/view1_frontal.dcm"", ""path_to_image"": ""train/patient00147/study10/view1_frontal.jpg"", ""patient_id"": ""patient00147"", ""patient_report_date_order"": ""10"", ""race"": ""White"", ""section_accession_number"": ""\n78Z771GB01\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study10"", ""study_key"": ""patient00147/study10"", ""view_stem"": ""view1_frontal""}"
+patient00055/study3,patient00055/study3/view1_frontal.dcm,43,Female,White,Non-Hispanic/Non-Latino,0.35323230713008247,0.0,0.0,0.0,0.8528770873556294,12.121212005615234,-0.021824069321155548,0.436841756105423,-7.782167911529541,1.0811772346496582,13.890189170837402,0.02748340368270874,0.5004649758338928,-1.8585314750671387,1.739646553993225,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.0837411880493164,patient00147/study2,patient00147/study2/view1_frontal.dcm,train/patient00147/study2/view1_frontal.dcm,train/patient00147/study2/view1_frontal.jpg,52,Male,White,Non-Hispanic/Non-Latino,0.7247349172533304,0.0,0.973338375617714,0.0,1.3551159525882261,9.909331321716309,-0.01608365960419178,0.35721030831336975,-6.253490924835205,1.3891379833221436,12.070470809936523,0.016589224338531494,0.4352395534515381,-1.582431435585022,1.4696513414382935,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 52
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: Comparison is made with 12TH AUGUST.
+Impression: 1. INTERVAL REMOVAL OF TWO LEFT SIDED CHEST TUBES WITH NO
+ EVIDENCE OF PNEUMOTHORAX; OTHER LINES AND TUBES UNCHANGED.
+ THERE IS A SMALL AMOUNT OF SUBCUTANEOUS AIR IN THE LEFT CHEST
+ WALL, WHICH IS UNCHANGED.
+2. MILD INTERSTITIAL PULMONARY EDEMA, UNCHANGED.
+3. PERSISTING LEFT LOWER LOBE ATELECTASIS OR CONSOLIDATION,
+ UNCHANGED.
+Summary: 2: Abnormal, previously reported.
+Narrative: PORTABLE CHEST, 8/12/2000
+Full report: NARRATIVE:
+PORTABLE CHEST, 8/12/2000
+COMPARISON:
+Comparison is made with 12TH AUGUST.
+IMPRESSION:
+1. INTERVAL REMOVAL OF TWO LEFT SIDED CHEST TUBES WITH NO
+ EVIDENCE OF PNEUMOTHORAX; OTHER LINES AND TUBES UNCHANGED.
+ THERE IS A SMALL AMOUNT OF SUBCUTANEOUS AIR IN THE LEFT CHEST
+ WALL, WHICH IS UNCHANGED.
+2. MILD INTERSTITIAL PULMONARY EDEMA, UNCHANGED.
+3. PERSISTING LEFT LOWER LOBE ATELECTASIS OR CONSOLIDATION,
+ UNCHANGED.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal, previously reported.
+ 
+ACCESSION NUMBER:
+#sitouzywh
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""52"", ""deid_patient_id"": ""patient00147"", ""dicom_path"": ""patient00147/study2/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00147/study2/view1_frontal.dcm"", ""path_to_image"": ""train/patient00147/study2/view1_frontal.jpg"", ""patient_id"": ""patient00147"", ""patient_report_date_order"": ""2"", ""race"": ""White"", ""section_accession_number"": ""\n#sitouzywh\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study2"", ""study_key"": ""patient00147/study2"", ""view_stem"": ""view1_frontal""}"
+patient00055/study3,patient00055/study3/view1_frontal.dcm,43,Female,White,Non-Hispanic/Non-Latino,0.35323230713008247,0.0,0.0,0.0,0.8528770873556294,12.121212005615234,-0.021824069321155548,0.436841756105423,-7.782167911529541,1.0811772346496582,13.890189170837402,0.02748340368270874,0.5004649758338928,-1.8585314750671387,1.739646553993225,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.08762317895889282,patient00515/study5,patient00515/study5/view1_frontal.dcm,train/patient00515/study5/view1_frontal.dcm,train/patient00515/study5/view1_frontal.jpg,59,Female,White,Non-Hispanic/Non-Latino,0.2801496086528048,0.0,0.0,0.0,0.6698475923473458,9.889162063598633,-0.0064590624533593655,0.35678592324256897,-6.1952362060546875,1.0539259910583496,14.831177711486816,0.01992492936551571,0.5348029732704163,-1.9914531707763672,2.468090295791626,"Critical evidence: intensity mean outlier evidence (validation_intensity_mean_outlier_z=3.613). Warning evidence: RAD-DINO embedding outlier evidence (raddino_embedding_outlier_z=2.050). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 59
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 5-21
+CLINICAL DATA: Shortness of breath, breast cancer. Left chest tube
+Impression: 1. INTERVAL REMOVAL OF LEFT-SIDED CHEST TUBE.
+2. REDEMONSTRATION OF LEFT HYDROPNEUMOTHORAX, WITH CONSOLIDATION
+OF MUCH OF THE UNDERLYING LEFT LUNG, WITH A SMALL AREA OF AERATION
+AT THE LEFT APEX.
+Summary: 2 ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Dr. Gressett  on: 5/21/2003
+Narrative: ORTABLE CHEST ONE VIEW: 05-21-2003
+Full report: NARRATIVE:
+ORTABLE CHEST ONE VIEW: 05-21-2003
+COMPARISON: 5-21
+CLINICAL DATA: Shortness of breath, breast cancer. Left chest tube
+IMPRESSION:
+1. INTERVAL REMOVAL OF LEFT-SIDED CHEST TUBE.
+2. REDEMONSTRATION OF LEFT HYDROPNEUMOTHORAX, WITH CONSOLIDATION
+OF MUCH OF THE UNDERLYING LEFT LUNG, WITH A SMALL AREA OF AERATION
+AT THE LEFT APEX.
+END OF IMPRESSION:
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Dr. Gressett  on: 5/21/2003
+ 
+ACCESSION NUMBER:
+KLBASESC
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""59"", ""deid_patient_id"": ""patient00515"", ""dicom_path"": ""patient00515/study5/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00515/study5/view1_frontal.dcm"", ""path_to_image"": ""train/patient00515/study5/view1_frontal.jpg"", ""patient_id"": ""patient00515"", ""patient_report_date_order"": ""5"", ""race"": ""White"", ""section_accession_number"": ""\nKLBASESC\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study5"", ""study_key"": ""patient00515/study5"", ""view_stem"": ""view1_frontal""}"
+patient00055/study3,patient00055/study3/view1_frontal.dcm,43,Female,White,Non-Hispanic/Non-Latino,0.35323230713008247,0.0,0.0,0.0,0.8528770873556294,12.121212005615234,-0.021824069321155548,0.436841756105423,-7.782167911529541,1.0811772346496582,13.890189170837402,0.02748340368270874,0.5004649758338928,-1.8585314750671387,1.739646553993225,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.08803039789199829,patient00146/study23,patient00146/study23/view1_frontal.dcm,train/patient00146/study23/view1_frontal.dcm,train/patient00146/study23/view1_frontal.jpg,74,Female,White,Non-Hispanic/Non-Latino,1.181500644631224,0.19018487193730868,1.039694110338445,0.19020788920015186,0.0,10.468381881713867,-0.014805116690695286,0.3774549663066864,-6.761007308959961,1.1826494932174683,12.01915168762207,0.024374032393097878,0.43301835656166077,-1.7242566347122192,1.5687793493270874,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 74
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: February 2013.
+Impression: 1. STABLE TUBES AND LINES.
+2. NO SIGNIFICANT INTERVAL CHANGE IN CARDIOPULMONARY APPEARANCE.
+PERSISTENT PULMONARY EDEMA AND LEFT LOWER LOBE ATELECTASIS OR
+CONSOLIDATION.
+Summary: 2: ABNORMAL, PREVIOUSLY REPORTED.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Hamilton, Dr.  on: 2-22-2013
+Narrative: SINGLE VIEW CHEST, 13/2
+Full report: NARRATIVE:
+SINGLE VIEW CHEST, 13/2
+COMPARISON: February 2013.
+IMPRESSION:
+1. STABLE TUBES AND LINES.
+2. NO SIGNIFICANT INTERVAL CHANGE IN CARDIOPULMONARY APPEARANCE.
+PERSISTENT PULMONARY EDEMA AND LEFT LOWER LOBE ATELECTASIS OR
+CONSOLIDATION.
+END OF IMPRESSION:
+SUMMARY 2: ABNORMAL, PREVIOUSLY REPORTED.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Hamilton, Dr.  on: 2-22-2013
+ 
+ACCESSION NUMBER:
+402809495
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""74"", ""deid_patient_id"": ""patient00146"", ""dicom_path"": ""patient00146/study23/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00146/study23/view1_frontal.dcm"", ""path_to_image"": ""train/patient00146/study23/view1_frontal.jpg"", ""patient_id"": ""patient00146"", ""patient_report_date_order"": ""23"", ""race"": ""White"", ""section_accession_number"": ""\n402809495\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study23"", ""study_key"": ""patient00146/study23"", ""view_stem"": ""view1_frontal""}"
+patient00055/study3,patient00055/study3/view1_frontal.dcm,43,Female,White,Non-Hispanic/Non-Latino,0.35323230713008247,0.0,0.0,0.0,0.8528770873556294,12.121212005615234,-0.021824069321155548,0.436841756105423,-7.782167911529541,1.0811772346496582,13.890189170837402,0.02748340368270874,0.5004649758338928,-1.8585314750671387,1.739646553993225,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.09258192777633667,patient00146/study20,patient00146/study20/view1_frontal.dcm,train/patient00146/study20/view1_frontal.dcm,train/patient00146/study20/view1_frontal.jpg,74,Female,White,Non-Hispanic/Non-Latino,0.051766779803810004,0.0,0.12986459903283393,0.0,0.6105908102841768,9.91028881072998,-0.019130585715174675,0.3570946455001831,-6.3821611404418945,1.3537752628326416,11.443800926208496,0.020683757960796356,0.4124242663383484,-1.449747920036316,1.3498640060424805,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 74
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 4/24
+Technique: Single portable view of the chest.
+Impression: 1. TUBES AND LINES UNCHANGED.
+2. IMPROVED AERATION AT THE LEFT LUNG BASE WITH SOME PERSISTENT
+ATELECTASIS IN THIS REGION.
+3. MILD INTERSTITIAL PULMONARY EDEMA.
+Summary: 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Jakira, Glover  on: 4/24/2020
+Narrative: SINGLE PORTABLE VIEW OF THE CHEST: 4/24/2020
+Full report: NARRATIVE:
+SINGLE PORTABLE VIEW OF THE CHEST: 4/24/2020
+TECHNIQUE:
+Single portable view of the chest.
+COMPARISON:
+4/24
+IMPRESSION:
+1. TUBES AND LINES UNCHANGED.
+2. IMPROVED AERATION AT THE LEFT LUNG BASE WITH SOME PERSISTENT
+ATELECTASIS IN THIS REGION.
+3. MILD INTERSTITIAL PULMONARY EDEMA.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Jakira, Glover  on: 4/24/2020
+ 
+ACCESSION NUMBER:
+435j-1775-5
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""74"", ""deid_patient_id"": ""patient00146"", ""dicom_path"": ""patient00146/study20/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00146/study20/view1_frontal.dcm"", ""path_to_image"": ""train/patient00146/study20/view1_frontal.jpg"", ""patient_id"": ""patient00146"", ""patient_report_date_order"": ""20"", ""race"": ""White"", ""section_accession_number"": ""\n435j-1775-5\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study20"", ""study_key"": ""patient00146/study20"", ""view_stem"": ""view1_frontal""}"

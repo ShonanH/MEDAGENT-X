@@ -1,0 +1,218 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00034/study1,patient00034/study1/view1_frontal.dcm,45,Male,Asian,Non-Hispanic/Non-Latino,0.0,0.8344982790257494,0.0,0.8349114552565557,0.0,10.385027885437012,-0.020162420347332954,0.3741946220397949,-5.960821628570557,1.4279621839523315,11.625589370727539,0.02048902027308941,0.41900166869163513,-2.0980257987976074,2.4803738594055176,"Critical evidence: edge density outlier evidence (validation_edge_density_outlier_z=4.360). Warning evidence: RAD-DINO patch variability outlier evidence (raddino_patch_variability_outlier_z=2.359). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.1131935715675354,patient00408/study1,patient00408/study1/view1_frontal.dcm,train/patient00408/study1/view1_frontal.dcm,train/patient00408/study1/view1_frontal.jpg,45,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.7584644906459456,10.912386894226074,-0.020979052409529686,0.3932076096534729,-6.626206874847412,1.0852993726730347,13.06923770904541,0.026534581556916237,0.47084841132164,-1.9509888887405396,1.4930083751678467,"Warning evidence: edge density outlier evidence (validation_edge_density_outlier_z=2.896). Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 45
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Clinical history: 45-year-old, smoking crack.
+Comparison: None.
+Findings: Portable supine chest radiograph demonstrates mild
+reticular prominence bilaterally likely representing mild pulmonary
+edema. There is no focal consolidation. Small right pleural
+effusion is also seen. The cardiomediastinal silhouette is within
+normal limits. Visualized osseous structures are unremarkable.
+Impression: 1. MILD RETICULAR PROMINENCE BILATERALLY WHICH MAY REFLECT MILD
+PULMONARY EDEMA.
+2. SMALL RIGHT PLEURAL EFFUSION.
+Summary: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Chaney, Londyn  on: 1-6-2000
+Narrative: CHEST RADIOGRAPH: 1/6/2000
+Full report: NARRATIVE:
+CHEST RADIOGRAPH: 1/6/2000
+COMPARISON: None.
+CLINICAL HISTORY: 45-year-old, smoking crack.
+FINDINGS: Portable supine chest radiograph demonstrates mild
+reticular prominence bilaterally likely representing mild pulmonary
+edema. There is no focal consolidation. Small right pleural
+effusion is also seen. The cardiomediastinal silhouette is within
+normal limits. Visualized osseous structures are unremarkable.
+IMPRESSION:
+1. MILD RETICULAR PROMINENCE BILATERALLY WHICH MAY REFLECT MILD
+PULMONARY EDEMA.
+2. SMALL RIGHT PLEURAL EFFUSION.
+END OF IMPRESSION:
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Chaney, Londyn  on: 1-6-2000
+ 
+ACCESSION NUMBER:
+3208 8133
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""45"", ""deid_patient_id"": ""patient00408"", ""dicom_path"": ""patient00408/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00408/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00408/study1/view1_frontal.jpg"", ""patient_id"": ""patient00408"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\n3208 8133\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00408/study1"", ""view_stem"": ""view1_frontal""}"
+patient00034/study1,patient00034/study1/view1_frontal.dcm,45,Male,Asian,Non-Hispanic/Non-Latino,0.0,0.8344982790257494,0.0,0.8349114552565557,0.0,10.385027885437012,-0.020162420347332954,0.3741946220397949,-5.960821628570557,1.4279621839523315,11.625589370727539,0.02048902027308941,0.41900166869163513,-2.0980257987976074,2.4803738594055176,"Critical evidence: edge density outlier evidence (validation_edge_density_outlier_z=4.360). Warning evidence: RAD-DINO patch variability outlier evidence (raddino_patch_variability_outlier_z=2.359). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.12063640356063843,patient00261/study1,patient00261/study1/view1_frontal.dcm,train/patient00261/study1/view1_frontal.dcm,train/patient00261/study1/view1_frontal.jpg,89,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.9040418612921671,11.086416244506836,-0.01653425581753254,0.3997047543525696,-7.07489013671875,1.158004879951477,12.853020668029785,0.021534601226449013,0.4632932245731354,-1.5084954500198364,1.889146089553833,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 89
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 10-1-2000 .
+Impression: PERSISTENT BILATERAL DIFFUSE PATCHY OPACITIES SUPERIMPOSED ON
+DIFFUSE RETICULAR PATTERN, CONSISTENT WITH PULMONARY EDEMA. NO
+SIGNIFICANT INTERVAL CHANGE ALLOWING FOR DIFFERENCES IN TECHNIQUE.
+Summary: 2 ABNORMAL, PREVIOUSLY REPORTED.
+ __________________________________
+Narrative: SINGLE VIEW PORTABLE CHEST: 10/1/2000 at 0705 hours.
+Full report: NARRATIVE:
+SINGLE VIEW PORTABLE CHEST: 10/1/2000 at 0705 hours.
+COMPARISON: 10-1-2000 .
+IMPRESSION:
+PERSISTENT BILATERAL DIFFUSE PATCHY OPACITIES SUPERIMPOSED ON
+DIFFUSE RETICULAR PATTERN, CONSISTENT WITH PULMONARY EDEMA. NO
+SIGNIFICANT INTERVAL CHANGE ALLOWING FOR DIFFERENCES IN TECHNIQUE.
+END OF IMPRESSION:
+ SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED.
+ __________________________________
+ 
+ACCESSION NUMBER:
+362952502370
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""89"", ""deid_patient_id"": ""patient00261"", ""dicom_path"": ""patient00261/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00261/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00261/study1/view1_frontal.jpg"", ""patient_id"": ""patient00261"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\n362952502370\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00261/study1"", ""view_stem"": ""view1_frontal""}"
+patient00034/study1,patient00034/study1/view1_frontal.dcm,45,Male,Asian,Non-Hispanic/Non-Latino,0.0,0.8344982790257494,0.0,0.8349114552565557,0.0,10.385027885437012,-0.020162420347332954,0.3741946220397949,-5.960821628570557,1.4279621839523315,11.625589370727539,0.02048902027308941,0.41900166869163513,-2.0980257987976074,2.4803738594055176,"Critical evidence: edge density outlier evidence (validation_edge_density_outlier_z=4.360). Warning evidence: RAD-DINO patch variability outlier evidence (raddino_patch_variability_outlier_z=2.359). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.1272200345993042,patient00284/study1,patient00284/study1/view1_frontal.dcm,train/patient00284/study1/view1_frontal.dcm,train/patient00284/study1/view1_frontal.jpg,39,Male,Other,Hispanic/Latino,1.6051900882438843,1.397525311974202,1.4452601966651408,1.398674421030943,0.0,11.651592254638672,-0.02127073146402836,0.4199022054672241,-7.487771034240723,1.3717124462127686,13.285404205322266,0.02502778172492981,0.47874197363853455,-1.975224256515503,1.6185128688812256,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 39
+Sex: Male
+Race: Other
+Ethnicity: Hispanic/Latino
+Clinical history: 39 years-old Male. Chest pain
+Comparison: 8-2-2013
+Impression: 1.FRONTAL AND LATERAL VIEWS OF THE CHEST DEMONSTRATE NO EVIDENCE OF 
+FOCAL CONSOLIDATION, PLEURAL EFFUSION, PULMONARY EDEMA, OR 
+PNEUMOTHORAX.
+ 
+2.THE CARDIOMEDIASTINAL SILHOUETTE IS UNREMARKABLE AND UNCHANGED 
+COMPARED TO THE PRIOR EXAM.
+ 
+3.THE VISUALIZED OSSEOUS STRUCTURES ARE UNREMARKABLE, WITH NO 
+EVIDENCE OF FRACTURE.
+Summary: 1-NO SIGNIFICANT ABNORMALITY
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+Narrative: Chest 2 Views august 2 2013
+Full report: NARRATIVE:
+Chest 2 Views august 2 2013
+ 
+CLINICAL HISTORY:  39 years-old Male. Chest pain 
+ 
+COMPARISON: 8-2-2013
+ 
+IMPRESSION:
+ 
+1.FRONTAL AND LATERAL VIEWS OF THE CHEST DEMONSTRATE NO EVIDENCE OF 
+FOCAL CONSOLIDATION, PLEURAL EFFUSION, PULMONARY EDEMA, OR 
+PNEUMOTHORAX.
+ 
+2.THE CARDIOMEDIASTINAL SILHOUETTE IS UNREMARKABLE AND UNCHANGED 
+COMPARED TO THE PRIOR EXAM.
+ 
+3.THE VISUALIZED OSSEOUS STRUCTURES ARE UNREMARKABLE, WITH NO 
+EVIDENCE OF FRACTURE.
+ 
+ 
+SUMMARY:1-NO SIGNIFICANT ABNORMALITY
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+F
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""39"", ""deid_patient_id"": ""patient00284"", ""dicom_path"": ""patient00284/study1/view1_frontal.dcm"", ""ethnicity"": ""Hispanic/Latino"", ""path_to_dcm"": ""train/patient00284/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00284/study1/view1_frontal.jpg"", ""patient_id"": ""patient00284"", ""patient_report_date_order"": ""2"", ""race"": ""Other"", ""section_accession_number"": ""\nF\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00284/study1"", ""view_stem"": ""view1_frontal""}"
+patient00034/study1,patient00034/study1/view1_frontal.dcm,45,Male,Asian,Non-Hispanic/Non-Latino,0.0,0.8344982790257494,0.0,0.8349114552565557,0.0,10.385027885437012,-0.020162420347332954,0.3741946220397949,-5.960821628570557,1.4279621839523315,11.625589370727539,0.02048902027308941,0.41900166869163513,-2.0980257987976074,2.4803738594055176,"Critical evidence: edge density outlier evidence (validation_edge_density_outlier_z=4.360). Warning evidence: RAD-DINO patch variability outlier evidence (raddino_patch_variability_outlier_z=2.359). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.12928903102874756,patient00095/study1,patient00095/study1/view1_frontal.dcm,train/patient00095/study1/view1_frontal.dcm,train/patient00095/study1/view1_frontal.jpg,89,Male,White,Non-Hispanic/Non-Latino,0.0,0.7351323819709477,0.0,0.7354539351849454,0.0,10.620465278625488,-0.021806932985782623,0.38261210918426514,-6.938567161560059,1.0635908842086792,11.634716987609863,0.02454269863665104,0.41911372542381287,-1.9623485803604126,1.1642338037490845,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 89
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Clinical history: 89 years of age, Male, Stroke Protocol.
+Comparison: None.
+Procedure comments: Single view of the chest.
+Findings: The cardiomediastinal silhouette is at the upper limit of normal. The 
+aorta is tortuous. Pulmonary vessels are not distended.
+ 
+No abnormality of the right costophrenic angle. The left costophrenic 
+angle is not included on the film. No pneumothorax. There is 
+retrocardiac airspace opacity with partial silhouetting of the left 
+hemidiaphragm and descending thoracic aorta. Linear opacities at the 
+right lung base likely represents scar or atelectasis. Lungs are 
+otherwise clear.
+ 
+Diffuse osteopenia. No acute osseous abnormalities.
+Impression: 1.  Retrocardiac consolidation may represent infection, atelectasis, 
+or aspiration. Further evaluation with a lateral radiograph would be 
+helpful. A follow-up chest radiograph following treatment is also 
+recommended to document resolution.
+2.  Mild right basilar atelectasis or scarring.
+ 
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+Narrative: RADIOGRAPHIC EXAMINATION OF THE CHEST: 8/17/2007
+Full report: NARRATIVE:
+RADIOGRAPHIC EXAMINATION OF THE CHEST: 8/17/2007
+ 
+CLINICAL HISTORY: 89 years of age, Male, Stroke Protocol.
+ 
+COMPARISON: None.
+ 
+PROCEDURE COMMENTS: Single view of the chest. 
+ 
+FINDINGS:
+ 
+The cardiomediastinal silhouette is at the upper limit of normal. The 
+aorta is tortuous. Pulmonary vessels are not distended.
+ 
+No abnormality of the right costophrenic angle. The left costophrenic 
+angle is not included on the film. No pneumothorax. There is 
+retrocardiac airspace opacity with partial silhouetting of the left 
+hemidiaphragm and descending thoracic aorta. Linear opacities at the 
+right lung base likely represents scar or atelectasis. Lungs are 
+otherwise clear.
+ 
+Diffuse osteopenia. No acute osseous abnormalities.
+ 
+IMPRESSION:
+ 
+1.  Retrocardiac consolidation may represent infection, atelectasis, 
+or aspiration. Further evaluation with a lateral radiograph would be 
+helpful. A follow-up chest radiograph following treatment is also 
+recommended to document resolution.
+2.  Mild right basilar atelectasis or scarring.
+ 
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+KPX
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""89"", ""deid_patient_id"": ""patient00095"", ""dicom_path"": ""patient00095/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00095/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00095/study1/view1_frontal.jpg"", ""patient_id"": ""patient00095"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\nKPX\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00095/study1"", ""view_stem"": ""view1_frontal""}"
+patient00034/study1,patient00034/study1/view1_frontal.dcm,45,Male,Asian,Non-Hispanic/Non-Latino,0.0,0.8344982790257494,0.0,0.8349114552565557,0.0,10.385027885437012,-0.020162420347332954,0.3741946220397949,-5.960821628570557,1.4279621839523315,11.625589370727539,0.02048902027308941,0.41900166869163513,-2.0980257987976074,2.4803738594055176,"Critical evidence: edge density outlier evidence (validation_edge_density_outlier_z=4.360). Warning evidence: RAD-DINO patch variability outlier evidence (raddino_patch_variability_outlier_z=2.359). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.13082677125930786,patient00361/study1,patient00361/study1/view1_frontal.dcm,train/patient00361/study1/view1_frontal.dcm,train/patient00361/study1/view1_frontal.jpg,73,Male,Unknown,Unknown,0.5937954850765399,0.0,0.5080549422076066,0.0,0.5700913818342059,10.111815452575684,-0.016214078292250633,0.36451825499534607,-6.446140766143799,0.9749571084976196,11.325583457946777,0.03174161911010742,0.40744224190711975,-1.791635274887085,1.5731092691421509,"Warning evidence: edge density outlier evidence (validation_edge_density_outlier_z=2.384). Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 73
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Comparison: None
+Findings: Cardiomediastinal silhouette is within normal limits.
+Low lung volumes bilaterally with vascular crowding. There is no
+evidence of focal consolidation. There are diffuse radicular
+interstitial opacities which are mostly chronic. There are vascular
+opacities consistent with atelectasis. Visualized soft tissues and
+osseous structures are unremarkable.
+Impression: 1. Vascular atelectasis and chronic interstitial changes with no
+evidence of focal consolidation.
+Summary: 1: No significant abnormality
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MB Elliot  on: 6/10/05
+Narrative: SINGLE VIEW OF THE CHEST
+DATE OF EXAMINATION: 2005-06
+Full report: NARRATIVE:
+SINGLE VIEW OF THE CHEST
+DATE OF EXAMINATION: 2005-06
+COMPARISON: None
+FINDINGS: Cardiomediastinal silhouette is within normal limits.
+Low lung volumes bilaterally with vascular crowding. There is no
+evidence of focal consolidation. There are diffuse radicular
+interstitial opacities which are mostly chronic. There are vascular
+opacities consistent with atelectasis. Visualized soft tissues and
+osseous structures are unremarkable.
+IMPRESSION:
+1. Vascular atelectasis and chronic interstitial changes with no
+evidence of focal consolidation.
+END OF IMPRESSION:
+SUMMARY 1: No significant abnormality
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MB Elliot  on: 6/10/05
+ 
+ACCESSION NUMBER:
+8598053
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""73"", ""deid_patient_id"": ""patient00361"", ""dicom_path"": ""patient00361/study1/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00361/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00361/study1/view1_frontal.jpg"", ""patient_id"": ""patient00361"", ""patient_report_date_order"": ""1"", ""race"": ""Unknown"", ""section_accession_number"": ""\n8598053\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00361/study1"", ""view_stem"": ""view1_frontal""}"

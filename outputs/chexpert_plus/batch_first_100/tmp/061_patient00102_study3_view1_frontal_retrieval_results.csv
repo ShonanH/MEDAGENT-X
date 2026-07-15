@@ -1,0 +1,182 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00102/study3,patient00102/study3/view1_frontal.dcm,55,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,1.3735582036675678,10.525798797607422,-0.022050991654396057,0.37917637825012207,-6.570042133331299,1.1014360189437866,12.409200668334961,0.028194651007652283,0.4468899071216583,-1.8590023517608643,1.547511339187622,"Warning evidence: contrast proxy outlier evidence (validation_contrast_proxy_outlier_z=2.692). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.09694063663482666,patient00503/study1,patient00503/study1/view1_frontal.dcm,train/patient00503/study1/view1_frontal.dcm,train/patient00503/study1/view1_frontal.jpg,56,Female,White,Non-Hispanic/Non-Latino,0.009135105043315031,0.0,0.0,0.0,0.18083865711303795,10.16148567199707,-0.013541734777390957,0.3664208948612213,-6.621829986572266,1.1757532358169556,13.731350898742676,0.011723287403583527,0.4953487813472748,-1.8618797063827515,1.880724549293518,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 56
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: None prior.
+Impression: 1. INTACT MIDLINE STERNOTOMY WIRES ARE PRESENT.
+2. LUNG FIELDS ARE CLEAR WITHOUT AIR-SPACE CONSOLIDATION,
+PULMONARY EDEMA, OR PLEURAL EFFUSION.
+3. MILD CARDIOMEGALY.
+4. REGIONAL OSSEOUS STRUCTURES ARE UNREMARKABLE.
+End of impression: I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Lia, MD  on: 4/22/2016
+Narrative: CHEST SINGLE VIEW PORTABLE: 4/22/2016.
+CLINICAL DATA: A 56-year-old with chest pain, left arm pain, rule
+out endocarditis.
+Full report: NARRATIVE:
+CHEST SINGLE VIEW PORTABLE: 4/22/2016.
+CLINICAL DATA: A 56-year-old with chest pain, left arm pain, rule
+out endocarditis.
+COMPARISON: None prior.
+IMPRESSION:
+1. INTACT MIDLINE STERNOTOMY WIRES ARE PRESENT.
+2. LUNG FIELDS ARE CLEAR WITHOUT AIR-SPACE CONSOLIDATION,
+PULMONARY EDEMA, OR PLEURAL EFFUSION.
+3. MILD CARDIOMEGALY.
+4. REGIONAL OSSEOUS STRUCTURES ARE UNREMARKABLE.
+END OF IMPRESSION:
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Lia, MD  on: 4/22/2016
+ 
+ACCESSION NUMBER:
+11083691
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""56"", ""deid_patient_id"": ""patient00503"", ""dicom_path"": ""patient00503/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00503/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00503/study1/view1_frontal.jpg"", ""patient_id"": ""patient00503"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\n11083691\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study1"", ""study_key"": ""patient00503/study1"", ""view_stem"": ""view1_frontal""}"
+patient00102/study3,patient00102/study3/view1_frontal.dcm,55,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,1.3735582036675678,10.525798797607422,-0.022050991654396057,0.37917637825012207,-6.570042133331299,1.1014360189437866,12.409200668334961,0.028194651007652283,0.4468899071216583,-1.8590023517608643,1.547511339187622,"Warning evidence: contrast proxy outlier evidence (validation_contrast_proxy_outlier_z=2.692). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.12524569034576416,patient00408/study2,patient00408/study2/view1_frontal.dcm,train/patient00408/study2/view1_frontal.dcm,train/patient00408/study2/view1_frontal.jpg,45,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.9273839567731317,10.809638023376465,-0.023044854402542114,0.3893778622150421,-7.003493309020996,1.1553469896316528,12.558767318725586,0.019167376682162285,0.4527699649333954,-1.5473825931549072,1.4395827054977417,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 45
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: One view chest dated 1/23/2008 at 1247.
+Impression: 1. INTERVAL PLACEMENT OF A LEFT PICC LINE WITH THE DISTAL TIP NEAR
+THE CAVOATRIAL JUNCTION. A METALLIC FIXATION DEVICE IS SEEN AROUND
+THE NECK.
+2. THE LUNGS ARE CLEAR WITHOUT EVIDENCE OF FOCAL CONSOLIDATION OR
+PLEURAL EFFUSIONS.
+3. CARDIOMEDIASTINAL SILHOUETTE IS UNREMARKABLE.
+Summary: 1 NO SIGNIFICANT ABNORMALITY
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: KENDALL D., DICKERSON  on: 1-23-2008
+ __________________________________
+Narrative: ONE VIEW CHEST: 1-23-08 at 1436 hours
+Full report: NARRATIVE:
+ONE VIEW CHEST: 1-23-08 at 1436 hours
+COMPARISON: One view chest dated 1/23/2008 at 1247.
+IMPRESSION:
+1. INTERVAL PLACEMENT OF A LEFT PICC LINE WITH THE DISTAL TIP NEAR
+THE CAVOATRIAL JUNCTION. A METALLIC FIXATION DEVICE IS SEEN AROUND
+THE NECK.
+2. THE LUNGS ARE CLEAR WITHOUT EVIDENCE OF FOCAL CONSOLIDATION OR
+PLEURAL EFFUSIONS.
+3. CARDIOMEDIASTINAL SILHOUETTE IS UNREMARKABLE.
+END OF IMPRESSION:
+SUMMARY: 1 NO SIGNIFICANT ABNORMALITY
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: KENDALL D., DICKERSON  on: 1-23-2008
+ __________________________________
+ 
+ACCESSION NUMBER:
+rLtqnOBfDr
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""45"", ""deid_patient_id"": ""patient00408"", ""dicom_path"": ""patient00408/study2/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00408/study2/view1_frontal.dcm"", ""path_to_image"": ""train/patient00408/study2/view1_frontal.jpg"", ""patient_id"": ""patient00408"", ""patient_report_date_order"": ""2"", ""race"": ""White"", ""section_accession_number"": ""\nrLtqnOBfDr\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study2"", ""study_key"": ""patient00408/study2"", ""view_stem"": ""view1_frontal""}"
+patient00102/study3,patient00102/study3/view1_frontal.dcm,55,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,1.3735582036675678,10.525798797607422,-0.022050991654396057,0.37917637825012207,-6.570042133331299,1.1014360189437866,12.409200668334961,0.028194651007652283,0.4468899071216583,-1.8590023517608643,1.547511339187622,"Warning evidence: contrast proxy outlier evidence (validation_contrast_proxy_outlier_z=2.692). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.14119350910186768,patient00177/study1,patient00177/study1/view1_frontal.dcm,train/patient00177/study1/view1_frontal.dcm,train/patient00177/study1/view1_frontal.jpg,84,Female,White,Non-Hispanic/Non-Latino,0.03958643070634603,0.0,0.0,0.0,1.7444150674046057,9.911762237548828,-0.004408726003021002,0.35763275623321533,-5.236217975616455,1.4294302463531494,12.653692245483398,0.015469990670681,0.4563386142253876,-1.8050087690353394,1.729728102684021,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 84
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Clinical history: Postoperative.
+Comparison: 2000/7/13
+Impression: 1. REDEMONSTRATION OF STERNOTOMY WIRES AND CORONARY OSTIUM
+MARKERS. NEW RIGHT INTERNAL JUGULAR CENTRAL VENOUS SHEATH. NO
+PNEUMOTHORAX.
+2. INTERVAL BELOW WINDOW LOW LUNG VOLUMES WITH PROMINENT
+INTERSTITIAL MARKERS COMPATIBLE WITH EDEMA VERSUS FLUID OVERLOAD.
+Summary: 1 NO SIGNIFICANT ABNORMALITY
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Jillian, Meyers  on: 7-13-2000
+Narrative: SINGLE VIEW PORTABLE CHEST: 7-13-2000 USC Center for Body Computing 15:24 HOURS
+Full report: NARRATIVE:
+SINGLE VIEW PORTABLE CHEST: 7-13-2000 USC Center for Body Computing 15:24 HOURS
+COMPARISON: 2000/7/13
+CLINICAL HISTORY: Postoperative.
+IMPRESSION:
+1. REDEMONSTRATION OF STERNOTOMY WIRES AND CORONARY OSTIUM
+MARKERS. NEW RIGHT INTERNAL JUGULAR CENTRAL VENOUS SHEATH. NO
+PNEUMOTHORAX.
+2. INTERVAL BELOW WINDOW LOW LUNG VOLUMES WITH PROMINENT
+INTERSTITIAL MARKERS COMPATIBLE WITH EDEMA VERSUS FLUID OVERLOAD.
+END OF IMPRESSION:
+SUMMARY: 1 NO SIGNIFICANT ABNORMALITY
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Jillian, Meyers  on: 7-13-2000
+ 
+ACCESSION NUMBER:
+hebqj
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""84"", ""deid_patient_id"": ""patient00177"", ""dicom_path"": ""patient00177/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00177/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00177/study1/view1_frontal.jpg"", ""patient_id"": ""patient00177"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\nhebqj\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study1"", ""study_key"": ""patient00177/study1"", ""view_stem"": ""view1_frontal""}"
+patient00102/study3,patient00102/study3/view1_frontal.dcm,55,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,1.3735582036675678,10.525798797607422,-0.022050991654396057,0.37917637825012207,-6.570042133331299,1.1014360189437866,12.409200668334961,0.028194651007652283,0.4468899071216583,-1.8590023517608643,1.547511339187622,"Warning evidence: contrast proxy outlier evidence (validation_contrast_proxy_outlier_z=2.692). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.14719974994659424,patient00201/study1,patient00201/study1/view1_frontal.dcm,train/patient00201/study1/view1_frontal.dcm,train/patient00201/study1/view1_frontal.jpg,45,Male,White,Non-Hispanic/Non-Latino,1.4869568561704745,1.1666979041419803,1.3983762036839809,1.167500715891084,0.0,11.334671020507812,-0.019030047580599785,0.40856173634529114,-7.57244873046875,1.0924655199050903,12.62668228149414,0.015038661658763885,0.45537787675857544,-1.7507250308990479,1.8417493104934692,"Warning evidence: intensity mean outlier evidence (validation_intensity_mean_outlier_z=2.834). Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 45
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 4-6-20, CT dated 4/6/20
+CLINICAL DATA: 45-year-old male with non-Hodgkin's lymphoma.
+Impression: 1. PA AND LATERAL VIEWS OF THE CHEST DEMONSTRATE STABLE APPEARANCE
+OF THE CARDIOMEDIASTINAL SILHOUETTE WITH SLIGHT WIDENING OF THE
+MEDIASTINUM LIKELY DUE TO MEDIASTINAL FAT AS THERE ARE ONLY SMALL
+LYMPH NODES SEEN ON THE PRIOR CT SCAN.
+2. LUNGS CLEAR WITHOUT EDEMA, EFFUSION, OR FOCAL CONSOLIDATION.
+3. RIGHT INTERNAL JUGULAR TUNNELED CATHETER UNCHANGED IN POSITION.
+Summary: 2 ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Alvarez, M.D.  on: 4/6/2020
+Narrative: CHEST TWO VIEWS: 4/6/2020
+Full report: NARRATIVE:
+CHEST TWO VIEWS: 4/6/2020
+COMPARISON: 4-6-20, CT dated 4/6/20
+CLINICAL DATA: 45-year-old male with non-Hodgkin's lymphoma.
+IMPRESSION:
+1. PA AND LATERAL VIEWS OF THE CHEST DEMONSTRATE STABLE APPEARANCE
+OF THE CARDIOMEDIASTINAL SILHOUETTE WITH SLIGHT WIDENING OF THE
+MEDIASTINUM LIKELY DUE TO MEDIASTINAL FAT AS THERE ARE ONLY SMALL
+LYMPH NODES SEEN ON THE PRIOR CT SCAN.
+2. LUNGS CLEAR WITHOUT EDEMA, EFFUSION, OR FOCAL CONSOLIDATION.
+3. RIGHT INTERNAL JUGULAR TUNNELED CATHETER UNCHANGED IN POSITION.
+END OF IMPRESSION:
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Alvarez, M.D.  on: 4/6/2020
+ 
+ACCESSION NUMBER:
+X830G995434
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""45"", ""deid_patient_id"": ""patient00201"", ""dicom_path"": ""patient00201/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00201/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00201/study1/view1_frontal.jpg"", ""patient_id"": ""patient00201"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\nX830G995434\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00201/study1"", ""view_stem"": ""view1_frontal""}"
+patient00102/study3,patient00102/study3/view1_frontal.dcm,55,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,1.3735582036675678,10.525798797607422,-0.022050991654396057,0.37917637825012207,-6.570042133331299,1.1014360189437866,12.409200668334961,0.028194651007652283,0.4468899071216583,-1.8590023517608643,1.547511339187622,"Warning evidence: contrast proxy outlier evidence (validation_contrast_proxy_outlier_z=2.692). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.14795446395874023,patient00201/study1,patient00201/study1/view2_lateral.dcm,train/patient00201/study1/view2_lateral.dcm,train/patient00201/study1/view2_lateral.jpg,45,Male,White,Non-Hispanic/Non-Latino,0.3866013626236542,2.0645887194449624,2.1490737974090948,2.067087068517906,0.0,9.406208992004395,-0.021877536550164223,0.33871155977249146,-3.3106470108032227,1.4506962299346924,11.875371932983398,0.02721683867275715,0.4276503622531891,-1.3030903339385986,1.6337608098983765,"Critical evidence: ConvNeXt embedding outlier evidence (convnext_embedding_outlier_z=4.006). Warning evidence: low sharpness evidence (low_sharpness_evidence_z=2.065); low entropy evidence (low_entropy_evidence_z=2.149); high blur evidence (high_blur_evidence_z=2.067); noise proxy outlier evidence (validation_noise_proxy_outlier_z=2.737); entropy outlier evidence (validation_entropy_outlier_z=2.149). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 45
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 9-21-2014, CT dated 921/14
+CLINICAL DATA: 45-year-old male with non-Hodgkin's lymphoma.
+Impression: 1. PA AND LATERAL VIEWS OF THE CHEST DEMONSTRATE STABLE APPEARANCE
+OF THE CARDIOMEDIASTINAL SILHOUETTE WITH SLIGHT WIDENING OF THE
+MEDIASTINUM LIKELY DUE TO MEDIASTINAL FAT AS THERE ARE ONLY SMALL
+LYMPH NODES SEEN ON THE PRIOR CT SCAN.
+2. LUNGS CLEAR WITHOUT EDEMA, EFFUSION, OR FOCAL CONSOLIDATION.
+3. RIGHT INTERNAL JUGULAR TUNNELED CATHETER UNCHANGED IN POSITION.
+Summary: 2 ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: gutierrez, jaxton  on: 9/21/2014
+Narrative: CHEST TWO VIEWS: 9/21/14
+Full report: NARRATIVE:
+CHEST TWO VIEWS: 9/21/14
+COMPARISON: 9-21-2014, CT dated 921/14
+CLINICAL DATA: 45-year-old male with non-Hodgkin's lymphoma.
+IMPRESSION:
+1. PA AND LATERAL VIEWS OF THE CHEST DEMONSTRATE STABLE APPEARANCE
+OF THE CARDIOMEDIASTINAL SILHOUETTE WITH SLIGHT WIDENING OF THE
+MEDIASTINUM LIKELY DUE TO MEDIASTINAL FAT AS THERE ARE ONLY SMALL
+LYMPH NODES SEEN ON THE PRIOR CT SCAN.
+2. LUNGS CLEAR WITHOUT EDEMA, EFFUSION, OR FOCAL CONSOLIDATION.
+3. RIGHT INTERNAL JUGULAR TUNNELED CATHETER UNCHANGED IN POSITION.
+END OF IMPRESSION:
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: gutierrez, jaxton  on: 9/21/2014
+ 
+ACCESSION NUMBER:
+57-64-40-31-9
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""45"", ""deid_patient_id"": ""patient00201"", ""dicom_path"": ""patient00201/study1/view2_lateral.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00201/study1/view2_lateral.dcm"", ""path_to_image"": ""train/patient00201/study1/view2_lateral.jpg"", ""patient_id"": ""patient00201"", ""patient_report_date_order"": ""2"", ""race"": ""White"", ""section_accession_number"": ""\n57-64-40-31-9\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00201/study1"", ""view_stem"": ""view2_lateral""}"

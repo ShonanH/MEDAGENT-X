@@ -39,6 +39,19 @@ def main() -> None:
         help="Ollama reasoning model. Defaults to the disease reasoning agent default/env var.",
     )
 
+    parser.add_argument(
+        "--ground-truth-csv",
+        default="outputs/chexpert_plus/redivis_chexpert_plus_filtered_rows.csv",
+    )
+    parser.add_argument(
+        "--judge-results-csv",
+        default="outputs/chexpert_plus/judge_results.csv",
+    )
+    parser.add_argument(
+        "--judge-report-path",
+        default="outputs/chexpert_plus/judge_report.md",
+    )
+
     args = parser.parse_args()
 
     result = run_medagentx_graph(
@@ -50,6 +63,9 @@ def main() -> None:
         retrieval_results_csv=args.retrieval_results_csv,
         disease_reasoning_results_csv=args.disease_reasoning_results_csv,
         reasoning_model=args.reasoning_model,
+        ground_truth_csv=args.ground_truth_csv,
+        judge_results_csv=args.judge_results_csv,
+        judge_report_path=args.judge_report_path,
     )
 
     print("MEDAGENT-X graph run complete.")

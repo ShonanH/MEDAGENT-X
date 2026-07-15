@@ -1,0 +1,189 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00114/study8,patient00114/study8/view1_frontal.dcm,55,Male,Unknown,Unknown,1.0627417241383386,0.0007466472595791779,1.1890608745189024,0.0007466552175896392,0.09937546161803519,10.656489372253418,-0.006532676517963409,0.384477436542511,-6.504122734069824,1.1913087368011475,12.884779930114746,0.02389536239206791,0.4643250107765198,-1.9164619445800781,1.7609612941741943,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.06546318531036377,patient00147/study14,patient00147/study14/view1_frontal.dcm,train/patient00147/study14/view1_frontal.dcm,train/patient00147/study14/view1_frontal.jpg,52,Male,White,Non-Hispanic/Non-Latino,0.9104863036081756,0.373721447606698,1.2550256684461405,0.373806491853695,0.0,9.938958168029785,-0.011887582950294018,0.3584442436695099,-5.9699602127075195,1.0586644411087036,12.408738136291504,0.02514995075762272,0.4470548927783966,-1.8344416618347168,1.8296945095062256,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 52
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 5/20/2001.
+Impression: 1. INTERVAL REMOVAL OF ENDOTRACHEAL TUBE AND NG TUBE. LEFT
+ SUBCLAVIAN VENOUS CATHETER REMAINS IN THE MID SVC.
+2. MILD PULMONARY EDEMA, UNCHANGED.
+3. LOCULATED LEFT PLEURAL EFFUSION UNCHANGED.
+4. LEFT LOWER LOBE ATELECTASIS OR CONSOLIDATION, UNCHANGED.
+Summary: 2: ABNORMAL, PREVIOUSLY REPORTED.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Douglas, M.D..  on: 01/20
+Narrative: PORTABLE CHEST 5/20/2001:
+Full report: NARRATIVE:
+PORTABLE CHEST 5/20/2001:
+COMPARISON: 5/20/2001.
+IMPRESSION:
+1. INTERVAL REMOVAL OF ENDOTRACHEAL TUBE AND NG TUBE. LEFT
+ SUBCLAVIAN VENOUS CATHETER REMAINS IN THE MID SVC.
+2. MILD PULMONARY EDEMA, UNCHANGED.
+3. LOCULATED LEFT PLEURAL EFFUSION UNCHANGED.
+4. LEFT LOWER LOBE ATELECTASIS OR CONSOLIDATION, UNCHANGED.
+END OF IMPRESSION:
+SUMMARY 2: ABNORMAL, PREVIOUSLY REPORTED.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Douglas, M.D..  on: 01/20
+ 
+ACCESSION NUMBER:
+66282
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""52"", ""deid_patient_id"": ""patient00147"", ""dicom_path"": ""patient00147/study14/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00147/study14/view1_frontal.dcm"", ""path_to_image"": ""train/patient00147/study14/view1_frontal.jpg"", ""patient_id"": ""patient00147"", ""patient_report_date_order"": ""14"", ""race"": ""White"", ""section_accession_number"": ""\n66282\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study14"", ""study_key"": ""patient00147/study14"", ""view_stem"": ""view1_frontal""}"
+patient00114/study8,patient00114/study8/view1_frontal.dcm,55,Male,Unknown,Unknown,1.0627417241383386,0.0007466472595791779,1.1890608745189024,0.0007466552175896392,0.09937546161803519,10.656489372253418,-0.006532676517963409,0.384477436542511,-6.504122734069824,1.1913087368011475,12.884779930114746,0.02389536239206791,0.4643250107765198,-1.9164619445800781,1.7609612941741943,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.09800350666046143,patient00521/study2,patient00521/study2/view1_frontal.dcm,train/patient00521/study2/view1_frontal.dcm,train/patient00521/study2/view1_frontal.jpg,34,Male,Unknown,Unknown,0.7612761735854321,0.0,0.9892680720746327,0.0,1.5614805407988943,10.458117485046387,-0.0172458216547966,0.37698057293891907,-6.482517719268799,0.9597408175468445,11.459227561950684,0.03098105825483799,0.4123370349407196,-1.4626225233078003,1.5169817209243774,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 34
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Comparison: 3/26/2008
+Impression: 1. REDEMONSTRATED RIGHT SUBCLAVIAN VENOUS CATHETER, TIP IN THE
+RIGHT ATRIUM.
+2. LARGE RIGHT PLEURAL EFFUSION.
+3. STABLE CARDIAC SILHOUETTE.
+4. INCREASED FOCAL OPACITY IN THE LEFT LOWER LUNG ZONE, CONSISTENT
+WITH WORSENING CONSOLIDATION. EVALUATION OF THE RIGHT LUNG IS
+DIFFICULT SECONDARY TO OPACIFICATION FROM EFFUSION.
+5. NO BONY CHANGES IDENTIFIED.
+Summary: 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MABEL AYERS, MD  on: 3-26-08
+Narrative: CHEST: One view.
+Full report: NARRATIVE:
+CHEST: One view.
+COMPARISON: 3/26/2008
+IMPRESSION:
+1. REDEMONSTRATED RIGHT SUBCLAVIAN VENOUS CATHETER, TIP IN THE
+RIGHT ATRIUM.
+2. LARGE RIGHT PLEURAL EFFUSION.
+3. STABLE CARDIAC SILHOUETTE.
+4. INCREASED FOCAL OPACITY IN THE LEFT LOWER LUNG ZONE, CONSISTENT
+WITH WORSENING CONSOLIDATION. EVALUATION OF THE RIGHT LUNG IS
+DIFFICULT SECONDARY TO OPACIFICATION FROM EFFUSION.
+5. NO BONY CHANGES IDENTIFIED.
+END OF IMPRESSION:
+SUMMARY 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MABEL AYERS, MD  on: 3-26-08
+ 
+ACCESSION NUMBER:
+X830G995434
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""34"", ""deid_patient_id"": ""patient00521"", ""dicom_path"": ""patient00521/study2/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00521/study2/view1_frontal.dcm"", ""path_to_image"": ""train/patient00521/study2/view1_frontal.jpg"", ""patient_id"": ""patient00521"", ""patient_report_date_order"": ""2"", ""race"": ""Unknown"", ""section_accession_number"": ""\nX830G995434\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study2"", ""study_key"": ""patient00521/study2"", ""view_stem"": ""view1_frontal""}"
+patient00114/study8,patient00114/study8/view1_frontal.dcm,55,Male,Unknown,Unknown,1.0627417241383386,0.0007466472595791779,1.1890608745189024,0.0007466552175896392,0.09937546161803519,10.656489372253418,-0.006532676517963409,0.384477436542511,-6.504122734069824,1.1913087368011475,12.884779930114746,0.02389536239206791,0.4643250107765198,-1.9164619445800781,1.7609612941741943,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.09838402271270752,patient00457/study8,patient00457/study8/view1_frontal.dcm,train/patient00457/study8/view1_frontal.dcm,train/patient00457/study8/view1_frontal.jpg,69,Female,Unknown,Unknown,0.204022177107338,0.0,0.0,0.0,1.1237190939163113,10.448448181152344,-0.022811273112893105,0.37633517384529114,-6.668471813201904,0.9828385710716248,12.434478759765625,0.02446424402296543,0.4480231702327728,-1.651953935623169,1.641974925994873,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 69
+Sex: Female
+Race: Unknown
+Ethnicity: Unknown
+Comparison: 7-14-2006
+Impression: 1. ENDOTRACHEAL TUBE HAS BEEN REMOVED. THE LEFT UPPER EXTREMITY
+PICC CATHETER TIP REMAINS COILED WITHIN THE SUPERIOR VENA CAVA AND
+MAY BE DIRECTED INTO THE AZYGOS VEIN.
+2. PERSISTENT BILATERAL PLEURAL EFFUSIONS, LEFT GREATER THAN RIGHT
+WITH INCREASED BIBASILAR OPACITIES LIKELY REPRESENTING ATELECTASIS.
+THERE IS UNCHANGED PULMONARY EDEMA.
+Summary: 4: POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MD Bennett Henderson  on: 7-14-2006
+Narrative: SINGLE VIEW CHEST: 7-14-2006
+Full report: NARRATIVE:
+SINGLE VIEW CHEST: 7-14-2006
+COMPARISON: 7-14-2006
+IMPRESSION:
+1. ENDOTRACHEAL TUBE HAS BEEN REMOVED. THE LEFT UPPER EXTREMITY
+PICC CATHETER TIP REMAINS COILED WITHIN THE SUPERIOR VENA CAVA AND
+MAY BE DIRECTED INTO THE AZYGOS VEIN.
+2. PERSISTENT BILATERAL PLEURAL EFFUSIONS, LEFT GREATER THAN RIGHT
+WITH INCREASED BIBASILAR OPACITIES LIKELY REPRESENTING ATELECTASIS.
+THERE IS UNCHANGED PULMONARY EDEMA.
+END OF IMPRESSION:
+SUMMARY 4: POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MD Bennett Henderson  on: 7-14-2006
+ 
+ACCESSION NUMBER:
+DPGFRRVIHUS
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""69"", ""deid_patient_id"": ""patient00457"", ""dicom_path"": ""patient00457/study8/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00457/study8/view1_frontal.dcm"", ""path_to_image"": ""train/patient00457/study8/view1_frontal.jpg"", ""patient_id"": ""patient00457"", ""patient_report_date_order"": ""7"", ""race"": ""Unknown"", ""section_accession_number"": ""\nDPGFRRVIHUS\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study8"", ""study_key"": ""patient00457/study8"", ""view_stem"": ""view1_frontal""}"
+patient00114/study8,patient00114/study8/view1_frontal.dcm,55,Male,Unknown,Unknown,1.0627417241383386,0.0007466472595791779,1.1890608745189024,0.0007466552175896392,0.09937546161803519,10.656489372253418,-0.006532676517963409,0.384477436542511,-6.504122734069824,1.1913087368011475,12.884779930114746,0.02389536239206791,0.4643250107765198,-1.9164619445800781,1.7609612941741943,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.10470694303512573,patient00147/study7,patient00147/study7/view1_frontal.dcm,train/patient00147/study7/view1_frontal.dcm,train/patient00147/study7/view1_frontal.jpg,52,Male,White,Non-Hispanic/Non-Latino,0.7186447775445506,0.2845477414673389,0.579776605523808,0.2845977639543538,0.0,9.761144638061523,-0.013843465596437454,0.35195282101631165,-6.051666736602783,0.9855248332023621,13.640296936035156,0.02186272107064724,0.49171602725982666,-2.164205551147461,1.8436470031738281,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 52
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: MAY 27TH 2016.
+Impression: 1. INTERVAL PLACEMENT OF ENDOTRACHEAL TUBE WITH THE TIP 5 CM ABOVE
+THE CARINA AND LEFT SUBCLAVIAN VENOUS CATHETER IN THE MID TO DISTAL
+SVC; THE FEEDING TUBE AND LEFT SIDED CHEST TUBE REMAIN UNCHANGED.
+2. INTERVAL INCREASE IN AMOUNT OF PLEURAL FLUID IN THE LEFT
+HEMITHORAX.
+3. VOLUME LOSS IN THE LEFT LUNG WITH SHIFT OF THE MEDIASTINUM TO
+THE LEFT.
+4. PERSISTING LEFT LOWER LOBE ATELECTASIS OR CONSOLIDATION.
+5. MULTIPLE LEFT RIB FRACTURES.
+Summary: 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Valentine, Brynn  on: 5-27-2016
+Narrative: PORTABLE CHEST: 05/27/2016
+Full report: NARRATIVE:
+PORTABLE CHEST: 05/27/2016
+COMPARISON: MAY 27TH 2016.
+IMPRESSION:
+1. INTERVAL PLACEMENT OF ENDOTRACHEAL TUBE WITH THE TIP 5 CM ABOVE
+THE CARINA AND LEFT SUBCLAVIAN VENOUS CATHETER IN THE MID TO DISTAL
+SVC; THE FEEDING TUBE AND LEFT SIDED CHEST TUBE REMAIN UNCHANGED.
+2. INTERVAL INCREASE IN AMOUNT OF PLEURAL FLUID IN THE LEFT
+HEMITHORAX.
+3. VOLUME LOSS IN THE LEFT LUNG WITH SHIFT OF THE MEDIASTINUM TO
+THE LEFT.
+4. PERSISTING LEFT LOWER LOBE ATELECTASIS OR CONSOLIDATION.
+5. MULTIPLE LEFT RIB FRACTURES.
+END OF IMPRESSION:
+SUMMARY 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Valentine, Brynn  on: 5-27-2016
+ 
+ACCESSION NUMBER:
+119827
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""52"", ""deid_patient_id"": ""patient00147"", ""dicom_path"": ""patient00147/study7/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00147/study7/view1_frontal.dcm"", ""path_to_image"": ""train/patient00147/study7/view1_frontal.jpg"", ""patient_id"": ""patient00147"", ""patient_report_date_order"": ""7"", ""race"": ""White"", ""section_accession_number"": ""\n119827\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study7"", ""study_key"": ""patient00147/study7"", ""view_stem"": ""view1_frontal""}"
+patient00114/study8,patient00114/study8/view1_frontal.dcm,55,Male,Unknown,Unknown,1.0627417241383386,0.0007466472595791779,1.1890608745189024,0.0007466552175896392,0.09937546161803519,10.656489372253418,-0.006532676517963409,0.384477436542511,-6.504122734069824,1.1913087368011475,12.884779930114746,0.02389536239206791,0.4643250107765198,-1.9164619445800781,1.7609612941741943,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.11007553339004517,patient00521/study4,patient00521/study4/view1_frontal.dcm,train/patient00521/study4/view1_frontal.dcm,train/patient00521/study4/view1_frontal.jpg,34,Male,Unknown,Unknown,0.0,0.0,0.33418972869190383,0.0,0.8991442051025507,10.71704387664795,-0.024176793172955513,0.38596153259277344,-7.526772975921631,1.1070524454116821,11.970005989074707,0.028768420219421387,0.43097126483917236,-1.786142110824585,1.8416674137115479,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 34
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Comparison: 6-21-2004
+Impression: 1. RIGHT IJ VENOUS CATHETER IN MID SUPERIOR VENA CAVA; INTERVAL
+REMOVAL OF FEEDING TUBE.
+2. INTERVAL DECREASE IN BILATERAL AIR SPACE OPACITIES, WHICH LIKELY
+REPRESENTS IMPROVING PULMONARY EDEMA GIVEN THE SHORT INTERVAL
+CHANGE.
+3. IMPROVED AERATION OF THE LEFT RETROCARDIAC REGION.
+Summary: 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Julia, Binderup.  on: JUNE 21ST 04
+Narrative: SINGLE PORTABLE VIEW OF THE CHEST: June 21
+Full report: NARRATIVE:
+SINGLE PORTABLE VIEW OF THE CHEST: June 21
+COMPARISON:
+6-21-2004
+IMPRESSION:
+1. RIGHT IJ VENOUS CATHETER IN MID SUPERIOR VENA CAVA; INTERVAL
+REMOVAL OF FEEDING TUBE.
+2. INTERVAL DECREASE IN BILATERAL AIR SPACE OPACITIES, WHICH LIKELY
+REPRESENTS IMPROVING PULMONARY EDEMA GIVEN THE SHORT INTERVAL
+CHANGE.
+3. IMPROVED AERATION OF THE LEFT RETROCARDIAC REGION.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Julia, Binderup.  on: JUNE 21ST 04
+ 
+ACCESSION NUMBER:
+198-009-20
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""34"", ""deid_patient_id"": ""patient00521"", ""dicom_path"": ""patient00521/study4/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00521/study4/view1_frontal.dcm"", ""path_to_image"": ""train/patient00521/study4/view1_frontal.jpg"", ""patient_id"": ""patient00521"", ""patient_report_date_order"": ""4"", ""race"": ""Unknown"", ""section_accession_number"": ""\n198-009-20\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study4"", ""study_key"": ""patient00521/study4"", ""view_stem"": ""view1_frontal""}"

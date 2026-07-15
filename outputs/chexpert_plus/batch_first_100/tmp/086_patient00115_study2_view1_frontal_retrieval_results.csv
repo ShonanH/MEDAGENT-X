@@ -1,0 +1,165 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00115/study2,patient00115/study2/view1_frontal.dcm,64,Male,White,Non-Hispanic/Non-Latino,0.7995830025418635,1.2065378919090777,0.14799086555123,1.2073960484962285,0.0,10.936789512634277,-0.01889084465801716,0.394195020198822,-7.313671588897705,1.1021432876586914,11.038118362426758,0.023749493062496185,0.3975951373577118,-1.1779663562774658,1.5534420013427734,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.08293426036834717,patient00391/study4,patient00391/study4/view2_lateral.dcm,train/patient00391/study4/view2_lateral.dcm,train/patient00391/study4/view2_lateral.jpg,58,Male,Unknown,Unknown,0.0,0.49742806535922507,0.0,0.49757698495037006,0.0,10.819145202636719,-0.0192593801766634,0.3899269104003906,-5.863663673400879,1.5538092851638794,13.078994750976562,0.020118745043873787,0.47151854634284973,-1.156835913658142,1.269724726676941,"Critical evidence: intensity standard deviation outlier evidence (validation_intensity_std_outlier_z=3.309). Warning evidence: RAD-DINO embedding outlier evidence (raddino_embedding_outlier_z=2.139); contrast proxy outlier evidence (validation_contrast_proxy_outlier_z=2.573). Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 58
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Clinical history: Fifty-eight-year-old male, evaluate consolidation.
+Comparison: 6/10/2011.
+Technique: Single portable upright and lateral view of the chest.
+Impression: 1.  LOW LUNG VOLUMES.
+ 2.  LINEAR OPACITIES OF THE RIGHT LOWER LOBE AND RIGHT MIDDLE LOBE,
+WHICH MAY REPRESENT ATELECTASIS OR CONSOLIDATION.
+ 3.  PERIBRONCHIAL CUFFING.
+ 4.  OTHERWISE, NO SIGNIFICANT INTERVAL CHANGES OF THE CHEST.
+Summary: 4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+Narrative: CHEST TWO VIEWS:  JUNE 10.
+Full report: NARRATIVE:
+CHEST TWO VIEWS:  JUNE 10.
+COMPARISON:  6/10/2011.
+CLINICAL HISTORY:  Fifty-eight-year-old male, evaluate consolidation.
+ TECHNIQUE:  Single portable upright and lateral view of the chest.
+ IMPRESSION:
+ 1.  LOW LUNG VOLUMES.
+ 2.  LINEAR OPACITIES OF THE RIGHT LOWER LOBE AND RIGHT MIDDLE LOBE,
+WHICH MAY REPRESENT ATELECTASIS OR CONSOLIDATION.
+ 3.  PERIBRONCHIAL CUFFING.
+ 4.  OTHERWISE, NO SIGNIFICANT INTERVAL CHANGES OF THE CHEST.
+ SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+03043230
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""58"", ""deid_patient_id"": ""patient00391"", ""dicom_path"": ""patient00391/study4/view2_lateral.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00391/study4/view2_lateral.dcm"", ""path_to_image"": ""train/patient00391/study4/view2_lateral.jpg"", ""patient_id"": ""patient00391"", ""patient_report_date_order"": ""5"", ""race"": ""Unknown"", ""section_accession_number"": ""\n03043230\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study4"", ""study_key"": ""patient00391/study4"", ""view_stem"": ""view2_lateral""}"
+patient00115/study2,patient00115/study2/view1_frontal.dcm,64,Male,White,Non-Hispanic/Non-Latino,0.7995830025418635,1.2065378919090777,0.14799086555123,1.2073960484962285,0.0,10.936789512634277,-0.01889084465801716,0.394195020198822,-7.313671588897705,1.1021432876586914,11.038118362426758,0.023749493062496185,0.3975951373577118,-1.1779663562774658,1.5534420013427734,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.08349370956420898,patient00391/study4,patient00391/study4/view1_frontal.dcm,train/patient00391/study4/view1_frontal.dcm,train/patient00391/study4/view1_frontal.jpg,58,Male,Unknown,Unknown,0.4049987153077392,0.0,0.0,0.0,0.7058261747211887,11.124517440795898,-0.02618081122636795,0.40056681632995605,-7.353108882904053,1.2933741807937622,11.087230682373047,0.026118239387869835,0.3992225229740143,-1.3104785680770874,1.8367177248001099,"Warning evidence: RAD-DINO patch variability outlier evidence (raddino_patch_variability_outlier_z=2.567). Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 58
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Clinical history: Fifty-eight-year-old male, evaluate consolidation.
+Comparison: 1-13-2019.
+Technique: Single portable upright and lateral view of the chest.
+Impression: 1.  LOW LUNG VOLUMES.
+ 2.  LINEAR OPACITIES OF THE RIGHT LOWER LOBE AND RIGHT MIDDLE LOBE,
+WHICH MAY REPRESENT ATELECTASIS OR CONSOLIDATION.
+ 3.  PERIBRONCHIAL CUFFING.
+ 4.  OTHERWISE, NO SIGNIFICANT INTERVAL CHANGES OF THE CHEST.
+Summary: 4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+Narrative: CHEST TWO VIEWS:  01/13/19.
+Full report: NARRATIVE:
+CHEST TWO VIEWS:  01/13/19.
+COMPARISON:  1-13-2019.
+CLINICAL HISTORY:  Fifty-eight-year-old male, evaluate consolidation.
+ TECHNIQUE:  Single portable upright and lateral view of the chest.
+ IMPRESSION:
+ 1.  LOW LUNG VOLUMES.
+ 2.  LINEAR OPACITIES OF THE RIGHT LOWER LOBE AND RIGHT MIDDLE LOBE,
+WHICH MAY REPRESENT ATELECTASIS OR CONSOLIDATION.
+ 3.  PERIBRONCHIAL CUFFING.
+ 4.  OTHERWISE, NO SIGNIFICANT INTERVAL CHANGES OF THE CHEST.
+ SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+779_139
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""58"", ""deid_patient_id"": ""patient00391"", ""dicom_path"": ""patient00391/study4/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00391/study4/view1_frontal.dcm"", ""path_to_image"": ""train/patient00391/study4/view1_frontal.jpg"", ""patient_id"": ""patient00391"", ""patient_report_date_order"": ""4"", ""race"": ""Unknown"", ""section_accession_number"": ""\n779_139\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study4"", ""study_key"": ""patient00391/study4"", ""view_stem"": ""view1_frontal""}"
+patient00115/study2,patient00115/study2/view1_frontal.dcm,64,Male,White,Non-Hispanic/Non-Latino,0.7995830025418635,1.2065378919090777,0.14799086555123,1.2073960484962285,0.0,10.936789512634277,-0.01889084465801716,0.394195020198822,-7.313671588897705,1.1021432876586914,11.038118362426758,0.023749493062496185,0.3975951373577118,-1.1779663562774658,1.5534420013427734,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.08930814266204834,patient00270/study1,patient00270/study1/view1_frontal.dcm,train/patient00270/study1/view1_frontal.dcm,train/patient00270/study1/view1_frontal.jpg,82,Male,White,Non-Hispanic/Non-Latino,1.102327969031608,0.9668605150830618,0.7748575826457604,0.9674135635131861,0.0,9.543089866638184,-0.015245375223457813,0.34401893615722656,-5.7118072509765625,1.1373405456542969,11.410303115844727,0.027290651574730873,0.4108284115791321,-1.6988338232040405,1.6680177450180054,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 82
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: None.
+Impression: 1. PATIENT IS INTUBATED.
+2. LOW LUNG VOLUMES.
+3. ILL-DEFINED OPACITY, INFERIOR TO THE RIGHT HILUM, MAY REPRESENT
+ATELECTASIS. RECOMMEND PA AND LATERAL FILMS, WHEN ABLE. NO
+DEFINITE FOCAL CONSOLIDATION.
+Summary: 4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Sebastian Bell, MD  on: 5-29-2000
+Narrative: SINGLE VIEW PORTABLE CHEST: 5-29-2000
+Full report: NARRATIVE:
+SINGLE VIEW PORTABLE CHEST: 5-29-2000
+COMPARISON: None.
+IMPRESSION:
+1. PATIENT IS INTUBATED.
+2. LOW LUNG VOLUMES.
+3. ILL-DEFINED OPACITY, INFERIOR TO THE RIGHT HILUM, MAY REPRESENT
+ATELECTASIS. RECOMMEND PA AND LATERAL FILMS, WHEN ABLE. NO
+DEFINITE FOCAL CONSOLIDATION.
+END OF IMPRESSION:
+SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Sebastian Bell, MD  on: 5-29-2000
+ 
+ACCESSION NUMBER:
+qackrascrz
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""82"", ""deid_patient_id"": ""patient00270"", ""dicom_path"": ""patient00270/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00270/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00270/study1/view1_frontal.jpg"", ""patient_id"": ""patient00270"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\nqackrascrz\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00270/study1"", ""view_stem"": ""view1_frontal""}"
+patient00115/study2,patient00115/study2/view1_frontal.dcm,64,Male,White,Non-Hispanic/Non-Latino,0.7995830025418635,1.2065378919090777,0.14799086555123,1.2073960484962285,0.0,10.936789512634277,-0.01889084465801716,0.394195020198822,-7.313671588897705,1.1021432876586914,11.038118362426758,0.023749493062496185,0.3975951373577118,-1.1779663562774658,1.5534420013427734,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.10214632749557495,patient00542/study1,patient00542/study1/view1_frontal.dcm,train/patient00542/study1/view1_frontal.dcm,train/patient00542/study1/view1_frontal.jpg,89,Male,White,Non-Hispanic/Non-Latino,1.6047703481178488,0.0,2.0413787358249937,0.0,0.626199764413153,10.1724271774292,-0.009734603576362133,0.3669367730617523,-6.29239559173584,0.8609005212783813,12.836445808410645,0.03116842545568943,0.46214550733566284,-1.5966272354125977,2.3172850608825684,"Warning evidence: low entropy evidence (low_entropy_evidence_z=2.041); intensity mean outlier evidence (validation_intensity_mean_outlier_z=2.689); entropy outlier evidence (validation_entropy_outlier_z=2.041). Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 89
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: None.
+Impression: 1. THIS FILM IS OVEREXPOSED WHICH LIMITS EVALUATION, ESPECIALLY OF
+THE RIGHT UPPER LOBE. RECOMMEND A REPEAT FILM.
+2. STERNOTOMY WIRES ARE PRESENT.
+3. THERE IS MINIMAL STRANDY OPACITY IN THE LEFT LUNG BASE, LIKELY
+RELATED TO ATELECTASIS, ALTHOUGH EARLY CONSOLIDATION CANNOT BE
+EXCLUDED.
+Summary: 4: Possible significant abnormality/change, may need
+action.
+Narrative: SINGLE FRONTAL CHEST RADIOGRAPH: 11-18-2005
+Full report: NARRATIVE:
+SINGLE FRONTAL CHEST RADIOGRAPH: 11-18-2005
+COMPARISON: None.
+IMPRESSION:
+1. THIS FILM IS OVEREXPOSED WHICH LIMITS EVALUATION, ESPECIALLY OF
+THE RIGHT UPPER LOBE. RECOMMEND A REPEAT FILM.
+2. STERNOTOMY WIRES ARE PRESENT.
+3. THERE IS MINIMAL STRANDY OPACITY IN THE LEFT LUNG BASE, LIKELY
+RELATED TO ATELECTASIS, ALTHOUGH EARLY CONSOLIDATION CANNOT BE
+EXCLUDED.
+END OF IMPRESSION:
+SUMMARY 4: Possible significant abnormality/change, may need
+action.
+ 
+ACCESSION NUMBER:
+wkkccanwgxh
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""89"", ""deid_patient_id"": ""patient00542"", ""dicom_path"": ""patient00542/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00542/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00542/study1/view1_frontal.jpg"", ""patient_id"": ""patient00542"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\nwkkccanwgxh\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00542/study1"", ""view_stem"": ""view1_frontal""}"
+patient00115/study2,patient00115/study2/view1_frontal.dcm,64,Male,White,Non-Hispanic/Non-Latino,0.7995830025418635,1.2065378919090777,0.14799086555123,1.2073960484962285,0.0,10.936789512634277,-0.01889084465801716,0.394195020198822,-7.313671588897705,1.1021432876586914,11.038118362426758,0.023749493062496185,0.3975951373577118,-1.1779663562774658,1.5534420013427734,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.10510116815567017,patient00150/study2,patient00150/study2/view1_frontal.dcm,train/patient00150/study2/view1_frontal.dcm,train/patient00150/study2/view1_frontal.jpg,61,Male,White,Non-Hispanic/Non-Latino,0.33800669075183504,0.0,0.19936079004990698,0.0,0.5437050457621307,11.202238082885742,-0.017756396904587746,0.4038357734680176,-7.1690778732299805,1.1789829730987549,12.324402809143066,0.018701113760471344,0.44432517886161804,-1.907052993774414,1.3372308015823364,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 61
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 4/4/2021.
+Impression: 1. INTERVAL DIMINUTION IN THE BILATERAL LUNG VOLUMES, WITH
+CONCOMITANT INCREASE IN LEFT LOWER LOBE ATELECTASIS.
+2. NO NEW FOCUS OF CONSOLIDATION IS IDENTIFIED.
+3. THERE IS A NORMAL DEGREE OF PULMONARY VASCULARITY.
+End of impression: .
+Summary: 2: ABNORMAL, PREVIOUSLY REPORTED.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Kaylee, Soto.  on: 4/4/21
+Narrative: PORTABLE CHEST, SINGLE VIEW: 4/4/2021.
+Full report: NARRATIVE:
+PORTABLE CHEST, SINGLE VIEW: 4/4/2021.
+COMPARISON: 4/4/2021.
+IMPRESSION:
+1. INTERVAL DIMINUTION IN THE BILATERAL LUNG VOLUMES, WITH
+CONCOMITANT INCREASE IN LEFT LOWER LOBE ATELECTASIS.
+2. NO NEW FOCUS OF CONSOLIDATION IS IDENTIFIED.
+3. THERE IS A NORMAL DEGREE OF PULMONARY VASCULARITY.
+END OF IMPRESSION.
+SUMMARY 2: ABNORMAL, PREVIOUSLY REPORTED.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Kaylee, Soto.  on: 4/4/21
+ 
+ACCESSION NUMBER:
+05412
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""61"", ""deid_patient_id"": ""patient00150"", ""dicom_path"": ""patient00150/study2/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00150/study2/view1_frontal.dcm"", ""path_to_image"": ""train/patient00150/study2/view1_frontal.jpg"", ""patient_id"": ""patient00150"", ""patient_report_date_order"": ""2"", ""race"": ""White"", ""section_accession_number"": ""\n05412\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study2"", ""study_key"": ""patient00150/study2"", ""view_stem"": ""view1_frontal""}"

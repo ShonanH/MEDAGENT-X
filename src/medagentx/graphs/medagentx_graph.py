@@ -10,13 +10,17 @@ from src.medagentx.agents.quality_gate_agent import quality_gate_node
 from src.medagentx.agents.retrieval_agent import retrieval_agent_node
 from src.medagentx.agents.disease_reasoning_agent import disease_reasoning_node
 from src.medagentx.agents.image_classifier_agent import image_classifier_node
+from src.medagentx.agents.judge_agent import judge_node
 
 
 
 DEFAULT_QUALITY_EVIDENCE_CSV = "outputs/chexpert_plus/quality_evidence_manifest.csv"
 DEFAULT_QUALITY_GATE_CSV = "outputs/chexpert_plus/quality_gate_decisions.csv"
 DEFAULT_RETRIEVAL_RESULTS_CSV = "outputs/chexpert_plus/retrieval_results.csv"
-DEFAULT_DISEASE_REASONING_RESULTS_CSV = "outputs/chexpert_plus/disease_reasoning_results.csv"
+DEFAULT_DISEASE_REASONING_RESULTS_CSV="outputs/chexpert_plus/disease_reasoning_results.csv"
+DEFAULT_GROUND_TRUTH_CSV = "outputs/chexpert_plus/redivis_chexpert_plus_filtered_rows.csv"
+DEFAULT_JUDGE_RESULTS_CSV = "outputs/chexpert_plus/judge_results.csv"
+DEFAULT_JUDGE_REPORT_PATH = "outputs/chexpert_plus/judge_report.md"
 
 
 class MedAgentXState(TypedDict):
@@ -36,6 +40,10 @@ class MedAgentXState(TypedDict):
     reasoning_result: dict[str, Any]
     route_next: str
     completed_steps: list[str]
+    ground_truth_csv: str
+    judge_results_csv: str
+    judge_report_path: str
+    judge_case_count: int
 
 
 def _progress(message: str) -> None:
@@ -174,28 +182,65 @@ def route_after_retrieval(state: MedAgentXState) -> str:
 def disease_reasoning_graph_node(state: MedAgentXState) -> dict[str, Any]:
     _progress("Starting Disease Reasoning Agent.")
 
-    disease_result = disease_reasoning_node(
-        {
-            "retrieval_results_csv": state["retrieval_results_csv"],
-            "output_csv": state["disease_reasoning_results_csv"],
-            "model": state.get("reasoning_model", ""),
-            "reasoning_result": {},
-            "route_next": "",
-        }
-    )
+    node_state: dict[str, Any] = {
+        "retrieval_results_path": state["retrieval_results_csv"],
+        "image_classifier_predictions_path": state.get(
+            "image_classifier_output_csv",
+            "outputs/chexpert_plus/image_classifier_predictions.csv",
+        ),
+        "disease_reasoning_results_path": state["disease_reasoning_results_csv"],
+        "retrieval_top_k": state["top_k"],
+        "reasoning_result": {},
+        "route_next": "",
+        "verbose": True,
+    }
+
+    if state.get("reasoning_model"):
+        node_state["ollama_reasoning_model"] = state["reasoning_model"]
+
+    disease_result = disease_reasoning_node(node_state)
 
     route_next = disease_result.get("route_next", "judge_agent")
+    disease_results_path = disease_result.get(
+        "disease_reasoning_results_path",
+        state["disease_reasoning_results_csv"],
+    )
 
     _progress(f"Disease Reasoning Agent complete. Route: {route_next}.")
 
     return {
-        "reasoning_model": disease_result.get("model", state.get("reasoning_model", "")),
+        "disease_reasoning_results_csv": disease_results_path,
         "reasoning_result": disease_result.get("reasoning_result", {}),
         "route_next": route_next,
         "completed_steps": _append_step(state, "disease_reasoning_agent"),
     }
 
 
+def judge_graph_node(state: MedAgentXState) -> dict[str, Any]:
+    _progress("Starting Judge Agent.")
+
+    judge_result = judge_node(
+        {
+            "disease_reasoning_results_path": state["disease_reasoning_results_csv"],
+            "ground_truth_path": state["ground_truth_csv"],
+            "judge_results_path": state["judge_results_csv"],
+            "judge_report_path": state["judge_report_path"],
+            "verbose": True,
+        }
+    )
+
+    case_count = int(judge_result.get("judge_case_count", 0))
+
+    _progress(f"Judge Agent complete. Judged cases: {case_count}.")
+
+    return {
+        "judge_results_csv": judge_result.get("judge_results_path", state["judge_results_csv"]),
+        "judge_report_path": judge_result.get("judge_report_path", state["judge_report_path"]),
+        "judge_case_count": case_count,
+        "route_next": "complete",
+        "completed_steps": _append_step(state, "judge_agent"),
+    }
+    
 def build_medagentx_graph():
     graph = StateGraph(MedAgentXState)
 
@@ -203,6 +248,7 @@ def build_medagentx_graph():
     graph.add_node("image_classifier_agent", image_classifier_graph_node)
     graph.add_node("retrieval_agent", retrieval_graph_node)
     graph.add_node("disease_reasoning_agent", disease_reasoning_graph_node)
+    graph.add_node("judge_agent", judge_graph_node)
 
     graph.add_edge(START, "quality_gate_agent")
 
@@ -224,7 +270,8 @@ def build_medagentx_graph():
         ["disease_reasoning_agent", END],
     )
 
-    graph.add_edge("disease_reasoning_agent", END)
+    graph.add_edge("disease_reasoning_agent", "judge_agent")
+    graph.add_edge("judge_agent", END)
 
     return graph.compile()
 
@@ -237,6 +284,9 @@ def run_medagentx_graph(
     quality_gate_csv: str = DEFAULT_QUALITY_GATE_CSV,
     retrieval_results_csv: str = DEFAULT_RETRIEVAL_RESULTS_CSV,
     disease_reasoning_results_csv: str = DEFAULT_DISEASE_REASONING_RESULTS_CSV,
+    ground_truth_csv: str = DEFAULT_GROUND_TRUTH_CSV,
+    judge_results_csv: str = DEFAULT_JUDGE_RESULTS_CSV,
+    judge_report_path: str = DEFAULT_JUDGE_REPORT_PATH,
     reasoning_model: str = "",
 ) -> MedAgentXState:
     _progress("Starting continuous MEDAGENT-X graph.")
@@ -261,6 +311,10 @@ def run_medagentx_graph(
             "reasoning_result": {},
             "route_next": "",
             "completed_steps": [],
+            "ground_truth_csv": ground_truth_csv,
+            "judge_results_csv": judge_results_csv,
+            "judge_report_path": judge_report_path,
+            "judge_case_count": 0,
         }
     )
 

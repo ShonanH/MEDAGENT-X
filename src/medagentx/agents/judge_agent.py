@@ -44,7 +44,7 @@ CRITICAL_DISEASE_LABELS = {
 NON_DISEASE_LABELS = {"Support Devices", "No Finding"}
 
 DEFAULT_DISEASE_REASONING_PATH = "outputs/chexpert_plus/disease_reasoning_results.csv"
-DEFAULT_GROUND_TRUTH_PATH = "outputs/chexpert_plus/retrieval_case_manifest.csv"
+DEFAULT_GROUND_TRUTH_PATH = "outputs/chexpert_plus/redivis_chexpert_plus_filtered_rows.csv"
 DEFAULT_OUTPUT_PATH = "outputs/chexpert_plus/judge_results.csv"
 DEFAULT_REPORT_PATH = "outputs/chexpert_plus/judge_report.md"
 
@@ -200,8 +200,6 @@ def extract_report_text(row: pd.Series) -> dict[str, str]:
     report = clean_string(row.get("report"))
     if not report:
         report = clean_string(row.get("document"))
-    if not report:
-        report = clean_string(row.get("retrieved_document"))
 
     if not report:
         section_cols = [col for col in row.index if str(col).startswith("section_")]
@@ -213,6 +211,18 @@ def extract_report_text(row: pd.Series) -> dict[str, str]:
         "section_findings": findings,
         "section_impression": impression,
         "report_text": report,
+        "combined_text": combined,
+    }
+
+def extract_predicted_report_text(row: pd.Series) -> dict[str, str]:
+    findings = clean_string(row.get("predicted_findings_section"))
+    impression = clean_string(row.get("predicted_impression_section"))
+
+    combined = "\n".join(part for part in [findings, impression] if part)
+
+    return {
+        "predicted_findings_section": findings,
+        "predicted_impression_section": impression,
         "combined_text": combined,
     }
 
@@ -317,7 +327,7 @@ def find_ground_truth_row(
     dicom_path: str,
 ) -> pd.Series | None:
     study_columns = [
-        col for col in ["study_key", "query_study_key", "retrieved_study_key"]
+        col for col in ["study_key", "query_study_key"]
         if col in ground_truth_df.columns
     ]
 
@@ -325,11 +335,12 @@ def find_ground_truth_row(
         col for col in [
             "dicom_path",
             "query_dicom_path",
-            "retrieved_dicom_path",
             "path_to_dcm",
             "local_dicom_path",
             "image_path",
             "path_to_image",
+            "dicom_paths",
+            "image_paths",
         ]
         if col in ground_truth_df.columns
     ]
@@ -348,9 +359,11 @@ def find_ground_truth_row(
                 return same_study.iloc[0]
 
     for _, row in ground_truth_df.iterrows():
-        derived_keys = []
-        for col in dicom_columns:
-            derived_keys.append(derive_study_key_from_path(row.get(col)))
+        derived_keys = [
+            derive_study_key_from_path(row.get(col))
+            for col in dicom_columns
+        ]
+
         if study_key in derived_keys:
             if any(paths_match(row.get(col), dicom_path) for col in dicom_columns):
                 return row
@@ -358,6 +371,26 @@ def find_ground_truth_row(
 
     return None
 
+def validate_ground_truth_source(ground_truth_df: pd.DataFrame, ground_truth_path: str) -> None:
+    current_report_columns = {
+        "report",
+        "document",
+        "section_findings",
+        "section_impression",
+        "findings",
+        "impression",
+    }
+
+    has_current_report_text = any(col in ground_truth_df.columns for col in current_report_columns)
+    has_retrieved_only_text = "retrieved_document" in ground_truth_df.columns and not has_current_report_text
+
+    if has_retrieved_only_text:
+        raise ValueError(
+            "Invalid Judge ground-truth source. "
+            f"{ground_truth_path} contains retrieved_document but no current-case report columns. "
+            "Use a current-case report source such as "
+            "outputs/chexpert_plus/redivis_chexpert_plus_filtered_rows.csv."
+        )
 
 def compare_label(predicted: dict[str, Any], ground_truth: dict[str, Any]) -> dict[str, Any]:
     label = ground_truth["label"]
@@ -517,6 +550,7 @@ def evaluate_case(
         }
 
     report_parts = extract_report_text(gt_row)
+    predicted_report_parts = extract_predicted_report_text(prediction_row)
     gt_labels = infer_ground_truth_labels(report_parts["combined_text"])
 
     predictions = parse_json_cell(prediction_row.get("finding_predictions_json"), [])
@@ -590,6 +624,9 @@ def evaluate_case(
         "ground_truth_labels_json": json.dumps(gt_labels),
         "predicted_labels_json": json.dumps(predictions),
         "judge_failure_reasons_json": json.dumps(judge_reasons),
+        "predicted_findings_section": predicted_report_parts["predicted_findings_section"],
+        "predicted_impression_section": predicted_report_parts["predicted_impression_section"],
+        "predicted_report_excerpt": truncate_text(predicted_report_parts["combined_text"], 2200),
         "ground_truth_findings": report_parts["section_findings"],
         "ground_truth_impression": report_parts["section_impression"],
         "ground_truth_report_excerpt": truncate_text(report_parts["combined_text"], 2200),
@@ -686,6 +723,7 @@ def run_judge_agent(
     if verbose:
         print("[Judge Agent] Loading ground-truth report source...")
     ground_truth_df = pd.read_csv(ground_truth_path_obj)
+    validate_ground_truth_source(ground_truth_df, ground_truth_path)
 
     rows = []
     total = len(disease_reasoning_df)

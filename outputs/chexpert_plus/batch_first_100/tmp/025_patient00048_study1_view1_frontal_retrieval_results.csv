@@ -1,0 +1,159 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00048/study1,patient00048/study1/view1_frontal.dcm,45,Female,Unknown,Unknown,0.0,0.0,0.0,0.0,0.5370498176614669,10.870620727539062,-0.01968195289373398,0.39176565408706665,-6.962518215179443,1.0495188236236572,12.901224136352539,0.025399843230843544,0.4648393988609314,-2.2132060527801514,2.034472942352295,"Warning evidence: RAD-DINO patch variability outlier evidence (raddino_patch_variability_outlier_z=2.428). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.10663825273513794,patient00078/study4,patient00078/study4/view1_frontal.dcm,train/patient00078/study4/view1_frontal.dcm,train/patient00078/study4/view1_frontal.jpg,25,Male,Asian,Non-Hispanic/Non-Latino,0.21620243329826244,0.0,0.2996409065061191,0.0,0.8687906406006599,10.824217796325684,-0.02225104719400406,0.3899509608745575,-7.227653980255127,1.1750414371490479,12.260011672973633,0.019777581095695496,0.44195273518562317,-1.4754832983016968,1.5617153644561768,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 25
+Sex: Male
+Race: Asian
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: December 16 AT 1432 HOURS.
+Findings: The left pneumothorax has significantly decreased in size. No new
+abnormalities.
+#5153155048 SINGLE VIEW PORTABLE CHEST: 12-16-2005 at 0600 HOURS.
+FINDINGS:
+The left pneumothorax has increased slightly in size.
+Impression: 1. SLIGHT INCREASE IN LEFT APICAL PNEUMOTHORAX ON THE MOST RECENT
+FILM.
+Summary: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION.
+Narrative: 19952991367 SINGLE VIEW PORTABLE CHEST: 12/16/2005 AT 1550 HOURS.
+Full report: NARRATIVE:
+19952991367 SINGLE VIEW PORTABLE CHEST: 12/16/2005 AT 1550 HOURS.
+COMPARISON: December 16 AT 1432 HOURS.
+FINDINGS:
+The left pneumothorax has significantly decreased in size. No new
+abnormalities.
+#5153155048 SINGLE VIEW PORTABLE CHEST: 12-16-2005 at 0600 HOURS.
+FINDINGS:
+The left pneumothorax has increased slightly in size.
+IMPRESSION:
+1. SLIGHT INCREASE IN LEFT APICAL PNEUMOTHORAX ON THE MOST RECENT
+FILM.
+END OF IMPRESSION:
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION.
+ 
+ACCESSION NUMBER:
+51.53.15.50.48
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""25"", ""deid_patient_id"": ""patient00078"", ""dicom_path"": ""patient00078/study4/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00078/study4/view1_frontal.dcm"", ""path_to_image"": ""train/patient00078/study4/view1_frontal.jpg"", ""patient_id"": ""patient00078"", ""patient_report_date_order"": ""4"", ""race"": ""Asian"", ""section_accession_number"": ""\n51.53.15.50.48\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study4"", ""study_key"": ""patient00078/study4"", ""view_stem"": ""view1_frontal""}"
+patient00048/study1,patient00048/study1/view1_frontal.dcm,45,Female,Unknown,Unknown,0.0,0.0,0.0,0.0,0.5370498176614669,10.870620727539062,-0.01968195289373398,0.39176565408706665,-6.962518215179443,1.0495188236236572,12.901224136352539,0.025399843230843544,0.4648393988609314,-2.2132060527801514,2.034472942352295,"Warning evidence: RAD-DINO patch variability outlier evidence (raddino_patch_variability_outlier_z=2.428). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.10755002498626709,patient00078/study9,patient00078/study9/view1_frontal.dcm,train/patient00078/study9/view1_frontal.dcm,train/patient00078/study9/view1_frontal.jpg,25,Male,Asian,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.21802031846687045,10.748794555664062,-0.02215360291302204,0.3872305154800415,-7.262077808380127,1.1527347564697266,12.486855506896973,0.015613502822816372,0.45030999183654785,-1.8695985078811646,1.9593256711959839,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 25
+Sex: Male
+Race: Asian
+Ethnicity: Non-Hispanic/Non-Latino
+Findings: The left chest tube is again noted. The volume of
+pneumothorax has increased slightly.
+7172 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: No interval change.
+2911246394 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: The chest tube has been replaced by an apical pigtail
+catheter. The pneumothorax is not identified.
+Impression: DIMINISHED PNEUMOTHORAX AFTER PLACEMENT OF PIGTAIL CATHETER.
+Summary: 2 ABNORMAL, PREVIOUSLY REPORTED.
+Narrative: SINGLE RADIOGRAPH OF THE CHEST: 4/5/2000
+Full report: NARRATIVE:
+SINGLE RADIOGRAPH OF THE CHEST: 4/5/2000
+FINDINGS: The left chest tube is again noted. The volume of
+pneumothorax has increased slightly.
+7172 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: No interval change.
+2911246394 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: The chest tube has been replaced by an apical pigtail
+catheter. The pneumothorax is not identified.
+IMPRESSION:
+DIMINISHED PNEUMOTHORAX AFTER PLACEMENT OF PIGTAIL CATHETER.
+END OF IMPRESSION
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED.
+ 
+ACCESSION NUMBER:
+#7172
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""25"", ""deid_patient_id"": ""patient00078"", ""dicom_path"": ""patient00078/study9/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00078/study9/view1_frontal.dcm"", ""path_to_image"": ""train/patient00078/study9/view1_frontal.jpg"", ""patient_id"": ""patient00078"", ""patient_report_date_order"": ""9"", ""race"": ""Asian"", ""section_accession_number"": ""\n#7172\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study9"", ""study_key"": ""patient00078/study9"", ""view_stem"": ""view1_frontal""}"
+patient00048/study1,patient00048/study1/view1_frontal.dcm,45,Female,Unknown,Unknown,0.0,0.0,0.0,0.0,0.5370498176614669,10.870620727539062,-0.01968195289373398,0.39176565408706665,-6.962518215179443,1.0495188236236572,12.901224136352539,0.025399843230843544,0.4648393988609314,-2.2132060527801514,2.034472942352295,"Warning evidence: RAD-DINO patch variability outlier evidence (raddino_patch_variability_outlier_z=2.428). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.10815942287445068,patient00078/study7,patient00078/study7/view1_frontal.dcm,train/patient00078/study7/view1_frontal.dcm,train/patient00078/study7/view1_frontal.jpg,25,Male,Asian,Non-Hispanic/Non-Latino,0.0,0.0955849747116065,0.35260805992761546,0.09559129501190032,0.0,11.188664436340332,-0.018891893327236176,0.4032939076423645,-7.403636932373047,1.2546778917312622,13.515035629272461,0.02869236469268799,0.4868370592594147,-1.949432373046875,1.5235264301300049,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 25
+Sex: Male
+Race: Asian
+Ethnicity: Non-Hispanic/Non-Latino
+Findings: The left chest tube is again noted. The volume of
+pneumothorax has increased slightly.
+49335592 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: No interval change.
+402809495 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: The chest tube has been replaced by an apical pigtail
+catheter. The pneumothorax is not identified.
+Impression: DIMINISHED PNEUMOTHORAX AFTER PLACEMENT OF PIGTAIL CATHETER.
+Summary: 2 ABNORMAL, PREVIOUSLY REPORTED.
+Narrative: SINGLE RADIOGRAPH OF THE CHEST: 1/14/2015
+Full report: NARRATIVE:
+SINGLE RADIOGRAPH OF THE CHEST: 1/14/2015
+FINDINGS: The left chest tube is again noted. The volume of
+pneumothorax has increased slightly.
+49335592 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: No interval change.
+402809495 SINGLE RADIOGRAPH OF THE CHEST:
+FINDINGS: The chest tube has been replaced by an apical pigtail
+catheter. The pneumothorax is not identified.
+IMPRESSION:
+DIMINISHED PNEUMOTHORAX AFTER PLACEMENT OF PIGTAIL CATHETER.
+END OF IMPRESSION
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED.
+ 
+ACCESSION NUMBER:
+402-809-495
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""25"", ""deid_patient_id"": ""patient00078"", ""dicom_path"": ""patient00078/study7/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00078/study7/view1_frontal.dcm"", ""path_to_image"": ""train/patient00078/study7/view1_frontal.jpg"", ""patient_id"": ""patient00078"", ""patient_report_date_order"": ""7"", ""race"": ""Asian"", ""section_accession_number"": ""\n402-809-495\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study7"", ""study_key"": ""patient00078/study7"", ""view_stem"": ""view1_frontal""}"
+patient00048/study1,patient00048/study1/view1_frontal.dcm,45,Female,Unknown,Unknown,0.0,0.0,0.0,0.0,0.5370498176614669,10.870620727539062,-0.01968195289373398,0.39176565408706665,-6.962518215179443,1.0495188236236572,12.901224136352539,0.025399843230843544,0.4648393988609314,-2.2132060527801514,2.034472942352295,"Warning evidence: RAD-DINO patch variability outlier evidence (raddino_patch_variability_outlier_z=2.428). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.11251240968704224,patient00078/study3,patient00078/study3/view1_frontal.dcm,train/patient00078/study3/view1_frontal.dcm,train/patient00078/study3/view1_frontal.jpg,25,Male,Asian,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,1.1134480642394715,10.5402193069458,-0.024522004649043083,0.37954607605934143,-6.3481292724609375,1.1552118062973022,11.162718772888184,0.01524292305111885,0.4025113880634308,-1.6276992559432983,1.146281123161316,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 25
+Sex: Male
+Race: Asian
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 7-13-2012 AT 1432 HOURS.
+Findings: The left pneumothorax has significantly decreased in size. No new
+abnormalities.
+X830G995434 SINGLE VIEW PORTABLE CHEST: 2012/7/13 at 0600 HOURS.
+FINDINGS:
+The left pneumothorax has increased slightly in size.
+Impression: 1. SLIGHT INCREASE IN LEFT APICAL PNEUMOTHORAX ON THE MOST RECENT
+FILM.
+Summary: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION.
+Narrative: #61158122 SINGLE VIEW PORTABLE CHEST: 12, July 13 AT 1550 HOURS.
+Full report: NARRATIVE:
+#61158122 SINGLE VIEW PORTABLE CHEST: 12, July 13 AT 1550 HOURS.
+COMPARISON: 7-13-2012 AT 1432 HOURS.
+FINDINGS:
+The left pneumothorax has significantly decreased in size. No new
+abnormalities.
+X830G995434 SINGLE VIEW PORTABLE CHEST: 2012/7/13 at 0600 HOURS.
+FINDINGS:
+The left pneumothorax has increased slightly in size.
+IMPRESSION:
+1. SLIGHT INCREASE IN LEFT APICAL PNEUMOTHORAX ON THE MOST RECENT
+FILM.
+END OF IMPRESSION:
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION.
+ 
+ACCESSION NUMBER:
+611-581-22
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""25"", ""deid_patient_id"": ""patient00078"", ""dicom_path"": ""patient00078/study3/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00078/study3/view1_frontal.dcm"", ""path_to_image"": ""train/patient00078/study3/view1_frontal.jpg"", ""patient_id"": ""patient00078"", ""patient_report_date_order"": ""1"", ""race"": ""Asian"", ""section_accession_number"": ""\n611-581-22\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study3"", ""study_key"": ""patient00078/study3"", ""view_stem"": ""view1_frontal""}"
+patient00048/study1,patient00048/study1/view1_frontal.dcm,45,Female,Unknown,Unknown,0.0,0.0,0.0,0.0,0.5370498176614669,10.870620727539062,-0.01968195289373398,0.39176565408706665,-6.962518215179443,1.0495188236236572,12.901224136352539,0.025399843230843544,0.4648393988609314,-2.2132060527801514,2.034472942352295,"Warning evidence: RAD-DINO patch variability outlier evidence (raddino_patch_variability_outlier_z=2.428). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.11349356174468994,patient00146/study18,patient00146/study18/view1_frontal.dcm,train/patient00146/study18/view1_frontal.dcm,train/patient00146/study18/view1_frontal.jpg,74,Female,White,Non-Hispanic/Non-Latino,0.5054874489406306,0.0,0.0,0.0,0.3783296078561541,10.034307479858398,-0.0122436648234725,0.3618747889995575,-5.579492092132568,1.0689419507980347,12.862676620483398,0.021699801087379456,0.46363431215286255,-1.5857205390930176,1.8988651037216187,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 74
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 2010/9/9
+Impression: 1. AGAIN NOTED IS A TINY RESIDUAL LEFT APICAL PNEUMOTHORAX AFTER
+CHEST TUBE REMOVAL.
+2. TRACHEOSTOMY TUBE, NASOGASTRIC TUBE, FEEDING TUBE, RIGHT UPPER
+EXTREMITY PICC LINE IN PLACE. UNCHANGED.
+3. NO CHANGE OF CARDIOPULMONARY STATUS, NORMAL HEART SIZE. MILD
+INTERSTITIAL PULMONARY EDEMA.
+Summary: 2: Abnormal; previously reported.
+ __________________________________
+Narrative: CHEST: Single view.
+Full report: NARRATIVE:
+CHEST: Single view.
+COMPARISON:
+2010/9/9
+IMPRESSION:
+1. AGAIN NOTED IS A TINY RESIDUAL LEFT APICAL PNEUMOTHORAX AFTER
+CHEST TUBE REMOVAL.
+2. TRACHEOSTOMY TUBE, NASOGASTRIC TUBE, FEEDING TUBE, RIGHT UPPER
+EXTREMITY PICC LINE IN PLACE. UNCHANGED.
+3. NO CHANGE OF CARDIOPULMONARY STATUS, NORMAL HEART SIZE. MILD
+INTERSTITIAL PULMONARY EDEMA.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal; previously reported.
+ __________________________________
+ 
+ACCESSION NUMBER:
+8038400
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""74"", ""deid_patient_id"": ""patient00146"", ""dicom_path"": ""patient00146/study18/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00146/study18/view1_frontal.dcm"", ""path_to_image"": ""train/patient00146/study18/view1_frontal.jpg"", ""patient_id"": ""patient00146"", ""patient_report_date_order"": ""18"", ""race"": ""White"", ""section_accession_number"": ""\n8038400\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study18"", ""study_key"": ""patient00146/study18"", ""view_stem"": ""view1_frontal""}"

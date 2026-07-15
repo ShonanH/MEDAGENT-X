@@ -1,0 +1,15 @@
+label,status,count
+Atelectasis,present,1
+Cardiomegaly,present,1
+Consolidation,present,1
+Edema,present,1
+Pleural Effusion,present,1
+Pneumonia,present,1
+Pneumothorax,present,1
+Fracture,present,1
+Lung Lesion,absent,1
+Lung Opacity,present,1
+Enlarged Cardiomediastinum,present,1
+Pleural Other,uncertain,1
+Support Devices,unavailable,1
+No Finding,not_computed,1

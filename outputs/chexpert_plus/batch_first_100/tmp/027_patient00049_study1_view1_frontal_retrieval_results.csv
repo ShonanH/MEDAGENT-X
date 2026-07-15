@@ -1,0 +1,217 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00049/study1,patient00049/study1/view1_frontal.dcm,63,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.2814018802268534,10.900335311889648,-0.026188617572188377,0.3924591541290283,-6.703971862792969,1.0839070081710815,10.043787956237793,0.02529287338256836,0.3615403175354004,-1.0653475522994995,1.1826914548873901,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.09643667936325073,patient00306/study1,patient00306/study1/view1_frontal.dcm,train/patient00306/study1/view1_frontal.dcm,train/patient00306/study1/view1_frontal.jpg,60,Male,Unknown,Unknown,0.8587196863908084,0.28034555899722613,0.4736399830172582,0.2803941589423122,0.0,10.604743957519531,-0.017272355034947395,0.38227570056915283,-6.614392280578613,1.1853306293487549,12.073710441589355,0.02026183530688286,0.43520110845565796,-1.825779676437378,1.2730313539505005,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 60
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Comparison: None.
+Findings: Single AP portable view of the chest reveals low lung volumes
+bilaterally. Cardiac silhouette is mildly enlarged. Mild
+pulmonary interstitial edema is noted. Small air space opacity is
+noted at the left costophrenic sulcus suggestive of atelectasis or
+possible pneumonia. Mild widening of the superior mediastinum is
+noted; however, this may be secondary to low lung volumes. The
+visualized bones are intact. No soft tissue abnormalities are
+appreciated.
+Impression: 1. MILD PULMONARY INTERSTITIAL EDEMA.
+2. FOCAL AIR SPACE OPACITY IN THE LEFT COSTOPHRENIC SULCUS
+CONSISTENT WITH ATELECTASIS OR POSSIBLE PNEUMONIA.
+3. LOW LUNG VOLUMES.
+4. MILD CARDIOMEGALY.
+Summary: 2
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Dr. Alana Santana  on: 9-5-07
+Narrative: SINGLE AP PORTABLE VIEW OF THE CHEST, 9/5/2007
+Full report: NARRATIVE:
+SINGLE AP PORTABLE VIEW OF THE CHEST, 9/5/2007
+COMPARISON:
+None.
+FINDINGS:
+Single AP portable view of the chest reveals low lung volumes
+bilaterally. Cardiac silhouette is mildly enlarged. Mild
+pulmonary interstitial edema is noted. Small air space opacity is
+noted at the left costophrenic sulcus suggestive of atelectasis or
+possible pneumonia. Mild widening of the superior mediastinum is
+noted; however, this may be secondary to low lung volumes. The
+visualized bones are intact. No soft tissue abnormalities are
+appreciated.
+IMPRESSION:
+1. MILD PULMONARY INTERSTITIAL EDEMA.
+2. FOCAL AIR SPACE OPACITY IN THE LEFT COSTOPHRENIC SULCUS
+CONSISTENT WITH ATELECTASIS OR POSSIBLE PNEUMONIA.
+3. LOW LUNG VOLUMES.
+4. MILD CARDIOMEGALY.
+END OF IMPRESSION:
+SUMMARY: 2
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Dr. Alana Santana  on: 9-5-07
+ 
+ACCESSION NUMBER:
+8702612
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""60"", ""deid_patient_id"": ""patient00306"", ""dicom_path"": ""patient00306/study1/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00306/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00306/study1/view1_frontal.jpg"", ""patient_id"": ""patient00306"", ""patient_report_date_order"": ""1"", ""race"": ""Unknown"", ""section_accession_number"": ""\n8702612\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00306/study1"", ""view_stem"": ""view1_frontal""}"
+patient00049/study1,patient00049/study1/view1_frontal.dcm,63,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.2814018802268534,10.900335311889648,-0.026188617572188377,0.3924591541290283,-6.703971862792969,1.0839070081710815,10.043787956237793,0.02529287338256836,0.3615403175354004,-1.0653475522994995,1.1826914548873901,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.1013917326927185,patient00278/study1,patient00278/study1/view1_frontal.dcm,train/patient00278/study1/view1_frontal.dcm,train/patient00278/study1/view1_frontal.jpg,58,Male,Unknown,Unknown,0.0,0.0,0.0,0.0,0.37135227494305445,10.634623527526855,-0.019399000331759453,0.3832533061504364,-6.938210487365723,1.1004104614257812,11.68055248260498,0.015779027715325356,0.42119014263153076,-2.4239487648010254,1.4595707654953003,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 58
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Clinical history: Pulmonary hypertension, CHF.  Pulmonary embolism,
+volume overload.
+Comparison: None.
+Technique: AP portable upright single view of the chest.
+Findings: Mild cardiomegaly is seen but no evidence of pulmonary
+edema or pleural effusions.  Retrocardiac opacity is appreciated and
+may represent atelectasis versus infiltrate.  The right lung is
+unremarkable.  There are no bony or soft tissue abnormalities.
+Impression: 1.  MILD CARDIOMEGALY.
+ 2.  NO PULMONARY EDEMA OR PLEURAL EFFUSIONS.
+ 3.  RETROCARDIAC ATELECTASIS VERSUS INFILTRATES.
+Summary: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+Narrative: PORTABLE CHEST, 2/17/2019:
+Full report: NARRATIVE:
+PORTABLE CHEST, 2/17/2019:
+ CLINICAL HISTORY:  Pulmonary hypertension, CHF.  Pulmonary embolism,
+volume overload.
+ COMPARISON:   None.
+ TECHNIQUE:  AP portable upright single view of the chest.
+ FINDINGS:  Mild cardiomegaly is seen but no evidence of pulmonary
+edema or pleural effusions.  Retrocardiac opacity is appreciated and
+may represent atelectasis versus infiltrate.  The right lung is
+unremarkable.  There are no bony or soft tissue abnormalities.
+ IMPRESSION:
+ 1.  MILD CARDIOMEGALY.
+ 2.  NO PULMONARY EDEMA OR PLEURAL EFFUSIONS.
+ 3.  RETROCARDIAC ATELECTASIS VERSUS INFILTRATES.
+ END OF IMPRESSION:
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+70635
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""58"", ""deid_patient_id"": ""patient00278"", ""dicom_path"": ""patient00278/study1/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00278/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00278/study1/view1_frontal.jpg"", ""patient_id"": ""patient00278"", ""patient_report_date_order"": ""1"", ""race"": ""Unknown"", ""section_accession_number"": ""\n70635\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00278/study1"", ""view_stem"": ""view1_frontal""}"
+patient00049/study1,patient00049/study1/view1_frontal.dcm,63,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.2814018802268534,10.900335311889648,-0.026188617572188377,0.3924591541290283,-6.703971862792969,1.0839070081710815,10.043787956237793,0.02529287338256836,0.3615403175354004,-1.0653475522994995,1.1826914548873901,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.10353249311447144,patient00360/study1,patient00360/study1/view1_frontal.dcm,train/patient00360/study1/view1_frontal.dcm,train/patient00360/study1/view1_frontal.jpg,89,Male,White,Non-Hispanic/Non-Latino,0.0,0.41913699598449156,0.11477306746779473,0.4192434256019958,0.0,10.307503700256348,-0.018258193507790565,0.37149158120155334,-6.778047561645508,1.0950497388839722,11.444174766540527,0.02803988754749298,0.4120030701160431,-1.3958584070205688,1.2135335206985474,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 89
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: None.
+CLINICAL DATA: 91 year old man with altered mental status.
+Findings: AP portable view of the chest taken on 10/27/2018 at 17:02 hours
+demonstrates normal cardiomediastinal silhouette with mildly
+tortuous and calcified aorta. Lung volumes are low. Costophrenic
+sulci are sharp. The lungs are clear with no evidence of pulmonary
+edema. There is apical pleural thickening and calcification.
+There is osteopenia.
+Impression: 1. LOW LUNG VOLUMES.
+2. NO EVIDENCE FOR PULMONARY EDEMA.
+Summary: 2: Abnormal, previously reported.
+ __________________________________
+Narrative: PORTABLE CHEST, SINGLE VIEW: 10-27-2018.
+Full report: NARRATIVE:
+PORTABLE CHEST, SINGLE VIEW: 10-27-2018.
+COMPARISON: None.
+CLINICAL DATA: 91 year old man with altered mental status.
+FINDINGS:
+AP portable view of the chest taken on 10/27/2018 at 17:02 hours
+demonstrates normal cardiomediastinal silhouette with mildly
+tortuous and calcified aorta. Lung volumes are low. Costophrenic
+sulci are sharp. The lungs are clear with no evidence of pulmonary
+edema. There is apical pleural thickening and calcification.
+There is osteopenia.
+IMPRESSION:
+1. LOW LUNG VOLUMES.
+2. NO EVIDENCE FOR PULMONARY EDEMA.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal, previously reported.
+ __________________________________
+ 
+ACCESSION NUMBER:
+#997-93
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""89"", ""deid_patient_id"": ""patient00360"", ""dicom_path"": ""patient00360/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00360/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00360/study1/view1_frontal.jpg"", ""patient_id"": ""patient00360"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\n#997-93\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00360/study1"", ""view_stem"": ""view1_frontal""}"
+patient00049/study1,patient00049/study1/view1_frontal.dcm,63,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.2814018802268534,10.900335311889648,-0.026188617572188377,0.3924591541290283,-6.703971862792969,1.0839070081710815,10.043787956237793,0.02529287338256836,0.3615403175354004,-1.0653475522994995,1.1826914548873901,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.10891008377075195,patient00027/study1,patient00027/study1/view2_lateral.dcm,train/patient00027/study1/view2_lateral.dcm,train/patient00027/study1/view2_lateral.jpg,56,Male,Other,Non-Hispanic/Non-Latino,0.0,1.8989846764596956,2.2555351897966163,1.9010997282432736,0.0,9.72707748413086,-0.012430354952812195,0.35077548027038574,-4.257091045379639,1.797508955001831,13.88047981262207,0.030262669548392296,0.49995356798171997,-1.5301623344421387,1.8784137964248657,"Critical evidence: ConvNeXt embedding outlier evidence (convnext_embedding_outlier_z=3.073). Warning evidence: low entropy evidence (low_entropy_evidence_z=2.256); RAD-DINO embedding outlier evidence (raddino_embedding_outlier_z=2.409); noise proxy outlier evidence (validation_noise_proxy_outlier_z=2.627); entropy outlier evidence (validation_entropy_outlier_z=2.256). Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 56
+Sex: Male
+Race: Other
+Ethnicity: Non-Hispanic/Non-Latino
+Clinical history: 55 years Male with Chest Pain
+Comparison: None
+Impression: 1.FRONTAL AND LATERAL VIEWS OF THE CHEST DEMONSTRATE LOW LUNG VOLUMES 
+WITH BIBASILAR OPACITIES LIKELY REFLECTING ATELECTASIS.  NO EVIDENCE 
+OF FOCAL CONSOLIDATION, PLEURAL EFFUSIONS OR PNEUMOTHORAX.
+ 
+2.THE CARDIOMEDIASTINAL SILHOUETTE AND PULMONARY VASCULATURE ARE 
+WITHIN NORMAL LIMITS.
+ 
+3.VISUALIZED OSSEOUS STRUCTURES ARE INTACT.
+Summary: 1-NO SIGNIFICANT ABNORMALITY
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+Narrative: Exam: Chest 2 Views, 5-20-2006
+Full report: NARRATIVE:
+Exam: Chest 2 Views, 5-20-2006
+ 
+Clinical History: 55 years Male with Chest Pain
+ 
+Comparison: None
+ 
+IMPRESSION:
+ 
+1.FRONTAL AND LATERAL VIEWS OF THE CHEST DEMONSTRATE LOW LUNG VOLUMES 
+WITH BIBASILAR OPACITIES LIKELY REFLECTING ATELECTASIS.  NO EVIDENCE 
+OF FOCAL CONSOLIDATION, PLEURAL EFFUSIONS OR PNEUMOTHORAX.
+ 
+2.THE CARDIOMEDIASTINAL SILHOUETTE AND PULMONARY VASCULATURE ARE 
+WITHIN NORMAL LIMITS.
+ 
+3.VISUALIZED OSSEOUS STRUCTURES ARE INTACT.
+ 
+SUMMARY:1-NO SIGNIFICANT ABNORMALITY
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+#80273744
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""56"", ""deid_patient_id"": ""patient00027"", ""dicom_path"": ""patient00027/study1/view2_lateral.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00027/study1/view2_lateral.dcm"", ""path_to_image"": ""train/patient00027/study1/view2_lateral.jpg"", ""patient_id"": ""patient00027"", ""patient_report_date_order"": ""2"", ""race"": ""Other"", ""section_accession_number"": ""\n#80273744\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00027/study1"", ""view_stem"": ""view2_lateral""}"
+patient00049/study1,patient00049/study1/view1_frontal.dcm,63,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.2814018802268534,10.900335311889648,-0.026188617572188377,0.3924591541290283,-6.703971862792969,1.0839070081710815,10.043787956237793,0.02529287338256836,0.3615403175354004,-1.0653475522994995,1.1826914548873901,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.10937929153442383,patient00027/study1,patient00027/study1/view1_frontal.dcm,train/patient00027/study1/view1_frontal.dcm,train/patient00027/study1/view1_frontal.jpg,56,Male,Other,Non-Hispanic/Non-Latino,1.541230440186596,1.7423893889843245,1.5179166191937936,1.7441713687617755,0.0,10.930277824401855,-0.017692672088742256,0.394015371799469,-7.308250427246094,1.0256181955337524,11.83553695678711,0.02846362255513668,0.4261285662651062,-1.5658246278762817,1.9847580194473267,"Warning evidence: noise proxy outlier evidence (validation_noise_proxy_outlier_z=2.388). Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 56
+Sex: Male
+Race: Other
+Ethnicity: Non-Hispanic/Non-Latino
+Clinical history: 55 years Male with Chest Pain
+Comparison: None
+Impression: 1.FRONTAL AND LATERAL VIEWS OF THE CHEST DEMONSTRATE LOW LUNG VOLUMES 
+WITH BIBASILAR OPACITIES LIKELY REFLECTING ATELECTASIS.  NO EVIDENCE 
+OF FOCAL CONSOLIDATION, PLEURAL EFFUSIONS OR PNEUMOTHORAX.
+ 
+2.THE CARDIOMEDIASTINAL SILHOUETTE AND PULMONARY VASCULATURE ARE 
+WITHIN NORMAL LIMITS.
+ 
+3.VISUALIZED OSSEOUS STRUCTURES ARE INTACT.
+Summary: 1-NO SIGNIFICANT ABNORMALITY
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+Narrative: Exam: Chest 2 Views, 6-27-2010
+Full report: NARRATIVE:
+Exam: Chest 2 Views, 6-27-2010
+ 
+Clinical History: 55 years Male with Chest Pain
+ 
+Comparison: None
+ 
+IMPRESSION:
+ 
+1.FRONTAL AND LATERAL VIEWS OF THE CHEST DEMONSTRATE LOW LUNG VOLUMES 
+WITH BIBASILAR OPACITIES LIKELY REFLECTING ATELECTASIS.  NO EVIDENCE 
+OF FOCAL CONSOLIDATION, PLEURAL EFFUSIONS OR PNEUMOTHORAX.
+ 
+2.THE CARDIOMEDIASTINAL SILHOUETTE AND PULMONARY VASCULATURE ARE 
+WITHIN NORMAL LIMITS.
+ 
+3.VISUALIZED OSSEOUS STRUCTURES ARE INTACT.
+ 
+SUMMARY:1-NO SIGNIFICANT ABNORMALITY
+I have personally reviewed the images for this examination and agreed
+with the report transcribed above.
+ 
+ACCESSION NUMBER:
+8795694723
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""56"", ""deid_patient_id"": ""patient00027"", ""dicom_path"": ""patient00027/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00027/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00027/study1/view1_frontal.jpg"", ""patient_id"": ""patient00027"", ""patient_report_date_order"": ""1"", ""race"": ""Other"", ""section_accession_number"": ""\n8795694723\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00027/study1"", ""view_stem"": ""view1_frontal""}"
