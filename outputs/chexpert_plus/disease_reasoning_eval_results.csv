@@ -1,0 +1,2 @@
+study_key,dicom_path,schema_pass,json_parse_pass,label_completeness_pass,primary_consistency_pass,report_text_consistency_pass,contradiction_pass,classifier_adherence_pass,retrieval_faithfulness_pass,overall_pass,present_labels_json,unexpected_report_mentions_json,missing_present_mentions_json,classifier_adherence_failures_json,retrieval_faithfulness_failures_json,failure_reasons_json
+patient00003/study1,patient00003/study1/view1_frontal.dcm,True,True,True,True,True,True,True,True,True,"[""Edema""]",[],[],[],[],[]
