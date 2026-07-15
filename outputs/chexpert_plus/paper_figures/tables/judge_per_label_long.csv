@@ -13,41 +13,41 @@ patient00003/study1,patient00003/study1/view1_frontal.dcm,Enlarged Cardiomediast
 patient00003/study1,patient00003/study1/view1_frontal.dcm,Pleural Other,disease,absent,absent,exact,0,0,0,1
 patient00003/study1,patient00003/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00003/study1,patient00003/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00009/study1,patient00009/study1/view1_frontal.dcm,Atelectasis,disease,present,uncertain,partial,0,1,0,0
+patient00009/study1,patient00009/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,uncertain,exact,0,0,0,1
 patient00009/study1,patient00009/study1/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00009/study1,patient00009/study1/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00009/study1,patient00009/study1/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
-patient00009/study1,patient00009/study1/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
+patient00009/study1,patient00009/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00009/study1,patient00009/study1/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
+patient00009/study1,patient00009/study1/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00009/study1,patient00009/study1/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00009/study1,patient00009/study1/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00009/study1,patient00009/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00009/study1,patient00009/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00009/study1,patient00009/study1/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
-patient00009/study1,patient00009/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,present,absent,mismatch,0,1,0,0
+patient00009/study1,patient00009/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
+patient00009/study1,patient00009/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00009/study1,patient00009/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00009/study1,patient00009/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00009/study1,patient00009/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00009/study1,patient00009/study1/view2_lateral.dcm,Atelectasis,disease,present,uncertain,partial,0,1,0,0
+patient00009/study1,patient00009/study1/view2_lateral.dcm,Atelectasis,disease,uncertain,uncertain,exact,0,0,0,1
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
-patient00009/study1,patient00009/study1/view2_lateral.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
+patient00009/study1,patient00009/study1/view2_lateral.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Pneumonia,disease,present,absent,mismatch,0,1,0,0
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
-patient00009/study1,patient00009/study1/view2_lateral.dcm,Enlarged Cardiomediastinum,disease,present,absent,mismatch,0,1,0,0
+patient00009/study1,patient00009/study1/view2_lateral.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Pleural Other,disease,absent,absent,exact,0,0,0,1
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00009/study1,patient00009/study1/view2_lateral.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00016/study1,patient00016/study1/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00016/study1,patient00016/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00016/study1,patient00016/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00016/study1,patient00016/study1/view1_frontal.dcm,Consolidation,disease,uncertain,present,partial,0,0,1,0
+patient00016/study1,patient00016/study1/view1_frontal.dcm,Consolidation,disease,uncertain,uncertain,exact,0,0,0,1
 patient00016/study1,patient00016/study1/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00016/study1,patient00016/study1/view1_frontal.dcm,Pleural Effusion,disease,absent,absent,exact,0,0,0,1
 patient00016/study1,patient00016/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00016/study1,patient00016/study1/view1_frontal.dcm,Pneumothorax,disease,absent,present,mismatch,0,0,1,0
+patient00016/study1,patient00016/study1/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00016/study1,patient00016/study1/view1_frontal.dcm,Fracture,disease,uncertain,present,partial,0,0,1,0
 patient00016/study1,patient00016/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00016/study1,patient00016/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,present,partial,0,0,1,0
@@ -55,13 +55,13 @@ patient00016/study1,patient00016/study1/view1_frontal.dcm,Enlarged Cardiomediast
 patient00016/study1,patient00016/study1/view1_frontal.dcm,Pleural Other,disease,absent,present,mismatch,0,0,1,0
 patient00016/study1,patient00016/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00016/study1,patient00016/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00016/study1,patient00016/study1/view2_lateral.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00016/study1,patient00016/study1/view2_lateral.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00016/study1,patient00016/study1/view2_lateral.dcm,Consolidation,disease,present,present,exact,1,0,0,0
+patient00016/study1,patient00016/study1/view2_lateral.dcm,Consolidation,disease,uncertain,uncertain,exact,0,0,0,1
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
-patient00016/study1,patient00016/study1/view2_lateral.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
+patient00016/study1,patient00016/study1/view2_lateral.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Pneumonia,disease,present,absent,mismatch,0,1,0,0
-patient00016/study1,patient00016/study1/view2_lateral.dcm,Pneumothorax,disease,absent,present,mismatch,0,0,1,0
+patient00016/study1,patient00016/study1/view2_lateral.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Fracture,disease,absent,present,mismatch,0,0,1,0
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
@@ -69,55 +69,55 @@ patient00016/study1,patient00016/study1/view2_lateral.dcm,Enlarged Cardiomediast
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Pleural Other,disease,absent,present,mismatch,0,0,1,0
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00016/study1,patient00016/study1/view2_lateral.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00026/study1,patient00026/study1/view1_frontal.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
+patient00026/study1,patient00026/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00026/study1,patient00026/study1/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
+patient00026/study1,patient00026/study1/view1_frontal.dcm,Consolidation,disease,uncertain,present,partial,0,0,1,0
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
-patient00026/study1,patient00026/study1/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
+patient00026/study1,patient00026/study1/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00026/study1,patient00026/study1/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
+patient00026/study1,patient00026/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,absent,absent,exact,0,0,0,1
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00026/study1,patient00026/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00026/study1,patient00026/study1/view2_lateral.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
-patient00026/study1,patient00026/study1/view2_lateral.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00026/study1,patient00026/study1/view2_lateral.dcm,Consolidation,disease,present,present,exact,1,0,0,0
+patient00026/study1,patient00026/study1/view2_lateral.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
+patient00026/study1,patient00026/study1/view2_lateral.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
+patient00026/study1,patient00026/study1/view2_lateral.dcm,Consolidation,disease,uncertain,present,partial,0,0,1,0
 patient00026/study1,patient00026/study1/view2_lateral.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00026/study1,patient00026/study1/view2_lateral.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00026/study1,patient00026/study1/view2_lateral.dcm,Pneumonia,disease,present,absent,mismatch,0,1,0,0
 patient00026/study1,patient00026/study1/view2_lateral.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00026/study1,patient00026/study1/view2_lateral.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00026/study1,patient00026/study1/view2_lateral.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
-patient00026/study1,patient00026/study1/view2_lateral.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
+patient00026/study1,patient00026/study1/view2_lateral.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
 patient00026/study1,patient00026/study1/view2_lateral.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00026/study1,patient00026/study1/view2_lateral.dcm,Pleural Other,disease,absent,absent,exact,0,0,0,1
 patient00026/study1,patient00026/study1/view2_lateral.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00026/study1,patient00026/study1/view2_lateral.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Atelectasis,disease,present,uncertain,partial,0,1,0,0
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00027/study1,patient00027/study1/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
-patient00027/study1,patient00027/study1/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
-patient00027/study1,patient00027/study1/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
+patient00027/study1,patient00027/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00027/study1,patient00027/study1/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
+patient00027/study1,patient00027/study1/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
-patient00027/study1,patient00027/study1/view1_frontal.dcm,Pneumothorax,disease,present,present,exact,1,0,0,0
-patient00027/study1,patient00027/study1/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00027/study1,patient00027/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
+patient00027/study1,patient00027/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
-patient00027/study1,patient00027/study1/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
+patient00027/study1,patient00027/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00027/study1,patient00027/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00027/study1,patient00027/study1/view2_lateral.dcm,Atelectasis,disease,present,uncertain,partial,0,1,0,0
+patient00027/study1,patient00027/study1/view2_lateral.dcm,Atelectasis,disease,uncertain,uncertain,exact,0,0,0,1
 patient00027/study1,patient00027/study1/view2_lateral.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00027/study1,patient00027/study1/view2_lateral.dcm,Consolidation,disease,present,present,exact,1,0,0,0
+patient00027/study1,patient00027/study1/view2_lateral.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00027/study1,patient00027/study1/view2_lateral.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
-patient00027/study1,patient00027/study1/view2_lateral.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
+patient00027/study1,patient00027/study1/view2_lateral.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00027/study1,patient00027/study1/view2_lateral.dcm,Pneumonia,disease,present,absent,mismatch,0,1,0,0
-patient00027/study1,patient00027/study1/view2_lateral.dcm,Pneumothorax,disease,uncertain,present,partial,0,0,1,0
+patient00027/study1,patient00027/study1/view2_lateral.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00027/study1,patient00027/study1/view2_lateral.dcm,Fracture,disease,absent,absent,exact,0,0,0,1
 patient00027/study1,patient00027/study1/view2_lateral.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00027/study1,patient00027/study1/view2_lateral.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
@@ -125,81 +125,81 @@ patient00027/study1,patient00027/study1/view2_lateral.dcm,Enlarged Cardiomediast
 patient00027/study1,patient00027/study1/view2_lateral.dcm,Pleural Other,disease,absent,absent,exact,0,0,0,1
 patient00027/study1,patient00027/study1/view2_lateral.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00027/study1,patient00027/study1/view2_lateral.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00031/study1,patient00031/study1/view1_frontal.dcm,Atelectasis,disease,present,uncertain,partial,0,1,0,0
+patient00031/study1,patient00031/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,uncertain,exact,0,0,0,1
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00031/study1,patient00031/study1/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00031/study1,patient00031/study1/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
+patient00031/study1,patient00031/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00031/study1,patient00031/study1/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Lung Opacity,disease,present,uncertain,partial,0,1,0,0
-patient00031/study1,patient00031/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,present,absent,mismatch,0,1,0,0
+patient00031/study1,patient00031/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00031/study1,patient00031/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00031/study3,patient00031/study3/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
-patient00031/study3,patient00031/study3/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00031/study3,patient00031/study3/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00031/study3,patient00031/study3/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
+patient00031/study3,patient00031/study3/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
+patient00031/study3,patient00031/study3/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
-patient00031/study3,patient00031/study3/view1_frontal.dcm,Pneumothorax,disease,present,present,exact,1,0,0,0
+patient00031/study3,patient00031/study3/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
-patient00031/study3,patient00031/study3/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
+patient00031/study3,patient00031/study3/view1_frontal.dcm,Lung Opacity,disease,present,uncertain,partial,0,1,0,0
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00031/study3,patient00031/study3/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00031/study2,patient00031/study2/view1_frontal.dcm,Atelectasis,disease,present,uncertain,partial,0,1,0,0
+patient00031/study2,patient00031/study2/view1_frontal.dcm,Atelectasis,disease,uncertain,uncertain,exact,0,0,0,1
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
-patient00031/study2,patient00031/study2/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00031/study2,patient00031/study2/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
-patient00031/study2,patient00031/study2/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
+patient00031/study2,patient00031/study2/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00031/study2,patient00031/study2/view1_frontal.dcm,Pneumothorax,disease,uncertain,present,partial,0,0,1,0
+patient00031/study2,patient00031/study2/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00031/study2,patient00031/study2/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
+patient00031/study2,patient00031/study2/view1_frontal.dcm,Lung Opacity,disease,uncertain,present,partial,0,0,1,0
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00031/study2,patient00031/study2/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00034/study1,patient00034/study1/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00034/study1,patient00034/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Pleural Effusion,disease,absent,absent,exact,0,0,0,1
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00034/study1,patient00034/study1/view1_frontal.dcm,Pneumothorax,disease,absent,present,mismatch,0,0,1,0
+patient00034/study1,patient00034/study1/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00034/study1,patient00034/study1/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
+patient00034/study1,patient00034/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00034/study1,patient00034/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00038/study1,patient00038/study1/view1_frontal.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
+patient00038/study1,patient00038/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00038/study1,patient00038/study1/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00038/study1,patient00038/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Pleural Effusion,disease,present,uncertain,partial,0,1,0,0
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00038/study1,patient00038/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,present,partial,0,0,1,0
-patient00038/study1,patient00038/study1/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00038/study1,patient00038/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
+patient00038/study1,patient00038/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00038/study1,patient00038/study1/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
+patient00038/study1,patient00038/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,present,partial,0,0,1,0
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00038/study1,patient00038/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00038/study3,patient00038/study3/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00038/study3,patient00038/study3/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00038/study3,patient00038/study3/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00038/study3,patient00038/study3/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00038/study3,patient00038/study3/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
-patient00038/study3,patient00038/study3/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
+patient00038/study3,patient00038/study3/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00038/study3,patient00038/study3/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
+patient00038/study3,patient00038/study3/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00038/study3,patient00038/study3/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00038/study3,patient00038/study3/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00038/study3,patient00038/study3/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
@@ -209,11 +209,11 @@ patient00038/study3,patient00038/study3/view1_frontal.dcm,Enlarged Cardiomediast
 patient00038/study3,patient00038/study3/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00038/study3,patient00038/study3/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00038/study3,patient00038/study3/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00044/study7,patient00044/study7/view1_frontal.dcm,Atelectasis,disease,present,uncertain,partial,0,1,0,0
-patient00044/study7,patient00044/study7/view1_frontal.dcm,Cardiomegaly,disease,present,present,exact,1,0,0,0
-patient00044/study7,patient00044/study7/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00044/study7,patient00044/study7/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
-patient00044/study7,patient00044/study7/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
+patient00044/study7,patient00044/study7/view1_frontal.dcm,Atelectasis,disease,uncertain,uncertain,exact,0,0,0,1
+patient00044/study7,patient00044/study7/view1_frontal.dcm,Cardiomegaly,disease,uncertain,present,partial,0,0,1,0
+patient00044/study7,patient00044/study7/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00044/study7,patient00044/study7/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
+patient00044/study7,patient00044/study7/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00044/study7,patient00044/study7/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study7,patient00044/study7/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study7,patient00044/study7/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
@@ -223,11 +223,11 @@ patient00044/study7,patient00044/study7/view1_frontal.dcm,Enlarged Cardiomediast
 patient00044/study7,patient00044/study7/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study7,patient00044/study7/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00044/study7,patient00044/study7/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00044/study7,patient00044/study7/view2_lateral.dcm,Atelectasis,disease,present,uncertain,partial,0,1,0,0
-patient00044/study7,patient00044/study7/view2_lateral.dcm,Cardiomegaly,disease,present,present,exact,1,0,0,0
-patient00044/study7,patient00044/study7/view2_lateral.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00044/study7,patient00044/study7/view2_lateral.dcm,Edema,disease,present,present,exact,1,0,0,0
-patient00044/study7,patient00044/study7/view2_lateral.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
+patient00044/study7,patient00044/study7/view2_lateral.dcm,Atelectasis,disease,uncertain,uncertain,exact,0,0,0,1
+patient00044/study7,patient00044/study7/view2_lateral.dcm,Cardiomegaly,disease,uncertain,present,partial,0,0,1,0
+patient00044/study7,patient00044/study7/view2_lateral.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00044/study7,patient00044/study7/view2_lateral.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
+patient00044/study7,patient00044/study7/view2_lateral.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00044/study7,patient00044/study7/view2_lateral.dcm,Pneumonia,disease,present,absent,mismatch,0,1,0,0
 patient00044/study7,patient00044/study7/view2_lateral.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study7,patient00044/study7/view2_lateral.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
@@ -237,23 +237,23 @@ patient00044/study7,patient00044/study7/view2_lateral.dcm,Enlarged Cardiomediast
 patient00044/study7,patient00044/study7/view2_lateral.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study7,patient00044/study7/view2_lateral.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00044/study7,patient00044/study7/view2_lateral.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00044/study1,patient00044/study1/view1_frontal.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
-patient00044/study1,patient00044/study1/view1_frontal.dcm,Cardiomegaly,disease,present,present,exact,1,0,0,0
-patient00044/study1,patient00044/study1/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00044/study1,patient00044/study1/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
+patient00044/study1,patient00044/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
+patient00044/study1,patient00044/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,present,partial,0,0,1,0
+patient00044/study1,patient00044/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00044/study1,patient00044/study1/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
-patient00044/study1,patient00044/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,present,absent,mismatch,0,1,0,0
+patient00044/study1,patient00044/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00044/study1,patient00044/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00044/study3,patient00044/study3/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
-patient00044/study3,patient00044/study3/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00044/study3,patient00044/study3/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00044/study3,patient00044/study3/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
+patient00044/study3,patient00044/study3/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
+patient00044/study3,patient00044/study3/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study3,patient00044/study3/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
 patient00044/study3,patient00044/study3/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00044/study3,patient00044/study3/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
@@ -265,10 +265,10 @@ patient00044/study3,patient00044/study3/view1_frontal.dcm,Enlarged Cardiomediast
 patient00044/study3,patient00044/study3/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study3,patient00044/study3/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00044/study3,patient00044/study3/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00044/study4,patient00044/study4/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00044/study4,patient00044/study4/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study4,patient00044/study4/view1_frontal.dcm,Cardiomegaly,disease,uncertain,present,partial,0,0,1,0
-patient00044/study4,patient00044/study4/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00044/study4,patient00044/study4/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
+patient00044/study4,patient00044/study4/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00044/study4,patient00044/study4/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study4,patient00044/study4/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00044/study4,patient00044/study4/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study4,patient00044/study4/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
@@ -289,7 +289,7 @@ patient00044/study2,patient00044/study2/view1_frontal.dcm,Pneumothorax,disease,u
 patient00044/study2,patient00044/study2/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study2,patient00044/study2/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study2,patient00044/study2/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
-patient00044/study2,patient00044/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,present,absent,mismatch,0,1,0,0
+patient00044/study2,patient00044/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study2,patient00044/study2/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study2,patient00044/study2/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00044/study2,patient00044/study2/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
@@ -303,16 +303,16 @@ patient00044/study5,patient00044/study5/view1_frontal.dcm,Pneumothorax,disease,u
 patient00044/study5,patient00044/study5/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study5,patient00044/study5/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study5,patient00044/study5/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
-patient00044/study5,patient00044/study5/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,present,absent,mismatch,0,1,0,0
+patient00044/study5,patient00044/study5/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study5,patient00044/study5/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00044/study5,patient00044/study5/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00044/study5,patient00044/study5/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
 patient00045/study1,patient00045/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
 patient00045/study1,patient00045/study1/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
 patient00045/study1,patient00045/study1/view1_frontal.dcm,Consolidation,disease,absent,absent,exact,0,0,0,1
-patient00045/study1,patient00045/study1/view1_frontal.dcm,Edema,disease,absent,present,mismatch,0,0,1,0
-patient00045/study1,patient00045/study1/view1_frontal.dcm,Pleural Effusion,disease,absent,present,mismatch,0,0,1,0
-patient00045/study1,patient00045/study1/view1_frontal.dcm,Pneumonia,disease,absent,present,mismatch,0,0,1,0
+patient00045/study1,patient00045/study1/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
+patient00045/study1,patient00045/study1/view1_frontal.dcm,Pleural Effusion,disease,absent,absent,exact,0,0,0,1
+patient00045/study1,patient00045/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00045/study1,patient00045/study1/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00045/study1,patient00045/study1/view1_frontal.dcm,Fracture,disease,absent,absent,exact,0,0,0,1
 patient00045/study1,patient00045/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
@@ -321,15 +321,15 @@ patient00045/study1,patient00045/study1/view1_frontal.dcm,Enlarged Cardiomediast
 patient00045/study1,patient00045/study1/view1_frontal.dcm,Pleural Other,disease,absent,absent,exact,0,0,0,1
 patient00045/study1,patient00045/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00045/study1,patient00045/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00045/study1,patient00045/study1/view2_lateral.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
-patient00045/study1,patient00045/study1/view2_lateral.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00045/study1,patient00045/study1/view2_lateral.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00045/study1,patient00045/study1/view2_lateral.dcm,Edema,disease,present,present,exact,1,0,0,0
-patient00045/study1,patient00045/study1/view2_lateral.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
-patient00045/study1,patient00045/study1/view2_lateral.dcm,Pneumonia,disease,present,present,exact,1,0,0,0
+patient00045/study1,patient00045/study1/view2_lateral.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
+patient00045/study1,patient00045/study1/view2_lateral.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
+patient00045/study1,patient00045/study1/view2_lateral.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00045/study1,patient00045/study1/view2_lateral.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
+patient00045/study1,patient00045/study1/view2_lateral.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
+patient00045/study1,patient00045/study1/view2_lateral.dcm,Pneumonia,disease,present,absent,mismatch,0,1,0,0
 patient00045/study1,patient00045/study1/view2_lateral.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00045/study1,patient00045/study1/view2_lateral.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
-patient00045/study1,patient00045/study1/view2_lateral.dcm,Lung Lesion,disease,present,absent,mismatch,0,1,0,0
+patient00045/study1,patient00045/study1/view2_lateral.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00045/study1,patient00045/study1/view2_lateral.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
 patient00045/study1,patient00045/study1/view2_lateral.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00045/study1,patient00045/study1/view2_lateral.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
@@ -338,24 +338,24 @@ patient00045/study1,patient00045/study1/view2_lateral.dcm,No Finding,non_disease
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
-patient00048/study1,patient00048/study1/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
+patient00048/study1,patient00048/study1/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00048/study1,patient00048/study1/view1_frontal.dcm,Pneumothorax,disease,present,present,exact,1,0,0,0
+patient00048/study1,patient00048/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,present,partial,0,0,1,0
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00048/study1,patient00048/study1/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
+patient00048/study1,patient00048/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00048/study1,patient00048/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00049/study2,patient00049/study2/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00049/study2,patient00049/study2/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00049/study2,patient00049/study2/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
 patient00049/study2,patient00049/study2/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
-patient00049/study2,patient00049/study2/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
+patient00049/study2,patient00049/study2/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00049/study2,patient00049/study2/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00049/study2,patient00049/study2/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
-patient00049/study2,patient00049/study2/view1_frontal.dcm,Pneumothorax,disease,uncertain,present,partial,0,0,1,0
+patient00049/study2,patient00049/study2/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00049/study2,patient00049/study2/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00049/study2,patient00049/study2/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00049/study2,patient00049/study2/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
@@ -366,8 +366,8 @@ patient00049/study2,patient00049/study2/view1_frontal.dcm,No Finding,non_disease
 patient00049/study1,patient00049/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00049/study1,patient00049/study1/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
 patient00049/study1,patient00049/study1/view1_frontal.dcm,Consolidation,disease,absent,absent,exact,0,0,0,1
-patient00049/study1,patient00049/study1/view1_frontal.dcm,Edema,disease,absent,present,mismatch,0,0,1,0
-patient00049/study1,patient00049/study1/view1_frontal.dcm,Pleural Effusion,disease,absent,present,mismatch,0,0,1,0
+patient00049/study1,patient00049/study1/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
+patient00049/study1,patient00049/study1/view1_frontal.dcm,Pleural Effusion,disease,absent,absent,exact,0,0,0,1
 patient00049/study1,patient00049/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00049/study1,patient00049/study1/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00049/study1,patient00049/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
@@ -379,7 +379,7 @@ patient00049/study1,patient00049/study1/view1_frontal.dcm,Support Devices,non_di
 patient00049/study1,patient00049/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
 patient00055/study2,patient00055/study2/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00055/study2,patient00055/study2/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00055/study2,patient00055/study2/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00055/study2,patient00055/study2/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00055/study2,patient00055/study2/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00055/study2,patient00055/study2/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00055/study2,patient00055/study2/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
@@ -391,27 +391,27 @@ patient00055/study2,patient00055/study2/view1_frontal.dcm,Enlarged Cardiomediast
 patient00055/study2,patient00055/study2/view1_frontal.dcm,Pleural Other,disease,absent,absent,exact,0,0,0,1
 patient00055/study2,patient00055/study2/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00055/study2,patient00055/study2/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00055/study2,patient00055/study2/view2_lateral.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00055/study2,patient00055/study2/view2_lateral.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00055/study2,patient00055/study2/view2_lateral.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00055/study2,patient00055/study2/view2_lateral.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Pneumonia,disease,present,absent,mismatch,0,1,0,0
-patient00055/study2,patient00055/study2/view2_lateral.dcm,Pneumothorax,disease,present,present,exact,1,0,0,0
+patient00055/study2,patient00055/study2/view2_lateral.dcm,Pneumothorax,disease,uncertain,present,partial,0,0,1,0
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Fracture,disease,absent,absent,exact,0,0,0,1
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
-patient00055/study2,patient00055/study2/view2_lateral.dcm,Enlarged Cardiomediastinum,disease,present,absent,mismatch,0,1,0,0
+patient00055/study2,patient00055/study2/view2_lateral.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Pleural Other,disease,absent,absent,exact,0,0,0,1
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00055/study2,patient00055/study2/view2_lateral.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00055/study3,patient00055/study3/view1_frontal.dcm,Atelectasis,disease,present,uncertain,partial,0,1,0,0
+patient00055/study3,patient00055/study3/view1_frontal.dcm,Atelectasis,disease,uncertain,uncertain,exact,0,0,0,1
 patient00055/study3,patient00055/study3/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00055/study3,patient00055/study3/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00055/study3,patient00055/study3/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00055/study3,patient00055/study3/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00055/study3,patient00055/study3/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00055/study3,patient00055/study3/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00055/study3,patient00055/study3/view1_frontal.dcm,Pneumothorax,disease,present,present,exact,1,0,0,0
+patient00055/study3,patient00055/study3/view1_frontal.dcm,Pneumothorax,disease,uncertain,present,partial,0,0,1,0
 patient00055/study3,patient00055/study3/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00055/study3,patient00055/study3/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00055/study3,patient00055/study3/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
@@ -449,7 +449,7 @@ patient00058/study1,patient00058/study1/view1_frontal.dcm,Support Devices,non_di
 patient00058/study1,patient00058/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
 patient00058/study1,patient00058/study1/view2_lateral.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00058/study1,patient00058/study1/view2_lateral.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
-patient00058/study1,patient00058/study1/view2_lateral.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00058/study1,patient00058/study1/view2_lateral.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00058/study1,patient00058/study1/view2_lateral.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00058/study1,patient00058/study1/view2_lateral.dcm,Pleural Effusion,disease,absent,absent,exact,0,0,0,1
 patient00058/study1,patient00058/study1/view2_lateral.dcm,Pneumonia,disease,present,absent,mismatch,0,1,0,0
@@ -463,39 +463,39 @@ patient00058/study1,patient00058/study1/view2_lateral.dcm,Support Devices,non_di
 patient00058/study1,patient00058/study1/view2_lateral.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
-patient00064/study1,patient00064/study1/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00064/study1,patient00064/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Edema,disease,absent,present,mismatch,0,0,1,0
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Pleural Effusion,disease,absent,absent,exact,0,0,0,1
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
-patient00064/study1,patient00064/study1/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00064/study1,patient00064/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
-patient00064/study1,patient00064/study1/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
+patient00064/study1,patient00064/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,present,partial,0,0,1,0
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00064/study1,patient00064/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00067/study4,patient00067/study4/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00067/study4,patient00067/study4/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
-patient00067/study4,patient00067/study4/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00067/study4,patient00067/study4/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00067/study4,patient00067/study4/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
+patient00067/study4,patient00067/study4/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00067/study4,patient00067/study4/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00067/study3,patient00067/study3/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00067/study3,patient00067/study3/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study3,patient00067/study3/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
-patient00067/study3,patient00067/study3/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
+patient00067/study3,patient00067/study3/view1_frontal.dcm,Consolidation,disease,uncertain,present,partial,0,0,1,0
 patient00067/study3,patient00067/study3/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00067/study3,patient00067/study3/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study3,patient00067/study3/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00067/study3,patient00067/study3/view1_frontal.dcm,Pneumothorax,disease,present,present,exact,1,0,0,0
+patient00067/study3,patient00067/study3/view1_frontal.dcm,Pneumothorax,disease,uncertain,uncertain,exact,0,0,0,1
 patient00067/study3,patient00067/study3/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study3,patient00067/study3/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study3,patient00067/study3/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
@@ -507,32 +507,32 @@ patient00067/study1,patient00067/study1/view1_frontal.dcm,Atelectasis,disease,un
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
-patient00067/study1,patient00067/study1/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
+patient00067/study1,patient00067/study1/view1_frontal.dcm,Pleural Effusion,disease,uncertain,uncertain,exact,0,0,0,1
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00067/study1,patient00067/study1/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
+patient00067/study1,patient00067/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00067/study1,patient00067/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00067/study2,patient00067/study2/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00067/study2,patient00067/study2/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00067/study2,patient00067/study2/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00067/study2,patient00067/study2/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
-patient00067/study2,patient00067/study2/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
+patient00067/study2,patient00067/study2/view1_frontal.dcm,Pleural Effusion,disease,uncertain,present,partial,0,0,1,0
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00067/study2,patient00067/study2/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
+patient00067/study2,patient00067/study2/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00067/study2,patient00067/study2/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00068/study1,patient00068/study1/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
-patient00068/study1,patient00068/study1/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
+patient00068/study1,patient00068/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
+patient00068/study1,patient00068/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
@@ -540,30 +540,30 @@ patient00068/study1,patient00068/study1/view1_frontal.dcm,Pneumonia,disease,abse
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00068/study1,patient00068/study1/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
+patient00068/study1,patient00068/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00068/study1,patient00068/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
 patient00070/study1,patient00070/study1/view1_frontal.dcm,Atelectasis,disease,absent,absent,exact,0,0,0,1
 patient00070/study1,patient00070/study1/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
-patient00070/study1,patient00070/study1/view1_frontal.dcm,Consolidation,disease,absent,present,mismatch,0,0,1,0
+patient00070/study1,patient00070/study1/view1_frontal.dcm,Consolidation,disease,absent,absent,exact,0,0,0,1
 patient00070/study1,patient00070/study1/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
-patient00070/study1,patient00070/study1/view1_frontal.dcm,Pleural Effusion,disease,absent,present,mismatch,0,0,1,0
+patient00070/study1,patient00070/study1/view1_frontal.dcm,Pleural Effusion,disease,absent,absent,exact,0,0,0,1
 patient00070/study1,patient00070/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00070/study1,patient00070/study1/view1_frontal.dcm,Pneumothorax,disease,absent,present,mismatch,0,0,1,0
+patient00070/study1,patient00070/study1/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00070/study1,patient00070/study1/view1_frontal.dcm,Fracture,disease,absent,absent,exact,0,0,0,1
 patient00070/study1,patient00070/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00070/study1,patient00070/study1/view1_frontal.dcm,Lung Opacity,disease,absent,absent,exact,0,0,0,1
 patient00070/study1,patient00070/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,absent,absent,exact,0,0,0,1
 patient00070/study1,patient00070/study1/view1_frontal.dcm,Pleural Other,disease,absent,absent,exact,0,0,0,1
 patient00070/study1,patient00070/study1/view1_frontal.dcm,Support Devices,non_disease,unavailable,absent,not_evaluable,0,0,0,1
-patient00070/study1,patient00070/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
+patient00070/study1,patient00070/study1/view1_frontal.dcm,No Finding,non_disease,absent,present,mismatch,0,0,1,0
 patient00076/study1,patient00076/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00076/study1,patient00076/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00076/study1,patient00076/study1/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00076/study1,patient00076/study1/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
-patient00076/study1,patient00076/study1/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
+patient00076/study1,patient00076/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00076/study1,patient00076/study1/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
+patient00076/study1,patient00076/study1/view1_frontal.dcm,Pleural Effusion,disease,uncertain,uncertain,exact,0,0,0,1
 patient00076/study1,patient00076/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00076/study1,patient00076/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00076/study1,patient00076/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
@@ -575,12 +575,12 @@ patient00076/study1,patient00076/study1/view1_frontal.dcm,Support Devices,non_di
 patient00076/study1,patient00076/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
-patient00078/study6,patient00078/study6/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00078/study6,patient00078/study6/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Pleural Effusion,disease,absent,absent,exact,0,0,0,1
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00078/study6,patient00078/study6/view1_frontal.dcm,Pneumothorax,disease,present,present,exact,1,0,0,0
-patient00078/study6,patient00078/study6/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00078/study6,patient00078/study6/view1_frontal.dcm,Pneumothorax,disease,uncertain,present,partial,0,0,1,0
+patient00078/study6,patient00078/study6/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,absent,absent,exact,0,0,0,1
@@ -589,11 +589,11 @@ patient00078/study6,patient00078/study6/view1_frontal.dcm,Support Devices,non_di
 patient00078/study6,patient00078/study6/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
-patient00078/study7,patient00078/study7/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00078/study7,patient00078/study7/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00078/study7,patient00078/study7/view1_frontal.dcm,Pneumothorax,disease,present,present,exact,1,0,0,0
+patient00078/study7,patient00078/study7/view1_frontal.dcm,Pneumothorax,disease,uncertain,present,partial,0,0,1,0
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
@@ -615,7 +615,7 @@ patient00078/study9,patient00078/study9/view1_frontal.dcm,Enlarged Cardiomediast
 patient00078/study9,patient00078/study9/view1_frontal.dcm,Pleural Other,disease,absent,absent,exact,0,0,0,1
 patient00078/study9,patient00078/study9/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00078/study9,patient00078/study9/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00078/study5,patient00078/study5/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00078/study5,patient00078/study5/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study5,patient00078/study5/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
 patient00078/study5,patient00078/study5/view1_frontal.dcm,Consolidation,disease,absent,absent,exact,0,0,0,1
 patient00078/study5,patient00078/study5/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
@@ -635,8 +635,8 @@ patient00078/study4,patient00078/study4/view1_frontal.dcm,Consolidation,disease,
 patient00078/study4,patient00078/study4/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00078/study4,patient00078/study4/view1_frontal.dcm,Pleural Effusion,disease,absent,absent,exact,0,0,0,1
 patient00078/study4,patient00078/study4/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00078/study4,patient00078/study4/view1_frontal.dcm,Pneumothorax,disease,present,present,exact,1,0,0,0
-patient00078/study4,patient00078/study4/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00078/study4,patient00078/study4/view1_frontal.dcm,Pneumothorax,disease,uncertain,present,partial,0,0,1,0
+patient00078/study4,patient00078/study4/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study4,patient00078/study4/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00078/study4,patient00078/study4/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study4,patient00078/study4/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,absent,absent,exact,0,0,0,1
@@ -649,7 +649,7 @@ patient00078/study1,patient00078/study1/view1_frontal.dcm,Consolidation,disease,
 patient00078/study1,patient00078/study1/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00078/study1,patient00078/study1/view1_frontal.dcm,Pleural Effusion,disease,absent,absent,exact,0,0,0,1
 patient00078/study1,patient00078/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00078/study1,patient00078/study1/view1_frontal.dcm,Pneumothorax,disease,present,present,exact,1,0,0,0
+patient00078/study1,patient00078/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,present,partial,0,0,1,0
 patient00078/study1,patient00078/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study1,patient00078/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00078/study1,patient00078/study1/view1_frontal.dcm,Lung Opacity,disease,absent,absent,exact,0,0,0,1
@@ -671,28 +671,28 @@ patient00078/study8,patient00078/study8/view1_frontal.dcm,Enlarged Cardiomediast
 patient00078/study8,patient00078/study8/view1_frontal.dcm,Pleural Other,disease,absent,absent,exact,0,0,0,1
 patient00078/study8,patient00078/study8/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00078/study8,patient00078/study8/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00078/study3,patient00078/study3/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00078/study3,patient00078/study3/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
-patient00078/study3,patient00078/study3/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00078/study3,patient00078/study3/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
-patient00078/study3,patient00078/study3/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
+patient00078/study3,patient00078/study3/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00078/study3,patient00078/study3/view1_frontal.dcm,Pneumothorax,disease,present,present,exact,1,0,0,0
+patient00078/study3,patient00078/study3/view1_frontal.dcm,Pneumothorax,disease,uncertain,present,partial,0,0,1,0
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00078/study3,patient00078/study3/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
+patient00078/study3,patient00078/study3/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00078/study3,patient00078/study3/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00078/study2,patient00078/study2/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00078/study2,patient00078/study2/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
-patient00078/study2,patient00078/study2/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00078/study2,patient00078/study2/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00078/study2,patient00078/study2/view1_frontal.dcm,Pneumothorax,disease,present,present,exact,1,0,0,0
-patient00078/study2,patient00078/study2/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00078/study2,patient00078/study2/view1_frontal.dcm,Pneumothorax,disease,uncertain,present,partial,0,0,1,0
+patient00078/study2,patient00078/study2/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
@@ -700,12 +700,12 @@ patient00078/study2,patient00078/study2/view1_frontal.dcm,Pleural Other,disease,
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00078/study2,patient00078/study2/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
 patient00087/study3,patient00087/study3/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
-patient00087/study3,patient00087/study3/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
+patient00087/study3,patient00087/study3/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study3,patient00087/study3/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study3,patient00087/study3/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
-patient00087/study3,patient00087/study3/view1_frontal.dcm,Pleural Effusion,disease,present,uncertain,partial,0,1,0,0
+patient00087/study3,patient00087/study3/view1_frontal.dcm,Pleural Effusion,disease,uncertain,uncertain,exact,0,0,0,1
 patient00087/study3,patient00087/study3/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
-patient00087/study3,patient00087/study3/view1_frontal.dcm,Pneumothorax,disease,present,absent,mismatch,0,1,0,0
+patient00087/study3,patient00087/study3/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study3,patient00087/study3/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study3,patient00087/study3/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study3,patient00087/study3/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
@@ -715,7 +715,7 @@ patient00087/study3,patient00087/study3/view1_frontal.dcm,Support Devices,non_di
 patient00087/study3,patient00087/study3/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
 patient00087/study3,patient00087/study3/view2_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study3,patient00087/study3/view2_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00087/study3,patient00087/study3/view2_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00087/study3,patient00087/study3/view2_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study3,patient00087/study3/view2_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00087/study3,patient00087/study3/view2_frontal.dcm,Pleural Effusion,disease,uncertain,uncertain,exact,0,0,0,1
 patient00087/study3,patient00087/study3/view2_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
@@ -727,100 +727,100 @@ patient00087/study3,patient00087/study3/view2_frontal.dcm,Enlarged Cardiomediast
 patient00087/study3,patient00087/study3/view2_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study3,patient00087/study3/view2_frontal.dcm,Support Devices,non_disease,unavailable,absent,not_evaluable,0,0,0,1
 patient00087/study3,patient00087/study3/view2_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00087/study3,patient00087/study3/view3_lateral.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00087/study3,patient00087/study3/view3_lateral.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
-patient00087/study3,patient00087/study3/view3_lateral.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00087/study3,patient00087/study3/view3_lateral.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Pleural Effusion,disease,uncertain,uncertain,exact,0,0,0,1
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
-patient00087/study3,patient00087/study3/view3_lateral.dcm,Pneumothorax,disease,present,absent,mismatch,0,1,0,0
-patient00087/study3,patient00087/study3/view3_lateral.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00087/study3,patient00087/study3/view3_lateral.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
+patient00087/study3,patient00087/study3/view3_lateral.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00087/study3,patient00087/study3/view3_lateral.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00087/study1,patient00087/study1/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00087/study1,patient00087/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00087/study1,patient00087/study1/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00087/study1,patient00087/study1/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
-patient00087/study1,patient00087/study1/view1_frontal.dcm,Pleural Effusion,disease,uncertain,present,partial,0,0,1,0
+patient00087/study1,patient00087/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00087/study1,patient00087/study1/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
+patient00087/study1,patient00087/study1/view1_frontal.dcm,Pleural Effusion,disease,uncertain,uncertain,exact,0,0,0,1
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00087/study1,patient00087/study1/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
+patient00087/study1,patient00087/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00087/study1,patient00087/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00087/study2,patient00087/study2/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00087/study2,patient00087/study2/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Cardiomegaly,disease,uncertain,present,partial,0,0,1,0
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
-patient00087/study2,patient00087/study2/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
+patient00087/study2,patient00087/study2/view1_frontal.dcm,Pleural Effusion,disease,uncertain,uncertain,exact,0,0,0,1
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
-patient00087/study2,patient00087/study2/view1_frontal.dcm,Pneumothorax,disease,uncertain,present,partial,0,0,1,0
+patient00087/study2,patient00087/study2/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00087/study2,patient00087/study2/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
+patient00087/study2,patient00087/study2/view1_frontal.dcm,Lung Opacity,disease,uncertain,present,partial,0,0,1,0
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00087/study2,patient00087/study2/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00095/study1,patient00095/study1/view1_frontal.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
-patient00095/study1,patient00095/study1/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00095/study1,patient00095/study1/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
+patient00095/study1,patient00095/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
+patient00095/study1,patient00095/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
+patient00095/study1,patient00095/study1/view1_frontal.dcm,Consolidation,disease,uncertain,present,partial,0,0,1,0
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00095/study1,patient00095/study1/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
+patient00095/study1,patient00095/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,present,partial,0,0,1,0
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Pleural Other,disease,absent,absent,exact,0,0,0,1
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00095/study1,patient00095/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00096/study1,patient00096/study1/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00096/study1,patient00096/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
-patient00096/study1,patient00096/study1/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00096/study1,patient00096/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
-patient00096/study1,patient00096/study1/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
+patient00096/study1,patient00096/study1/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Fracture,disease,absent,absent,exact,0,0,0,1
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00096/study1,patient00096/study1/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
+patient00096/study1,patient00096/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00096/study1,patient00096/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00096/study1,patient00096/study1/view2_lateral.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00096/study1,patient00096/study1/view2_lateral.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00096/study1,patient00096/study1/view2_lateral.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00096/study1,patient00096/study1/view2_lateral.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00096/study1,patient00096/study1/view2_lateral.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
+patient00096/study1,patient00096/study1/view2_lateral.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00096/study1,patient00096/study1/view2_lateral.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00096/study2,patient00096/study2/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00096/study2,patient00096/study2/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Edema,disease,absent,present,mismatch,0,0,1,0
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Fracture,disease,absent,absent,exact,0,0,0,1
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00096/study2,patient00096/study2/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
+patient00096/study2,patient00096/study2/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
@@ -834,7 +834,7 @@ patient00102/study1,patient00102/study1/view1_frontal.dcm,Pneumonia,disease,abse
 patient00102/study1,patient00102/study1/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00102/study1,patient00102/study1/view1_frontal.dcm,Fracture,disease,absent,absent,exact,0,0,0,1
 patient00102/study1,patient00102/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00102/study1,patient00102/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,present,partial,0,0,1,0
+patient00102/study1,patient00102/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study1,patient00102/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study1,patient00102/study1/view1_frontal.dcm,Pleural Other,disease,absent,absent,exact,0,0,0,1
 patient00102/study1,patient00102/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
@@ -843,26 +843,26 @@ patient00102/study3,patient00102/study3/view1_frontal.dcm,Atelectasis,disease,un
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
-patient00102/study3,patient00102/study3/view1_frontal.dcm,Pleural Effusion,disease,uncertain,present,partial,0,0,1,0
+patient00102/study3,patient00102/study3/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00102/study3,patient00102/study3/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
+patient00102/study3,patient00102/study3/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00102/study3,patient00102/study3/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00102/study2,patient00102/study2/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
-patient00102/study2,patient00102/study2/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
+patient00102/study2,patient00102/study2/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
+patient00102/study2,patient00102/study2/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
-patient00102/study2,patient00102/study2/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
+patient00102/study2,patient00102/study2/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00102/study2,patient00102/study2/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
+patient00102/study2,patient00102/study2/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
@@ -871,65 +871,65 @@ patient00107/study1,patient00107/study1/view1_frontal.dcm,Atelectasis,disease,ab
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
-patient00107/study1,patient00107/study1/view1_frontal.dcm,Pleural Effusion,disease,absent,present,mismatch,0,0,1,0
+patient00107/study1,patient00107/study1/view1_frontal.dcm,Pleural Effusion,disease,absent,absent,exact,0,0,0,1
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
-patient00107/study1,patient00107/study1/view1_frontal.dcm,Pneumothorax,disease,present,absent,mismatch,0,1,0,0
+patient00107/study1,patient00107/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Fracture,disease,absent,absent,exact,0,0,0,1
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00107/study1,patient00107/study1/view1_frontal.dcm,Lung Opacity,disease,absent,present,mismatch,0,0,1,0
+patient00107/study1,patient00107/study1/view1_frontal.dcm,Lung Opacity,disease,absent,absent,exact,0,0,0,1
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,absent,absent,exact,0,0,0,1
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Support Devices,non_disease,unavailable,absent,not_evaluable,0,0,0,1
-patient00107/study1,patient00107/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00113/study1,patient00113/study1/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00107/study1,patient00107/study1/view1_frontal.dcm,No Finding,non_disease,absent,present,mismatch,0,0,1,0
+patient00113/study1,patient00113/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00113/study1,patient00113/study1/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00113/study1,patient00113/study1/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
+patient00113/study1,patient00113/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00113/study1,patient00113/study1/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Pneumonia,disease,absent,uncertain,partial,0,0,0,1
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00113/study1,patient00113/study1/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
+patient00113/study1,patient00113/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,present,partial,0,0,1,0
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00113/study1,patient00113/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00113/study2,patient00113/study2/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
-patient00113/study2,patient00113/study2/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00113/study2,patient00113/study2/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00113/study2,patient00113/study2/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
+patient00113/study2,patient00113/study2/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
+patient00113/study2,patient00113/study2/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
+patient00113/study2,patient00113/study2/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00113/study2,patient00113/study2/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00113/study2,patient00113/study2/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00113/study2,patient00113/study2/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
-patient00113/study2,patient00113/study2/view1_frontal.dcm,Pneumothorax,disease,present,absent,mismatch,0,1,0,0
+patient00113/study2,patient00113/study2/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00113/study2,patient00113/study2/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00113/study2,patient00113/study2/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
-patient00113/study2,patient00113/study2/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
+patient00113/study2,patient00113/study2/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00113/study2,patient00113/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00113/study2,patient00113/study2/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00113/study2,patient00113/study2/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00113/study2,patient00113/study2/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study5,patient00114/study5/view1_frontal.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
+patient00114/study5,patient00114/study5/view1_frontal.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study5,patient00114/study5/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
+patient00114/study5,patient00114/study5/view1_frontal.dcm,Consolidation,disease,uncertain,present,partial,0,0,1,0
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study5,patient00114/study5/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
+patient00114/study5,patient00114/study5/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00114/study5,patient00114/study5/view1_frontal.dcm,Pneumothorax,disease,present,absent,mismatch,0,1,0,0
-patient00114/study5,patient00114/study5/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00114/study5,patient00114/study5/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study5,patient00114/study5/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study5,patient00114/study5/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study10,patient00114/study10/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00114/study10,patient00114/study10/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study10,patient00114/study10/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
-patient00114/study10,patient00114/study10/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
+patient00114/study10,patient00114/study10/view1_frontal.dcm,Consolidation,disease,uncertain,present,partial,0,0,1,0
+patient00114/study10,patient00114/study10/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study10,patient00114/study10/view1_frontal.dcm,Pneumothorax,disease,present,absent,mismatch,0,1,0,0
+patient00114/study10,patient00114/study10/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
@@ -937,27 +937,27 @@ patient00114/study10,patient00114/study10/view1_frontal.dcm,Enlarged Cardiomedia
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study10,patient00114/study10/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study15,patient00114/study15/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00114/study15,patient00114/study15/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study15,patient00114/study15/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
+patient00114/study15,patient00114/study15/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study15,patient00114/study15/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
+patient00114/study15,patient00114/study15/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study15,patient00114/study15/view1_frontal.dcm,Pneumothorax,disease,present,absent,mismatch,0,1,0,0
-patient00114/study15,patient00114/study15/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00114/study15,patient00114/study15/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study15,patient00114/study15/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study15,patient00114/study15/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study16,patient00114/study16/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
-patient00114/study16,patient00114/study16/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00114/study16,patient00114/study16/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00114/study16,patient00114/study16/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
-patient00114/study16,patient00114/study16/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
+patient00114/study16,patient00114/study16/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study16,patient00114/study16/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study16,patient00114/study16/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study16,patient00114/study16/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study16,patient00114/study16/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00114/study16,patient00114/study16/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00114/study16,patient00114/study16/view1_frontal.dcm,Pneumothorax,disease,present,absent,mismatch,0,1,0,0
+patient00114/study16,patient00114/study16/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study16,patient00114/study16/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study16,patient00114/study16/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study16,patient00114/study16/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
@@ -965,66 +965,66 @@ patient00114/study16,patient00114/study16/view1_frontal.dcm,Enlarged Cardiomedia
 patient00114/study16,patient00114/study16/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study16,patient00114/study16/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00114/study16,patient00114/study16/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study20,patient00114/study20/view1_frontal.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
+patient00114/study20,patient00114/study20/view1_frontal.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study20,patient00114/study20/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00114/study20,patient00114/study20/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study20,patient00114/study20/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00114/study20,patient00114/study20/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study20,patient00114/study20/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study3,patient00114/study3/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00114/study3,patient00114/study3/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study3,patient00114/study3/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study3,patient00114/study3/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
-patient00114/study3,patient00114/study3/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
-patient00114/study3,patient00114/study3/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
-patient00114/study3,patient00114/study3/view1_frontal.dcm,Pneumonia,disease,present,absent,mismatch,0,1,0,0
+patient00114/study3,patient00114/study3/view1_frontal.dcm,Consolidation,disease,uncertain,present,partial,0,0,1,0
+patient00114/study3,patient00114/study3/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study3,patient00114/study3/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study3,patient00114/study3/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study3,patient00114/study3/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study3,patient00114/study3/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00114/study3,patient00114/study3/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study3,patient00114/study3/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00114/study3,patient00114/study3/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
 patient00114/study3,patient00114/study3/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study3,patient00114/study3/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study3,patient00114/study3/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study3,patient00114/study3/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study17,patient00114/study17/view1_frontal.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
-patient00114/study17,patient00114/study17/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00114/study17,patient00114/study17/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
-patient00114/study17,patient00114/study17/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
+patient00114/study17,patient00114/study17/view1_frontal.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
+patient00114/study17,patient00114/study17/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study17,patient00114/study17/view1_frontal.dcm,Consolidation,disease,uncertain,present,partial,0,0,1,0
+patient00114/study17,patient00114/study17/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
-patient00114/study17,patient00114/study17/view1_frontal.dcm,Pneumonia,disease,uncertain,present,partial,0,0,1,0
+patient00114/study17,patient00114/study17/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study17,patient00114/study17/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00114/study17,patient00114/study17/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study17,patient00114/study17/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study13,patient00114/study13/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
-patient00114/study13,patient00114/study13/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00114/study13,patient00114/study13/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00114/study13,patient00114/study13/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
+patient00114/study13,patient00114/study13/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study13,patient00114/study13/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study13,patient00114/study13/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study13,patient00114/study13/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00114/study13,patient00114/study13/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00114/study13,patient00114/study13/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study13,patient00114/study13/view1_frontal.dcm,Pneumothorax,disease,present,absent,mismatch,0,1,0,0
+patient00114/study13,patient00114/study13/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study13,patient00114/study13/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study13,patient00114/study13/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study13,patient00114/study13/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
-patient00114/study13,patient00114/study13/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,present,absent,mismatch,0,1,0,0
+patient00114/study13,patient00114/study13/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study13,patient00114/study13/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study13,patient00114/study13/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00114/study13,patient00114/study13/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study19,patient00114/study19/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00114/study19,patient00114/study19/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study19,patient00114/study19/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study19,patient00114/study19/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00114/study19,patient00114/study19/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
+patient00114/study19,patient00114/study19/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study19,patient00114/study19/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00114/study19,patient00114/study19/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00114/study19,patient00114/study19/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00114/study19,patient00114/study19/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
@@ -1035,39 +1035,39 @@ patient00114/study19,patient00114/study19/view1_frontal.dcm,Enlarged Cardiomedia
 patient00114/study19,patient00114/study19/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study19,patient00114/study19/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study19,patient00114/study19/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study7,patient00114/study7/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00114/study7,patient00114/study7/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study7,patient00114/study7/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
-patient00114/study7,patient00114/study7/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
+patient00114/study7,patient00114/study7/view1_frontal.dcm,Consolidation,disease,uncertain,present,partial,0,0,1,0
+patient00114/study7,patient00114/study7/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study7,patient00114/study7/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00114/study7,patient00114/study7/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study7,patient00114/study7/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study2,patient00114/study2/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
-patient00114/study2,patient00114/study2/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00114/study2,patient00114/study2/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00114/study2,patient00114/study2/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
+patient00114/study2,patient00114/study2/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study2,patient00114/study2/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study2,patient00114/study2/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study2,patient00114/study2/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00114/study2,patient00114/study2/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
-patient00114/study2,patient00114/study2/view1_frontal.dcm,Pneumonia,disease,present,absent,mismatch,0,1,0,0
-patient00114/study2,patient00114/study2/view1_frontal.dcm,Pneumothorax,disease,present,absent,mismatch,0,1,0,0
+patient00114/study2,patient00114/study2/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study2,patient00114/study2/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study2,patient00114/study2/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study2,patient00114/study2/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study2,patient00114/study2/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
-patient00114/study2,patient00114/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,present,absent,mismatch,0,1,0,0
+patient00114/study2,patient00114/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study2,patient00114/study2/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study2,patient00114/study2/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study2,patient00114/study2/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study12,patient00114/study12/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00114/study12,patient00114/study12/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Edema,disease,uncertain,uncertain,exact,0,0,0,1
-patient00114/study12,patient00114/study12/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
+patient00114/study12,patient00114/study12/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Pneumonia,disease,present,absent,mismatch,0,1,0,0
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
@@ -1077,13 +1077,13 @@ patient00114/study12,patient00114/study12/view1_frontal.dcm,Enlarged Cardiomedia
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study12,patient00114/study12/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study9,patient00114/study9/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00114/study9,patient00114/study9/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study9,patient00114/study9/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
+patient00114/study9,patient00114/study9/view1_frontal.dcm,Consolidation,disease,uncertain,present,partial,0,0,1,0
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study9,patient00114/study9/view1_frontal.dcm,Pneumothorax,disease,present,absent,mismatch,0,1,0,0
+patient00114/study9,patient00114/study9/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
@@ -1091,80 +1091,80 @@ patient00114/study9,patient00114/study9/view1_frontal.dcm,Enlarged Cardiomediast
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00114/study9,patient00114/study9/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study1,patient00114/study1/view1_frontal.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
+patient00114/study1,patient00114/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study1,patient00114/study1/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
+patient00114/study1,patient00114/study1/view1_frontal.dcm,Consolidation,disease,uncertain,present,partial,0,0,1,0
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study1,patient00114/study1/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00114/study1,patient00114/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study1,patient00114/study1/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
+patient00114/study1,patient00114/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,present,partial,0,0,1,0
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study1,patient00114/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study6,patient00114/study6/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00114/study6,patient00114/study6/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study6,patient00114/study6/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00114/study6,patient00114/study6/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
+patient00114/study6,patient00114/study6/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study6,patient00114/study6/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
-patient00114/study6,patient00114/study6/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,present,absent,mismatch,0,1,0,0
+patient00114/study6,patient00114/study6/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00114/study6,patient00114/study6/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
-patient00114/study18,patient00114/study18/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00114/study18,patient00114/study18/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00114/study18,patient00114/study18/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
+patient00114/study18,patient00114/study18/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study18,patient00114/study18/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study18,patient00114/study18/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study18,patient00114/study18/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00114/study18,patient00114/study18/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study18,patient00114/study18/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study4,patient00114/study4/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
-patient00114/study4,patient00114/study4/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00114/study4,patient00114/study4/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00114/study4,patient00114/study4/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
-patient00114/study4,patient00114/study4/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
+patient00114/study4,patient00114/study4/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study4,patient00114/study4/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study4,patient00114/study4/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study4,patient00114/study4/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
+patient00114/study4,patient00114/study4/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study4,patient00114/study4/view1_frontal.dcm,Pneumonia,disease,present,absent,mismatch,0,1,0,0
 patient00114/study4,patient00114/study4/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study4,patient00114/study4/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study4,patient00114/study4/view1_frontal.dcm,Lung Lesion,disease,absent,present,mismatch,0,0,1,0
 patient00114/study4,patient00114/study4/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
-patient00114/study4,patient00114/study4/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,present,absent,mismatch,0,1,0,0
+patient00114/study4,patient00114/study4/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study4,patient00114/study4/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study4,patient00114/study4/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study4,patient00114/study4/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study8,patient00114/study8/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
-patient00114/study8,patient00114/study8/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00114/study8,patient00114/study8/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
-patient00114/study8,patient00114/study8/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
+patient00114/study8,patient00114/study8/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study8,patient00114/study8/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study8,patient00114/study8/view1_frontal.dcm,Consolidation,disease,uncertain,present,partial,0,0,1,0
+patient00114/study8,patient00114/study8/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study8,patient00114/study8/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00114/study8,patient00114/study8/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study8,patient00114/study8/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study8,patient00114/study8/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00114/study8,patient00114/study8/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study8,patient00114/study8/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study8,patient00114/study8/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
-patient00114/study8,patient00114/study8/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,present,absent,mismatch,0,1,0,0
+patient00114/study8,patient00114/study8/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study8,patient00114/study8/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study8,patient00114/study8/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study8,patient00114/study8/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study14,patient00114/study14/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00114/study14,patient00114/study14/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study14,patient00114/study14/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study14,patient00114/study14/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00114/study14,patient00114/study14/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
+patient00114/study14,patient00114/study14/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study14,patient00114/study14/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00114/study14,patient00114/study14/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00114/study14,patient00114/study14/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study14,patient00114/study14/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
@@ -1175,23 +1175,23 @@ patient00114/study14,patient00114/study14/view1_frontal.dcm,Enlarged Cardiomedia
 patient00114/study14,patient00114/study14/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study14,patient00114/study14/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00114/study14,patient00114/study14/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00114/study11,patient00114/study11/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00114/study11,patient00114/study11/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00114/study11,patient00114/study11/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00114/study11,patient00114/study11/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
+patient00114/study11,patient00114/study11/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00114/study11,patient00114/study11/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
-patient00114/study11,patient00114/study11/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,present,present,exact,1,0,0,0
+patient00114/study11,patient00114/study11/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,present,partial,0,0,1,0
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00114/study11,patient00114/study11/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
 patient00115/study2,patient00115/study2/view1_frontal.dcm,Atelectasis,disease,absent,uncertain,partial,0,0,0,1
 patient00115/study2,patient00115/study2/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
-patient00115/study2,patient00115/study2/view1_frontal.dcm,Consolidation,disease,absent,present,mismatch,0,0,1,0
+patient00115/study2,patient00115/study2/view1_frontal.dcm,Consolidation,disease,absent,uncertain,partial,0,0,0,1
 patient00115/study2,patient00115/study2/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00115/study2,patient00115/study2/view1_frontal.dcm,Pleural Effusion,disease,absent,absent,exact,0,0,0,1
 patient00115/study2,patient00115/study2/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
@@ -1209,33 +1209,33 @@ patient00120/study1,patient00120/study1/view1_frontal.dcm,Consolidation,disease,
 patient00120/study1,patient00120/study1/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00120/study1,patient00120/study1/view1_frontal.dcm,Pleural Effusion,disease,absent,absent,exact,0,0,0,1
 patient00120/study1,patient00120/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00120/study1,patient00120/study1/view1_frontal.dcm,Pneumothorax,disease,absent,present,mismatch,0,0,1,0
+patient00120/study1,patient00120/study1/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00120/study1,patient00120/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00120/study1,patient00120/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00120/study1,patient00120/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00120/study1,patient00120/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,absent,absent,exact,0,0,0,1
 patient00120/study1,patient00120/study1/view1_frontal.dcm,Pleural Other,disease,absent,absent,exact,0,0,0,1
-patient00120/study1,patient00120/study1/view1_frontal.dcm,Support Devices,non_disease,unavailable,present,not_evaluable,0,0,1,0
-patient00120/study1,patient00120/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
+patient00120/study1,patient00120/study1/view1_frontal.dcm,Support Devices,non_disease,unavailable,absent,not_evaluable,0,0,0,1
+patient00120/study1,patient00120/study1/view1_frontal.dcm,No Finding,non_disease,absent,present,mismatch,0,0,1,0
 patient00121/study1,patient00121/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00121/study1,patient00121/study1/view1_frontal.dcm,Cardiomegaly,disease,absent,absent,exact,0,0,0,1
 patient00121/study1,patient00121/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00121/study1,patient00121/study1/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00121/study1,patient00121/study1/view1_frontal.dcm,Pleural Effusion,disease,absent,absent,exact,0,0,0,1
 patient00121/study1,patient00121/study1/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00121/study1,patient00121/study1/view1_frontal.dcm,Pneumothorax,disease,absent,present,mismatch,0,0,1,0
+patient00121/study1,patient00121/study1/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00121/study1,patient00121/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00121/study1,patient00121/study1/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00121/study1,patient00121/study1/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00121/study1,patient00121/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00121/study1,patient00121/study1/view1_frontal.dcm,Pleural Other,disease,absent,absent,exact,0,0,0,1
 patient00121/study1,patient00121/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
-patient00121/study1,patient00121/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00122/study3,patient00122/study3/view1_frontal.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
+patient00121/study1,patient00121/study1/view1_frontal.dcm,No Finding,non_disease,absent,present,mismatch,0,0,1,0
+patient00122/study3,patient00122/study3/view1_frontal.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
 patient00122/study3,patient00122/study3/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00122/study3,patient00122/study3/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00122/study3,patient00122/study3/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study3,patient00122/study3/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
-patient00122/study3,patient00122/study3/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
+patient00122/study3,patient00122/study3/view1_frontal.dcm,Pleural Effusion,disease,uncertain,present,partial,0,0,1,0
 patient00122/study3,patient00122/study3/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00122/study3,patient00122/study3/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00122/study3,patient00122/study3/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
@@ -1245,10 +1245,10 @@ patient00122/study3,patient00122/study3/view1_frontal.dcm,Enlarged Cardiomediast
 patient00122/study3,patient00122/study3/view1_frontal.dcm,Pleural Other,disease,uncertain,present,partial,0,0,1,0
 patient00122/study3,patient00122/study3/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00122/study3,patient00122/study3/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00122/study3,patient00122/study3/view2_lateral.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
+patient00122/study3,patient00122/study3/view2_lateral.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
 patient00122/study3,patient00122/study3/view2_lateral.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00122/study3,patient00122/study3/view2_lateral.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00122/study3,patient00122/study3/view2_lateral.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
+patient00122/study3,patient00122/study3/view2_lateral.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00122/study3,patient00122/study3/view2_lateral.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study3,patient00122/study3/view2_lateral.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00122/study3,patient00122/study3/view2_lateral.dcm,Pneumonia,disease,present,absent,mismatch,0,1,0,0
 patient00122/study3,patient00122/study3/view2_lateral.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
@@ -1259,10 +1259,10 @@ patient00122/study3,patient00122/study3/view2_lateral.dcm,Enlarged Cardiomediast
 patient00122/study3,patient00122/study3/view2_lateral.dcm,Pleural Other,disease,absent,present,mismatch,0,0,1,0
 patient00122/study3,patient00122/study3/view2_lateral.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00122/study3,patient00122/study3/view2_lateral.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00122/study5,patient00122/study5/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00122/study5,patient00122/study5/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study5,patient00122/study5/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00122/study5,patient00122/study5/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00122/study5,patient00122/study5/view1_frontal.dcm,Edema,disease,present,uncertain,partial,0,1,0,0
+patient00122/study5,patient00122/study5/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00122/study5,patient00122/study5/view1_frontal.dcm,Edema,disease,uncertain,uncertain,exact,0,0,0,1
 patient00122/study5,patient00122/study5/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00122/study5,patient00122/study5/view1_frontal.dcm,Pneumonia,disease,present,absent,mismatch,0,1,0,0
 patient00122/study5,patient00122/study5/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
@@ -1273,11 +1273,11 @@ patient00122/study5,patient00122/study5/view1_frontal.dcm,Enlarged Cardiomediast
 patient00122/study5,patient00122/study5/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study5,patient00122/study5/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00122/study5,patient00122/study5/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00122/study1,patient00122/study1/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00122/study1,patient00122/study1/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study1,patient00122/study1/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00122/study1,patient00122/study1/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00122/study1,patient00122/study1/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study1,patient00122/study1/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
-patient00122/study1,patient00122/study1/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
+patient00122/study1,patient00122/study1/view1_frontal.dcm,Pleural Effusion,disease,uncertain,present,partial,0,0,1,0
 patient00122/study1,patient00122/study1/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study1,patient00122/study1/view1_frontal.dcm,Pneumothorax,disease,absent,absent,exact,0,0,0,1
 patient00122/study1,patient00122/study1/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
@@ -1287,24 +1287,24 @@ patient00122/study1,patient00122/study1/view1_frontal.dcm,Enlarged Cardiomediast
 patient00122/study1,patient00122/study1/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study1,patient00122/study1/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00122/study1,patient00122/study1/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00122/study4,patient00122/study4/view1_frontal.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
+patient00122/study4,patient00122/study4/view1_frontal.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00122/study4,patient00122/study4/view1_frontal.dcm,Consolidation,disease,present,uncertain,partial,0,1,0,0
-patient00122/study4,patient00122/study4/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
-patient00122/study4,patient00122/study4/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
+patient00122/study4,patient00122/study4/view1_frontal.dcm,Consolidation,disease,uncertain,uncertain,exact,0,0,0,1
+patient00122/study4,patient00122/study4/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
+patient00122/study4,patient00122/study4/view1_frontal.dcm,Pleural Effusion,disease,present,absent,mismatch,0,1,0,0
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
-patient00122/study4,patient00122/study4/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00122/study4,patient00122/study4/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Lung Opacity,disease,present,present,exact,1,0,0,0
-patient00122/study4,patient00122/study4/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,present,absent,mismatch,0,1,0,0
+patient00122/study4,patient00122/study4/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Pleural Other,disease,present,absent,mismatch,0,1,0,0
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00122/study4,patient00122/study4/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00122/study8,patient00122/study8/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00122/study8,patient00122/study8/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study8,patient00122/study8/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00122/study8,patient00122/study8/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
-patient00122/study8,patient00122/study8/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
+patient00122/study8,patient00122/study8/view1_frontal.dcm,Consolidation,disease,uncertain,present,partial,0,0,1,0
+patient00122/study8,patient00122/study8/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study8,patient00122/study8/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00122/study8,patient00122/study8/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00122/study8,patient00122/study8/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
@@ -1315,13 +1315,13 @@ patient00122/study8,patient00122/study8/view1_frontal.dcm,Enlarged Cardiomediast
 patient00122/study8,patient00122/study8/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study8,patient00122/study8/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00122/study8,patient00122/study8/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00122/study7,patient00122/study7/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00122/study7,patient00122/study7/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00122/study7,patient00122/study7/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00122/study7,patient00122/study7/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
+patient00122/study7,patient00122/study7/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00122/study7,patient00122/study7/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00122/study7,patient00122/study7/view1_frontal.dcm,Pneumothorax,disease,present,absent,mismatch,0,1,0,0
+patient00122/study7,patient00122/study7/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
@@ -1329,37 +1329,37 @@ patient00122/study7,patient00122/study7/view1_frontal.dcm,Enlarged Cardiomediast
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00122/study7,patient00122/study7/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00122/study6,patient00122/study6/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00122/study6,patient00122/study6/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00122/study6,patient00122/study6/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00122/study6,patient00122/study6/view1_frontal.dcm,Edema,disease,present,absent,mismatch,0,1,0,0
+patient00122/study6,patient00122/study6/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00122/study6,patient00122/study6/view1_frontal.dcm,Edema,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
-patient00122/study6,patient00122/study6/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,present,absent,mismatch,0,1,0,0
+patient00122/study6,patient00122/study6/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00122/study6,patient00122/study6/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00124/study6,patient00124/study6/view1_frontal.dcm,Atelectasis,disease,present,absent,mismatch,0,1,0,0
+patient00124/study6,patient00124/study6/view1_frontal.dcm,Atelectasis,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
-patient00124/study6,patient00124/study6/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00124/study6,patient00124/study6/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Edema,disease,absent,absent,exact,0,0,0,1
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Pleural Effusion,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Pneumonia,disease,absent,absent,exact,0,0,0,1
-patient00124/study6,patient00124/study6/view1_frontal.dcm,Pneumothorax,disease,present,absent,mismatch,0,1,0,0
-patient00124/study6,patient00124/study6/view1_frontal.dcm,Fracture,disease,present,absent,mismatch,0,1,0,0
+patient00124/study6,patient00124/study6/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
+patient00124/study6,patient00124/study6/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Support Devices,non_disease,uncertain,absent,partial,0,0,0,1
 patient00124/study6,patient00124/study6/view1_frontal.dcm,No Finding,non_disease,absent,present,mismatch,0,0,1,0
-patient00124/study4,patient00124/study4/view1_frontal.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
-patient00124/study4,patient00124/study4/view1_frontal.dcm,Cardiomegaly,disease,present,absent,mismatch,0,1,0,0
-patient00124/study4,patient00124/study4/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
+patient00124/study4,patient00124/study4/view1_frontal.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
+patient00124/study4,patient00124/study4/view1_frontal.dcm,Cardiomegaly,disease,uncertain,absent,partial,0,0,0,1
+patient00124/study4,patient00124/study4/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study4,patient00124/study4/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
 patient00124/study4,patient00124/study4/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00124/study4,patient00124/study4/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
@@ -1371,13 +1371,13 @@ patient00124/study4,patient00124/study4/view1_frontal.dcm,Enlarged Cardiomediast
 patient00124/study4,patient00124/study4/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study4,patient00124/study4/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00124/study4,patient00124/study4/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00124/study2,patient00124/study2/view1_frontal.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
-patient00124/study2,patient00124/study2/view1_frontal.dcm,Cardiomegaly,disease,present,present,exact,1,0,0,0
+patient00124/study2,patient00124/study2/view1_frontal.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
+patient00124/study2,patient00124/study2/view1_frontal.dcm,Cardiomegaly,disease,uncertain,present,partial,0,0,1,0
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Consolidation,disease,present,present,exact,1,0,0,0
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
-patient00124/study2,patient00124/study2/view1_frontal.dcm,Pneumothorax,disease,present,absent,mismatch,0,1,0,0
+patient00124/study2,patient00124/study2/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Lung Lesion,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
@@ -1385,16 +1385,16 @@ patient00124/study2,patient00124/study2/view1_frontal.dcm,Enlarged Cardiomediast
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0
 patient00124/study2,patient00124/study2/view1_frontal.dcm,No Finding,non_disease,absent,absent,exact,0,0,0,1
-patient00124/study3,patient00124/study3/view1_frontal.dcm,Atelectasis,disease,present,present,exact,1,0,0,0
-patient00124/study3,patient00124/study3/view1_frontal.dcm,Cardiomegaly,disease,present,present,exact,1,0,0,0
-patient00124/study3,patient00124/study3/view1_frontal.dcm,Consolidation,disease,present,absent,mismatch,0,1,0,0
-patient00124/study3,patient00124/study3/view1_frontal.dcm,Edema,disease,present,present,exact,1,0,0,0
+patient00124/study3,patient00124/study3/view1_frontal.dcm,Atelectasis,disease,uncertain,present,partial,0,0,1,0
+patient00124/study3,patient00124/study3/view1_frontal.dcm,Cardiomegaly,disease,uncertain,present,partial,0,0,1,0
+patient00124/study3,patient00124/study3/view1_frontal.dcm,Consolidation,disease,uncertain,absent,partial,0,0,0,1
+patient00124/study3,patient00124/study3/view1_frontal.dcm,Edema,disease,uncertain,present,partial,0,0,1,0
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Pleural Effusion,disease,present,present,exact,1,0,0,0
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Pneumonia,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Pneumothorax,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Fracture,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Lung Lesion,disease,absent,absent,exact,0,0,0,1
-patient00124/study3,patient00124/study3/view1_frontal.dcm,Lung Opacity,disease,present,absent,mismatch,0,1,0,0
+patient00124/study3,patient00124/study3/view1_frontal.dcm,Lung Opacity,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Enlarged Cardiomediastinum,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Pleural Other,disease,uncertain,absent,partial,0,0,0,1
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Support Devices,non_disease,uncertain,present,partial,0,0,1,0

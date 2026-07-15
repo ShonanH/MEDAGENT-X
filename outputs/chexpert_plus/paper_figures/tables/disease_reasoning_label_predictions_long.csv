@@ -13,35 +13,35 @@ patient00003/study1,patient00003/study1/view1_frontal.dcm,Enlarged Cardiomediast
 patient00003/study1,patient00003/study1/view1_frontal.dcm,Pleural Other,absent,0.85
 patient00003/study1,patient00003/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00003/study1,patient00003/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00009/study1,patient00009/study1/view1_frontal.dcm,Atelectasis,present,0.6
+patient00009/study1,patient00009/study1/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00009/study1,patient00009/study1/view1_frontal.dcm,Cardiomegaly,present,0.8009284734725952
-patient00009/study1,patient00009/study1/view1_frontal.dcm,Consolidation,present,0.6
-patient00009/study1,patient00009/study1/view1_frontal.dcm,Edema,present,0.6
-patient00009/study1,patient00009/study1/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00009/study1,patient00009/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
+patient00009/study1,patient00009/study1/view1_frontal.dcm,Edema,uncertain,0.45
+patient00009/study1,patient00009/study1/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00009/study1,patient00009/study1/view1_frontal.dcm,Pneumonia,uncertain,0.35
 patient00009/study1,patient00009/study1/view1_frontal.dcm,Pneumothorax,absent,0.85
 patient00009/study1,patient00009/study1/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00009/study1,patient00009/study1/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00009/study1,patient00009/study1/view1_frontal.dcm,Lung Opacity,present,0.6
-patient00009/study1,patient00009/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,present,0.6
+patient00009/study1,patient00009/study1/view1_frontal.dcm,Lung Opacity,uncertain,0.45
+patient00009/study1,patient00009/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00009/study1,patient00009/study1/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00009/study1,patient00009/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00009/study1,patient00009/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00009/study1,patient00009/study1/view2_lateral.dcm,Atelectasis,present,0.6
+patient00009/study1,patient00009/study1/view2_lateral.dcm,Atelectasis,uncertain,0.45
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Cardiomegaly,uncertain,0.45
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Consolidation,uncertain,0.45
-patient00009/study1,patient00009/study1/view2_lateral.dcm,Edema,present,0.6
+patient00009/study1,patient00009/study1/view2_lateral.dcm,Edema,uncertain,0.45
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Pleural Effusion,present,0.6554914116859436
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Pneumonia,present,0.8146582841873169
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Pneumothorax,uncertain,0.35
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Fracture,uncertain,0.35
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Lung Lesion,uncertain,0.35
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Lung Opacity,present,0.9265919923782348
-patient00009/study1,patient00009/study1/view2_lateral.dcm,Enlarged Cardiomediastinum,present,0.6040729284286499
+patient00009/study1,patient00009/study1/view2_lateral.dcm,Enlarged Cardiomediastinum,uncertain,0.55
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Pleural Other,absent,0.85
 patient00009/study1,patient00009/study1/view2_lateral.dcm,Support Devices,uncertain,0.35
 patient00009/study1,patient00009/study1/view2_lateral.dcm,No Finding,absent,0.95
-patient00016/study1,patient00016/study1/view1_frontal.dcm,Atelectasis,present,0.6
+patient00016/study1,patient00016/study1/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00016/study1,patient00016/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
 patient00016/study1,patient00016/study1/view1_frontal.dcm,Consolidation,uncertain,0.35
 patient00016/study1,patient00016/study1/view1_frontal.dcm,Edema,absent,0.85
@@ -55,11 +55,11 @@ patient00016/study1,patient00016/study1/view1_frontal.dcm,Enlarged Cardiomediast
 patient00016/study1,patient00016/study1/view1_frontal.dcm,Pleural Other,absent,0.85
 patient00016/study1,patient00016/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00016/study1,patient00016/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00016/study1,patient00016/study1/view2_lateral.dcm,Atelectasis,present,0.6
+patient00016/study1,patient00016/study1/view2_lateral.dcm,Atelectasis,uncertain,0.45
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Cardiomegaly,uncertain,0.45
-patient00016/study1,patient00016/study1/view2_lateral.dcm,Consolidation,present,0.6
+patient00016/study1,patient00016/study1/view2_lateral.dcm,Consolidation,uncertain,0.45
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Edema,uncertain,0.45
-patient00016/study1,patient00016/study1/view2_lateral.dcm,Pleural Effusion,present,0.6
+patient00016/study1,patient00016/study1/view2_lateral.dcm,Pleural Effusion,uncertain,0.45
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Pneumonia,present,0.6270037889480591
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Pneumothorax,absent,0.85
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Fracture,absent,0.85
@@ -69,23 +69,23 @@ patient00016/study1,patient00016/study1/view2_lateral.dcm,Enlarged Cardiomediast
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Pleural Other,absent,0.85
 patient00016/study1,patient00016/study1/view2_lateral.dcm,Support Devices,uncertain,0.35
 patient00016/study1,patient00016/study1/view2_lateral.dcm,No Finding,absent,0.95
-patient00026/study1,patient00026/study1/view1_frontal.dcm,Atelectasis,present,0.6
+patient00026/study1,patient00026/study1/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00026/study1,patient00026/study1/view1_frontal.dcm,Consolidation,present,0.6
+patient00026/study1,patient00026/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Edema,absent,0.85
-patient00026/study1,patient00026/study1/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00026/study1,patient00026/study1/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Pneumothorax,absent,0.85
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Fracture,uncertain,0.35
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00026/study1,patient00026/study1/view1_frontal.dcm,Lung Opacity,present,0.6
+patient00026/study1,patient00026/study1/view1_frontal.dcm,Lung Opacity,uncertain,0.45
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,absent,0.85
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00026/study1,patient00026/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00026/study1,patient00026/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00026/study1,patient00026/study1/view2_lateral.dcm,Atelectasis,present,0.6268638372421265
-patient00026/study1,patient00026/study1/view2_lateral.dcm,Cardiomegaly,present,0.6284106969833374
-patient00026/study1,patient00026/study1/view2_lateral.dcm,Consolidation,present,0.6
+patient00026/study1,patient00026/study1/view2_lateral.dcm,Atelectasis,uncertain,0.55
+patient00026/study1,patient00026/study1/view2_lateral.dcm,Cardiomegaly,uncertain,0.55
+patient00026/study1,patient00026/study1/view2_lateral.dcm,Consolidation,uncertain,0.45
 patient00026/study1,patient00026/study1/view2_lateral.dcm,Edema,uncertain,0.45
 patient00026/study1,patient00026/study1/view2_lateral.dcm,Pleural Effusion,present,0.7759873867034912
 patient00026/study1,patient00026/study1/view2_lateral.dcm,Pneumonia,present,0.6348700523376465
@@ -99,21 +99,21 @@ patient00026/study1,patient00026/study1/view2_lateral.dcm,Support Devices,uncert
 patient00026/study1,patient00026/study1/view2_lateral.dcm,No Finding,absent,0.95
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Atelectasis,present,0.7843297719955444
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00027/study1,patient00027/study1/view1_frontal.dcm,Consolidation,present,0.6
-patient00027/study1,patient00027/study1/view1_frontal.dcm,Edema,present,0.6
+patient00027/study1,patient00027/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
+patient00027/study1,patient00027/study1/view1_frontal.dcm,Edema,uncertain,0.45
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Pleural Effusion,present,0.6960434913635254
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Pneumonia,uncertain,0.45
-patient00027/study1,patient00027/study1/view1_frontal.dcm,Pneumothorax,present,0.6
-patient00027/study1,patient00027/study1/view1_frontal.dcm,Fracture,present,0.6
+patient00027/study1,patient00027/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.45
+patient00027/study1,patient00027/study1/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Lung Lesion,uncertain,0.35
-patient00027/study1,patient00027/study1/view1_frontal.dcm,Lung Opacity,present,0.6253472566604614
+patient00027/study1,patient00027/study1/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00027/study1,patient00027/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00027/study1,patient00027/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00027/study1,patient00027/study1/view2_lateral.dcm,Atelectasis,present,0.6
+patient00027/study1,patient00027/study1/view2_lateral.dcm,Atelectasis,uncertain,0.45
 patient00027/study1,patient00027/study1/view2_lateral.dcm,Cardiomegaly,uncertain,0.35
-patient00027/study1,patient00027/study1/view2_lateral.dcm,Consolidation,present,0.6
+patient00027/study1,patient00027/study1/view2_lateral.dcm,Consolidation,uncertain,0.45
 patient00027/study1,patient00027/study1/view2_lateral.dcm,Edema,uncertain,0.35
 patient00027/study1,patient00027/study1/view2_lateral.dcm,Pleural Effusion,present,0.6625616550445557
 patient00027/study1,patient00027/study1/view2_lateral.dcm,Pneumonia,present,0.6774734258651733
@@ -125,27 +125,27 @@ patient00027/study1,patient00027/study1/view2_lateral.dcm,Enlarged Cardiomediast
 patient00027/study1,patient00027/study1/view2_lateral.dcm,Pleural Other,absent,0.85
 patient00027/study1,patient00027/study1/view2_lateral.dcm,Support Devices,uncertain,0.35
 patient00027/study1,patient00027/study1/view2_lateral.dcm,No Finding,absent,0.95
-patient00031/study1,patient00031/study1/view1_frontal.dcm,Atelectasis,present,0.6
+patient00031/study1,patient00031/study1/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.35
-patient00031/study1,patient00031/study1/view1_frontal.dcm,Consolidation,present,0.6
-patient00031/study1,patient00031/study1/view1_frontal.dcm,Edema,present,0.6
+patient00031/study1,patient00031/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
+patient00031/study1,patient00031/study1/view1_frontal.dcm,Edema,uncertain,0.45
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Pleural Effusion,uncertain,0.35
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Pneumonia,uncertain,0.35
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Lung Lesion,uncertain,0.35
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Lung Opacity,present,0.7830549478530884
-patient00031/study1,patient00031/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,present,0.6
+patient00031/study1,patient00031/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00031/study1,patient00031/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00031/study1,patient00031/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00031/study3,patient00031/study3/view1_frontal.dcm,Atelectasis,present,0.6944342851638794
-patient00031/study3,patient00031/study3/view1_frontal.dcm,Cardiomegaly,present,0.6
-patient00031/study3,patient00031/study3/view1_frontal.dcm,Consolidation,present,0.6027350425720215
+patient00031/study3,patient00031/study3/view1_frontal.dcm,Atelectasis,uncertain,0.55
+patient00031/study3,patient00031/study3/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
+patient00031/study3,patient00031/study3/view1_frontal.dcm,Consolidation,uncertain,0.55
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Edema,uncertain,0.45
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Pleural Effusion,present,0.8030819296836853
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Pneumonia,uncertain,0.35
-patient00031/study3,patient00031/study3/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00031/study3,patient00031/study3/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Lung Lesion,uncertain,0.35
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Lung Opacity,present,0.7571156024932861
@@ -153,21 +153,21 @@ patient00031/study3,patient00031/study3/view1_frontal.dcm,Enlarged Cardiomediast
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00031/study3,patient00031/study3/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00031/study3,patient00031/study3/view1_frontal.dcm,No Finding,absent,0.95
-patient00031/study2,patient00031/study2/view1_frontal.dcm,Atelectasis,present,0.6
+patient00031/study2,patient00031/study2/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Cardiomegaly,absent,0.85
-patient00031/study2,patient00031/study2/view1_frontal.dcm,Consolidation,present,0.6
+patient00031/study2,patient00031/study2/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Edema,uncertain,0.35
-patient00031/study2,patient00031/study2/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00031/study2,patient00031/study2/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00031/study2,patient00031/study2/view1_frontal.dcm,Lung Opacity,present,0.7405704259872437
+patient00031/study2,patient00031/study2/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.35
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00031/study2,patient00031/study2/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00031/study2,patient00031/study2/view1_frontal.dcm,No Finding,absent,0.95
-patient00034/study1,patient00034/study1/view1_frontal.dcm,Atelectasis,present,0.6
+patient00034/study1,patient00034/study1/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.35
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Consolidation,uncertain,0.35
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Edema,uncertain,0.35
@@ -176,29 +176,29 @@ patient00034/study1,patient00034/study1/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Pneumothorax,absent,0.85
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Fracture,uncertain,0.35
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00034/study1,patient00034/study1/view1_frontal.dcm,Lung Opacity,present,0.6
+patient00034/study1,patient00034/study1/view1_frontal.dcm,Lung Opacity,uncertain,0.45
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.35
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00034/study1,patient00034/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00034/study1,patient00034/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00038/study1,patient00038/study1/view1_frontal.dcm,Atelectasis,present,0.6431225538253784
+patient00038/study1,patient00038/study1/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00038/study1,patient00038/study1/view1_frontal.dcm,Consolidation,present,0.6
+patient00038/study1,patient00038/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Edema,uncertain,0.35
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Pleural Effusion,present,0.698468029499054
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.45
-patient00038/study1,patient00038/study1/view1_frontal.dcm,Fracture,present,0.6
+patient00038/study1,patient00038/study1/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00038/study1,patient00038/study1/view1_frontal.dcm,Lung Opacity,present,0.7298486828804016
+patient00038/study1,patient00038/study1/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00038/study1,patient00038/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00038/study1,patient00038/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00038/study3,patient00038/study3/view1_frontal.dcm,Atelectasis,present,0.7252228856086731
+patient00038/study3,patient00038/study3/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00038/study3,patient00038/study3/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00038/study3,patient00038/study3/view1_frontal.dcm,Consolidation,present,0.7062486410140991
-patient00038/study3,patient00038/study3/view1_frontal.dcm,Edema,present,0.6
+patient00038/study3,patient00038/study3/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00038/study3,patient00038/study3/view1_frontal.dcm,Edema,uncertain,0.45
 patient00038/study3,patient00038/study3/view1_frontal.dcm,Pleural Effusion,present,0.8176254034042358
 patient00038/study3,patient00038/study3/view1_frontal.dcm,Pneumonia,uncertain,0.45
 patient00038/study3,patient00038/study3/view1_frontal.dcm,Pneumothorax,uncertain,0.45
@@ -209,10 +209,10 @@ patient00038/study3,patient00038/study3/view1_frontal.dcm,Enlarged Cardiomediast
 patient00038/study3,patient00038/study3/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00038/study3,patient00038/study3/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00038/study3,patient00038/study3/view1_frontal.dcm,No Finding,absent,0.95
-patient00044/study7,patient00044/study7/view1_frontal.dcm,Atelectasis,present,0.6456897258758545
-patient00044/study7,patient00044/study7/view1_frontal.dcm,Cardiomegaly,present,0.6
-patient00044/study7,patient00044/study7/view1_frontal.dcm,Consolidation,present,0.6279282569885254
-patient00044/study7,patient00044/study7/view1_frontal.dcm,Edema,present,0.6
+patient00044/study7,patient00044/study7/view1_frontal.dcm,Atelectasis,uncertain,0.55
+patient00044/study7,patient00044/study7/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
+patient00044/study7,patient00044/study7/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00044/study7,patient00044/study7/view1_frontal.dcm,Edema,uncertain,0.45
 patient00044/study7,patient00044/study7/view1_frontal.dcm,Pleural Effusion,present,0.7139813303947449
 patient00044/study7,patient00044/study7/view1_frontal.dcm,Pneumonia,uncertain,0.45
 patient00044/study7,patient00044/study7/view1_frontal.dcm,Pneumothorax,uncertain,0.45
@@ -223,10 +223,10 @@ patient00044/study7,patient00044/study7/view1_frontal.dcm,Enlarged Cardiomediast
 patient00044/study7,patient00044/study7/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00044/study7,patient00044/study7/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00044/study7,patient00044/study7/view1_frontal.dcm,No Finding,absent,0.95
-patient00044/study7,patient00044/study7/view2_lateral.dcm,Atelectasis,present,0.6222646236419678
-patient00044/study7,patient00044/study7/view2_lateral.dcm,Cardiomegaly,present,0.6
-patient00044/study7,patient00044/study7/view2_lateral.dcm,Consolidation,present,0.6
-patient00044/study7,patient00044/study7/view2_lateral.dcm,Edema,present,0.6
+patient00044/study7,patient00044/study7/view2_lateral.dcm,Atelectasis,uncertain,0.55
+patient00044/study7,patient00044/study7/view2_lateral.dcm,Cardiomegaly,uncertain,0.45
+patient00044/study7,patient00044/study7/view2_lateral.dcm,Consolidation,uncertain,0.45
+patient00044/study7,patient00044/study7/view2_lateral.dcm,Edema,uncertain,0.45
 patient00044/study7,patient00044/study7/view2_lateral.dcm,Pleural Effusion,present,0.8367397785186768
 patient00044/study7,patient00044/study7/view2_lateral.dcm,Pneumonia,present,0.6325187683105469
 patient00044/study7,patient00044/study7/view2_lateral.dcm,Pneumothorax,uncertain,0.45
@@ -237,23 +237,23 @@ patient00044/study7,patient00044/study7/view2_lateral.dcm,Enlarged Cardiomediast
 patient00044/study7,patient00044/study7/view2_lateral.dcm,Pleural Other,uncertain,0.35
 patient00044/study7,patient00044/study7/view2_lateral.dcm,Support Devices,uncertain,0.35
 patient00044/study7,patient00044/study7/view2_lateral.dcm,No Finding,absent,0.95
-patient00044/study1,patient00044/study1/view1_frontal.dcm,Atelectasis,present,0.6666437983512878
-patient00044/study1,patient00044/study1/view1_frontal.dcm,Cardiomegaly,present,0.6644224524497986
-patient00044/study1,patient00044/study1/view1_frontal.dcm,Consolidation,present,0.6399351358413696
-patient00044/study1,patient00044/study1/view1_frontal.dcm,Edema,present,0.6
+patient00044/study1,patient00044/study1/view1_frontal.dcm,Atelectasis,uncertain,0.55
+patient00044/study1,patient00044/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.55
+patient00044/study1,patient00044/study1/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00044/study1,patient00044/study1/view1_frontal.dcm,Edema,uncertain,0.45
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Pleural Effusion,present,0.7097418308258057
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Pneumonia,uncertain,0.45
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Lung Opacity,present,0.8718189001083374
-patient00044/study1,patient00044/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,present,0.6942809820175171
+patient00044/study1,patient00044/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.55
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00044/study1,patient00044/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00044/study1,patient00044/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00044/study3,patient00044/study3/view1_frontal.dcm,Atelectasis,present,0.7016496062278748
-patient00044/study3,patient00044/study3/view1_frontal.dcm,Cardiomegaly,present,0.6858301162719727
-patient00044/study3,patient00044/study3/view1_frontal.dcm,Consolidation,present,0.6467934250831604
+patient00044/study3,patient00044/study3/view1_frontal.dcm,Atelectasis,uncertain,0.55
+patient00044/study3,patient00044/study3/view1_frontal.dcm,Cardiomegaly,uncertain,0.55
+patient00044/study3,patient00044/study3/view1_frontal.dcm,Consolidation,uncertain,0.55
 patient00044/study3,patient00044/study3/view1_frontal.dcm,Edema,present,0.6145973801612854
 patient00044/study3,patient00044/study3/view1_frontal.dcm,Pleural Effusion,present,0.8240556120872498
 patient00044/study3,patient00044/study3/view1_frontal.dcm,Pneumonia,uncertain,0.45
@@ -265,10 +265,10 @@ patient00044/study3,patient00044/study3/view1_frontal.dcm,Enlarged Cardiomediast
 patient00044/study3,patient00044/study3/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00044/study3,patient00044/study3/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00044/study3,patient00044/study3/view1_frontal.dcm,No Finding,absent,0.95
-patient00044/study4,patient00044/study4/view1_frontal.dcm,Atelectasis,present,0.7053185701370239
+patient00044/study4,patient00044/study4/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00044/study4,patient00044/study4/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00044/study4,patient00044/study4/view1_frontal.dcm,Consolidation,present,0.6411393880844116
-patient00044/study4,patient00044/study4/view1_frontal.dcm,Edema,present,0.6
+patient00044/study4,patient00044/study4/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00044/study4,patient00044/study4/view1_frontal.dcm,Edema,uncertain,0.45
 patient00044/study4,patient00044/study4/view1_frontal.dcm,Pleural Effusion,present,0.7728831768035889
 patient00044/study4,patient00044/study4/view1_frontal.dcm,Pneumonia,uncertain,0.45
 patient00044/study4,patient00044/study4/view1_frontal.dcm,Pneumothorax,uncertain,0.45
@@ -289,7 +289,7 @@ patient00044/study2,patient00044/study2/view1_frontal.dcm,Pneumothorax,uncertain
 patient00044/study2,patient00044/study2/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00044/study2,patient00044/study2/view1_frontal.dcm,Lung Lesion,uncertain,0.45
 patient00044/study2,patient00044/study2/view1_frontal.dcm,Lung Opacity,present,0.935680627822876
-patient00044/study2,patient00044/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,present,0.6640076637268066
+patient00044/study2,patient00044/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.55
 patient00044/study2,patient00044/study2/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00044/study2,patient00044/study2/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00044/study2,patient00044/study2/view1_frontal.dcm,No Finding,absent,0.95
@@ -303,7 +303,7 @@ patient00044/study5,patient00044/study5/view1_frontal.dcm,Pneumothorax,uncertain
 patient00044/study5,patient00044/study5/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00044/study5,patient00044/study5/view1_frontal.dcm,Lung Lesion,uncertain,0.45
 patient00044/study5,patient00044/study5/view1_frontal.dcm,Lung Opacity,present,0.920103907585144
-patient00044/study5,patient00044/study5/view1_frontal.dcm,Enlarged Cardiomediastinum,present,0.691537618637085
+patient00044/study5,patient00044/study5/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.55
 patient00044/study5,patient00044/study5/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00044/study5,patient00044/study5/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00044/study5,patient00044/study5/view1_frontal.dcm,No Finding,absent,0.95
@@ -321,15 +321,15 @@ patient00045/study1,patient00045/study1/view1_frontal.dcm,Enlarged Cardiomediast
 patient00045/study1,patient00045/study1/view1_frontal.dcm,Pleural Other,absent,0.85
 patient00045/study1,patient00045/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00045/study1,patient00045/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00045/study1,patient00045/study1/view2_lateral.dcm,Atelectasis,present,0.6
-patient00045/study1,patient00045/study1/view2_lateral.dcm,Cardiomegaly,present,0.6
-patient00045/study1,patient00045/study1/view2_lateral.dcm,Consolidation,present,0.6
-patient00045/study1,patient00045/study1/view2_lateral.dcm,Edema,present,0.6
+patient00045/study1,patient00045/study1/view2_lateral.dcm,Atelectasis,uncertain,0.45
+patient00045/study1,patient00045/study1/view2_lateral.dcm,Cardiomegaly,uncertain,0.45
+patient00045/study1,patient00045/study1/view2_lateral.dcm,Consolidation,uncertain,0.45
+patient00045/study1,patient00045/study1/view2_lateral.dcm,Edema,uncertain,0.45
 patient00045/study1,patient00045/study1/view2_lateral.dcm,Pleural Effusion,present,0.7697082757949829
 patient00045/study1,patient00045/study1/view2_lateral.dcm,Pneumonia,present,0.621772050857544
 patient00045/study1,patient00045/study1/view2_lateral.dcm,Pneumothorax,uncertain,0.35
 patient00045/study1,patient00045/study1/view2_lateral.dcm,Fracture,uncertain,0.45
-patient00045/study1,patient00045/study1/view2_lateral.dcm,Lung Lesion,present,0.6
+patient00045/study1,patient00045/study1/view2_lateral.dcm,Lung Lesion,uncertain,0.45
 patient00045/study1,patient00045/study1/view2_lateral.dcm,Lung Opacity,present,0.7938812971115112
 patient00045/study1,patient00045/study1/view2_lateral.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00045/study1,patient00045/study1/view2_lateral.dcm,Pleural Other,uncertain,0.35
@@ -338,21 +338,21 @@ patient00045/study1,patient00045/study1/view2_lateral.dcm,No Finding,absent,0.95
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.35
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
-patient00048/study1,patient00048/study1/view1_frontal.dcm,Edema,present,0.6
+patient00048/study1,patient00048/study1/view1_frontal.dcm,Edema,uncertain,0.45
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Pneumonia,absent,0.85
-patient00048/study1,patient00048/study1/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00048/study1,patient00048/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00048/study1,patient00048/study1/view1_frontal.dcm,Lung Opacity,present,0.6915626525878906
+patient00048/study1,patient00048/study1/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.35
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00048/study1,patient00048/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00048/study1,patient00048/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00049/study2,patient00049/study2/view1_frontal.dcm,Atelectasis,present,0.6
+patient00049/study2,patient00049/study2/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00049/study2,patient00049/study2/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
 patient00049/study2,patient00049/study2/view1_frontal.dcm,Consolidation,uncertain,0.45
-patient00049/study2,patient00049/study2/view1_frontal.dcm,Edema,present,0.6
+patient00049/study2,patient00049/study2/view1_frontal.dcm,Edema,uncertain,0.45
 patient00049/study2,patient00049/study2/view1_frontal.dcm,Pleural Effusion,uncertain,0.35
 patient00049/study2,patient00049/study2/view1_frontal.dcm,Pneumonia,uncertain,0.35
 patient00049/study2,patient00049/study2/view1_frontal.dcm,Pneumothorax,uncertain,0.35
@@ -379,7 +379,7 @@ patient00049/study1,patient00049/study1/view1_frontal.dcm,Support Devices,unavai
 patient00049/study1,patient00049/study1/view1_frontal.dcm,No Finding,absent,0.95
 patient00055/study2,patient00055/study2/view1_frontal.dcm,Atelectasis,uncertain,0.35
 patient00055/study2,patient00055/study2/view1_frontal.dcm,Cardiomegaly,uncertain,0.35
-patient00055/study2,patient00055/study2/view1_frontal.dcm,Consolidation,present,0.6
+patient00055/study2,patient00055/study2/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00055/study2,patient00055/study2/view1_frontal.dcm,Edema,absent,0.85
 patient00055/study2,patient00055/study2/view1_frontal.dcm,Pleural Effusion,uncertain,0.35
 patient00055/study2,patient00055/study2/view1_frontal.dcm,Pneumonia,absent,0.85
@@ -391,27 +391,27 @@ patient00055/study2,patient00055/study2/view1_frontal.dcm,Enlarged Cardiomediast
 patient00055/study2,patient00055/study2/view1_frontal.dcm,Pleural Other,absent,0.85
 patient00055/study2,patient00055/study2/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00055/study2,patient00055/study2/view1_frontal.dcm,No Finding,absent,0.95
-patient00055/study2,patient00055/study2/view2_lateral.dcm,Atelectasis,present,0.6
+patient00055/study2,patient00055/study2/view2_lateral.dcm,Atelectasis,uncertain,0.45
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Cardiomegaly,uncertain,0.35
-patient00055/study2,patient00055/study2/view2_lateral.dcm,Consolidation,present,0.6
+patient00055/study2,patient00055/study2/view2_lateral.dcm,Consolidation,uncertain,0.45
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Edema,uncertain,0.45
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Pleural Effusion,present,0.7337033748626709
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Pneumonia,present,0.6462634801864624
-patient00055/study2,patient00055/study2/view2_lateral.dcm,Pneumothorax,present,0.6
+patient00055/study2,patient00055/study2/view2_lateral.dcm,Pneumothorax,uncertain,0.45
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Fracture,absent,0.85
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Lung Lesion,uncertain,0.45
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Lung Opacity,present,0.8834941983222961
-patient00055/study2,patient00055/study2/view2_lateral.dcm,Enlarged Cardiomediastinum,present,0.6940232515335083
+patient00055/study2,patient00055/study2/view2_lateral.dcm,Enlarged Cardiomediastinum,uncertain,0.55
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Pleural Other,absent,0.85
 patient00055/study2,patient00055/study2/view2_lateral.dcm,Support Devices,uncertain,0.35
 patient00055/study2,patient00055/study2/view2_lateral.dcm,No Finding,absent,0.95
-patient00055/study3,patient00055/study3/view1_frontal.dcm,Atelectasis,present,0.6829690933227539
+patient00055/study3,patient00055/study3/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00055/study3,patient00055/study3/view1_frontal.dcm,Cardiomegaly,uncertain,0.35
-patient00055/study3,patient00055/study3/view1_frontal.dcm,Consolidation,present,0.6829749345779419
+patient00055/study3,patient00055/study3/view1_frontal.dcm,Consolidation,uncertain,0.55
 patient00055/study3,patient00055/study3/view1_frontal.dcm,Edema,absent,0.85
 patient00055/study3,patient00055/study3/view1_frontal.dcm,Pleural Effusion,present,0.7296745181083679
 patient00055/study3,patient00055/study3/view1_frontal.dcm,Pneumonia,absent,0.85
-patient00055/study3,patient00055/study3/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00055/study3,patient00055/study3/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00055/study3,patient00055/study3/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00055/study3,patient00055/study3/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00055/study3,patient00055/study3/view1_frontal.dcm,Lung Opacity,present,0.7645342350006104
@@ -449,7 +449,7 @@ patient00058/study1,patient00058/study1/view1_frontal.dcm,Support Devices,unavai
 patient00058/study1,patient00058/study1/view1_frontal.dcm,No Finding,absent,0.95
 patient00058/study1,patient00058/study1/view2_lateral.dcm,Atelectasis,uncertain,0.35
 patient00058/study1,patient00058/study1/view2_lateral.dcm,Cardiomegaly,absent,0.85
-patient00058/study1,patient00058/study1/view2_lateral.dcm,Consolidation,present,0.6
+patient00058/study1,patient00058/study1/view2_lateral.dcm,Consolidation,uncertain,0.45
 patient00058/study1,patient00058/study1/view2_lateral.dcm,Edema,uncertain,0.35
 patient00058/study1,patient00058/study1/view2_lateral.dcm,Pleural Effusion,absent,0.85
 patient00058/study1,patient00058/study1/view2_lateral.dcm,Pneumonia,present,0.6906753778457642
@@ -463,39 +463,39 @@ patient00058/study1,patient00058/study1/view2_lateral.dcm,Support Devices,unavai
 patient00058/study1,patient00058/study1/view2_lateral.dcm,No Finding,absent,0.95
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Atelectasis,uncertain,0.35
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Cardiomegaly,absent,0.85
-patient00064/study1,patient00064/study1/view1_frontal.dcm,Consolidation,present,0.6
+patient00064/study1,patient00064/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Edema,absent,0.85
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Pleural Effusion,absent,0.85
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.35
-patient00064/study1,patient00064/study1/view1_frontal.dcm,Fracture,present,0.6
+patient00064/study1,patient00064/study1/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Lung Lesion,uncertain,0.45
-patient00064/study1,patient00064/study1/view1_frontal.dcm,Lung Opacity,present,0.6128473877906799
+patient00064/study1,patient00064/study1/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00064/study1,patient00064/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00064/study1,patient00064/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00067/study4,patient00067/study4/view1_frontal.dcm,Atelectasis,present,0.628732442855835
+patient00067/study4,patient00067/study4/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Cardiomegaly,absent,0.85
-patient00067/study4,patient00067/study4/view1_frontal.dcm,Consolidation,present,0.6
+patient00067/study4,patient00067/study4/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Edema,absent,0.85
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Pleural Effusion,present,0.613222599029541
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00067/study4,patient00067/study4/view1_frontal.dcm,Lung Opacity,present,0.6500397324562073
+patient00067/study4,patient00067/study4/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.35
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00067/study4,patient00067/study4/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00067/study4,patient00067/study4/view1_frontal.dcm,No Finding,absent,0.95
-patient00067/study3,patient00067/study3/view1_frontal.dcm,Atelectasis,present,0.6
+patient00067/study3,patient00067/study3/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00067/study3,patient00067/study3/view1_frontal.dcm,Cardiomegaly,absent,0.85
-patient00067/study3,patient00067/study3/view1_frontal.dcm,Consolidation,present,0.6
+patient00067/study3,patient00067/study3/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00067/study3,patient00067/study3/view1_frontal.dcm,Edema,absent,0.85
 patient00067/study3,patient00067/study3/view1_frontal.dcm,Pleural Effusion,uncertain,0.35
 patient00067/study3,patient00067/study3/view1_frontal.dcm,Pneumonia,absent,0.85
-patient00067/study3,patient00067/study3/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00067/study3,patient00067/study3/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00067/study3,patient00067/study3/view1_frontal.dcm,Fracture,uncertain,0.35
 patient00067/study3,patient00067/study3/view1_frontal.dcm,Lung Lesion,uncertain,0.35
 patient00067/study3,patient00067/study3/view1_frontal.dcm,Lung Opacity,uncertain,0.45
@@ -507,32 +507,32 @@ patient00067/study1,patient00067/study1/view1_frontal.dcm,Atelectasis,uncertain,
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Cardiomegaly,absent,0.85
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Edema,absent,0.85
-patient00067/study1,patient00067/study1/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00067/study1,patient00067/study1/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Pneumonia,uncertain,0.35
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Fracture,uncertain,0.35
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00067/study1,patient00067/study1/view1_frontal.dcm,Lung Opacity,present,0.6397435069084167
+patient00067/study1,patient00067/study1/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00067/study1,patient00067/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00067/study1,patient00067/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00067/study2,patient00067/study2/view1_frontal.dcm,Atelectasis,present,0.6
+patient00067/study2,patient00067/study2/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00067/study2,patient00067/study2/view1_frontal.dcm,Consolidation,present,0.6
+patient00067/study2,patient00067/study2/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Edema,uncertain,0.35
-patient00067/study2,patient00067/study2/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00067/study2,patient00067/study2/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Pneumonia,uncertain,0.35
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00067/study2,patient00067/study2/view1_frontal.dcm,Lung Opacity,present,0.6810085773468018
+patient00067/study2,patient00067/study2/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00067/study2,patient00067/study2/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00067/study2,patient00067/study2/view1_frontal.dcm,No Finding,absent,0.95
-patient00068/study1,patient00068/study1/view1_frontal.dcm,Atelectasis,present,0.6
-patient00068/study1,patient00068/study1/view1_frontal.dcm,Cardiomegaly,present,0.6006261110305786
+patient00068/study1,patient00068/study1/view1_frontal.dcm,Atelectasis,uncertain,0.45
+patient00068/study1,patient00068/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.55
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Edema,uncertain,0.35
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Pleural Effusion,uncertain,0.35
@@ -540,7 +540,7 @@ patient00068/study1,patient00068/study1/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.35
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00068/study1,patient00068/study1/view1_frontal.dcm,Lung Opacity,present,0.6
+patient00068/study1,patient00068/study1/view1_frontal.dcm,Lung Opacity,uncertain,0.45
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00068/study1,patient00068/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
@@ -561,9 +561,9 @@ patient00070/study1,patient00070/study1/view1_frontal.dcm,Support Devices,unavai
 patient00070/study1,patient00070/study1/view1_frontal.dcm,No Finding,absent,0.95
 patient00076/study1,patient00076/study1/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00076/study1,patient00076/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00076/study1,patient00076/study1/view1_frontal.dcm,Consolidation,present,0.6
-patient00076/study1,patient00076/study1/view1_frontal.dcm,Edema,present,0.6
-patient00076/study1,patient00076/study1/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00076/study1,patient00076/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
+patient00076/study1,patient00076/study1/view1_frontal.dcm,Edema,uncertain,0.45
+patient00076/study1,patient00076/study1/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00076/study1,patient00076/study1/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00076/study1,patient00076/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00076/study1,patient00076/study1/view1_frontal.dcm,Fracture,uncertain,0.45
@@ -575,12 +575,12 @@ patient00076/study1,patient00076/study1/view1_frontal.dcm,Support Devices,uncert
 patient00076/study1,patient00076/study1/view1_frontal.dcm,No Finding,absent,0.95
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Atelectasis,uncertain,0.35
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Cardiomegaly,absent,0.85
-patient00078/study6,patient00078/study6/view1_frontal.dcm,Consolidation,present,0.6
+patient00078/study6,patient00078/study6/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Edema,absent,0.85
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Pleural Effusion,absent,0.85
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Pneumonia,absent,0.85
-patient00078/study6,patient00078/study6/view1_frontal.dcm,Pneumothorax,present,0.6
-patient00078/study6,patient00078/study6/view1_frontal.dcm,Fracture,present,0.6
+patient00078/study6,patient00078/study6/view1_frontal.dcm,Pneumothorax,uncertain,0.45
+patient00078/study6,patient00078/study6/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Lung Opacity,uncertain,0.35
 patient00078/study6,patient00078/study6/view1_frontal.dcm,Enlarged Cardiomediastinum,absent,0.85
@@ -589,11 +589,11 @@ patient00078/study6,patient00078/study6/view1_frontal.dcm,Support Devices,uncert
 patient00078/study6,patient00078/study6/view1_frontal.dcm,No Finding,absent,0.95
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Atelectasis,uncertain,0.35
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Cardiomegaly,absent,0.85
-patient00078/study7,patient00078/study7/view1_frontal.dcm,Consolidation,present,0.6
+patient00078/study7,patient00078/study7/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Edema,absent,0.85
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Pleural Effusion,uncertain,0.35
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Pneumonia,absent,0.85
-patient00078/study7,patient00078/study7/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00078/study7,patient00078/study7/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00078/study7,patient00078/study7/view1_frontal.dcm,Lung Opacity,uncertain,0.35
@@ -615,7 +615,7 @@ patient00078/study9,patient00078/study9/view1_frontal.dcm,Enlarged Cardiomediast
 patient00078/study9,patient00078/study9/view1_frontal.dcm,Pleural Other,absent,0.85
 patient00078/study9,patient00078/study9/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00078/study9,patient00078/study9/view1_frontal.dcm,No Finding,absent,0.95
-patient00078/study5,patient00078/study5/view1_frontal.dcm,Atelectasis,present,0.6
+patient00078/study5,patient00078/study5/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00078/study5,patient00078/study5/view1_frontal.dcm,Cardiomegaly,absent,0.85
 patient00078/study5,patient00078/study5/view1_frontal.dcm,Consolidation,absent,0.85
 patient00078/study5,patient00078/study5/view1_frontal.dcm,Edema,absent,0.85
@@ -635,8 +635,8 @@ patient00078/study4,patient00078/study4/view1_frontal.dcm,Consolidation,absent,0
 patient00078/study4,patient00078/study4/view1_frontal.dcm,Edema,absent,0.85
 patient00078/study4,patient00078/study4/view1_frontal.dcm,Pleural Effusion,absent,0.85
 patient00078/study4,patient00078/study4/view1_frontal.dcm,Pneumonia,absent,0.85
-patient00078/study4,patient00078/study4/view1_frontal.dcm,Pneumothorax,present,0.6
-patient00078/study4,patient00078/study4/view1_frontal.dcm,Fracture,present,0.6
+patient00078/study4,patient00078/study4/view1_frontal.dcm,Pneumothorax,uncertain,0.45
+patient00078/study4,patient00078/study4/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00078/study4,patient00078/study4/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00078/study4,patient00078/study4/view1_frontal.dcm,Lung Opacity,uncertain,0.35
 patient00078/study4,patient00078/study4/view1_frontal.dcm,Enlarged Cardiomediastinum,absent,0.85
@@ -649,7 +649,7 @@ patient00078/study1,patient00078/study1/view1_frontal.dcm,Consolidation,absent,0
 patient00078/study1,patient00078/study1/view1_frontal.dcm,Edema,absent,0.85
 patient00078/study1,patient00078/study1/view1_frontal.dcm,Pleural Effusion,absent,0.85
 patient00078/study1,patient00078/study1/view1_frontal.dcm,Pneumonia,absent,0.85
-patient00078/study1,patient00078/study1/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00078/study1,patient00078/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00078/study1,patient00078/study1/view1_frontal.dcm,Fracture,uncertain,0.35
 patient00078/study1,patient00078/study1/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00078/study1,patient00078/study1/view1_frontal.dcm,Lung Opacity,absent,0.85
@@ -671,28 +671,28 @@ patient00078/study8,patient00078/study8/view1_frontal.dcm,Enlarged Cardiomediast
 patient00078/study8,patient00078/study8/view1_frontal.dcm,Pleural Other,absent,0.85
 patient00078/study8,patient00078/study8/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00078/study8,patient00078/study8/view1_frontal.dcm,No Finding,absent,0.95
-patient00078/study3,patient00078/study3/view1_frontal.dcm,Atelectasis,present,0.6
+patient00078/study3,patient00078/study3/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Cardiomegaly,absent,0.85
-patient00078/study3,patient00078/study3/view1_frontal.dcm,Consolidation,present,0.6
+patient00078/study3,patient00078/study3/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Edema,uncertain,0.35
-patient00078/study3,patient00078/study3/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00078/study3,patient00078/study3/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Pneumonia,absent,0.85
-patient00078/study3,patient00078/study3/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00078/study3,patient00078/study3/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00078/study3,patient00078/study3/view1_frontal.dcm,Lung Opacity,present,0.6150820255279541
+patient00078/study3,patient00078/study3/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.35
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00078/study3,patient00078/study3/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00078/study3,patient00078/study3/view1_frontal.dcm,No Finding,absent,0.95
-patient00078/study2,patient00078/study2/view1_frontal.dcm,Atelectasis,present,0.6
+patient00078/study2,patient00078/study2/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Cardiomegaly,absent,0.85
-patient00078/study2,patient00078/study2/view1_frontal.dcm,Consolidation,present,0.6
+patient00078/study2,patient00078/study2/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Edema,absent,0.85
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Pleural Effusion,uncertain,0.35
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Pneumonia,absent,0.85
-patient00078/study2,patient00078/study2/view1_frontal.dcm,Pneumothorax,present,0.6
-patient00078/study2,patient00078/study2/view1_frontal.dcm,Fracture,present,0.6
+patient00078/study2,patient00078/study2/view1_frontal.dcm,Pneumothorax,uncertain,0.45
+patient00078/study2,patient00078/study2/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Lung Opacity,uncertain,0.45
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.35
@@ -700,12 +700,12 @@ patient00078/study2,patient00078/study2/view1_frontal.dcm,Pleural Other,uncertai
 patient00078/study2,patient00078/study2/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00078/study2,patient00078/study2/view1_frontal.dcm,No Finding,absent,0.95
 patient00087/study3,patient00087/study3/view1_frontal.dcm,Atelectasis,uncertain,0.45
-patient00087/study3,patient00087/study3/view1_frontal.dcm,Cardiomegaly,present,0.6
+patient00087/study3,patient00087/study3/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
 patient00087/study3,patient00087/study3/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00087/study3,patient00087/study3/view1_frontal.dcm,Edema,absent,0.85
-patient00087/study3,patient00087/study3/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00087/study3,patient00087/study3/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00087/study3,patient00087/study3/view1_frontal.dcm,Pneumonia,uncertain,0.35
-patient00087/study3,patient00087/study3/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00087/study3,patient00087/study3/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00087/study3,patient00087/study3/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00087/study3,patient00087/study3/view1_frontal.dcm,Lung Lesion,uncertain,0.45
 patient00087/study3,patient00087/study3/view1_frontal.dcm,Lung Opacity,uncertain,0.45
@@ -715,7 +715,7 @@ patient00087/study3,patient00087/study3/view1_frontal.dcm,Support Devices,unavai
 patient00087/study3,patient00087/study3/view1_frontal.dcm,No Finding,absent,0.95
 patient00087/study3,patient00087/study3/view2_frontal.dcm,Atelectasis,uncertain,0.45
 patient00087/study3,patient00087/study3/view2_frontal.dcm,Cardiomegaly,uncertain,0.35
-patient00087/study3,patient00087/study3/view2_frontal.dcm,Consolidation,present,0.6
+patient00087/study3,patient00087/study3/view2_frontal.dcm,Consolidation,uncertain,0.45
 patient00087/study3,patient00087/study3/view2_frontal.dcm,Edema,absent,0.85
 patient00087/study3,patient00087/study3/view2_frontal.dcm,Pleural Effusion,uncertain,0.35
 patient00087/study3,patient00087/study3/view2_frontal.dcm,Pneumonia,absent,0.85
@@ -727,100 +727,100 @@ patient00087/study3,patient00087/study3/view2_frontal.dcm,Enlarged Cardiomediast
 patient00087/study3,patient00087/study3/view2_frontal.dcm,Pleural Other,uncertain,0.45
 patient00087/study3,patient00087/study3/view2_frontal.dcm,Support Devices,unavailable,0.0
 patient00087/study3,patient00087/study3/view2_frontal.dcm,No Finding,absent,0.95
-patient00087/study3,patient00087/study3/view3_lateral.dcm,Atelectasis,present,0.6
+patient00087/study3,patient00087/study3/view3_lateral.dcm,Atelectasis,uncertain,0.45
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Cardiomegaly,absent,0.85
-patient00087/study3,patient00087/study3/view3_lateral.dcm,Consolidation,present,0.6
+patient00087/study3,patient00087/study3/view3_lateral.dcm,Consolidation,uncertain,0.45
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Edema,absent,0.85
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Pleural Effusion,uncertain,0.35
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Pneumonia,uncertain,0.35
-patient00087/study3,patient00087/study3/view3_lateral.dcm,Pneumothorax,present,0.6
-patient00087/study3,patient00087/study3/view3_lateral.dcm,Fracture,present,0.6
+patient00087/study3,patient00087/study3/view3_lateral.dcm,Pneumothorax,uncertain,0.45
+patient00087/study3,patient00087/study3/view3_lateral.dcm,Fracture,uncertain,0.45
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Lung Lesion,absent,0.85
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Lung Opacity,present,0.7725321054458618
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Pleural Other,uncertain,0.35
 patient00087/study3,patient00087/study3/view3_lateral.dcm,Support Devices,uncertain,0.35
 patient00087/study3,patient00087/study3/view3_lateral.dcm,No Finding,absent,0.95
-patient00087/study1,patient00087/study1/view1_frontal.dcm,Atelectasis,present,0.6
+patient00087/study1,patient00087/study1/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00087/study1,patient00087/study1/view1_frontal.dcm,Consolidation,present,0.6
-patient00087/study1,patient00087/study1/view1_frontal.dcm,Edema,present,0.6
+patient00087/study1,patient00087/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
+patient00087/study1,patient00087/study1/view1_frontal.dcm,Edema,uncertain,0.45
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Pleural Effusion,uncertain,0.35
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.35
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Fracture,uncertain,0.35
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00087/study1,patient00087/study1/view1_frontal.dcm,Lung Opacity,present,0.6197587251663208
+patient00087/study1,patient00087/study1/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00087/study1,patient00087/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00087/study1,patient00087/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00087/study2,patient00087/study2/view1_frontal.dcm,Atelectasis,present,0.6
+patient00087/study2,patient00087/study2/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Cardiomegaly,uncertain,0.35
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Edema,uncertain,0.35
-patient00087/study2,patient00087/study2/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00087/study2,patient00087/study2/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Pneumonia,uncertain,0.35
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Pneumothorax,uncertain,0.35
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Fracture,uncertain,0.35
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00087/study2,patient00087/study2/view1_frontal.dcm,Lung Opacity,present,0.6069685220718384
+patient00087/study2,patient00087/study2/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.35
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00087/study2,patient00087/study2/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00087/study2,patient00087/study2/view1_frontal.dcm,No Finding,absent,0.95
-patient00095/study1,patient00095/study1/view1_frontal.dcm,Atelectasis,present,0.6
-patient00095/study1,patient00095/study1/view1_frontal.dcm,Cardiomegaly,present,0.6
-patient00095/study1,patient00095/study1/view1_frontal.dcm,Consolidation,present,0.6
+patient00095/study1,patient00095/study1/view1_frontal.dcm,Atelectasis,uncertain,0.45
+patient00095/study1,patient00095/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
+patient00095/study1,patient00095/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Edema,absent,0.85
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Pleural Effusion,uncertain,0.35
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Pneumothorax,absent,0.85
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Fracture,uncertain,0.35
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00095/study1,patient00095/study1/view1_frontal.dcm,Lung Opacity,present,0.6
+patient00095/study1,patient00095/study1/view1_frontal.dcm,Lung Opacity,uncertain,0.45
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.35
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Pleural Other,absent,0.85
 patient00095/study1,patient00095/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00095/study1,patient00095/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00096/study1,patient00096/study1/view1_frontal.dcm,Atelectasis,present,0.6
+patient00096/study1,patient00096/study1/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Cardiomegaly,absent,0.85
-patient00096/study1,patient00096/study1/view1_frontal.dcm,Consolidation,present,0.6
+patient00096/study1,patient00096/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Edema,absent,0.85
-patient00096/study1,patient00096/study1/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00096/study1,patient00096/study1/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Pneumonia,uncertain,0.45
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Fracture,absent,0.85
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00096/study1,patient00096/study1/view1_frontal.dcm,Lung Opacity,present,0.6
+patient00096/study1,patient00096/study1/view1_frontal.dcm,Lung Opacity,uncertain,0.45
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.35
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00096/study1,patient00096/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00096/study1,patient00096/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00096/study1,patient00096/study1/view2_lateral.dcm,Atelectasis,present,0.6
+patient00096/study1,patient00096/study1/view2_lateral.dcm,Atelectasis,uncertain,0.45
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Cardiomegaly,uncertain,0.45
-patient00096/study1,patient00096/study1/view2_lateral.dcm,Consolidation,present,0.6
+patient00096/study1,patient00096/study1/view2_lateral.dcm,Consolidation,uncertain,0.45
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Edema,uncertain,0.35
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Pleural Effusion,present,0.6214960813522339
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Pneumonia,uncertain,0.45
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Pneumothorax,uncertain,0.45
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Fracture,uncertain,0.45
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Lung Lesion,absent,0.85
-patient00096/study1,patient00096/study1/view2_lateral.dcm,Lung Opacity,present,0.7163931131362915
+patient00096/study1,patient00096/study1/view2_lateral.dcm,Lung Opacity,uncertain,0.55
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Pleural Other,uncertain,0.45
 patient00096/study1,patient00096/study1/view2_lateral.dcm,Support Devices,uncertain,0.35
 patient00096/study1,patient00096/study1/view2_lateral.dcm,No Finding,absent,0.95
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Atelectasis,uncertain,0.35
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Cardiomegaly,uncertain,0.35
-patient00096/study2,patient00096/study2/view1_frontal.dcm,Consolidation,present,0.6
+patient00096/study2,patient00096/study2/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Edema,absent,0.85
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Pleural Effusion,uncertain,0.35
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Pneumothorax,absent,0.85
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Fracture,absent,0.85
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00096/study2,patient00096/study2/view1_frontal.dcm,Lung Opacity,present,0.6
+patient00096/study2,patient00096/study2/view1_frontal.dcm,Lung Opacity,uncertain,0.45
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.35
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00096/study2,patient00096/study2/view1_frontal.dcm,Support Devices,uncertain,0.35
@@ -848,21 +848,21 @@ patient00102/study3,patient00102/study3/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Pneumothorax,absent,0.85
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Fracture,uncertain,0.35
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00102/study3,patient00102/study3/view1_frontal.dcm,Lung Opacity,present,0.6515082120895386
+patient00102/study3,patient00102/study3/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.35
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00102/study3,patient00102/study3/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00102/study3,patient00102/study3/view1_frontal.dcm,No Finding,absent,0.95
-patient00102/study2,patient00102/study2/view1_frontal.dcm,Atelectasis,present,0.6
-patient00102/study2,patient00102/study2/view1_frontal.dcm,Cardiomegaly,present,0.6
+patient00102/study2,patient00102/study2/view1_frontal.dcm,Atelectasis,uncertain,0.45
+patient00102/study2,patient00102/study2/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Consolidation,uncertain,0.45
-patient00102/study2,patient00102/study2/view1_frontal.dcm,Edema,present,0.6
+patient00102/study2,patient00102/study2/view1_frontal.dcm,Edema,uncertain,0.45
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Pleural Effusion,uncertain,0.35
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Pneumonia,uncertain,0.45
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Pneumothorax,uncertain,0.35
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00102/study2,patient00102/study2/view1_frontal.dcm,Lung Opacity,present,0.6937594413757324
+patient00102/study2,patient00102/study2/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00102/study2,patient00102/study2/view1_frontal.dcm,Support Devices,uncertain,0.35
@@ -873,7 +873,7 @@ patient00107/study1,patient00107/study1/view1_frontal.dcm,Consolidation,uncertai
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Edema,absent,0.85
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Pleural Effusion,absent,0.85
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Pneumonia,uncertain,0.35
-patient00107/study1,patient00107/study1/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00107/study1,patient00107/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Fracture,absent,0.85
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Lung Opacity,absent,0.85
@@ -881,55 +881,55 @@ patient00107/study1,patient00107/study1/view1_frontal.dcm,Enlarged Cardiomediast
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00107/study1,patient00107/study1/view1_frontal.dcm,Support Devices,unavailable,0.0
 patient00107/study1,patient00107/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00113/study1,patient00113/study1/view1_frontal.dcm,Atelectasis,present,0.6
+patient00113/study1,patient00113/study1/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00113/study1,patient00113/study1/view1_frontal.dcm,Consolidation,present,0.6
-patient00113/study1,patient00113/study1/view1_frontal.dcm,Edema,present,0.6
+patient00113/study1,patient00113/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
+patient00113/study1,patient00113/study1/view1_frontal.dcm,Edema,uncertain,0.45
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Pleural Effusion,present,0.6034579873085022
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.35
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Fracture,uncertain,0.35
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00113/study1,patient00113/study1/view1_frontal.dcm,Lung Opacity,present,0.6
+patient00113/study1,patient00113/study1/view1_frontal.dcm,Lung Opacity,uncertain,0.45
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00113/study1,patient00113/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00113/study1,patient00113/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00113/study2,patient00113/study2/view1_frontal.dcm,Atelectasis,present,0.6582522988319397
-patient00113/study2,patient00113/study2/view1_frontal.dcm,Cardiomegaly,present,0.7236241698265076
-patient00113/study2,patient00113/study2/view1_frontal.dcm,Consolidation,present,0.6
-patient00113/study2,patient00113/study2/view1_frontal.dcm,Edema,present,0.6
+patient00113/study2,patient00113/study2/view1_frontal.dcm,Atelectasis,uncertain,0.55
+patient00113/study2,patient00113/study2/view1_frontal.dcm,Cardiomegaly,uncertain,0.55
+patient00113/study2,patient00113/study2/view1_frontal.dcm,Consolidation,uncertain,0.45
+patient00113/study2,patient00113/study2/view1_frontal.dcm,Edema,uncertain,0.45
 patient00113/study2,patient00113/study2/view1_frontal.dcm,Pleural Effusion,present,0.6517747640609741
 patient00113/study2,patient00113/study2/view1_frontal.dcm,Pneumonia,uncertain,0.45
-patient00113/study2,patient00113/study2/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00113/study2,patient00113/study2/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00113/study2,patient00113/study2/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00113/study2,patient00113/study2/view1_frontal.dcm,Lung Lesion,uncertain,0.45
-patient00113/study2,patient00113/study2/view1_frontal.dcm,Lung Opacity,present,0.6260459423065186
+patient00113/study2,patient00113/study2/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00113/study2,patient00113/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00113/study2,patient00113/study2/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00113/study2,patient00113/study2/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00113/study2,patient00113/study2/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study5,patient00114/study5/view1_frontal.dcm,Atelectasis,present,0.6
+patient00114/study5,patient00114/study5/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Cardiomegaly,uncertain,0.35
-patient00114/study5,patient00114/study5/view1_frontal.dcm,Consolidation,present,0.6
+patient00114/study5,patient00114/study5/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Edema,uncertain,0.35
-patient00114/study5,patient00114/study5/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00114/study5,patient00114/study5/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Pneumonia,absent,0.85
-patient00114/study5,patient00114/study5/view1_frontal.dcm,Pneumothorax,present,0.6
-patient00114/study5,patient00114/study5/view1_frontal.dcm,Fracture,present,0.6
+patient00114/study5,patient00114/study5/view1_frontal.dcm,Pneumothorax,uncertain,0.45
+patient00114/study5,patient00114/study5/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Lung Opacity,present,0.8148717880249023
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study5,patient00114/study5/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study5,patient00114/study5/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study10,patient00114/study10/view1_frontal.dcm,Atelectasis,present,0.6
+patient00114/study10,patient00114/study10/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00114/study10,patient00114/study10/view1_frontal.dcm,Consolidation,present,0.6629582643508911
-patient00114/study10,patient00114/study10/view1_frontal.dcm,Edema,present,0.6
+patient00114/study10,patient00114/study10/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00114/study10,patient00114/study10/view1_frontal.dcm,Edema,uncertain,0.45
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Pleural Effusion,present,0.6074496507644653
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Pneumonia,uncertain,0.45
-patient00114/study10,patient00114/study10/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00114/study10,patient00114/study10/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Lung Opacity,present,0.840369701385498
@@ -937,27 +937,27 @@ patient00114/study10,patient00114/study10/view1_frontal.dcm,Enlarged Cardiomedia
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study10,patient00114/study10/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study10,patient00114/study10/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study15,patient00114/study15/view1_frontal.dcm,Atelectasis,present,0.6
+patient00114/study15,patient00114/study15/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Cardiomegaly,uncertain,0.35
-patient00114/study15,patient00114/study15/view1_frontal.dcm,Consolidation,present,0.604737401008606
+patient00114/study15,patient00114/study15/view1_frontal.dcm,Consolidation,uncertain,0.55
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Edema,uncertain,0.35
-patient00114/study15,patient00114/study15/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00114/study15,patient00114/study15/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Pneumonia,uncertain,0.35
-patient00114/study15,patient00114/study15/view1_frontal.dcm,Pneumothorax,present,0.6
-patient00114/study15,patient00114/study15/view1_frontal.dcm,Fracture,present,0.6
+patient00114/study15,patient00114/study15/view1_frontal.dcm,Pneumothorax,uncertain,0.45
+patient00114/study15,patient00114/study15/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Lung Opacity,present,0.7821681499481201
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study15,patient00114/study15/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study15,patient00114/study15/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study16,patient00114/study16/view1_frontal.dcm,Atelectasis,present,0.642443060874939
-patient00114/study16,patient00114/study16/view1_frontal.dcm,Cardiomegaly,present,0.6
-patient00114/study16,patient00114/study16/view1_frontal.dcm,Consolidation,present,0.6099349856376648
-patient00114/study16,patient00114/study16/view1_frontal.dcm,Edema,present,0.6
+patient00114/study16,patient00114/study16/view1_frontal.dcm,Atelectasis,uncertain,0.55
+patient00114/study16,patient00114/study16/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
+patient00114/study16,patient00114/study16/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00114/study16,patient00114/study16/view1_frontal.dcm,Edema,uncertain,0.45
 patient00114/study16,patient00114/study16/view1_frontal.dcm,Pleural Effusion,present,0.6638283729553223
 patient00114/study16,patient00114/study16/view1_frontal.dcm,Pneumonia,absent,0.85
-patient00114/study16,patient00114/study16/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00114/study16,patient00114/study16/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00114/study16,patient00114/study16/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study16,patient00114/study16/view1_frontal.dcm,Lung Lesion,uncertain,0.35
 patient00114/study16,patient00114/study16/view1_frontal.dcm,Lung Opacity,present,0.8332387208938599
@@ -965,66 +965,66 @@ patient00114/study16,patient00114/study16/view1_frontal.dcm,Enlarged Cardiomedia
 patient00114/study16,patient00114/study16/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study16,patient00114/study16/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study16,patient00114/study16/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study20,patient00114/study20/view1_frontal.dcm,Atelectasis,present,0.655929446220398
+patient00114/study20,patient00114/study20/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00114/study20,patient00114/study20/view1_frontal.dcm,Consolidation,present,0.6197309494018555
+patient00114/study20,patient00114/study20/view1_frontal.dcm,Consolidation,uncertain,0.55
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Edema,uncertain,0.35
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Pleural Effusion,present,0.6949437856674194
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Pneumothorax,uncertain,0.45
-patient00114/study20,patient00114/study20/view1_frontal.dcm,Fracture,present,0.6
+patient00114/study20,patient00114/study20/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Lung Lesion,uncertain,0.35
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Lung Opacity,present,0.8121784925460815
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study20,patient00114/study20/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study20,patient00114/study20/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study3,patient00114/study3/view1_frontal.dcm,Atelectasis,present,0.6
+patient00114/study3,patient00114/study3/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00114/study3,patient00114/study3/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00114/study3,patient00114/study3/view1_frontal.dcm,Consolidation,present,0.6347596645355225
-patient00114/study3,patient00114/study3/view1_frontal.dcm,Edema,present,0.6
-patient00114/study3,patient00114/study3/view1_frontal.dcm,Pleural Effusion,present,0.6
-patient00114/study3,patient00114/study3/view1_frontal.dcm,Pneumonia,present,0.6
+patient00114/study3,patient00114/study3/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00114/study3,patient00114/study3/view1_frontal.dcm,Edema,uncertain,0.45
+patient00114/study3,patient00114/study3/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
+patient00114/study3,patient00114/study3/view1_frontal.dcm,Pneumonia,uncertain,0.45
 patient00114/study3,patient00114/study3/view1_frontal.dcm,Pneumothorax,uncertain,0.45
-patient00114/study3,patient00114/study3/view1_frontal.dcm,Fracture,present,0.6
+patient00114/study3,patient00114/study3/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study3,patient00114/study3/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00114/study3,patient00114/study3/view1_frontal.dcm,Lung Opacity,present,0.9021152257919312
 patient00114/study3,patient00114/study3/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00114/study3,patient00114/study3/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00114/study3,patient00114/study3/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study3,patient00114/study3/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study17,patient00114/study17/view1_frontal.dcm,Atelectasis,present,0.6347308158874512
-patient00114/study17,patient00114/study17/view1_frontal.dcm,Cardiomegaly,present,0.608320951461792
-patient00114/study17,patient00114/study17/view1_frontal.dcm,Consolidation,present,0.6074535846710205
-patient00114/study17,patient00114/study17/view1_frontal.dcm,Edema,present,0.6
+patient00114/study17,patient00114/study17/view1_frontal.dcm,Atelectasis,uncertain,0.55
+patient00114/study17,patient00114/study17/view1_frontal.dcm,Cardiomegaly,uncertain,0.55
+patient00114/study17,patient00114/study17/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00114/study17,patient00114/study17/view1_frontal.dcm,Edema,uncertain,0.45
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Pleural Effusion,present,0.6279652714729309
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Pneumonia,uncertain,0.35
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Pneumothorax,uncertain,0.45
-patient00114/study17,patient00114/study17/view1_frontal.dcm,Fracture,present,0.6
+patient00114/study17,patient00114/study17/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Lung Lesion,uncertain,0.45
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Lung Opacity,present,0.8003026247024536
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study17,patient00114/study17/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study17,patient00114/study17/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study13,patient00114/study13/view1_frontal.dcm,Atelectasis,present,0.6728181838989258
-patient00114/study13,patient00114/study13/view1_frontal.dcm,Cardiomegaly,present,0.7001785039901733
-patient00114/study13,patient00114/study13/view1_frontal.dcm,Consolidation,present,0.7053478956222534
-patient00114/study13,patient00114/study13/view1_frontal.dcm,Edema,present,0.6
+patient00114/study13,patient00114/study13/view1_frontal.dcm,Atelectasis,uncertain,0.55
+patient00114/study13,patient00114/study13/view1_frontal.dcm,Cardiomegaly,uncertain,0.55
+patient00114/study13,patient00114/study13/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00114/study13,patient00114/study13/view1_frontal.dcm,Edema,uncertain,0.45
 patient00114/study13,patient00114/study13/view1_frontal.dcm,Pleural Effusion,present,0.7904940843582153
 patient00114/study13,patient00114/study13/view1_frontal.dcm,Pneumonia,uncertain,0.45
-patient00114/study13,patient00114/study13/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00114/study13,patient00114/study13/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00114/study13,patient00114/study13/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study13,patient00114/study13/view1_frontal.dcm,Lung Lesion,uncertain,0.35
 patient00114/study13,patient00114/study13/view1_frontal.dcm,Lung Opacity,present,0.8864079117774963
-patient00114/study13,patient00114/study13/view1_frontal.dcm,Enlarged Cardiomediastinum,present,0.6162288188934326
+patient00114/study13,patient00114/study13/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.55
 patient00114/study13,patient00114/study13/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study13,patient00114/study13/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study13,patient00114/study13/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study19,patient00114/study19/view1_frontal.dcm,Atelectasis,present,0.6567449569702148
+patient00114/study19,patient00114/study19/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00114/study19,patient00114/study19/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00114/study19,patient00114/study19/view1_frontal.dcm,Consolidation,present,0.6184361577033997
-patient00114/study19,patient00114/study19/view1_frontal.dcm,Edema,present,0.6
+patient00114/study19,patient00114/study19/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00114/study19,patient00114/study19/view1_frontal.dcm,Edema,uncertain,0.45
 patient00114/study19,patient00114/study19/view1_frontal.dcm,Pleural Effusion,present,0.6500561237335205
 patient00114/study19,patient00114/study19/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00114/study19,patient00114/study19/view1_frontal.dcm,Pneumothorax,uncertain,0.45
@@ -1035,39 +1035,39 @@ patient00114/study19,patient00114/study19/view1_frontal.dcm,Enlarged Cardiomedia
 patient00114/study19,patient00114/study19/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study19,patient00114/study19/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study19,patient00114/study19/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study7,patient00114/study7/view1_frontal.dcm,Atelectasis,present,0.6295890808105469
+patient00114/study7,patient00114/study7/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00114/study7,patient00114/study7/view1_frontal.dcm,Consolidation,present,0.677783727645874
-patient00114/study7,patient00114/study7/view1_frontal.dcm,Edema,present,0.6
+patient00114/study7,patient00114/study7/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00114/study7,patient00114/study7/view1_frontal.dcm,Edema,uncertain,0.45
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Pleural Effusion,present,0.7437631487846375
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Pneumonia,uncertain,0.45
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Pneumothorax,uncertain,0.45
-patient00114/study7,patient00114/study7/view1_frontal.dcm,Fracture,present,0.6
+patient00114/study7,patient00114/study7/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Lung Lesion,uncertain,0.35
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Lung Opacity,present,0.8666364550590515
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study7,patient00114/study7/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study7,patient00114/study7/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study2,patient00114/study2/view1_frontal.dcm,Atelectasis,present,0.6810924410820007
-patient00114/study2,patient00114/study2/view1_frontal.dcm,Cardiomegaly,present,0.6001166701316833
-patient00114/study2,patient00114/study2/view1_frontal.dcm,Consolidation,present,0.6958127617835999
-patient00114/study2,patient00114/study2/view1_frontal.dcm,Edema,present,0.6
+patient00114/study2,patient00114/study2/view1_frontal.dcm,Atelectasis,uncertain,0.55
+patient00114/study2,patient00114/study2/view1_frontal.dcm,Cardiomegaly,uncertain,0.55
+patient00114/study2,patient00114/study2/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00114/study2,patient00114/study2/view1_frontal.dcm,Edema,uncertain,0.45
 patient00114/study2,patient00114/study2/view1_frontal.dcm,Pleural Effusion,present,0.7740852236747742
-patient00114/study2,patient00114/study2/view1_frontal.dcm,Pneumonia,present,0.6
-patient00114/study2,patient00114/study2/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00114/study2,patient00114/study2/view1_frontal.dcm,Pneumonia,uncertain,0.45
+patient00114/study2,patient00114/study2/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00114/study2,patient00114/study2/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study2,patient00114/study2/view1_frontal.dcm,Lung Lesion,uncertain,0.45
 patient00114/study2,patient00114/study2/view1_frontal.dcm,Lung Opacity,present,0.8265609741210938
-patient00114/study2,patient00114/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,present,0.6205319762229919
+patient00114/study2,patient00114/study2/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.55
 patient00114/study2,patient00114/study2/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study2,patient00114/study2/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study2,patient00114/study2/view1_frontal.dcm,No Finding,absent,0.95
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00114/study12,patient00114/study12/view1_frontal.dcm,Consolidation,present,0.646449089050293
+patient00114/study12,patient00114/study12/view1_frontal.dcm,Consolidation,uncertain,0.55
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Edema,uncertain,0.45
-patient00114/study12,patient00114/study12/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00114/study12,patient00114/study12/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Pneumonia,present,0.7434727549552917
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Fracture,uncertain,0.45
@@ -1077,13 +1077,13 @@ patient00114/study12,patient00114/study12/view1_frontal.dcm,Enlarged Cardiomedia
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00114/study12,patient00114/study12/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study12,patient00114/study12/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study9,patient00114/study9/view1_frontal.dcm,Atelectasis,present,0.6237033605575562
+patient00114/study9,patient00114/study9/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00114/study9,patient00114/study9/view1_frontal.dcm,Consolidation,present,0.6431235074996948
+patient00114/study9,patient00114/study9/view1_frontal.dcm,Consolidation,uncertain,0.55
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Edema,uncertain,0.45
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Pleural Effusion,present,0.7249338626861572
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Pneumonia,uncertain,0.45
-patient00114/study9,patient00114/study9/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00114/study9,patient00114/study9/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Lung Lesion,uncertain,0.35
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Lung Opacity,present,0.9007889032363892
@@ -1091,80 +1091,80 @@ patient00114/study9,patient00114/study9/view1_frontal.dcm,Enlarged Cardiomediast
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study9,patient00114/study9/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study9,patient00114/study9/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study1,patient00114/study1/view1_frontal.dcm,Atelectasis,present,0.6084036231040955
+patient00114/study1,patient00114/study1/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.35
-patient00114/study1,patient00114/study1/view1_frontal.dcm,Consolidation,present,0.6
+patient00114/study1,patient00114/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Edema,uncertain,0.35
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Pleural Effusion,present,0.6666165590286255
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Pneumonia,uncertain,0.35
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Pneumothorax,uncertain,0.45
-patient00114/study1,patient00114/study1/view1_frontal.dcm,Fracture,present,0.6
+patient00114/study1,patient00114/study1/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Lung Lesion,uncertain,0.35
-patient00114/study1,patient00114/study1/view1_frontal.dcm,Lung Opacity,present,0.7211424708366394
+patient00114/study1,patient00114/study1/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study1,patient00114/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study1,patient00114/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study6,patient00114/study6/view1_frontal.dcm,Atelectasis,present,0.6047070026397705
+patient00114/study6,patient00114/study6/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00114/study6,patient00114/study6/view1_frontal.dcm,Consolidation,present,0.6721655130386353
-patient00114/study6,patient00114/study6/view1_frontal.dcm,Edema,present,0.6
+patient00114/study6,patient00114/study6/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00114/study6,patient00114/study6/view1_frontal.dcm,Edema,uncertain,0.45
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Pleural Effusion,present,0.761008620262146
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Pneumonia,uncertain,0.45
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Lung Opacity,present,0.9230509400367736
-patient00114/study6,patient00114/study6/view1_frontal.dcm,Enlarged Cardiomediastinum,present,0.6331246495246887
+patient00114/study6,patient00114/study6/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.55
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study6,patient00114/study6/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study6,patient00114/study6/view1_frontal.dcm,No Finding,absent,0.95
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Atelectasis,present,0.7532064914703369
-patient00114/study18,patient00114/study18/view1_frontal.dcm,Cardiomegaly,present,0.6627031564712524
-patient00114/study18,patient00114/study18/view1_frontal.dcm,Consolidation,present,0.6403838992118835
-patient00114/study18,patient00114/study18/view1_frontal.dcm,Edema,present,0.6
+patient00114/study18,patient00114/study18/view1_frontal.dcm,Cardiomegaly,uncertain,0.55
+patient00114/study18,patient00114/study18/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00114/study18,patient00114/study18/view1_frontal.dcm,Edema,uncertain,0.45
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Pleural Effusion,present,0.7995390295982361
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Pneumonia,uncertain,0.35
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Pneumothorax,uncertain,0.45
-patient00114/study18,patient00114/study18/view1_frontal.dcm,Fracture,present,0.6
+patient00114/study18,patient00114/study18/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Lung Lesion,uncertain,0.45
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Lung Opacity,present,0.7718307971954346
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study18,patient00114/study18/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study18,patient00114/study18/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study4,patient00114/study4/view1_frontal.dcm,Atelectasis,present,0.6
-patient00114/study4,patient00114/study4/view1_frontal.dcm,Cardiomegaly,present,0.6
-patient00114/study4,patient00114/study4/view1_frontal.dcm,Consolidation,present,0.7227461338043213
-patient00114/study4,patient00114/study4/view1_frontal.dcm,Edema,present,0.6
-patient00114/study4,patient00114/study4/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00114/study4,patient00114/study4/view1_frontal.dcm,Atelectasis,uncertain,0.45
+patient00114/study4,patient00114/study4/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
+patient00114/study4,patient00114/study4/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00114/study4,patient00114/study4/view1_frontal.dcm,Edema,uncertain,0.45
+patient00114/study4,patient00114/study4/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00114/study4,patient00114/study4/view1_frontal.dcm,Pneumonia,present,0.7380363941192627
 patient00114/study4,patient00114/study4/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00114/study4,patient00114/study4/view1_frontal.dcm,Fracture,uncertain,0.35
 patient00114/study4,patient00114/study4/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00114/study4,patient00114/study4/view1_frontal.dcm,Lung Opacity,present,0.95
-patient00114/study4,patient00114/study4/view1_frontal.dcm,Enlarged Cardiomediastinum,present,0.6663464903831482
+patient00114/study4,patient00114/study4/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.55
 patient00114/study4,patient00114/study4/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study4,patient00114/study4/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study4,patient00114/study4/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study8,patient00114/study8/view1_frontal.dcm,Atelectasis,present,0.6212438344955444
-patient00114/study8,patient00114/study8/view1_frontal.dcm,Cardiomegaly,present,0.6267948150634766
-patient00114/study8,patient00114/study8/view1_frontal.dcm,Consolidation,present,0.6694141030311584
-patient00114/study8,patient00114/study8/view1_frontal.dcm,Edema,present,0.6
+patient00114/study8,patient00114/study8/view1_frontal.dcm,Atelectasis,uncertain,0.55
+patient00114/study8,patient00114/study8/view1_frontal.dcm,Cardiomegaly,uncertain,0.55
+patient00114/study8,patient00114/study8/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00114/study8,patient00114/study8/view1_frontal.dcm,Edema,uncertain,0.45
 patient00114/study8,patient00114/study8/view1_frontal.dcm,Pleural Effusion,present,0.7094206213951111
 patient00114/study8,patient00114/study8/view1_frontal.dcm,Pneumonia,uncertain,0.45
 patient00114/study8,patient00114/study8/view1_frontal.dcm,Pneumothorax,uncertain,0.45
-patient00114/study8,patient00114/study8/view1_frontal.dcm,Fracture,present,0.6
+patient00114/study8,patient00114/study8/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study8,patient00114/study8/view1_frontal.dcm,Lung Lesion,uncertain,0.35
 patient00114/study8,patient00114/study8/view1_frontal.dcm,Lung Opacity,present,0.905618131160736
-patient00114/study8,patient00114/study8/view1_frontal.dcm,Enlarged Cardiomediastinum,present,0.6300396919250488
+patient00114/study8,patient00114/study8/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.55
 patient00114/study8,patient00114/study8/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study8,patient00114/study8/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study8,patient00114/study8/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study14,patient00114/study14/view1_frontal.dcm,Atelectasis,present,0.6361880302429199
+patient00114/study14,patient00114/study14/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00114/study14,patient00114/study14/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00114/study14,patient00114/study14/view1_frontal.dcm,Consolidation,present,0.6166599988937378
-patient00114/study14,patient00114/study14/view1_frontal.dcm,Edema,present,0.6
+patient00114/study14,patient00114/study14/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00114/study14,patient00114/study14/view1_frontal.dcm,Edema,uncertain,0.45
 patient00114/study14,patient00114/study14/view1_frontal.dcm,Pleural Effusion,present,0.7141518592834473
 patient00114/study14,patient00114/study14/view1_frontal.dcm,Pneumonia,uncertain,0.35
 patient00114/study14,patient00114/study14/view1_frontal.dcm,Pneumothorax,uncertain,0.45
@@ -1175,17 +1175,17 @@ patient00114/study14,patient00114/study14/view1_frontal.dcm,Enlarged Cardiomedia
 patient00114/study14,patient00114/study14/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study14,patient00114/study14/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study14,patient00114/study14/view1_frontal.dcm,No Finding,absent,0.95
-patient00114/study11,patient00114/study11/view1_frontal.dcm,Atelectasis,present,0.6208038330078125
+patient00114/study11,patient00114/study11/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00114/study11,patient00114/study11/view1_frontal.dcm,Consolidation,present,0.6696566939353943
-patient00114/study11,patient00114/study11/view1_frontal.dcm,Edema,present,0.6
+patient00114/study11,patient00114/study11/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00114/study11,patient00114/study11/view1_frontal.dcm,Edema,uncertain,0.45
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Pleural Effusion,present,0.77579665184021
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Pneumonia,uncertain,0.45
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Lung Lesion,uncertain,0.35
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Lung Opacity,present,0.8512363433837891
-patient00114/study11,patient00114/study11/view1_frontal.dcm,Enlarged Cardiomediastinum,present,0.6074423789978027
+patient00114/study11,patient00114/study11/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.55
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00114/study11,patient00114/study11/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00114/study11,patient00114/study11/view1_frontal.dcm,No Finding,absent,0.95
@@ -1231,11 +1231,11 @@ patient00121/study1,patient00121/study1/view1_frontal.dcm,Enlarged Cardiomediast
 patient00121/study1,patient00121/study1/view1_frontal.dcm,Pleural Other,absent,0.85
 patient00121/study1,patient00121/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00121/study1,patient00121/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00122/study3,patient00122/study3/view1_frontal.dcm,Atelectasis,present,0.6
+patient00122/study3,patient00122/study3/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00122/study3,patient00122/study3/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00122/study3,patient00122/study3/view1_frontal.dcm,Consolidation,present,0.6
+patient00122/study3,patient00122/study3/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00122/study3,patient00122/study3/view1_frontal.dcm,Edema,absent,0.85
-patient00122/study3,patient00122/study3/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00122/study3,patient00122/study3/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00122/study3,patient00122/study3/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00122/study3,patient00122/study3/view1_frontal.dcm,Pneumothorax,absent,0.85
 patient00122/study3,patient00122/study3/view1_frontal.dcm,Fracture,uncertain,0.45
@@ -1245,10 +1245,10 @@ patient00122/study3,patient00122/study3/view1_frontal.dcm,Enlarged Cardiomediast
 patient00122/study3,patient00122/study3/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00122/study3,patient00122/study3/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00122/study3,patient00122/study3/view1_frontal.dcm,No Finding,absent,0.95
-patient00122/study3,patient00122/study3/view2_lateral.dcm,Atelectasis,present,0.6
+patient00122/study3,patient00122/study3/view2_lateral.dcm,Atelectasis,uncertain,0.45
 patient00122/study3,patient00122/study3/view2_lateral.dcm,Cardiomegaly,uncertain,0.45
-patient00122/study3,patient00122/study3/view2_lateral.dcm,Consolidation,present,0.6
-patient00122/study3,patient00122/study3/view2_lateral.dcm,Edema,present,0.6
+patient00122/study3,patient00122/study3/view2_lateral.dcm,Consolidation,uncertain,0.45
+patient00122/study3,patient00122/study3/view2_lateral.dcm,Edema,uncertain,0.45
 patient00122/study3,patient00122/study3/view2_lateral.dcm,Pleural Effusion,present,0.7135028839111328
 patient00122/study3,patient00122/study3/view2_lateral.dcm,Pneumonia,present,0.6470211744308472
 patient00122/study3,patient00122/study3/view2_lateral.dcm,Pneumothorax,uncertain,0.35
@@ -1259,10 +1259,10 @@ patient00122/study3,patient00122/study3/view2_lateral.dcm,Enlarged Cardiomediast
 patient00122/study3,patient00122/study3/view2_lateral.dcm,Pleural Other,absent,0.85
 patient00122/study3,patient00122/study3/view2_lateral.dcm,Support Devices,uncertain,0.35
 patient00122/study3,patient00122/study3/view2_lateral.dcm,No Finding,absent,0.95
-patient00122/study5,patient00122/study5/view1_frontal.dcm,Atelectasis,present,0.6
+patient00122/study5,patient00122/study5/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00122/study5,patient00122/study5/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00122/study5,patient00122/study5/view1_frontal.dcm,Consolidation,present,0.6475642919540405
-patient00122/study5,patient00122/study5/view1_frontal.dcm,Edema,present,0.6
+patient00122/study5,patient00122/study5/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00122/study5,patient00122/study5/view1_frontal.dcm,Edema,uncertain,0.45
 patient00122/study5,patient00122/study5/view1_frontal.dcm,Pleural Effusion,present,0.6723375916481018
 patient00122/study5,patient00122/study5/view1_frontal.dcm,Pneumonia,present,0.6060961484909058
 patient00122/study5,patient00122/study5/view1_frontal.dcm,Pneumothorax,uncertain,0.45
@@ -1273,11 +1273,11 @@ patient00122/study5,patient00122/study5/view1_frontal.dcm,Enlarged Cardiomediast
 patient00122/study5,patient00122/study5/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00122/study5,patient00122/study5/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00122/study5,patient00122/study5/view1_frontal.dcm,No Finding,absent,0.95
-patient00122/study1,patient00122/study1/view1_frontal.dcm,Atelectasis,present,0.6
+patient00122/study1,patient00122/study1/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00122/study1,patient00122/study1/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00122/study1,patient00122/study1/view1_frontal.dcm,Consolidation,present,0.6
+patient00122/study1,patient00122/study1/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00122/study1,patient00122/study1/view1_frontal.dcm,Edema,absent,0.85
-patient00122/study1,patient00122/study1/view1_frontal.dcm,Pleural Effusion,present,0.6
+patient00122/study1,patient00122/study1/view1_frontal.dcm,Pleural Effusion,uncertain,0.45
 patient00122/study1,patient00122/study1/view1_frontal.dcm,Pneumonia,uncertain,0.35
 patient00122/study1,patient00122/study1/view1_frontal.dcm,Pneumothorax,absent,0.85
 patient00122/study1,patient00122/study1/view1_frontal.dcm,Fracture,uncertain,0.45
@@ -1287,24 +1287,24 @@ patient00122/study1,patient00122/study1/view1_frontal.dcm,Enlarged Cardiomediast
 patient00122/study1,patient00122/study1/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00122/study1,patient00122/study1/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00122/study1,patient00122/study1/view1_frontal.dcm,No Finding,absent,0.95
-patient00122/study4,patient00122/study4/view1_frontal.dcm,Atelectasis,present,0.7103792428970337
+patient00122/study4,patient00122/study4/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00122/study4,patient00122/study4/view1_frontal.dcm,Consolidation,present,0.6048141717910767
-patient00122/study4,patient00122/study4/view1_frontal.dcm,Edema,present,0.6
+patient00122/study4,patient00122/study4/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00122/study4,patient00122/study4/view1_frontal.dcm,Edema,uncertain,0.45
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Pleural Effusion,present,0.8561193346977234
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Pneumonia,uncertain,0.35
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Pneumothorax,uncertain,0.45
-patient00122/study4,patient00122/study4/view1_frontal.dcm,Fracture,present,0.6
+patient00122/study4,patient00122/study4/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Lung Lesion,uncertain,0.45
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Lung Opacity,present,0.7570153474807739
-patient00122/study4,patient00122/study4/view1_frontal.dcm,Enlarged Cardiomediastinum,present,0.6041972637176514
+patient00122/study4,patient00122/study4/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.55
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Pleural Other,present,0.6593403816223145
 patient00122/study4,patient00122/study4/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00122/study4,patient00122/study4/view1_frontal.dcm,No Finding,absent,0.95
-patient00122/study8,patient00122/study8/view1_frontal.dcm,Atelectasis,present,0.7032551765441895
+patient00122/study8,patient00122/study8/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00122/study8,patient00122/study8/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00122/study8,patient00122/study8/view1_frontal.dcm,Consolidation,present,0.6
-patient00122/study8,patient00122/study8/view1_frontal.dcm,Edema,present,0.6
+patient00122/study8,patient00122/study8/view1_frontal.dcm,Consolidation,uncertain,0.45
+patient00122/study8,patient00122/study8/view1_frontal.dcm,Edema,uncertain,0.45
 patient00122/study8,patient00122/study8/view1_frontal.dcm,Pleural Effusion,present,0.926876187324524
 patient00122/study8,patient00122/study8/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00122/study8,patient00122/study8/view1_frontal.dcm,Pneumothorax,uncertain,0.45
@@ -1315,13 +1315,13 @@ patient00122/study8,patient00122/study8/view1_frontal.dcm,Enlarged Cardiomediast
 patient00122/study8,patient00122/study8/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00122/study8,patient00122/study8/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00122/study8,patient00122/study8/view1_frontal.dcm,No Finding,absent,0.95
-patient00122/study7,patient00122/study7/view1_frontal.dcm,Atelectasis,present,0.6539188623428345
+patient00122/study7,patient00122/study7/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00122/study7,patient00122/study7/view1_frontal.dcm,Consolidation,present,0.6
-patient00122/study7,patient00122/study7/view1_frontal.dcm,Edema,present,0.6
+patient00122/study7,patient00122/study7/view1_frontal.dcm,Consolidation,uncertain,0.45
+patient00122/study7,patient00122/study7/view1_frontal.dcm,Edema,uncertain,0.45
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Pleural Effusion,present,0.7421722412109375
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Pneumonia,absent,0.85
-patient00122/study7,patient00122/study7/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00122/study7,patient00122/study7/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Lung Opacity,present,0.8071666359901428
@@ -1329,37 +1329,37 @@ patient00122/study7,patient00122/study7/view1_frontal.dcm,Enlarged Cardiomediast
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00122/study7,patient00122/study7/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00122/study7,patient00122/study7/view1_frontal.dcm,No Finding,absent,0.95
-patient00122/study6,patient00122/study6/view1_frontal.dcm,Atelectasis,present,0.6412347555160522
+patient00122/study6,patient00122/study6/view1_frontal.dcm,Atelectasis,uncertain,0.55
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00122/study6,patient00122/study6/view1_frontal.dcm,Consolidation,present,0.6035610437393188
-patient00122/study6,patient00122/study6/view1_frontal.dcm,Edema,present,0.6
+patient00122/study6,patient00122/study6/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00122/study6,patient00122/study6/view1_frontal.dcm,Edema,uncertain,0.45
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Pleural Effusion,present,0.7732406854629517
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Pneumonia,absent,0.85
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Lung Lesion,uncertain,0.45
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Lung Opacity,present,0.8521348237991333
-patient00122/study6,patient00122/study6/view1_frontal.dcm,Enlarged Cardiomediastinum,present,0.6353249549865723
+patient00122/study6,patient00122/study6/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.55
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00122/study6,patient00122/study6/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00122/study6,patient00122/study6/view1_frontal.dcm,No Finding,absent,0.95
-patient00124/study6,patient00124/study6/view1_frontal.dcm,Atelectasis,present,0.6
+patient00124/study6,patient00124/study6/view1_frontal.dcm,Atelectasis,uncertain,0.45
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Cardiomegaly,uncertain,0.45
-patient00124/study6,patient00124/study6/view1_frontal.dcm,Consolidation,present,0.6
+patient00124/study6,patient00124/study6/view1_frontal.dcm,Consolidation,uncertain,0.45
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Edema,absent,0.85
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Pleural Effusion,uncertain,0.35
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Pneumonia,absent,0.85
-patient00124/study6,patient00124/study6/view1_frontal.dcm,Pneumothorax,present,0.6
-patient00124/study6,patient00124/study6/view1_frontal.dcm,Fracture,present,0.6
+patient00124/study6,patient00124/study6/view1_frontal.dcm,Pneumothorax,uncertain,0.45
+patient00124/study6,patient00124/study6/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Lung Lesion,absent,0.85
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Lung Opacity,uncertain,0.45
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00124/study6,patient00124/study6/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00124/study6,patient00124/study6/view1_frontal.dcm,No Finding,absent,0.95
-patient00124/study4,patient00124/study4/view1_frontal.dcm,Atelectasis,present,0.718565821647644
-patient00124/study4,patient00124/study4/view1_frontal.dcm,Cardiomegaly,present,0.6616212725639343
-patient00124/study4,patient00124/study4/view1_frontal.dcm,Consolidation,present,0.6936327219009399
+patient00124/study4,patient00124/study4/view1_frontal.dcm,Atelectasis,uncertain,0.55
+patient00124/study4,patient00124/study4/view1_frontal.dcm,Cardiomegaly,uncertain,0.55
+patient00124/study4,patient00124/study4/view1_frontal.dcm,Consolidation,uncertain,0.55
 patient00124/study4,patient00124/study4/view1_frontal.dcm,Edema,present,0.6174189448356628
 patient00124/study4,patient00124/study4/view1_frontal.dcm,Pleural Effusion,present,0.8320467472076416
 patient00124/study4,patient00124/study4/view1_frontal.dcm,Pneumonia,uncertain,0.35
@@ -1371,13 +1371,13 @@ patient00124/study4,patient00124/study4/view1_frontal.dcm,Enlarged Cardiomediast
 patient00124/study4,patient00124/study4/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00124/study4,patient00124/study4/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00124/study4,patient00124/study4/view1_frontal.dcm,No Finding,absent,0.95
-patient00124/study2,patient00124/study2/view1_frontal.dcm,Atelectasis,present,0.7465744018554688
-patient00124/study2,patient00124/study2/view1_frontal.dcm,Cardiomegaly,present,0.7092112898826599
+patient00124/study2,patient00124/study2/view1_frontal.dcm,Atelectasis,uncertain,0.55
+patient00124/study2,patient00124/study2/view1_frontal.dcm,Cardiomegaly,uncertain,0.55
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Consolidation,present,0.7682377099990845
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Edema,present,0.7239871621131897
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Pleural Effusion,present,0.8741674423217773
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Pneumonia,uncertain,0.45
-patient00124/study2,patient00124/study2/view1_frontal.dcm,Pneumothorax,present,0.6
+patient00124/study2,patient00124/study2/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Lung Lesion,uncertain,0.45
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Lung Opacity,present,0.928597927093506
@@ -1385,16 +1385,16 @@ patient00124/study2,patient00124/study2/view1_frontal.dcm,Enlarged Cardiomediast
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Pleural Other,uncertain,0.45
 patient00124/study2,patient00124/study2/view1_frontal.dcm,Support Devices,uncertain,0.35
 patient00124/study2,patient00124/study2/view1_frontal.dcm,No Finding,absent,0.95
-patient00124/study3,patient00124/study3/view1_frontal.dcm,Atelectasis,present,0.6534651517868042
-patient00124/study3,patient00124/study3/view1_frontal.dcm,Cardiomegaly,present,0.6530634164810181
-patient00124/study3,patient00124/study3/view1_frontal.dcm,Consolidation,present,0.6135756969451904
-patient00124/study3,patient00124/study3/view1_frontal.dcm,Edema,present,0.6
+patient00124/study3,patient00124/study3/view1_frontal.dcm,Atelectasis,uncertain,0.55
+patient00124/study3,patient00124/study3/view1_frontal.dcm,Cardiomegaly,uncertain,0.55
+patient00124/study3,patient00124/study3/view1_frontal.dcm,Consolidation,uncertain,0.55
+patient00124/study3,patient00124/study3/view1_frontal.dcm,Edema,uncertain,0.45
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Pleural Effusion,present,0.6910048723220825
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Pneumonia,uncertain,0.45
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Pneumothorax,uncertain,0.45
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Fracture,uncertain,0.45
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Lung Lesion,absent,0.85
-patient00124/study3,patient00124/study3/view1_frontal.dcm,Lung Opacity,present,0.7451691031455994
+patient00124/study3,patient00124/study3/view1_frontal.dcm,Lung Opacity,uncertain,0.55
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Enlarged Cardiomediastinum,uncertain,0.45
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Pleural Other,uncertain,0.35
 patient00124/study3,patient00124/study3/view1_frontal.dcm,Support Devices,uncertain,0.35
