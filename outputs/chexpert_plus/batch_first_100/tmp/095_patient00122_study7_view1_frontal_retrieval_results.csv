@@ -1,0 +1,166 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00122/study7,patient00122/study7/view1_frontal.dcm,72,Female,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.22547555688967708,10.459421157836914,-0.01105509977787733,0.3772599399089813,-6.270725727081299,1.1444951295852661,14.661416053771973,0.031871598213911057,0.5280873775482178,-1.6700984239578247,2.111372232437134,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.08005231618881226,patient00146/study30,patient00146/study30/view1_frontal.dcm,train/patient00146/study30/view1_frontal.dcm,train/patient00146/study30/view1_frontal.jpg,74,Female,White,Non-Hispanic/Non-Latino,0.36236762121310695,0.0,0.0,0.0,0.3892229650373781,10.422566413879395,-0.019162287935614586,0.37560349702835083,-7.115127086639404,1.4128170013427734,11.272271156311035,0.020918577909469604,0.40621477365493774,-1.2696694135665894,1.4779284000396729,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 74
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 9/24/2006
+Impression: 1. STABLE APPEARANCE OF THE CHEST.
+2. MODERATE PULMONARY INTERSTITIAL EDEMA WITH MODERATE BILATERAL
+PLEURAL EFFUSIONS, RIGHT GREATER THAN LEFT, UNCHANGED.
+3. PERSISTENT BIBASILAR ATELECTASIS AND/OR CONSOLIDATION WHICH IS
+STABLE.
+4. LINES AND TUBES UNCHANGED.
+Summary: 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: SPENCER, CARTER J.  on: 9/24/06
+Narrative: SINGLE AP PORTABLE VIEW OF CHEST: 2006 September 24
+Full report: NARRATIVE:
+SINGLE AP PORTABLE VIEW OF CHEST: 2006 September 24
+COMPARISON: 9/24/2006
+IMPRESSION:
+1. STABLE APPEARANCE OF THE CHEST.
+2. MODERATE PULMONARY INTERSTITIAL EDEMA WITH MODERATE BILATERAL
+PLEURAL EFFUSIONS, RIGHT GREATER THAN LEFT, UNCHANGED.
+3. PERSISTENT BIBASILAR ATELECTASIS AND/OR CONSOLIDATION WHICH IS
+STABLE.
+4. LINES AND TUBES UNCHANGED.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: SPENCER, CARTER J.  on: 9/24/06
+ 
+ACCESSION NUMBER:
+3891O893YW53
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""74"", ""deid_patient_id"": ""patient00146"", ""dicom_path"": ""patient00146/study30/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00146/study30/view1_frontal.dcm"", ""path_to_image"": ""train/patient00146/study30/view1_frontal.jpg"", ""patient_id"": ""patient00146"", ""patient_report_date_order"": ""30"", ""race"": ""White"", ""section_accession_number"": ""\n3891O893YW53\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study30"", ""study_key"": ""patient00146/study30"", ""view_stem"": ""view1_frontal""}"
+patient00122/study7,patient00122/study7/view1_frontal.dcm,72,Female,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.22547555688967708,10.459421157836914,-0.01105509977787733,0.3772599399089813,-6.270725727081299,1.1444951295852661,14.661416053771973,0.031871598213911057,0.5280873775482178,-1.6700984239578247,2.111372232437134,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.08425825834274292,patient00146/study5,patient00146/study5/view1_frontal.dcm,train/patient00146/study5/view1_frontal.dcm,train/patient00146/study5/view1_frontal.jpg,74,Female,White,Non-Hispanic/Non-Latino,0.8495842097213411,0.006888529748408047,1.0903179007546022,0.006888630380135964,0.06144193060704752,10.198892593383789,-0.012018371373414993,0.3678245544433594,-7.184154987335205,0.932380199432373,12.726092338562012,0.024262694641947746,0.4585718810558319,-1.5659226179122925,1.8464548587799072,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 74
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Impression: 1. 05:39 COMPARED WITH 12/23/21. SUPPORT EQUIPMENT IS UNCHANGED.
+MODERATE DIFFUSE PULMONARY OPACITY AND LEFT PLEURAL EFFUSION
+PERSISTS, UNCHANGED. FINDINGS MOST CONSISTENT WITH INTERSTITIAL
+EDEMA.
+Summary: 2: Abnormal; previously reported.
+Narrative: CHEST:
+One view.
+Full report: NARRATIVE:
+CHEST:
+One view.
+IMPRESSION:
+1. 05:39 COMPARED WITH 12/23/21. SUPPORT EQUIPMENT IS UNCHANGED.
+MODERATE DIFFUSE PULMONARY OPACITY AND LEFT PLEURAL EFFUSION
+PERSISTS, UNCHANGED. FINDINGS MOST CONSISTENT WITH INTERSTITIAL
+EDEMA.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal; previously reported.
+ 
+ACCESSION NUMBER:
+7154407945477
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""74"", ""deid_patient_id"": ""patient00146"", ""dicom_path"": ""patient00146/study5/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00146/study5/view1_frontal.dcm"", ""path_to_image"": ""train/patient00146/study5/view1_frontal.jpg"", ""patient_id"": ""patient00146"", ""patient_report_date_order"": ""5"", ""race"": ""White"", ""section_accession_number"": ""\n7154407945477\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study5"", ""study_key"": ""patient00146/study5"", ""view_stem"": ""view1_frontal""}"
+patient00122/study7,patient00122/study7/view1_frontal.dcm,72,Female,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.22547555688967708,10.459421157836914,-0.01105509977787733,0.3772599399089813,-6.270725727081299,1.1444951295852661,14.661416053771973,0.031871598213911057,0.5280873775482178,-1.6700984239578247,2.111372232437134,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.0883406400680542,patient00286/study4,patient00286/study4/view1_frontal.dcm,train/patient00286/study4/view1_frontal.dcm,train/patient00286/study4/view1_frontal.jpg,69,Female,Black,Non-Hispanic/Non-Latino,0.0,0.0,0.30792520051914235,0.0,0.21014625625947064,10.697561264038086,-0.022531980648636818,0.3853568434715271,-5.754662036895752,1.3980284929275513,12.2694091796875,0.018547024577856064,0.442345529794693,-1.455353021621704,1.7365795373916626,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 69
+Sex: Female
+Race: Black
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 2014 November 10
+Impression: 1. RELATIVE INCREASE IN LUNG VOLUMES. PROBABLE PULMONARY EDEMA
+WITH SMALL LEFT PLEURAL EFFUSION. NO SIGNIFICANT CHANGE SINCE PRIOR
+STUDY.
+Summary: 2: ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Kim, Briella  on: 11/10/2014
+Narrative: SINGLE VIEW PORTABLE CHEST:
+Full report: NARRATIVE:
+SINGLE VIEW PORTABLE CHEST:
+COMPARISON: 2014 November 10
+IMPRESSION:
+1. RELATIVE INCREASE IN LUNG VOLUMES. PROBABLE PULMONARY EDEMA
+WITH SMALL LEFT PLEURAL EFFUSION. NO SIGNIFICANT CHANGE SINCE PRIOR
+STUDY.
+END OF IMPRESSION:
+SUMMARY 2: ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Kim, Briella  on: 11/10/2014
+ 
+ACCESSION NUMBER:
+883-115-214-201-2
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""69"", ""deid_patient_id"": ""patient00286"", ""dicom_path"": ""patient00286/study4/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00286/study4/view1_frontal.dcm"", ""path_to_image"": ""train/patient00286/study4/view1_frontal.jpg"", ""patient_id"": ""patient00286"", ""patient_report_date_order"": ""4"", ""race"": ""Black"", ""section_accession_number"": ""\n883-115-214-201-2\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study4"", ""study_key"": ""patient00286/study4"", ""view_stem"": ""view1_frontal""}"
+patient00122/study7,patient00122/study7/view1_frontal.dcm,72,Female,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.22547555688967708,10.459421157836914,-0.01105509977787733,0.3772599399089813,-6.270725727081299,1.1444951295852661,14.661416053771973,0.031871598213911057,0.5280873775482178,-1.6700984239578247,2.111372232437134,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.09286224842071533,patient00134/study5,patient00134/study5/view2_lateral.dcm,train/patient00134/study5/view2_lateral.dcm,train/patient00134/study5/view2_lateral.jpg,71,Male,White,Non-Hispanic/Non-Latino,0.0,1.621174968182753,1.6715441816721706,1.6227187294732666,0.0,9.791999816894531,-0.02430323325097561,0.3525015413761139,-4.762056350708008,1.3080663681030273,15.11662483215332,0.03954368457198143,0.5440390110015869,-1.526402473449707,1.7615432739257812,"Critical evidence: ConvNeXt embedding outlier evidence (convnext_embedding_outlier_z=3.027); RAD-DINO embedding outlier evidence (raddino_embedding_outlier_z=3.108). Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 71
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Clinical history: Increasing shortness of breath, lung metastatic
+disease.
+Comparison: 3/10/2002, and prior studies.
+Findings: Previous right moderate pleural effusion has increased
+slightly.  Previously left moderate pleural effusion is again noted,
+with air-fluid level at the left lung base and loculated pneumothorax
+involving part of the left lower lobe.  No mediastinal shift.  No
+pneumomediastinum or subcutaneous emphysema.  The heart and vessels,
+bones and soft tissues appear stable.
+Impression: 1.  SLIGHTLY INCREASED RIGHT PLEURAL EFFUSION WITH INTERVAL SMALL
+LEFT LOWER PNEUMOTHORAX AND PROBABLY STABLE LEFT PLEURAL EFFUSION.
+ 2.  THESE FINDINGS WERE DISCUSSED WITH ALSAKER JESSE, DR. AT 0355 HOURS.
+Summary: 4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+Narrative: CHEST, PA AND LATERAL:  03/10/02.
+Full report: NARRATIVE:
+CHEST, PA AND LATERAL:  03/10/02.
+ COMPARISON:  3/10/2002, and prior studies.
+ CLINICAL HISTORY:  Increasing shortness of breath, lung metastatic
+disease.
+ FINDINGS:  Previous right moderate pleural effusion has increased
+slightly.  Previously left moderate pleural effusion is again noted,
+with air-fluid level at the left lung base and loculated pneumothorax
+involving part of the left lower lobe.  No mediastinal shift.  No
+pneumomediastinum or subcutaneous emphysema.  The heart and vessels,
+bones and soft tissues appear stable.
+ IMPRESSION:
+ 1.  SLIGHTLY INCREASED RIGHT PLEURAL EFFUSION WITH INTERVAL SMALL
+LEFT LOWER PNEUMOTHORAX AND PROBABLY STABLE LEFT PLEURAL EFFUSION.
+ 2.  THESE FINDINGS WERE DISCUSSED WITH ALSAKER JESSE, DR. AT 0355 HOURS.
+ SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+ 
+ACCESSION NUMBER:
+5673135087608
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""71"", ""deid_patient_id"": ""patient00134"", ""dicom_path"": ""patient00134/study5/view2_lateral.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00134/study5/view2_lateral.dcm"", ""path_to_image"": ""train/patient00134/study5/view2_lateral.jpg"", ""patient_id"": ""patient00134"", ""patient_report_date_order"": ""6"", ""race"": ""White"", ""section_accession_number"": ""\n5673135087608\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study5"", ""study_key"": ""patient00134/study5"", ""view_stem"": ""view2_lateral""}"
+patient00122/study7,patient00122/study7/view1_frontal.dcm,72,Female,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.22547555688967708,10.459421157836914,-0.01105509977787733,0.3772599399089813,-6.270725727081299,1.1444951295852661,14.661416053771973,0.031871598213911057,0.5280873775482178,-1.6700984239578247,2.111372232437134,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.09607601165771484,patient00134/study5,patient00134/study5/view1_frontal.dcm,train/patient00134/study5/view1_frontal.dcm,train/patient00134/study5/view1_frontal.jpg,71,Male,White,Non-Hispanic/Non-Latino,2.157005498565231,1.9436181386313471,3.31871617115252,1.9458333525901677,0.0,11.082429885864258,-0.01605149358510971,0.3995804786682129,-7.365777969360352,0.9610294103622437,13.89222526550293,0.03196442499756813,0.5002723932266235,-2.3957760334014893,2.315410614013672,"Critical evidence: low entropy evidence (low_entropy_evidence_z=3.319); entropy outlier evidence (validation_entropy_outlier_z=3.319). Warning evidence: low contrast evidence (low_contrast_evidence_z=2.157); intensity standard deviation outlier evidence (validation_intensity_std_outlier_z=2.346); contrast proxy outlier evidence (validation_contrast_proxy_outlier_z=2.157); noise proxy outlier evidence (validation_noise_proxy_outlier_z=2.520). Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 71
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Clinical history: Increasing shortness of breath, lung metastatic
+disease.
+Comparison: 2-1-2000, and prior studies.
+Findings: Previous right moderate pleural effusion has increased
+slightly.  Previously left moderate pleural effusion is again noted,
+with air-fluid level at the left lung base and loculated pneumothorax
+involving part of the left lower lobe.  No mediastinal shift.  No
+pneumomediastinum or subcutaneous emphysema.  The heart and vessels,
+bones and soft tissues appear stable.
+Impression: 1.  SLIGHTLY INCREASED RIGHT PLEURAL EFFUSION WITH INTERVAL SMALL
+LEFT LOWER PNEUMOTHORAX AND PROBABLY STABLE LEFT PLEURAL EFFUSION.
+ 2.  THESE FINDINGS WERE DISCUSSED WITH Fabian Lucero, MD AT 0355 HOURS.
+Summary: 4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+Narrative: CHEST, PA AND LATERAL:  2/1/2000.
+Full report: NARRATIVE:
+CHEST, PA AND LATERAL:  2/1/2000.
+ COMPARISON:  2-1-2000, and prior studies.
+ CLINICAL HISTORY:  Increasing shortness of breath, lung metastatic
+disease.
+ FINDINGS:  Previous right moderate pleural effusion has increased
+slightly.  Previously left moderate pleural effusion is again noted,
+with air-fluid level at the left lung base and loculated pneumothorax
+involving part of the left lower lobe.  No mediastinal shift.  No
+pneumomediastinum or subcutaneous emphysema.  The heart and vessels,
+bones and soft tissues appear stable.
+ IMPRESSION:
+ 1.  SLIGHTLY INCREASED RIGHT PLEURAL EFFUSION WITH INTERVAL SMALL
+LEFT LOWER PNEUMOTHORAX AND PROBABLY STABLE LEFT PLEURAL EFFUSION.
+ 2.  THESE FINDINGS WERE DISCUSSED WITH Fabian Lucero, MD AT 0355 HOURS.
+ SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+ 
+ACCESSION NUMBER:
+15-61-83-10
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""71"", ""deid_patient_id"": ""patient00134"", ""dicom_path"": ""patient00134/study5/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00134/study5/view1_frontal.dcm"", ""path_to_image"": ""train/patient00134/study5/view1_frontal.jpg"", ""patient_id"": ""patient00134"", ""patient_report_date_order"": ""7"", ""race"": ""White"", ""section_accession_number"": ""\n15-61-83-10\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study5"", ""study_key"": ""patient00134/study5"", ""view_stem"": ""view1_frontal""}"

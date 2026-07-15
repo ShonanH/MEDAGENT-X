@@ -1,0 +1,198 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00055/study1,patient00055/study1/view1_frontal.dcm,43,Female,White,Non-Hispanic/Non-Latino,1.2911245529873332,0.0,1.0075951330861832,0.0,1.3936543054072656,11.47543716430664,-0.014525547623634338,0.41382932662963867,-7.466734409332275,0.9685314297676086,11.525269508361816,0.025942660868167877,0.4150724411010742,-1.7723530530929565,1.5346896648406982,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.10209572315216064,patient00286/study5,patient00286/study5/view1_frontal.dcm,train/patient00286/study5/view1_frontal.dcm,train/patient00286/study5/view1_frontal.jpg,69,Female,Black,Non-Hispanic/Non-Latino,0.31669087659822276,0.008159422963776461,0.18138664057177944,0.008159548238350458,0.10582806128379604,11.013815879821777,-0.02403222769498825,0.39669957756996155,-7.16392183303833,1.323849081993103,12.173216819763184,0.02513810247182846,0.43854326009750366,-1.5854392051696777,1.656325101852417,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 69
+Sex: Female
+Race: Black
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 9/7/2008 at 3:00 p.m.
+Impression: INTERVAL PLACEMENT OF RIGHT INTERNAL JUGULAR VENOUS CATHETER WITH
+THE TIP AT THE SVC.
+REDEMONSTRATION OF ELEVATED RIGHT HEMIDIAPHRAGM. THE LUNGS ARE
+CLEAR.
+OTHERWISE, UNCHANGED CHEST X-RAY. NO GROSS EVIDENCE OF PNEUMOTHORAX,
+ALTHOUGH SUPINE FILM PROVIDES ONLY LIMITED EVALUAATION FOR THIS.
+Summary: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Hazel M, Lyons (S)  on: 9-7-2008
+Narrative: CHEST, ONE VIEW: 9/7/2008
+Full report: NARRATIVE:
+CHEST, ONE VIEW: 9/7/2008
+COMPARISON: 9/7/2008 at 3:00 p.m.
+IMPRESSION:
+INTERVAL PLACEMENT OF RIGHT INTERNAL JUGULAR VENOUS CATHETER WITH
+THE TIP AT THE SVC.
+REDEMONSTRATION OF ELEVATED RIGHT HEMIDIAPHRAGM. THE LUNGS ARE
+CLEAR.
+OTHERWISE, UNCHANGED CHEST X-RAY. NO GROSS EVIDENCE OF PNEUMOTHORAX,
+ALTHOUGH SUPINE FILM PROVIDES ONLY LIMITED EVALUAATION FOR THIS.
+END OF IMPRESSION:
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Hazel M, Lyons (S)  on: 9-7-2008
+ 
+ACCESSION NUMBER:
+7154407945477
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""69"", ""deid_patient_id"": ""patient00286"", ""dicom_path"": ""patient00286/study5/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00286/study5/view1_frontal.dcm"", ""path_to_image"": ""train/patient00286/study5/view1_frontal.jpg"", ""patient_id"": ""patient00286"", ""patient_report_date_order"": ""5"", ""race"": ""Black"", ""section_accession_number"": ""\n7154407945477\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study5"", ""study_key"": ""patient00286/study5"", ""view_stem"": ""view1_frontal""}"
+patient00055/study1,patient00055/study1/view1_frontal.dcm,43,Female,White,Non-Hispanic/Non-Latino,1.2911245529873332,0.0,1.0075951330861832,0.0,1.3936543054072656,11.47543716430664,-0.014525547623634338,0.41382932662963867,-7.466734409332275,0.9685314297676086,11.525269508361816,0.025942660868167877,0.4150724411010742,-1.7723530530929565,1.5346896648406982,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.11654537916183472,patient00521/study3,patient00521/study3/view1_frontal.dcm,train/patient00521/study3/view1_frontal.dcm,train/patient00521/study3/view1_frontal.jpg,34,Male,Unknown,Unknown,0.33496167896403145,0.0,0.0,0.0,0.2607574125496968,10.25846004486084,-0.01607002131640911,0.3698212802410126,-6.769871234893799,1.2225430011749268,12.642186164855957,0.03046284057199955,0.45516732335090637,-1.996749997138977,1.9168946743011475,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 34
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Comparison: 4/26/2020
+Impression: 1. INTERVAL PLACEMENT OF FEEDING TUBE WITH THE TIP IN THE PROXIMAL
+STOMACH; THE RIGHT INTERNAL JUGULAR VENOUS CATHETER REMAINS IN THE
+MID-SUPERIOR VENA CAVA.
+2. SIGNIFICANT INTERVAL INCREASE IN BILATERAL AIR SPACE OPACITIES,
+WHICH MAY REPRESENT ARDS, INFECTION, ASPIRATION OR PULMONARY EDEMA.
+Summary: 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Dhiya, MD  on: 4-26-20
+Narrative: PORTABLE CHEST: 4/26/20
+Full report: NARRATIVE:
+PORTABLE CHEST: 4/26/20
+COMPARISON:
+4/26/2020
+IMPRESSION:
+1. INTERVAL PLACEMENT OF FEEDING TUBE WITH THE TIP IN THE PROXIMAL
+STOMACH; THE RIGHT INTERNAL JUGULAR VENOUS CATHETER REMAINS IN THE
+MID-SUPERIOR VENA CAVA.
+2. SIGNIFICANT INTERVAL INCREASE IN BILATERAL AIR SPACE OPACITIES,
+WHICH MAY REPRESENT ARDS, INFECTION, ASPIRATION OR PULMONARY EDEMA.
+END OF IMPRESSION:
+SUMMARY 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Dhiya, MD  on: 4-26-20
+ 
+ACCESSION NUMBER:
+779139
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""34"", ""deid_patient_id"": ""patient00521"", ""dicom_path"": ""patient00521/study3/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00521/study3/view1_frontal.dcm"", ""path_to_image"": ""train/patient00521/study3/view1_frontal.jpg"", ""patient_id"": ""patient00521"", ""patient_report_date_order"": ""3"", ""race"": ""Unknown"", ""section_accession_number"": ""\n779139\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study3"", ""study_key"": ""patient00521/study3"", ""view_stem"": ""view1_frontal""}"
+patient00055/study1,patient00055/study1/view1_frontal.dcm,43,Female,White,Non-Hispanic/Non-Latino,1.2911245529873332,0.0,1.0075951330861832,0.0,1.3936543054072656,11.47543716430664,-0.014525547623634338,0.41382932662963867,-7.466734409332275,0.9685314297676086,11.525269508361816,0.025942660868167877,0.4150724411010742,-1.7723530530929565,1.5346896648406982,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.11679816246032715,patient00521/study4,patient00521/study4/view1_frontal.dcm,train/patient00521/study4/view1_frontal.dcm,train/patient00521/study4/view1_frontal.jpg,34,Male,Unknown,Unknown,0.0,0.0,0.33418972869190383,0.0,0.8991442051025507,10.71704387664795,-0.024176793172955513,0.38596153259277344,-7.526772975921631,1.1070524454116821,11.970005989074707,0.028768420219421387,0.43097126483917236,-1.786142110824585,1.8416674137115479,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 34
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Comparison: 6-21-2004
+Impression: 1. RIGHT IJ VENOUS CATHETER IN MID SUPERIOR VENA CAVA; INTERVAL
+REMOVAL OF FEEDING TUBE.
+2. INTERVAL DECREASE IN BILATERAL AIR SPACE OPACITIES, WHICH LIKELY
+REPRESENTS IMPROVING PULMONARY EDEMA GIVEN THE SHORT INTERVAL
+CHANGE.
+3. IMPROVED AERATION OF THE LEFT RETROCARDIAC REGION.
+Summary: 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Julia, Binderup.  on: JUNE 21ST 04
+Narrative: SINGLE PORTABLE VIEW OF THE CHEST: June 21
+Full report: NARRATIVE:
+SINGLE PORTABLE VIEW OF THE CHEST: June 21
+COMPARISON:
+6-21-2004
+IMPRESSION:
+1. RIGHT IJ VENOUS CATHETER IN MID SUPERIOR VENA CAVA; INTERVAL
+REMOVAL OF FEEDING TUBE.
+2. INTERVAL DECREASE IN BILATERAL AIR SPACE OPACITIES, WHICH LIKELY
+REPRESENTS IMPROVING PULMONARY EDEMA GIVEN THE SHORT INTERVAL
+CHANGE.
+3. IMPROVED AERATION OF THE LEFT RETROCARDIAC REGION.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Julia, Binderup.  on: JUNE 21ST 04
+ 
+ACCESSION NUMBER:
+198-009-20
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""34"", ""deid_patient_id"": ""patient00521"", ""dicom_path"": ""patient00521/study4/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00521/study4/view1_frontal.dcm"", ""path_to_image"": ""train/patient00521/study4/view1_frontal.jpg"", ""patient_id"": ""patient00521"", ""patient_report_date_order"": ""4"", ""race"": ""Unknown"", ""section_accession_number"": ""\n198-009-20\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study4"", ""study_key"": ""patient00521/study4"", ""view_stem"": ""view1_frontal""}"
+patient00055/study1,patient00055/study1/view1_frontal.dcm,43,Female,White,Non-Hispanic/Non-Latino,1.2911245529873332,0.0,1.0075951330861832,0.0,1.3936543054072656,11.47543716430664,-0.014525547623634338,0.41382932662963867,-7.466734409332275,0.9685314297676086,11.525269508361816,0.025942660868167877,0.4150724411010742,-1.7723530530929565,1.5346896648406982,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.12152266502380371,patient00308/study1,patient00308/study1/view1_frontal.dcm,train/patient00308/study1/view1_frontal.dcm,train/patient00308/study1/view1_frontal.jpg,77,Male,Unknown,Unknown,1.0383808633569709,0.0,0.6296998969695314,0.0,0.30125158929076834,9.515963554382324,-0.006085267290472984,0.34332382678985596,-5.761519432067871,1.3176052570343018,11.73371410369873,0.021208589896559715,0.4228724241256714,-1.285439372062683,1.695383071899414,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 77
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Comparison: 9/13/2006
+Impression: 1. INTERVAL POST SURGICAL CHANGES WITH NEW ENDOTRACHEAL TUBE WITH
+THE TIP APPROXIMATELY 1 CM FROM THE CARINA. RIGHT INTERNAL JUGULAR
+CATHETER TIP IS LIKELY IN THE SUPERIOR VENA CAVA. NASOGASTRIC TUBE
+TIP IS IN THE STOMACH. THERE IS A NEW LEFT SIDED CHEST TUBE AND A
+NEW MEDIASTINAL DRAIN. MULTIPLE MEDIAN STERNOTOMY WIRES ARE ALSO
+NOTED.
+2. DECREASED LUNG VOLUMES WITH SMALL LEFT PLEURAL EFFUSION AND
+ASSOCIATED BASILAR OPACITIES LIKELY REPRESENTING ATELECTASIS. THERE
+IS LIKELY MILD PULMONARY EDEMA.
+Summary: 4: POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Estrada, Brittany Matthew  on: 2006/9/13
+Narrative: SINGLE VIEW CHEST: september 13th
+Full report: NARRATIVE:
+SINGLE VIEW CHEST: september 13th
+COMPARISON: 9/13/2006
+IMPRESSION:
+1. INTERVAL POST SURGICAL CHANGES WITH NEW ENDOTRACHEAL TUBE WITH
+THE TIP APPROXIMATELY 1 CM FROM THE CARINA. RIGHT INTERNAL JUGULAR
+CATHETER TIP IS LIKELY IN THE SUPERIOR VENA CAVA. NASOGASTRIC TUBE
+TIP IS IN THE STOMACH. THERE IS A NEW LEFT SIDED CHEST TUBE AND A
+NEW MEDIASTINAL DRAIN. MULTIPLE MEDIAN STERNOTOMY WIRES ARE ALSO
+NOTED.
+2. DECREASED LUNG VOLUMES WITH SMALL LEFT PLEURAL EFFUSION AND
+ASSOCIATED BASILAR OPACITIES LIKELY REPRESENTING ATELECTASIS. THERE
+IS LIKELY MILD PULMONARY EDEMA.
+END OF IMPRESSION:
+SUMMARY 4: POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Estrada, Brittany Matthew  on: 2006/9/13
+ 
+ACCESSION NUMBER:
+24999.10
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""77"", ""deid_patient_id"": ""patient00308"", ""dicom_path"": ""patient00308/study1/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00308/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00308/study1/view1_frontal.jpg"", ""patient_id"": ""patient00308"", ""patient_report_date_order"": ""1"", ""race"": ""Unknown"", ""section_accession_number"": ""\n24999.10\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00308/study1"", ""view_stem"": ""view1_frontal""}"
+patient00055/study1,patient00055/study1/view1_frontal.dcm,43,Female,White,Non-Hispanic/Non-Latino,1.2911245529873332,0.0,1.0075951330861832,0.0,1.3936543054072656,11.47543716430664,-0.014525547623634338,0.41382932662963867,-7.466734409332275,0.9685314297676086,11.525269508361816,0.025942660868167877,0.4150724411010742,-1.7723530530929565,1.5346896648406982,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.12364685535430908,patient00044/study1,patient00044/study1/view1_frontal.dcm,train/patient00044/study1/view1_frontal.dcm,train/patient00044/study1/view1_frontal.jpg,49,Female,White,Non-Hispanic/Non-Latino,0.9409375131380346,0.0,0.7454016389681655,0.0,0.539361007218874,9.4260892868042,-0.00875940266996622,0.34002187848091125,-6.097208499908447,0.9181715846061707,12.058570861816406,0.006992802023887634,0.4350700080394745,-1.6924796104431152,1.5739352703094482,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 49
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Clinical history: 48-year-old woman with history of mitral
+stenosis and tricuspid regurgitation.
+Comparison: 10-15-2003
+Findings: Interval placement of ET tube with tip at the level of
+the clavicular heads. NG tube courses into the abdomen. Interval
+placement of right internal jugular venous central line with tip in
+the mid SVC. A right IJ sheath is also present. A mitral valve
+ring is unchanged. A right chest tube and mediastinal drain are in
+place.
+Moderate cardiomegaly. Bibasilar opacities, likely representing
+atelectasis. Mild interstitial pulmonary edema.
+Impression: 1. INTERVAL PLACEMENT OF LINES AND TUBES AS DESCRIBED.
+2. PERSISTENT CARDIOMEGALY WITH MODERATE INTERSTITIAL PULMONARY
+EDEMA AND BIBASILAR ATELECTASIS.
+Summary: 4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MADDEN, SKYE MALAKAI  on: October 15th, 2003
+Narrative: SINGLE VIEW PORTABLE CHEST: 10-15-2003
+Full report: NARRATIVE:
+SINGLE VIEW PORTABLE CHEST: 10-15-2003
+CLINICAL HISTORY: 48-year-old woman with history of mitral
+stenosis and tricuspid regurgitation.
+COMPARISON: 10-15-2003
+FINDINGS: Interval placement of ET tube with tip at the level of
+the clavicular heads. NG tube courses into the abdomen. Interval
+placement of right internal jugular venous central line with tip in
+the mid SVC. A right IJ sheath is also present. A mitral valve
+ring is unchanged. A right chest tube and mediastinal drain are in
+place.
+Moderate cardiomegaly. Bibasilar opacities, likely representing
+atelectasis. Mild interstitial pulmonary edema.
+IMPRESSION:
+1. INTERVAL PLACEMENT OF LINES AND TUBES AS DESCRIBED.
+2. PERSISTENT CARDIOMEGALY WITH MODERATE INTERSTITIAL PULMONARY
+EDEMA AND BIBASILAR ATELECTASIS.
+END OF IMPRESSION:
+SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: MADDEN, SKYE MALAKAI  on: October 15th, 2003
+ 
+ACCESSION NUMBER:
+1366196893
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""49"", ""deid_patient_id"": ""patient00044"", ""dicom_path"": ""patient00044/study1/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00044/study1/view1_frontal.dcm"", ""path_to_image"": ""train/patient00044/study1/view1_frontal.jpg"", ""patient_id"": ""patient00044"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\n1366196893\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study1"", ""study_key"": ""patient00044/study1"", ""view_stem"": ""view1_frontal""}"

@@ -1,0 +1,202 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00122/study3,patient00122/study3/view2_lateral.dcm,72,Female,White,Non-Hispanic/Non-Latino,0.0,1.2221063838887498,2.225772730282882,1.2229866694777478,0.0,9.672661781311035,-0.005902659613639116,0.34898221492767334,-3.9145004749298096,1.5439752340316772,13.897345542907715,0.02469574473798275,0.5008687973022461,-1.4341230392456055,1.4832431077957153,"Critical evidence: ConvNeXt embedding outlier evidence (convnext_embedding_outlier_z=4.947). Warning evidence: low entropy evidence (low_entropy_evidence_z=2.226); RAD-DINO embedding outlier evidence (raddino_embedding_outlier_z=2.530); edge density outlier evidence (validation_edge_density_outlier_z=2.977); entropy outlier evidence (validation_entropy_outlier_z=2.226). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.12981176376342773,patient00586/study2,patient00586/study2/view1_frontal.dcm,train/patient00586/study2/view1_frontal.dcm,train/patient00586/study2/view1_frontal.jpg,88,Female,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.7023775525449718,9.565726280212402,-0.018827730789780617,0.3446595072746277,-5.571094512939453,1.2700819969177246,12.131526947021484,0.01927563175559044,0.43733420968055725,-1.4832327365875244,1.7689791917800903,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 88
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Impression: 1. PORTABLE AP RADIOGRAPH OF THE CHEST, 10/2012 AT 0816 HOURS:
+INTERVAL SLIGHTLY DECREASED INTERSTITIAL PULMONARY EDEMA.
+PERSISTENT BILATERAL PLEURAL EFFUSIONS WITH ASSOCIATED LEFT GREATER
+THAN RIGHT LOWER LOBE COMPRESSION ATELECTASIS.
+2. A FOLLOW-UP LEFT LATERAL DECUBITUS RADIOGRAPH OF THE CHEST,
+3/10/12 AT 1159 HOURS DEMONSTRATES LAYERING OF THE LEFT PLEURAL
+EFFUSION.
+Summary: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+ __________________________________
+Full report: NARRATIVE:
+IMPRESSION:
+1. PORTABLE AP RADIOGRAPH OF THE CHEST, 10/2012 AT 0816 HOURS:
+INTERVAL SLIGHTLY DECREASED INTERSTITIAL PULMONARY EDEMA.
+PERSISTENT BILATERAL PLEURAL EFFUSIONS WITH ASSOCIATED LEFT GREATER
+THAN RIGHT LOWER LOBE COMPRESSION ATELECTASIS.
+2. A FOLLOW-UP LEFT LATERAL DECUBITUS RADIOGRAPH OF THE CHEST,
+3/10/12 AT 1159 HOURS DEMONSTRATES LAYERING OF THE LEFT PLEURAL
+EFFUSION.
+END OF IMPRESSION:
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+ __________________________________
+ 
+ACCESSION NUMBER:
+#50-29-20-97
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""88"", ""deid_patient_id"": ""patient00586"", ""dicom_path"": ""patient00586/study2/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00586/study2/view1_frontal.dcm"", ""path_to_image"": ""train/patient00586/study2/view1_frontal.jpg"", ""patient_id"": ""patient00586"", ""patient_report_date_order"": ""2"", ""race"": ""White"", ""section_accession_number"": ""\n#50-29-20-97\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study2"", ""study_key"": ""patient00586/study2"", ""view_stem"": ""view1_frontal""}"
+patient00122/study3,patient00122/study3/view2_lateral.dcm,72,Female,White,Non-Hispanic/Non-Latino,0.0,1.2221063838887498,2.225772730282882,1.2229866694777478,0.0,9.672661781311035,-0.005902659613639116,0.34898221492767334,-3.9145004749298096,1.5439752340316772,13.897345542907715,0.02469574473798275,0.5008687973022461,-1.4341230392456055,1.4832431077957153,"Critical evidence: ConvNeXt embedding outlier evidence (convnext_embedding_outlier_z=4.947). Warning evidence: low entropy evidence (low_entropy_evidence_z=2.226); RAD-DINO embedding outlier evidence (raddino_embedding_outlier_z=2.530); edge density outlier evidence (validation_edge_density_outlier_z=2.977); entropy outlier evidence (validation_entropy_outlier_z=2.226). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.13253402709960938,patient00146/study13,patient00146/study13/view1_frontal.dcm,train/patient00146/study13/view1_frontal.dcm,train/patient00146/study13/view1_frontal.jpg,74,Female,White,Non-Hispanic/Non-Latino,0.04263148894741868,0.0,0.15293771170076206,0.0,1.039993724813587,10.403367042541504,-0.023042218759655952,0.37469133734703064,-7.017301559448242,1.0764508247375488,11.687443733215332,0.019825467839837074,0.4212680459022522,-1.6785380840301514,1.549849033355713,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 74
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 12-7-2005
+Technique: Serial AP views of the chest on 12-7-2005 at 08:24 and 02:19,
+12/7/2005 at 06:15.
+Impression: 1. SERIAL VIEWS DEMONSTRATE INTERVAL PLACEMENT OF A RIGHT SIDED
+CHEST TUBE WITH SIGNIFICANT DECREASE IN RIGHT PLEURAL EFFUSION.
+A SMALL AMOUNT PERSISTS. REMAINING LINES AND TUBES ARE UNCHANGED.
+2. STABLE SMALL TO MODERATE LEFT PLEURAL EFFUSION WITH ASSOCIATED
+LEFT BASILAR ATELECTASIS VERSUS CONSOLIDATION.
+3. MILD EDEMA IS UNCHANGED. NO OTHER SIGNIFICANT CHANGES.
+Summary: 2: Abnormal, previously reported.
+Narrative: SINGLE PORTABLE VIEW OF THE CHEST: 12/7/2005, 08:24
+SINGLE PORTABLE VIEW OF THE CHEST: 2005 December 7th, 02:19
+SINGLE PORTABLE VIEW OF THE CHEST: 12/7/2005, 06:15
+Full report: NARRATIVE:
+SINGLE PORTABLE VIEW OF THE CHEST: 12/7/2005, 08:24
+SINGLE PORTABLE VIEW OF THE CHEST: 2005 December 7th, 02:19
+SINGLE PORTABLE VIEW OF THE CHEST: 12/7/2005, 06:15
+TECHNIQUE:
+Serial AP views of the chest on 12-7-2005 at 08:24 and 02:19,
+12/7/2005 at 06:15.
+COMPARISON:
+12-7-2005
+IMPRESSION:
+1. SERIAL VIEWS DEMONSTRATE INTERVAL PLACEMENT OF A RIGHT SIDED
+CHEST TUBE WITH SIGNIFICANT DECREASE IN RIGHT PLEURAL EFFUSION.
+A SMALL AMOUNT PERSISTS. REMAINING LINES AND TUBES ARE UNCHANGED.
+2. STABLE SMALL TO MODERATE LEFT PLEURAL EFFUSION WITH ASSOCIATED
+LEFT BASILAR ATELECTASIS VERSUS CONSOLIDATION.
+3. MILD EDEMA IS UNCHANGED. NO OTHER SIGNIFICANT CHANGES.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal, previously reported.
+ 
+ACCESSION NUMBER:
+ 079380
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""74"", ""deid_patient_id"": ""patient00146"", ""dicom_path"": ""patient00146/study13/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00146/study13/view1_frontal.dcm"", ""path_to_image"": ""train/patient00146/study13/view1_frontal.jpg"", ""patient_id"": ""patient00146"", ""patient_report_date_order"": ""13"", ""race"": ""White"", ""section_accession_number"": ""\n 079380\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study13"", ""study_key"": ""patient00146/study13"", ""view_stem"": ""view1_frontal""}"
+patient00122/study3,patient00122/study3/view2_lateral.dcm,72,Female,White,Non-Hispanic/Non-Latino,0.0,1.2221063838887498,2.225772730282882,1.2229866694777478,0.0,9.672661781311035,-0.005902659613639116,0.34898221492767334,-3.9145004749298096,1.5439752340316772,13.897345542907715,0.02469574473798275,0.5008687973022461,-1.4341230392456055,1.4832431077957153,"Critical evidence: ConvNeXt embedding outlier evidence (convnext_embedding_outlier_z=4.947). Warning evidence: low entropy evidence (low_entropy_evidence_z=2.226); RAD-DINO embedding outlier evidence (raddino_embedding_outlier_z=2.530); edge density outlier evidence (validation_edge_density_outlier_z=2.977); entropy outlier evidence (validation_entropy_outlier_z=2.226). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.13653528690338135,patient00146/study12,patient00146/study12/view1_frontal.dcm,train/patient00146/study12/view1_frontal.dcm,train/patient00146/study12/view1_frontal.jpg,74,Female,White,Non-Hispanic/Non-Latino,0.24969874752246315,0.0,0.0,0.0,0.09396795202298625,10.24986743927002,-0.01587739773094654,0.36951929330825806,-6.731348037719727,1.1866357326507568,12.276650428771973,0.02305641770362854,0.44239503145217896,-1.660114049911499,1.4635149240493774,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 74
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 8/11/16
+Technique: Serial AP views of the chest on 8-11-2016 at 08:24 and 02:19,
+8-11-2016 at 06:15.
+Impression: 1. SERIAL VIEWS DEMONSTRATE INTERVAL PLACEMENT OF A RIGHT SIDED
+CHEST TUBE WITH SIGNIFICANT DECREASE IN RIGHT PLEURAL EFFUSION.
+A SMALL AMOUNT PERSISTS. REMAINING LINES AND TUBES ARE UNCHANGED.
+2. STABLE SMALL TO MODERATE LEFT PLEURAL EFFUSION WITH ASSOCIATED
+LEFT BASILAR ATELECTASIS VERSUS CONSOLIDATION.
+3. MILD EDEMA IS UNCHANGED. NO OTHER SIGNIFICANT CHANGES.
+Summary: 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Rios Anaya.  on: 8/11/2016
+Narrative: SINGLE PORTABLE VIEW OF THE CHEST: 8/11/2016, 08:24
+SINGLE PORTABLE VIEW OF THE CHEST: 8/11/2016, 02:19
+SINGLE PORTABLE VIEW OF THE CHEST: 8-11-2016, 06:15
+Full report: NARRATIVE:
+SINGLE PORTABLE VIEW OF THE CHEST: 8/11/2016, 08:24
+SINGLE PORTABLE VIEW OF THE CHEST: 8/11/2016, 02:19
+SINGLE PORTABLE VIEW OF THE CHEST: 8-11-2016, 06:15
+TECHNIQUE:
+Serial AP views of the chest on 8-11-2016 at 08:24 and 02:19,
+8-11-2016 at 06:15.
+COMPARISON:
+8/11/16
+IMPRESSION:
+1. SERIAL VIEWS DEMONSTRATE INTERVAL PLACEMENT OF A RIGHT SIDED
+CHEST TUBE WITH SIGNIFICANT DECREASE IN RIGHT PLEURAL EFFUSION.
+A SMALL AMOUNT PERSISTS. REMAINING LINES AND TUBES ARE UNCHANGED.
+2. STABLE SMALL TO MODERATE LEFT PLEURAL EFFUSION WITH ASSOCIATED
+LEFT BASILAR ATELECTASIS VERSUS CONSOLIDATION.
+3. MILD EDEMA IS UNCHANGED. NO OTHER SIGNIFICANT CHANGES.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal, previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Rios Anaya.  on: 8/11/2016
+ 
+ACCESSION NUMBER:
+#296520128
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""74"", ""deid_patient_id"": ""patient00146"", ""dicom_path"": ""patient00146/study12/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00146/study12/view1_frontal.dcm"", ""path_to_image"": ""train/patient00146/study12/view1_frontal.jpg"", ""patient_id"": ""patient00146"", ""patient_report_date_order"": ""12"", ""race"": ""White"", ""section_accession_number"": ""\n#296520128\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study12"", ""study_key"": ""patient00146/study12"", ""view_stem"": ""view1_frontal""}"
+patient00122/study3,patient00122/study3/view2_lateral.dcm,72,Female,White,Non-Hispanic/Non-Latino,0.0,1.2221063838887498,2.225772730282882,1.2229866694777478,0.0,9.672661781311035,-0.005902659613639116,0.34898221492767334,-3.9145004749298096,1.5439752340316772,13.897345542907715,0.02469574473798275,0.5008687973022461,-1.4341230392456055,1.4832431077957153,"Critical evidence: ConvNeXt embedding outlier evidence (convnext_embedding_outlier_z=4.947). Warning evidence: low entropy evidence (low_entropy_evidence_z=2.226); RAD-DINO embedding outlier evidence (raddino_embedding_outlier_z=2.530); edge density outlier evidence (validation_edge_density_outlier_z=2.977); entropy outlier evidence (validation_entropy_outlier_z=2.226). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.14824163913726807,patient00166/study1,patient00166/study1/view2_lateral.dcm,train/patient00166/study1/view2_lateral.dcm,train/patient00166/study1/view2_lateral.jpg,80,Male,White,Non-Hispanic/Non-Latino,0.0,1.0086489185958134,1.8100307745474238,1.0092503561464272,0.0,9.77971363067627,-0.0071716043166816235,0.35282212495803833,-5.016500949859619,1.718977451324463,10.16418743133545,0.02906964160501957,0.3656146824359894,-1.0692721605300903,1.1449421644210815,"Critical evidence: edge density outlier evidence (validation_edge_density_outlier_z=3.560). Warning evidence: ConvNeXt embedding outlier evidence (convnext_embedding_outlier_z=2.299). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 80
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+History: Fatigue and congestive heart failure.
+Comparison: 2001-10-10.
+Findings: Right subpulmonic pleural effusion has developed.
+Increase in prominence of pulmonary vascularity has developed in the 
+upper lobes.  Sternotomy wires in place.  Cardiac size and contour 
+unchanged.  No evidence of opacity in either lung.  Degenerative 
+changes of the osseous structures persist.
+Impression: INTERVAL DEVELOPMENT OF RIGHT PLEURAL EFFUSION.
+ 
+SUMMARY CODE:
+Summary: 4-POSSIBLE SIGNIFICANT FINDING, MAY NEED ACTION.
+Narrative: Chest 2 Views 10/10/2001
+Full report: NARRATIVE:
+Chest 2 Views 10/10/2001 
+ 
+History: Fatigue and congestive heart failure.  
+ 
+Comparison: 2001-10-10.
+ 
+Findings: Right subpulmonic pleural effusion has developed.
+Increase in prominence of pulmonary vascularity has developed in the 
+upper lobes.  Sternotomy wires in place.  Cardiac size and contour 
+unchanged.  No evidence of opacity in either lung.  Degenerative 
+changes of the osseous structures persist.
+Impression: 
+ 
+INTERVAL DEVELOPMENT OF RIGHT PLEURAL EFFUSION.
+ 
+SUMMARY CODE: SUMMARY: 4-POSSIBLE SIGNIFICANT FINDING, MAY NEED ACTION.
+ 
+ACCESSION NUMBER:
+dilpsamg
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""80"", ""deid_patient_id"": ""patient00166"", ""dicom_path"": ""patient00166/study1/view2_lateral.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00166/study1/view2_lateral.dcm"", ""path_to_image"": ""train/patient00166/study1/view2_lateral.jpg"", ""patient_id"": ""patient00166"", ""patient_report_date_order"": ""2"", ""race"": ""White"", ""section_accession_number"": ""\ndilpsamg\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00166/study1"", ""view_stem"": ""view2_lateral""}"
+patient00122/study3,patient00122/study3/view2_lateral.dcm,72,Female,White,Non-Hispanic/Non-Latino,0.0,1.2221063838887498,2.225772730282882,1.2229866694777478,0.0,9.672661781311035,-0.005902659613639116,0.34898221492767334,-3.9145004749298096,1.5439752340316772,13.897345542907715,0.02469574473798275,0.5008687973022461,-1.4341230392456055,1.4832431077957153,"Critical evidence: ConvNeXt embedding outlier evidence (convnext_embedding_outlier_z=4.947). Warning evidence: low entropy evidence (low_entropy_evidence_z=2.226); RAD-DINO embedding outlier evidence (raddino_embedding_outlier_z=2.530); edge density outlier evidence (validation_edge_density_outlier_z=2.977); entropy outlier evidence (validation_entropy_outlier_z=2.226). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.14995861053466797,patient00134/study1,patient00134/study1/view2_lateral.dcm,train/patient00134/study1/view2_lateral.dcm,train/patient00134/study1/view2_lateral.jpg,71,Male,White,Non-Hispanic/Non-Latino,0.0,1.320186360612962,1.620734808466883,1.3212125387990132,0.0,10.218640327453613,-0.011946679092943668,0.36853981018066406,-4.439702033996582,1.6340694427490234,14.859597206115723,0.014234274625778198,0.5360105633735657,-1.7743175029754639,2.201125144958496,"Critical evidence: ConvNeXt embedding outlier evidence (convnext_embedding_outlier_z=3.765); edge density outlier evidence (validation_edge_density_outlier_z=3.107). Warning evidence: RAD-DINO embedding outlier evidence (raddino_embedding_outlier_z=2.645); RAD-DINO patch variability outlier evidence (raddino_patch_variability_outlier_z=2.188). Manifest evidence note: moderate_outlier. Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 71
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Clinical history: The patient is a 70 year old male here for
+preoperative evaluation for left pleurodesis and VATS.  History of
+adenoid cystic carcinoma of the lower lip.  Recurrent left pleural
+effusion.
+Comparison: 3/16/10 chest CT study and 10 march 16 chest
+x-ray.
+Findings: A large left pleural effusion is again seen, slightly increase in
+size compared to the 3/16/2010 chest x-ray study.  The left
+pleural effusion rises roughly half-way up the left hemithorax and
+silhouettes the entire left heart border.  A small right pleural
+effusion is slightly increased since the prior study.  Several
+nodular opacities reported on the chest CT of 3/16/2010 within
+the lung parenchyma are not as readily apparent on the plain film
+evaluation.  A several mm focal density in the left mid lung zone may
+represent a vessel on end.  There is no pneumothorax identified.
+Impression: 1. SLIGHT INTERVAL INCREASE IN SIZE OF A LEFT PLEURAL EFFUSION,
+WHICH IS LARGE.
+ 2. SMALL RIGHT PLEURAL EFFUSION, SLIGHTLY INCREASED IN SIZE.
+Summary: 4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+Narrative: CHEST 2 VIEWS: 10/16
+Full report: NARRATIVE:
+CHEST 2 VIEWS: 10/16
+ CLINICAL HISTORY: The patient is a 70 year old male here for
+preoperative evaluation for left pleurodesis and VATS.  History of
+adenoid cystic carcinoma of the lower lip.  Recurrent left pleural
+effusion.
+ COMPARISON: 3/16/10 chest CT study and 10 march 16 chest
+x-ray.
+ FINDINGS:
+ A large left pleural effusion is again seen, slightly increase in
+size compared to the 3/16/2010 chest x-ray study.  The left
+pleural effusion rises roughly half-way up the left hemithorax and
+silhouettes the entire left heart border.  A small right pleural
+effusion is slightly increased since the prior study.  Several
+nodular opacities reported on the chest CT of 3/16/2010 within
+the lung parenchyma are not as readily apparent on the plain film
+evaluation.  A several mm focal density in the left mid lung zone may
+represent a vessel on end.  There is no pneumothorax identified.
+ IMPRESSION:
+ 1. SLIGHT INTERVAL INCREASE IN SIZE OF A LEFT PLEURAL EFFUSION,
+WHICH IS LARGE.
+ 2. SMALL RIGHT PLEURAL EFFUSION, SLIGHTLY INCREASED IN SIZE.
+ SUMMARY:4-POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+ 
+ACCESSION NUMBER:
+MB-IO-LI-ZP-L
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""71"", ""deid_patient_id"": ""patient00134"", ""dicom_path"": ""patient00134/study1/view2_lateral.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00134/study1/view2_lateral.dcm"", ""path_to_image"": ""train/patient00134/study1/view2_lateral.jpg"", ""patient_id"": ""patient00134"", ""patient_report_date_order"": ""1"", ""race"": ""White"", ""section_accession_number"": ""\nMB-IO-LI-ZP-L\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study1"", ""study_key"": ""patient00134/study1"", ""view_stem"": ""view2_lateral""}"

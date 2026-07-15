@@ -1,0 +1,225 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00078/study2,patient00078/study2/view1_frontal.dcm,25,Male,Asian,Non-Hispanic/Non-Latino,0.0,0.0,0.10412487464899878,0.0,1.887484309409744,10.321041107177734,-0.01860557310283184,0.3719634413719177,-6.196337699890137,1.1900173425674438,12.38381576538086,0.02083609253168106,0.4463764429092407,-1.617553949356079,1.386685848236084,"Warning evidence: edge density outlier evidence (validation_edge_density_outlier_z=2.114). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.11132228374481201,patient00055/study3,patient00055/study3/view1_frontal.dcm,train/patient00055/study3/view1_frontal.dcm,train/patient00055/study3/view1_frontal.jpg,43,Female,White,Non-Hispanic/Non-Latino,0.35323230713008247,0.0,0.0,0.0,0.8528770873556294,12.121212005615234,-0.021824069321155548,0.436841756105423,-7.782167911529541,1.0811772346496582,13.890189170837402,0.02748340368270874,0.5004649758338928,-1.8585314750671387,1.739646553993225,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 43
+Sex: Female
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 2016 JULY 3
+Impression: 1. THERE HAS BEEN INTERVAL PLACEMENT OF A LEFT CHEST TUBE WITH
+ONLY A RESIDUAL AMOUNT OF LUCENCY SURROUNDING THE TIP OF THE CHEST
+TUBE, CONSISTENT WITH RESIDUAL PNEUMOTHORAX. THE LEFT LUNG IS
+ALMOST COMPLETELY RE-EXPANDED.
+2. SOME PATCHY OPACITIES PERSIST IN THE LEFT LUNG BASE AND THE
+PERIPHERY OF THE LEFT LUNG, LIKELY RESIDUAL ATELECTASIS FOLLOWING
+RE-EXPANSION.
+3. RIGHT LUNG IS CLEAR.
+End of impression: .
+Summary: 2 ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Sarah, MD  on: 7/3/2016
+Narrative: PORTABLE CHEST, SINGLE VIEW: 7-3-2016
+Full report: NARRATIVE:
+PORTABLE CHEST, SINGLE VIEW: 7-3-2016
+COMPARISON: 2016 JULY 3
+IMPRESSION:
+1. THERE HAS BEEN INTERVAL PLACEMENT OF A LEFT CHEST TUBE WITH
+ONLY A RESIDUAL AMOUNT OF LUCENCY SURROUNDING THE TIP OF THE CHEST
+TUBE, CONSISTENT WITH RESIDUAL PNEUMOTHORAX. THE LEFT LUNG IS
+ALMOST COMPLETELY RE-EXPANDED.
+2. SOME PATCHY OPACITIES PERSIST IN THE LEFT LUNG BASE AND THE
+PERIPHERY OF THE LEFT LUNG, LIKELY RESIDUAL ATELECTASIS FOLLOWING
+RE-EXPANSION.
+3. RIGHT LUNG IS CLEAR.
+END OF IMPRESSION.
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Sarah, MD  on: 7/3/2016
+ 
+ACCESSION NUMBER:
+59.97.18.35.93
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""43"", ""deid_patient_id"": ""patient00055"", ""dicom_path"": ""patient00055/study3/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00055/study3/view1_frontal.dcm"", ""path_to_image"": ""train/patient00055/study3/view1_frontal.jpg"", ""patient_id"": ""patient00055"", ""patient_report_date_order"": ""4"", ""race"": ""White"", ""section_accession_number"": ""\n59.97.18.35.93\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Female"", ""study_id"": ""study3"", ""study_key"": ""patient00055/study3"", ""view_stem"": ""view1_frontal""}"
+patient00078/study2,patient00078/study2/view1_frontal.dcm,25,Male,Asian,Non-Hispanic/Non-Latino,0.0,0.0,0.10412487464899878,0.0,1.887484309409744,10.321041107177734,-0.01860557310283184,0.3719634413719177,-6.196337699890137,1.1900173425674438,12.38381576538086,0.02083609253168106,0.4463764429092407,-1.617553949356079,1.386685848236084,"Warning evidence: edge density outlier evidence (validation_edge_density_outlier_z=2.114). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.11333024501800537,patient00147/study2,patient00147/study2/view1_frontal.dcm,train/patient00147/study2/view1_frontal.dcm,train/patient00147/study2/view1_frontal.jpg,52,Male,White,Non-Hispanic/Non-Latino,0.7247349172533304,0.0,0.973338375617714,0.0,1.3551159525882261,9.909331321716309,-0.01608365960419178,0.35721030831336975,-6.253490924835205,1.3891379833221436,12.070470809936523,0.016589224338531494,0.4352395534515381,-1.582431435585022,1.4696513414382935,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 52
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: Comparison is made with 12TH AUGUST.
+Impression: 1. INTERVAL REMOVAL OF TWO LEFT SIDED CHEST TUBES WITH NO
+ EVIDENCE OF PNEUMOTHORAX; OTHER LINES AND TUBES UNCHANGED.
+ THERE IS A SMALL AMOUNT OF SUBCUTANEOUS AIR IN THE LEFT CHEST
+ WALL, WHICH IS UNCHANGED.
+2. MILD INTERSTITIAL PULMONARY EDEMA, UNCHANGED.
+3. PERSISTING LEFT LOWER LOBE ATELECTASIS OR CONSOLIDATION,
+ UNCHANGED.
+Summary: 2: Abnormal, previously reported.
+Narrative: PORTABLE CHEST, 8/12/2000
+Full report: NARRATIVE:
+PORTABLE CHEST, 8/12/2000
+COMPARISON:
+Comparison is made with 12TH AUGUST.
+IMPRESSION:
+1. INTERVAL REMOVAL OF TWO LEFT SIDED CHEST TUBES WITH NO
+ EVIDENCE OF PNEUMOTHORAX; OTHER LINES AND TUBES UNCHANGED.
+ THERE IS A SMALL AMOUNT OF SUBCUTANEOUS AIR IN THE LEFT CHEST
+ WALL, WHICH IS UNCHANGED.
+2. MILD INTERSTITIAL PULMONARY EDEMA, UNCHANGED.
+3. PERSISTING LEFT LOWER LOBE ATELECTASIS OR CONSOLIDATION,
+ UNCHANGED.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal, previously reported.
+ 
+ACCESSION NUMBER:
+#sitouzywh
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""52"", ""deid_patient_id"": ""patient00147"", ""dicom_path"": ""patient00147/study2/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00147/study2/view1_frontal.dcm"", ""path_to_image"": ""train/patient00147/study2/view1_frontal.jpg"", ""patient_id"": ""patient00147"", ""patient_report_date_order"": ""2"", ""race"": ""White"", ""section_accession_number"": ""\n#sitouzywh\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study2"", ""study_key"": ""patient00147/study2"", ""view_stem"": ""view1_frontal""}"
+patient00078/study2,patient00078/study2/view1_frontal.dcm,25,Male,Asian,Non-Hispanic/Non-Latino,0.0,0.0,0.10412487464899878,0.0,1.887484309409744,10.321041107177734,-0.01860557310283184,0.3719634413719177,-6.196337699890137,1.1900173425674438,12.38381576538086,0.02083609253168106,0.4463764429092407,-1.617553949356079,1.386685848236084,"Warning evidence: edge density outlier evidence (validation_edge_density_outlier_z=2.114). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.12010574340820312,patient00147/study11,patient00147/study11/view1_frontal.dcm,train/patient00147/study11/view1_frontal.dcm,train/patient00147/study11/view1_frontal.jpg,52,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.1285472654641086,0.0,0.2795738478880062,9.403124809265137,-0.018026260659098625,0.33882686495780945,-5.143870830535889,1.1090692281723022,11.463741302490234,0.009670578874647617,0.4135490655899048,-1.5984009504318237,1.331068754196167,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 52
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: Films from the morning of 11/4/2009
+Impression: 1. INTERVAL REMOVAL OF LEFT SIDED CHEST TUBE; OTHER LINES AND
+TUBES UNCHANGED.
+2. MILD PULMONARY EDEMA WITH LOCULATED LEFT PLEURAL EFFUSION,
+UNCHANGED.
+3. PERSISTING LEFT LOWER LOBE ATELECTASIS OR CONSOLIDATION,
+UNCHANGED.
+4. MULTIPLE LEFT RIB FRACTURES.
+5. NO EVIDENCE OF PNEUMOTHORAX.
+Summary: 2: Abnormal; previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: kendrick, beck  on: 11/4/2009
+Narrative: PORTABLE CHEST:
+Full report: NARRATIVE:
+PORTABLE CHEST:
+COMPARISON:
+Films from the morning of 11/4/2009
+IMPRESSION:
+1. INTERVAL REMOVAL OF LEFT SIDED CHEST TUBE; OTHER LINES AND
+TUBES UNCHANGED.
+2. MILD PULMONARY EDEMA WITH LOCULATED LEFT PLEURAL EFFUSION,
+UNCHANGED.
+3. PERSISTING LEFT LOWER LOBE ATELECTASIS OR CONSOLIDATION,
+UNCHANGED.
+4. MULTIPLE LEFT RIB FRACTURES.
+5. NO EVIDENCE OF PNEUMOTHORAX.
+END OF IMPRESSION:
+SUMMARY 2: Abnormal; previously reported.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: kendrick, beck  on: 11/4/2009
+ 
+ACCESSION NUMBER:
+ 2-0-8-5-6-1-3-3
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""52"", ""deid_patient_id"": ""patient00147"", ""dicom_path"": ""patient00147/study11/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00147/study11/view1_frontal.dcm"", ""path_to_image"": ""train/patient00147/study11/view1_frontal.jpg"", ""patient_id"": ""patient00147"", ""patient_report_date_order"": ""11"", ""race"": ""White"", ""section_accession_number"": ""\n 2-0-8-5-6-1-3-3\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study11"", ""study_key"": ""patient00147/study11"", ""view_stem"": ""view1_frontal""}"
+patient00078/study2,patient00078/study2/view1_frontal.dcm,25,Male,Asian,Non-Hispanic/Non-Latino,0.0,0.0,0.10412487464899878,0.0,1.887484309409744,10.321041107177734,-0.01860557310283184,0.3719634413719177,-6.196337699890137,1.1900173425674438,12.38381576538086,0.02083609253168106,0.4463764429092407,-1.617553949356079,1.386685848236084,"Warning evidence: edge density outlier evidence (validation_edge_density_outlier_z=2.114). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.1262184977531433,patient00170/study2,patient00170/study2/view1_frontal.dcm,train/patient00170/study2/view1_frontal.dcm,train/patient00170/study2/view1_frontal.jpg,42,Male,Asian,Non-Hispanic/Non-Latino,0.6181564155378119,0.0,0.3190571255259893,0.0,0.48387320157467784,10.740680694580078,-0.017582731321454048,0.3871718645095825,-6.990368843078613,1.0953741073608398,12.440749168395996,0.02498372457921505,0.4482211172580719,-1.6860952377319336,1.4703402519226074,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 42
+Sex: Male
+Race: Asian
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 1-18-2018 and before.
+CLINICAL DATA: 41 year old man with small bowel obstruction,
+possible rectal abscess, rule out pneumothorax.
+Findings: AP portable view of the chest taken on 1/18/2018 at 10:54 hours
+demonstrates interval removal of the left subclavian venous
+catheter. The projection is right rotated, however, there is
+interval development of a small to moderate left pneumothorax.
+There is new vascular crowding at the left lower lung region
+suggesting pneumothorax related atelectasis. The right lung is
+clear. Residual contrast is again seen in the right upper quadrant
+of the abdomen. There is a G-tube in place.
+AP portable view of the chest taken on 1/18/18 demonstrated
+interval increase of the left pneumothorax and also increasing left
+lower lobe atelectasis. There is suggestion of a mediastinal shift
+to the right with increased distances between the left ribs. These
+are worrisome for a tension pneumothorax.
+AP portable view of the chest taken on 1/18/2018 at 17:52 hours
+demonstrated interval placement of a left sided chest tube with the
+tip that passed midline. There is re-expansion of the left lung
+with a tiny residual left pneumothorax. There is interval
+development of trace amount of right base atelectasis. There is a
+plate-like atelectasis in the left mid lung.
+Impression: 1. INTERVAL DEVELOPMENT OF A MODERATE LEFT SIDED PNEUMOTHORAX WITH
+SUGGESTION OF TENSION.
+2. PLACEMENT OF A LEFT SIDED CHEST TUBE THAT PASSED MIDLINE,
+POSSIBLY INTO THE RIGHT HEMITHORAX.
+3. TINY LEFT PNEUMOTHORAX REMAINS.
+Summary: 4: Possible Significant Abnormality/Change, may need
+action.
+Narrative: PORTABLE CHEST, SINGLE VIEW (X 3): 18/1/18.
+Full report: NARRATIVE:
+PORTABLE CHEST, SINGLE VIEW (X 3): 18/1/18.
+COMPARISON: 1-18-2018 and before.
+CLINICAL DATA: 41 year old man with small bowel obstruction,
+possible rectal abscess, rule out pneumothorax.
+FINDINGS:
+AP portable view of the chest taken on 1/18/2018 at 10:54 hours
+demonstrates interval removal of the left subclavian venous
+catheter. The projection is right rotated, however, there is
+interval development of a small to moderate left pneumothorax.
+There is new vascular crowding at the left lower lung region
+suggesting pneumothorax related atelectasis. The right lung is
+clear. Residual contrast is again seen in the right upper quadrant
+of the abdomen. There is a G-tube in place.
+AP portable view of the chest taken on 1/18/18 demonstrated
+interval increase of the left pneumothorax and also increasing left
+lower lobe atelectasis. There is suggestion of a mediastinal shift
+to the right with increased distances between the left ribs. These
+are worrisome for a tension pneumothorax.
+AP portable view of the chest taken on 1/18/2018 at 17:52 hours
+demonstrated interval placement of a left sided chest tube with the
+tip that passed midline. There is re-expansion of the left lung
+with a tiny residual left pneumothorax. There is interval
+development of trace amount of right base atelectasis. There is a
+plate-like atelectasis in the left mid lung.
+IMPRESSION:
+1. INTERVAL DEVELOPMENT OF A MODERATE LEFT SIDED PNEUMOTHORAX WITH
+SUGGESTION OF TENSION.
+2. PLACEMENT OF A LEFT SIDED CHEST TUBE THAT PASSED MIDLINE,
+POSSIBLY INTO THE RIGHT HEMITHORAX.
+3. TINY LEFT PNEUMOTHORAX REMAINS.
+END OF IMPRESSION:
+SUMMARY 4: Possible Significant Abnormality/Change, may need
+action.
+ 
+ACCESSION NUMBER:
+79-05-25-53
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""42"", ""deid_patient_id"": ""patient00170"", ""dicom_path"": ""patient00170/study2/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00170/study2/view1_frontal.dcm"", ""path_to_image"": ""train/patient00170/study2/view1_frontal.jpg"", ""patient_id"": ""patient00170"", ""patient_report_date_order"": ""3"", ""race"": ""Asian"", ""section_accession_number"": ""\n79-05-25-53\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study2"", ""study_key"": ""patient00170/study2"", ""view_stem"": ""view1_frontal""}"
+patient00078/study2,patient00078/study2/view1_frontal.dcm,25,Male,Asian,Non-Hispanic/Non-Latino,0.0,0.0,0.10412487464899878,0.0,1.887484309409744,10.321041107177734,-0.01860557310283184,0.3719634413719177,-6.196337699890137,1.1900173425674438,12.38381576538086,0.02083609253168106,0.4463764429092407,-1.617553949356079,1.386685848236084,"Warning evidence: edge density outlier evidence (validation_edge_density_outlier_z=2.114). Image may continue downstream, but this technical warning should be preserved in later reasoning.",0.12628817558288574,patient00147/study9,patient00147/study9/view1_frontal.dcm,train/patient00147/study9/view1_frontal.dcm,train/patient00147/study9/view1_frontal.jpg,52,Male,White,Non-Hispanic/Non-Latino,0.7064644516737218,0.1147195012882945,0.44314507995462926,0.11472836076070514,0.0,8.90878963470459,-0.005232516676187515,0.3214256763458252,-4.6699604988098145,1.134519100189209,14.94515609741211,0.028867363929748535,0.538513720035553,-2.2662041187286377,1.7366708517074585,"Warning evidence: RAD-DINO patch variability outlier evidence (raddino_patch_variability_outlier_z=2.239). Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 52
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: 8/27/2010
+Impression: 1. THE SIDE PORT OF THE LEFT SIDED CHEST TUBE REMAINS AT OR NEAR
+THE CHEST WALL; OTHER LINES AND TUBES ARE UNCHANGED.
+2. NEAR COMPLETE OPACIFICATION OF THE LEFT LUNG, WHICH MAY
+REPRESENT COLLAPSE SECONDARY TO MUCOUS PLUGGING OR ASPIRATION, OR
+MAY REPRESENT AN ENLARGING LEFT PLEURAL EFFUSION.
+3. MULTIPLE LEFT RIB FRACTURES.
+Summary: 4: Possible significant abnormality, change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: PRINCE, ALEXANDRIA PEDRO.  on: 8/27/10
+ __________________________________
+Narrative: SINGLE PORTABLE VIEW OF THE CHEST: 8-27
+Full report: NARRATIVE:
+SINGLE PORTABLE VIEW OF THE CHEST: 8-27
+COMPARISON:
+8/27/2010
+IMPRESSION:
+1. THE SIDE PORT OF THE LEFT SIDED CHEST TUBE REMAINS AT OR NEAR
+THE CHEST WALL; OTHER LINES AND TUBES ARE UNCHANGED.
+2. NEAR COMPLETE OPACIFICATION OF THE LEFT LUNG, WHICH MAY
+REPRESENT COLLAPSE SECONDARY TO MUCOUS PLUGGING OR ASPIRATION, OR
+MAY REPRESENT AN ENLARGING LEFT PLEURAL EFFUSION.
+3. MULTIPLE LEFT RIB FRACTURES.
+END OF IMPRESSION:
+SUMMARY 4: Possible significant abnormality, change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: PRINCE, ALEXANDRIA PEDRO.  on: 8/27/10
+ __________________________________
+ 
+ACCESSION NUMBER:
+63129723
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""52"", ""deid_patient_id"": ""patient00147"", ""dicom_path"": ""patient00147/study9/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00147/study9/view1_frontal.dcm"", ""path_to_image"": ""train/patient00147/study9/view1_frontal.jpg"", ""patient_id"": ""patient00147"", ""patient_report_date_order"": ""9"", ""race"": ""White"", ""section_accession_number"": ""\n63129723\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study9"", ""study_key"": ""patient00147/study9"", ""view_stem"": ""view1_frontal""}"

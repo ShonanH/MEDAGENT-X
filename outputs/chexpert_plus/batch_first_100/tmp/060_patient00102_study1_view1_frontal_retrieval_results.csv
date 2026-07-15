@@ -1,0 +1,193 @@
+query_study_key,query_dicom_path,query_age,query_sex,query_race,query_ethnicity,query_low_contrast_evidence_z,query_low_sharpness_evidence_z,query_low_entropy_evidence_z,query_high_blur_evidence_z,query_high_noise_evidence_z,query_convnext_embedding_norm,query_convnext_embedding_mean,query_convnext_embedding_std,query_convnext_embedding_min,query_convnext_embedding_max,query_raddino_embedding_norm,query_raddino_embedding_mean,query_raddino_embedding_std,query_raddino_embedding_min,query_raddino_embedding_max,query_technical_explanation,retrieval_distance,retrieved_study_key,retrieved_dicom_path,retrieved_path_to_dcm,retrieved_path_to_image,retrieved_age,retrieved_sex,retrieved_race,retrieved_ethnicity,retrieved_low_contrast_evidence_z,retrieved_low_sharpness_evidence_z,retrieved_low_entropy_evidence_z,retrieved_high_blur_evidence_z,retrieved_high_noise_evidence_z,retrieved_convnext_embedding_norm,retrieved_convnext_embedding_mean,retrieved_convnext_embedding_std,retrieved_convnext_embedding_min,retrieved_convnext_embedding_max,retrieved_raddino_embedding_norm,retrieved_raddino_embedding_mean,retrieved_raddino_embedding_std,retrieved_raddino_embedding_min,retrieved_raddino_embedding_max,retrieved_technical_explanation,retrieved_document,retrieved_metadata_json
+patient00102/study1,patient00102/study1/view1_frontal.dcm,55,Male,White,Non-Hispanic/Non-Latino,0.060901884847124346,0.2924580148625356,0.0,0.29251077079482535,0.0,10.180684089660645,-0.019152501598000526,0.3668641746044159,-6.774418354034424,1.0122697353363037,11.947328567504883,0.020310023799538612,0.43063342571258545,-1.7128570079803467,1.3827180862426758,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.11928856372833252,patient00138/study2,patient00138/study2/view1_frontal.dcm,train/patient00138/study2/view1_frontal.dcm,train/patient00138/study2/view1_frontal.jpg,61,Male,Unknown,Unknown,1.0262003516730658,0.410599590985124,2.21737510907486,0.4107018176719566,0.0,11.112407684326172,-0.025041377171874046,0.4002017676830292,-7.434332370758057,1.1511608362197876,12.046953201293945,0.032759130001068115,0.43347087502479553,-1.561545968055725,1.9194731712341309,"Warning evidence: low entropy evidence (low_entropy_evidence_z=2.217); entropy outlier evidence (validation_entropy_outlier_z=2.217). Image may continue downstream, but this technical warning should be preserved in later reasoning.","Age: 61
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Comparison: 6-7-2016.
+Impression: 1. LEFT UPPER EXTREMITY PICC LINE REMAINS IN STABLE POSITION.
+2. NO EVIDENCE OF FOCAL AIRSPACE CONSOLIDATION OR PLEURAL EFFUSION.
+Summary: 2 ABNORMAL, PREVIOUSLY REPORTED.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Jaime, PA-C  on: 6/7/2016
+Narrative: CHEST, TWO VIEWS: 4/3/2020.
+Full report: NARRATIVE:
+CHEST, TWO VIEWS: 4/3/2020.
+COMPARISON: 6-7-2016.
+IMPRESSION:
+1. LEFT UPPER EXTREMITY PICC LINE REMAINS IN STABLE POSITION.
+2. NO EVIDENCE OF FOCAL AIRSPACE CONSOLIDATION OR PLEURAL EFFUSION.
+END OF IMPRESSION:
+SUMMARY: 2 ABNORMAL, PREVIOUSLY REPORTED.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Jaime, PA-C  on: 6/7/2016
+ 
+ACCESSION NUMBER:
+8xsbb2n
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""61"", ""deid_patient_id"": ""patient00138"", ""dicom_path"": ""patient00138/study2/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00138/study2/view1_frontal.dcm"", ""path_to_image"": ""train/patient00138/study2/view1_frontal.jpg"", ""patient_id"": ""patient00138"", ""patient_report_date_order"": ""2"", ""race"": ""Unknown"", ""section_accession_number"": ""\n8xsbb2n\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study2"", ""study_key"": ""patient00138/study2"", ""view_stem"": ""view1_frontal""}"
+patient00102/study1,patient00102/study1/view1_frontal.dcm,55,Male,White,Non-Hispanic/Non-Latino,0.060901884847124346,0.2924580148625356,0.0,0.29251077079482535,0.0,10.180684089660645,-0.019152501598000526,0.3668641746044159,-6.774418354034424,1.0122697353363037,11.947328567504883,0.020310023799538612,0.43063342571258545,-1.7128570079803467,1.3827180862426758,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.12840020656585693,patient00335/study8,patient00335/study8/view1_frontal.dcm,train/patient00335/study8/view1_frontal.dcm,train/patient00335/study8/view1_frontal.jpg,53,Male,Unknown,Unknown,0.0,0.0,0.0,0.0,0.3683014697158779,10.520737648010254,-0.02009851485490799,0.37910202145576477,-6.6465301513671875,1.02950918674469,11.737632751464844,0.021869147196412086,0.4229803681373596,-1.770645260810852,1.5072866678237915,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 53
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Comparison: Comparison is made with 4-21-2000.
+Impression: 1. RIGHT UPPER EXTREMITY PICC LINE ADVANCED, TIP AT 1.5 CM DISTAL
+TO THE CAVOATRIAL JUNCTION.
+2. DECREASED LUNG VOLUMES. QUESTIONABLE SMALL RIGHT PLEURAL
+EFFUSION AND/OR ATELECTASIS AT THE RIGHT LUNG BASE. INCREASED
+CARDIOMEDIASTINAL SILHOUETTE SIZE, CONSISTENT WITH EFFUSION SEEN ON
+CT FROM 4-21-2000.
+Summary: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: gwendolyn lillian, pena.  on: 00-21-4
+ __________________________________
+Narrative: SINGLE VIEW PORTABLE CHEST, 4/21/00:
+Full report: NARRATIVE:
+SINGLE VIEW PORTABLE CHEST, 4/21/00:
+COMPARISON: Comparison is made with 4-21-2000.
+IMPRESSION:
+1. RIGHT UPPER EXTREMITY PICC LINE ADVANCED, TIP AT 1.5 CM DISTAL
+TO THE CAVOATRIAL JUNCTION.
+2. DECREASED LUNG VOLUMES. QUESTIONABLE SMALL RIGHT PLEURAL
+EFFUSION AND/OR ATELECTASIS AT THE RIGHT LUNG BASE. INCREASED
+CARDIOMEDIASTINAL SILHOUETTE SIZE, CONSISTENT WITH EFFUSION SEEN ON
+CT FROM 4-21-2000.
+END OF IMPRESSION:
+SUMMARY: 4 POSSIBLE SIGNIFICANT FINDINGS, MAY NEED ACTION
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: gwendolyn lillian, pena.  on: 00-21-4
+ __________________________________
+ 
+ACCESSION NUMBER:
+DXZFU
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""53"", ""deid_patient_id"": ""patient00335"", ""dicom_path"": ""patient00335/study8/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00335/study8/view1_frontal.dcm"", ""path_to_image"": ""train/patient00335/study8/view1_frontal.jpg"", ""patient_id"": ""patient00335"", ""patient_report_date_order"": ""8"", ""race"": ""Unknown"", ""section_accession_number"": ""\nDXZFU\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study8"", ""study_key"": ""patient00335/study8"", ""view_stem"": ""view1_frontal""}"
+patient00102/study1,patient00102/study1/view1_frontal.dcm,55,Male,White,Non-Hispanic/Non-Latino,0.060901884847124346,0.2924580148625356,0.0,0.29251077079482535,0.0,10.180684089660645,-0.019152501598000526,0.3668641746044159,-6.774418354034424,1.0122697353363037,11.947328567504883,0.020310023799538612,0.43063342571258545,-1.7128570079803467,1.3827180862426758,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.13308930397033691,patient00114/study19,patient00114/study19/view1_frontal.dcm,train/patient00114/study19/view1_frontal.dcm,train/patient00114/study19/view1_frontal.jpg,55,Male,Unknown,Unknown,0.0,0.0,0.0,0.0,0.41196724098877713,11.181021690368652,-0.02338007278740406,0.4027823805809021,-7.129626274108887,1.1481090784072876,12.869876861572266,0.022906998172402382,0.4638363718986511,-1.7599554061889648,1.89751398563385,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 55
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+Clinical history: Ascending aortic arch aneurysm.
+Comparison: One view chest 12-28-2004.
+Impression: 1. LEFT UPPER EXTREMITY PICC LINE STILL LOCATED WITHIN THE AXILLA.
+2. RIGHT INTERNAL JUGULAR LINE, TRACHEOSTOMY, POST SURGICAL WIRES,
+AND VALVE UNCHANGED FROM PREVIOUS.
+3. PERSISTENT MILD INTERSTITIAL EDEMA.
+4. INTERVAL IMPROVEMENT IN LUNG VOLUMES WITH STABLE LEFT UPPER
+LUNG ZONE AND LOWER LUNG ZONE OPACITIES, AS PREVIOUSLY DESCRIBED.
+Summary: 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Mckay, Kyra  on: 04-28
+ __________________________________
+Narrative: ONE VIEW CHEST: 12-28-2004 AT 1355 HOURS.
+Full report: NARRATIVE:
+ONE VIEW CHEST: 12-28-2004 AT 1355 HOURS.
+COMPARISON:
+One view chest 12-28-2004.
+CLINICAL HISTORY:
+Ascending aortic arch aneurysm.
+IMPRESSION:
+1. LEFT UPPER EXTREMITY PICC LINE STILL LOCATED WITHIN THE AXILLA.
+2. RIGHT INTERNAL JUGULAR LINE, TRACHEOSTOMY, POST SURGICAL WIRES,
+AND VALVE UNCHANGED FROM PREVIOUS.
+3. PERSISTENT MILD INTERSTITIAL EDEMA.
+4. INTERVAL IMPROVEMENT IN LUNG VOLUMES WITH STABLE LEFT UPPER
+LUNG ZONE AND LOWER LUNG ZONE OPACITIES, AS PREVIOUSLY DESCRIBED.
+END OF IMPRESSION:
+SUMMARY 4: Possible significant abnormality/change, may need
+action.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: Mckay, Kyra  on: 04-28
+ __________________________________
+ 
+ACCESSION NUMBER:
+79674
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""55"", ""deid_patient_id"": ""patient00114"", ""dicom_path"": ""patient00114/study19/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00114/study19/view1_frontal.dcm"", ""path_to_image"": ""train/patient00114/study19/view1_frontal.jpg"", ""patient_id"": ""patient00114"", ""patient_report_date_order"": ""19"", ""race"": ""Unknown"", ""section_accession_number"": ""\n79674\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study19"", ""study_key"": ""patient00114/study19"", ""view_stem"": ""view1_frontal""}"
+patient00102/study1,patient00102/study1/view1_frontal.dcm,55,Male,White,Non-Hispanic/Non-Latino,0.060901884847124346,0.2924580148625356,0.0,0.29251077079482535,0.0,10.180684089660645,-0.019152501598000526,0.3668641746044159,-6.774418354034424,1.0122697353363037,11.947328567504883,0.020310023799538612,0.43063342571258545,-1.7128570079803467,1.3827180862426758,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.13531821966171265,patient00114/study20,patient00114/study20/view1_frontal.dcm,train/patient00114/study20/view1_frontal.dcm,train/patient00114/study20/view1_frontal.jpg,55,Male,Unknown,Unknown,0.0,0.43806474945710294,0.0,0.43818079900522666,0.0,10.27255630493164,-0.015240351669490337,0.37036553025245667,-6.547129154205322,1.1229324340820312,13.87057113647461,0.029765790328383446,0.49962523579597473,-1.5620051622390747,1.648162603378296,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 55
+Sex: Male
+Race: Unknown
+Ethnicity: Unknown
+History: Ascending aortic aneurysm.
+Comparison: One-view chest 1/4/2017.
+Impression: 1. LEFT UPPER EXTREMITY PICC LINE, DISTAL TIP OF WHICH IS STILL
+ WITHIN THE LEFT AXILLA.
+2. RIGHT CENTRAL LINE, TRACHEOSTOMY, POSTSURGICAL WIRES, AORTIC
+ VALVE, AND STENT GRAFT UNCHANGED FROM PREVIOUS.
+3. INCREASED OPACIFICATION OF THE LEFT LUNG BASE CONSISTENT WITH
+ ATELECTASIS VERSUS INFECTION WITH PERSISTENT LEFT PLEURAL
+ EFFUSION.
+4. LEFT UPPER LUNG OPACITY IS UNCHANGED FROM PREVIOUS.
+5. NO INTERSTITIAL EDEMA.
+Summary: 4: POSSIBLE SIGNIFICANT ABNORMALITY/CHANGES, MAY NEED
+ACTION.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: grimes, thiago.  on: 1-4-17
+ __________________________________
+Narrative: PORTABLE CHEST, ONE VIEW: 1-4-2017
+PREVIOUS
+Full report: NARRATIVE:
+PORTABLE CHEST, ONE VIEW: 1-4-2017
+PREVIOUS COMPARISON: One-view chest 1/4/2017.
+HISTORY: Ascending aortic aneurysm.
+IMPRESSION:
+1. LEFT UPPER EXTREMITY PICC LINE, DISTAL TIP OF WHICH IS STILL
+ WITHIN THE LEFT AXILLA.
+2. RIGHT CENTRAL LINE, TRACHEOSTOMY, POSTSURGICAL WIRES, AORTIC
+ VALVE, AND STENT GRAFT UNCHANGED FROM PREVIOUS.
+3. INCREASED OPACIFICATION OF THE LEFT LUNG BASE CONSISTENT WITH
+ ATELECTASIS VERSUS INFECTION WITH PERSISTENT LEFT PLEURAL
+ EFFUSION.
+4. LEFT UPPER LUNG OPACITY IS UNCHANGED FROM PREVIOUS.
+5. NO INTERSTITIAL EDEMA.
+END OF IMPRESSION:
+SUMMARY 4: POSSIBLE SIGNIFICANT ABNORMALITY/CHANGES, MAY NEED
+ACTION.
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: grimes, thiago.  on: 1-4-17
+ __________________________________
+ 
+ACCESSION NUMBER:
+1981 37
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""55"", ""deid_patient_id"": ""patient00114"", ""dicom_path"": ""patient00114/study20/view1_frontal.dcm"", ""ethnicity"": ""Unknown"", ""path_to_dcm"": ""train/patient00114/study20/view1_frontal.dcm"", ""path_to_image"": ""train/patient00114/study20/view1_frontal.jpg"", ""patient_id"": ""patient00114"", ""patient_report_date_order"": ""20"", ""race"": ""Unknown"", ""section_accession_number"": ""\n1981 37\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study20"", ""study_key"": ""patient00114/study20"", ""view_stem"": ""view1_frontal""}"
+patient00102/study1,patient00102/study1/view1_frontal.dcm,55,Male,White,Non-Hispanic/Non-Latino,0.060901884847124346,0.2924580148625356,0.0,0.29251077079482535,0.0,10.180684089660645,-0.019152501598000526,0.3668641746044159,-6.774418354034424,1.0122697353363037,11.947328567504883,0.020310023799538612,0.43063342571258545,-1.7128570079803467,1.3827180862426758,"No warning, critical, or severe quality evidence exceeded the configured thresholds.",0.14648234844207764,patient00408/study2,patient00408/study2/view1_frontal.dcm,train/patient00408/study2/view1_frontal.dcm,train/patient00408/study2/view1_frontal.jpg,45,Male,White,Non-Hispanic/Non-Latino,0.0,0.0,0.0,0.0,0.9273839567731317,10.809638023376465,-0.023044854402542114,0.3893778622150421,-7.003493309020996,1.1553469896316528,12.558767318725586,0.019167376682162285,0.4527699649333954,-1.5473825931549072,1.4395827054977417,"No warning, critical, or severe quality evidence exceeded the configured thresholds.","Age: 45
+Sex: Male
+Race: White
+Ethnicity: Non-Hispanic/Non-Latino
+Comparison: One view chest dated 1/23/2008 at 1247.
+Impression: 1. INTERVAL PLACEMENT OF A LEFT PICC LINE WITH THE DISTAL TIP NEAR
+THE CAVOATRIAL JUNCTION. A METALLIC FIXATION DEVICE IS SEEN AROUND
+THE NECK.
+2. THE LUNGS ARE CLEAR WITHOUT EVIDENCE OF FOCAL CONSOLIDATION OR
+PLEURAL EFFUSIONS.
+3. CARDIOMEDIASTINAL SILHOUETTE IS UNREMARKABLE.
+Summary: 1 NO SIGNIFICANT ABNORMALITY
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: KENDALL D., DICKERSON  on: 1-23-2008
+ __________________________________
+Narrative: ONE VIEW CHEST: 1-23-08 at 1436 hours
+Full report: NARRATIVE:
+ONE VIEW CHEST: 1-23-08 at 1436 hours
+COMPARISON: One view chest dated 1/23/2008 at 1247.
+IMPRESSION:
+1. INTERVAL PLACEMENT OF A LEFT PICC LINE WITH THE DISTAL TIP NEAR
+THE CAVOATRIAL JUNCTION. A METALLIC FIXATION DEVICE IS SEEN AROUND
+THE NECK.
+2. THE LUNGS ARE CLEAR WITHOUT EVIDENCE OF FOCAL CONSOLIDATION OR
+PLEURAL EFFUSIONS.
+3. CARDIOMEDIASTINAL SILHOUETTE IS UNREMARKABLE.
+END OF IMPRESSION:
+SUMMARY: 1 NO SIGNIFICANT ABNORMALITY
+I have personally reviewed the images for this examination and agree
+with the report transcribed above.
+By: KENDALL D., DICKERSON  on: 1-23-2008
+ __________________________________
+ 
+ACCESSION NUMBER:
+rLtqnOBfDr
+This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.","{""age"": ""45"", ""deid_patient_id"": ""patient00408"", ""dicom_path"": ""patient00408/study2/view1_frontal.dcm"", ""ethnicity"": ""Non-Hispanic/Non-Latino"", ""path_to_dcm"": ""train/patient00408/study2/view1_frontal.dcm"", ""path_to_image"": ""train/patient00408/study2/view1_frontal.jpg"", ""patient_id"": ""patient00408"", ""patient_report_date_order"": ""2"", ""race"": ""White"", ""section_accession_number"": ""\nrLtqnOBfDr\nThis report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient."", ""sex"": ""Male"", ""study_id"": ""study2"", ""study_key"": ""patient00408/study2"", ""view_stem"": ""view1_frontal""}"
