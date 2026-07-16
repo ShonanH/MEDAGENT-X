@@ -13,7 +13,7 @@
 - DICOM path: `patient00115/study2/view1_frontal.dcm`
 - Judge decision: **CONCORDANT**
 - Disease F1: `1.000`
-- Label macro score: `0.643`
+- Label macro score: `0.714`
 
 ### Explanation
 

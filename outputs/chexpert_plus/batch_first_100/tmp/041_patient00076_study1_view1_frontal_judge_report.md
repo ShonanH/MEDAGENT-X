@@ -3,21 +3,21 @@
 ## Summary
 
 - Total cases: `1`
-- Concordant: `1`
+- Concordant: `0`
 - Partially concordant: `0`
-- Discordant: `0`
+- Discordant: `1`
 
 ## Case
 
 - Study key: `patient00076/study1`
 - DICOM path: `patient00076/study1/view1_frontal.dcm`
-- Judge decision: **CONCORDANT**
-- Disease F1: `1.000`
-- Label macro score: `0.607`
+- Judge decision: **DISCORDANT**
+- Disease F1: `0.000`
+- Label macro score: `0.464`
 
 ### Explanation
 
-Predicted disease labels are concordant with report-derived ground truth labels.
+Very low disease F1 with critical false positives: 0.000
 
 ### Ground Truth Present Labels
 
@@ -26,11 +26,16 @@ Predicted disease labels are concordant with report-derived ground truth labels.
 
 ### Predicted Present Labels
 
-- Lung Opacity
+- Atelectasis
+- Edema
+- Pleural Effusion
 
 ### Partial Or Mismatched Labels
 
-- None
+- Atelectasis: predicted `present`, ground truth `absent`
+- Edema: predicted `present`, ground truth `absent`
+- Pleural Effusion: predicted `present`, ground truth `uncertain`
+- Lung Opacity: predicted `uncertain`, ground truth `present`
 
 ### Ground Truth Report Excerpt
 

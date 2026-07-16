@@ -12,12 +12,12 @@
 - Study key: `patient00078/study3`
 - DICOM path: `patient00078/study3/view1_frontal.dcm`
 - Judge decision: **PARTIALLY_CONCORDANT**
-- Disease F1: `0.000`
-- Label macro score: `0.536`
+- Disease F1: `0.667`
+- Label macro score: `0.571`
 
 ### Explanation
 
-Ground-truth present disease labels predicted uncertain: ['Pneumothorax']
+Critical hallucinated disease labels: ['Atelectasis'] Disease status mismatches: ['Atelectasis']
 
 ### Ground Truth Present Labels
 
@@ -25,11 +25,12 @@ Ground-truth present disease labels predicted uncertain: ['Pneumothorax']
 
 ### Predicted Present Labels
 
-- None
+- Atelectasis
+- Pneumothorax
 
 ### Partial Or Mismatched Labels
 
-- Pneumothorax: predicted `uncertain`, ground truth `present`
+- Atelectasis: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 

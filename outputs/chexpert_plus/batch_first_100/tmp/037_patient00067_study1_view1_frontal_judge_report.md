@@ -3,21 +3,21 @@
 ## Summary
 
 - Total cases: `1`
-- Concordant: `1`
-- Partially concordant: `0`
+- Concordant: `0`
+- Partially concordant: `1`
 - Discordant: `0`
 
 ## Case
 
 - Study key: `patient00067/study1`
 - DICOM path: `patient00067/study1/view1_frontal.dcm`
-- Judge decision: **CONCORDANT**
-- Disease F1: `1.000`
-- Label macro score: `0.571`
+- Judge decision: **PARTIALLY_CONCORDANT**
+- Disease F1: `0.000`
+- Label macro score: `0.536`
 
 ### Explanation
 
-Predicted disease labels are concordant with report-derived ground truth labels.
+Predicted present disease labels with uncertain ground truth: ['Pleural Effusion']
 
 ### Ground Truth Present Labels
 
@@ -25,11 +25,11 @@ Predicted disease labels are concordant with report-derived ground truth labels.
 
 ### Predicted Present Labels
 
-- None
+- Pleural Effusion
 
 ### Partial Or Mismatched Labels
 
-- None
+- Pleural Effusion: predicted `present`, ground truth `uncertain`
 
 ### Ground Truth Report Excerpt
 

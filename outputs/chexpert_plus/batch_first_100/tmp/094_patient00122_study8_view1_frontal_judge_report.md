@@ -17,7 +17,7 @@
 
 ### Explanation
 
-Ground-truth present disease labels predicted uncertain: ['Consolidation'] Critical hallucinated disease labels: ['Atelectasis', 'Lung Opacity'] Disease status mismatches: ['Atelectasis', 'Lung Opacity']
+Ground-truth present disease labels predicted uncertain: ['Consolidation'] Critical hallucinated disease labels: ['Atelectasis', 'Edema'] Disease status mismatches: ['Atelectasis', 'Edema']
 
 ### Ground Truth Present Labels
 
@@ -28,14 +28,14 @@ Ground-truth present disease labels predicted uncertain: ['Consolidation'] Criti
 ### Predicted Present Labels
 
 - Atelectasis
-- Lung Opacity
+- Edema
 - Pleural Effusion
 
 ### Partial Or Mismatched Labels
 
 - Atelectasis: predicted `present`, ground truth `absent`
 - Consolidation: predicted `uncertain`, ground truth `present`
-- Lung Opacity: predicted `present`, ground truth `absent`
+- Edema: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 

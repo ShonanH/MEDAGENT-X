@@ -4,20 +4,20 @@
 
 - Total cases: `1`
 - Concordant: `0`
-- Partially concordant: `1`
-- Discordant: `0`
+- Partially concordant: `0`
+- Discordant: `1`
 
 ## Case
 
 - Study key: `patient00122/study6`
 - DICOM path: `patient00122/study6/view1_frontal.dcm`
-- Judge decision: **PARTIALLY_CONCORDANT**
-- Disease F1: `0.667`
-- Label macro score: `0.536`
+- Judge decision: **DISCORDANT**
+- Disease F1: `0.400`
+- Label macro score: `0.464`
 
 ### Explanation
 
-Critical hallucinated disease labels: ['Lung Opacity'] Disease status mismatches: ['Lung Opacity']
+Multiple critical hallucinated disease labels: ['Atelectasis', 'Edema', 'Enlarged Cardiomediastinum']
 
 ### Ground Truth Present Labels
 
@@ -26,12 +26,16 @@ Critical hallucinated disease labels: ['Lung Opacity'] Disease status mismatches
 
 ### Predicted Present Labels
 
-- Lung Opacity
+- Atelectasis
+- Edema
+- Enlarged Cardiomediastinum
 - Pleural Effusion
 
 ### Partial Or Mismatched Labels
 
-- Lung Opacity: predicted `present`, ground truth `absent`
+- Atelectasis: predicted `present`, ground truth `absent`
+- Edema: predicted `present`, ground truth `absent`
+- Enlarged Cardiomediastinum: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 

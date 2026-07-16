@@ -3,21 +3,21 @@
 ## Summary
 
 - Total cases: `1`
-- Concordant: `0`
-- Partially concordant: `1`
+- Concordant: `1`
+- Partially concordant: `0`
 - Discordant: `0`
 
 ## Case
 
 - Study key: `patient00034/study1`
 - DICOM path: `patient00034/study1/view1_frontal.dcm`
-- Judge decision: **PARTIALLY_CONCORDANT**
-- Disease F1: `0.000`
-- Label macro score: `0.607`
+- Judge decision: **CONCORDANT**
+- Disease F1: `1.000`
+- Label macro score: `0.643`
 
 ### Explanation
 
-Ground-truth present disease labels predicted uncertain: ['Edema']
+Predicted disease labels are concordant with report-derived ground truth labels.
 
 ### Ground Truth Present Labels
 
@@ -25,11 +25,11 @@ Ground-truth present disease labels predicted uncertain: ['Edema']
 
 ### Predicted Present Labels
 
-- None
+- Edema
 
 ### Partial Or Mismatched Labels
 
-- Edema: predicted `uncertain`, ground truth `present`
+- None
 
 ### Ground Truth Report Excerpt
 

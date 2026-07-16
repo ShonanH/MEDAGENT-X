@@ -25,11 +25,11 @@ Very low disease F1 with critical false positives: 0.000
 
 ### Predicted Present Labels
 
-- Lung Opacity
+- Atelectasis
 
 ### Partial Or Mismatched Labels
 
-- Lung Opacity: predicted `present`, ground truth `absent`
+- Atelectasis: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 

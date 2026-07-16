@@ -18,6 +18,9 @@ from src.medagentx.fusion.calibration import (
     RECALL_LENIENT_LABELS,
     STRICT_PRESENT_LABELS,
 )
+
+DEFAULT_OUTPUT_PATH = "outputs/chexpert_plus/disease_reasoning_results.csv"
+
 DEFAULT_CLASSIFIER_PREDICTIONS_PATH = (
     "outputs/chexpert_plus/fusion_classifier/ensemble_classifier_predictions.csv"
 )

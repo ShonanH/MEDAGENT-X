@@ -13,7 +13,7 @@
 - DICOM path: `patient00087/study3/view3_lateral.dcm`
 - Judge decision: **DISCORDANT**
 - Disease F1: `0.000`
-- Label macro score: `0.571`
+- Label macro score: `0.536`
 
 ### Explanation
 
@@ -25,11 +25,13 @@ Very low disease F1 with critical false positives: 0.000
 
 ### Predicted Present Labels
 
-- Lung Opacity
+- Atelectasis
+- Pleural Effusion
 
 ### Partial Or Mismatched Labels
 
-- Lung Opacity: predicted `present`, ground truth `absent`
+- Atelectasis: predicted `present`, ground truth `absent`
+- Pleural Effusion: predicted `present`, ground truth `uncertain`
 
 ### Ground Truth Report Excerpt
 

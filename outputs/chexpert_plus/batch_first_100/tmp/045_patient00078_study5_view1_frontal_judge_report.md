@@ -4,20 +4,20 @@
 
 - Total cases: `1`
 - Concordant: `0`
-- Partially concordant: `1`
-- Discordant: `0`
+- Partially concordant: `0`
+- Discordant: `1`
 
 ## Case
 
 - Study key: `patient00078/study5`
 - DICOM path: `patient00078/study5/view1_frontal.dcm`
-- Judge decision: **PARTIALLY_CONCORDANT**
+- Judge decision: **DISCORDANT**
 - Disease F1: `0.000`
-- Label macro score: `0.679`
+- Label macro score: `0.643`
 
 ### Explanation
 
-Ground-truth present disease labels predicted uncertain: ['Pneumothorax']
+Very low disease F1 with critical false positives: 0.000
 
 ### Ground Truth Present Labels
 
@@ -25,10 +25,11 @@ Ground-truth present disease labels predicted uncertain: ['Pneumothorax']
 
 ### Predicted Present Labels
 
-- None
+- Atelectasis
 
 ### Partial Or Mismatched Labels
 
+- Atelectasis: predicted `present`, ground truth `absent`
 - Pneumothorax: predicted `uncertain`, ground truth `present`
 
 ### Ground Truth Report Excerpt

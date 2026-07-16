@@ -12,12 +12,12 @@
 - Study key: `patient00068/study1`
 - DICOM path: `patient00068/study1/view1_frontal.dcm`
 - Judge decision: **PARTIALLY_CONCORDANT**
-- Disease F1: `0.000`
+- Disease F1: `0.667`
 - Label macro score: `0.571`
 
 ### Explanation
 
-Ground-truth present disease labels predicted uncertain: ['Edema']
+Critical hallucinated disease labels: ['Atelectasis'] Disease status mismatches: ['Atelectasis']
 
 ### Ground Truth Present Labels
 
@@ -25,11 +25,12 @@ Ground-truth present disease labels predicted uncertain: ['Edema']
 
 ### Predicted Present Labels
 
-- None
+- Atelectasis
+- Edema
 
 ### Partial Or Mismatched Labels
 
-- Edema: predicted `uncertain`, ground truth `present`
+- Atelectasis: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 

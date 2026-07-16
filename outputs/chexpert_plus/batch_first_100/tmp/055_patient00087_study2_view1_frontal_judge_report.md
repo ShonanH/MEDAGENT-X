@@ -4,20 +4,20 @@
 
 - Total cases: `1`
 - Concordant: `0`
-- Partially concordant: `1`
-- Discordant: `0`
+- Partially concordant: `0`
+- Discordant: `1`
 
 ## Case
 
 - Study key: `patient00087/study2`
 - DICOM path: `patient00087/study2/view1_frontal.dcm`
-- Judge decision: **PARTIALLY_CONCORDANT**
+- Judge decision: **DISCORDANT**
 - Disease F1: `0.000`
-- Label macro score: `0.607`
+- Label macro score: `0.536`
 
 ### Explanation
 
-Ground-truth present disease labels predicted uncertain: ['Cardiomegaly', 'Lung Opacity']
+Very low disease F1 with critical false positives: 0.000
 
 ### Ground Truth Present Labels
 
@@ -26,11 +26,14 @@ Ground-truth present disease labels predicted uncertain: ['Cardiomegaly', 'Lung 
 
 ### Predicted Present Labels
 
-- None
+- Atelectasis
+- Pleural Effusion
 
 ### Partial Or Mismatched Labels
 
+- Atelectasis: predicted `present`, ground truth `absent`
 - Cardiomegaly: predicted `uncertain`, ground truth `present`
+- Pleural Effusion: predicted `present`, ground truth `uncertain`
 - Lung Opacity: predicted `uncertain`, ground truth `present`
 
 ### Ground Truth Report Excerpt

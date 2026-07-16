@@ -3,21 +3,21 @@
 ## Summary
 
 - Total cases: `1`
-- Concordant: `1`
-- Partially concordant: `0`
+- Concordant: `0`
+- Partially concordant: `1`
 - Discordant: `0`
 
 ## Case
 
 - Study key: `patient00113/study2`
 - DICOM path: `patient00113/study2/view1_frontal.dcm`
-- Judge decision: **CONCORDANT**
-- Disease F1: `1.000`
-- Label macro score: `0.571`
+- Judge decision: **PARTIALLY_CONCORDANT**
+- Disease F1: `0.500`
+- Label macro score: `0.500`
 
 ### Explanation
 
-Predicted disease labels are concordant with report-derived ground truth labels.
+Critical hallucinated disease labels: ['Atelectasis', 'Edema'] Disease status mismatches: ['Atelectasis', 'Edema']
 
 ### Ground Truth Present Labels
 
@@ -26,11 +26,14 @@ Predicted disease labels are concordant with report-derived ground truth labels.
 
 ### Predicted Present Labels
 
+- Atelectasis
+- Edema
 - Pleural Effusion
 
 ### Partial Or Mismatched Labels
 
-- None
+- Atelectasis: predicted `present`, ground truth `absent`
+- Edema: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 

@@ -3,21 +3,21 @@
 ## Summary
 
 - Total cases: `1`
-- Concordant: `1`
-- Partially concordant: `0`
+- Concordant: `0`
+- Partially concordant: `1`
 - Discordant: `0`
 
 ## Case
 
 - Study key: `patient00009/study1`
 - DICOM path: `patient00009/study1/view1_frontal.dcm`
-- Judge decision: **CONCORDANT**
-- Disease F1: `1.000`
-- Label macro score: `0.679`
+- Judge decision: **PARTIALLY_CONCORDANT**
+- Disease F1: `0.000`
+- Label macro score: `0.643`
 
 ### Explanation
 
-Predicted disease labels are concordant with report-derived ground truth labels.
+Predicted present disease labels with uncertain ground truth: ['Atelectasis']
 
 ### Ground Truth Present Labels
 
@@ -25,11 +25,11 @@ Predicted disease labels are concordant with report-derived ground truth labels.
 
 ### Predicted Present Labels
 
-- None
+- Atelectasis
 
 ### Partial Or Mismatched Labels
 
-- None
+- Atelectasis: predicted `present`, ground truth `uncertain`
 
 ### Ground Truth Report Excerpt
 

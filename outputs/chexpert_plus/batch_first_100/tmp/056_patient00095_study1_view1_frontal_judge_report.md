@@ -12,12 +12,12 @@
 - Study key: `patient00095/study1`
 - DICOM path: `patient00095/study1/view1_frontal.dcm`
 - Judge decision: **PARTIALLY_CONCORDANT**
-- Disease F1: `0.000`
-- Label macro score: `0.571`
+- Disease F1: `0.500`
+- Label macro score: `0.607`
 
 ### Explanation
 
-Ground-truth present disease labels predicted uncertain: ['Atelectasis', 'Consolidation', 'Lung Opacity']
+Ground-truth present disease labels predicted uncertain: ['Consolidation', 'Lung Opacity']
 
 ### Ground Truth Present Labels
 
@@ -28,11 +28,10 @@ Ground-truth present disease labels predicted uncertain: ['Atelectasis', 'Consol
 
 ### Predicted Present Labels
 
-- None
+- Atelectasis
 
 ### Partial Or Mismatched Labels
 
-- Atelectasis: predicted `uncertain`, ground truth `present`
 - Consolidation: predicted `uncertain`, ground truth `present`
 - Lung Opacity: predicted `uncertain`, ground truth `present`
 

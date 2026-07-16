@@ -4,20 +4,20 @@
 
 - Total cases: `1`
 - Concordant: `0`
-- Partially concordant: `1`
-- Discordant: `0`
+- Partially concordant: `0`
+- Discordant: `1`
 
 ## Case
 
 - Study key: `patient00016/study1`
 - DICOM path: `patient00016/study1/view1_frontal.dcm`
-- Judge decision: **PARTIALLY_CONCORDANT**
+- Judge decision: **DISCORDANT**
 - Disease F1: `0.000`
-- Label macro score: `0.714`
+- Label macro score: `0.679`
 
 ### Explanation
 
-Ground-truth present disease labels predicted uncertain: ['Fracture', 'Lung Opacity', 'Pleural Other']
+Very low disease F1 with critical false positives: 0.000
 
 ### Ground Truth Present Labels
 
@@ -27,10 +27,11 @@ Ground-truth present disease labels predicted uncertain: ['Fracture', 'Lung Opac
 
 ### Predicted Present Labels
 
-- None
+- Atelectasis
 
 ### Partial Or Mismatched Labels
 
+- Atelectasis: predicted `present`, ground truth `absent`
 - Fracture: predicted `uncertain`, ground truth `present`
 - Lung Opacity: predicted `uncertain`, ground truth `present`
 - Pleural Other: predicted `uncertain`, ground truth `present`
