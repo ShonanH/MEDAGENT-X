@@ -12,12 +12,12 @@
 - Study key: `patient00078/study6`
 - DICOM path: `patient00078/study6/view1_frontal.dcm`
 - Judge decision: **PARTIALLY_CONCORDANT**
-- Disease F1: `0.000`
-- Label macro score: `0.750`
+- Disease F1: `0.500`
+- Label macro score: `0.607`
 
 ### Explanation
 
-Ground-truth present disease labels predicted uncertain: ['Pneumothorax']
+Critical hallucinated disease labels: ['Cardiomegaly', 'Lung Lesion'] Disease status mismatches: ['Cardiomegaly', 'Lung Lesion']
 
 ### Ground Truth Present Labels
 
@@ -25,11 +25,14 @@ Ground-truth present disease labels predicted uncertain: ['Pneumothorax']
 
 ### Predicted Present Labels
 
-- None
+- Cardiomegaly
+- Lung Lesion
+- Pneumothorax
 
 ### Partial Or Mismatched Labels
 
-- Pneumothorax: predicted `uncertain`, ground truth `present`
+- Cardiomegaly: predicted `present`, ground truth `absent`
+- Lung Lesion: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 
