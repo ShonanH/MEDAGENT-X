@@ -22,6 +22,19 @@ from src.medagentx.fusion.features import (
 from src.medagentx.fusion.labels import LABEL_MODE_JUDGE, training_value_from_row
 
 
+def vector_from_jsonish(value) -> np.ndarray:
+    if isinstance(value, (list, tuple, np.ndarray)):
+        return np.asarray(value, dtype=np.float32)
+    if value is None or (isinstance(value, float) and np.isnan(value)):
+        return np.zeros(len(DISEASE_LABELS), dtype=np.float32)
+    if isinstance(value, str):
+        text = value.strip()
+        if not text:
+            return np.zeros(len(DISEASE_LABELS), dtype=np.float32)
+        return np.asarray(json.loads(text), dtype=np.float32)
+    raise TypeError(f"Unsupported vector value type: {type(value)}")
+
+
 class FusionFeatureDataset(Dataset):
     def __init__(
         self,
@@ -74,7 +87,9 @@ def build_image_training_table(
             "dicom_path": row["dicom_path"],
             "deid_patient_id": row["deid_patient_id"],
             "feature_vector_json": json.dumps(embedding.astype(float).tolist()),
-            "densenet_prob_vector_json": row["densenet_prob_vector_json"],
+            "densenet_prob_vector_json": json.dumps(
+                vector_from_jsonish(row["densenet_prob_vector_json"]).astype(float).tolist()
+            ),
         }
         for label in DISEASE_LABELS:
             slug = snake_label(label)
@@ -90,12 +105,8 @@ def build_study_training_table(
 ) -> pd.DataFrame:
     rows = []
     for study_key, group in image_table.groupby("study_key", sort=False):
-        embeddings = [
-            np.asarray(json.loads(v), dtype=np.float32) for v in group["feature_vector_json"]
-        ]
-        densenet_vectors = [
-            np.asarray(json.loads(v), dtype=np.float32) for v in group["densenet_prob_vector_json"]
-        ]
+        embeddings = [vector_from_jsonish(v) for v in group["feature_vector_json"]]
+        densenet_vectors = [vector_from_jsonish(v) for v in group["densenet_prob_vector_json"]]
         if pool_mode == "attention":
             x_study = attention_aggregate_study_features(embeddings)
             d_study = attention_aggregate_study_features(densenet_vectors)
@@ -132,14 +143,14 @@ def arrays_from_training_table(
     include_densenet_probs: bool = True,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray | None]:
     X = np.stack(
-        [np.asarray(json.loads(v), dtype=np.float32) for v in table_df["feature_vector_json"]],
+        [vector_from_jsonish(v) for v in table_df["feature_vector_json"]],
         axis=0,
     )
 
     densenet_probs = None
     if include_densenet_probs:
         densenet_probs = np.stack(
-            [np.asarray(json.loads(v), dtype=np.float32) for v in table_df["densenet_prob_vector_json"]],
+            [vector_from_jsonish(v) for v in table_df["densenet_prob_vector_json"]],
             axis=0,
         )
 

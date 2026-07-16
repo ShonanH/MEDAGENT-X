@@ -93,6 +93,7 @@ def tune_thresholds_on_validation(
     mask: np.ndarray,
     thresholds: np.ndarray | None = None,
 ) -> tuple[np.ndarray, list[float]]:
+    # Training-time tuning: no deployment floors (0.65-0.88). Those are applied in script 14.
     return tune_thresholds_precision_favored(
         y_true,
         y_prob,
@@ -100,7 +101,9 @@ def tune_thresholds_on_validation(
         DISEASE_LABELS,
         thresholds=thresholds,
         beta=0.5,
-        min_precision=0.35,
+        min_precision=0.25,
+        apply_floors=False,
+        default_threshold=0.5,
     )
 
 

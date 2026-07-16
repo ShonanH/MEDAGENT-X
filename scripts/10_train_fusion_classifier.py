@@ -44,6 +44,7 @@ from src.medagentx.fusion.constants import (
 )
 from src.medagentx.fusion.features import feature_dim_for_mode, load_feature_manifests
 from src.medagentx.fusion.labels import LABEL_MODE_JUDGE, LABEL_MODE_WEAK
+from src.medagentx.fusion.calibration import tune_thresholds_precision_favored
 from src.medagentx.fusion.metrics import (
     compute_pos_weight,
     fit_temperature_scaling,
@@ -311,6 +312,20 @@ def main():
         uses_densenet=uses_densenet,
     )
     test_metrics = multilabel_metrics(y_test, test_probs, m_test, thresholds, DISEASE_LABELS)
+    fixed_thresholds = np.full(len(DISEASE_LABELS), 0.5, dtype=np.float32)
+    test_metrics_fixed = multilabel_metrics(
+        y_test, test_probs, m_test, fixed_thresholds, DISEASE_LABELS
+    )
+    deployment_thresholds, _ = tune_thresholds_precision_favored(
+        y_val,
+        val_probs,
+        m_val,
+        DISEASE_LABELS,
+        apply_floors=True,
+    )
+    test_metrics_deploy = multilabel_metrics(
+        y_test, test_probs, m_test, deployment_thresholds, DISEASE_LABELS
+    )
 
     model_path = args.output_dir / DEFAULT_MODEL_PATH.name
     thresholds_path = args.output_dir / DEFAULT_THRESHOLDS_PATH.name
@@ -373,8 +388,23 @@ def main():
     _progress(f"Saved metrics: {metrics_path}")
     _progress(f"Saved test predictions: {test_preds_path}")
     _progress(f"Validation temperature: {temperature:.4f}")
-    _progress(f"Test macro F1 ({args.label_mode} labels): {test_metrics['macro_f1']:.4f}")
-    _progress(f"Test micro F1 ({args.label_mode} labels): {test_metrics['micro_f1']:.4f}")
+    _progress(f"Test macro F1 (tuned thresholds): {test_metrics['macro_f1']:.4f}")
+    _progress(f"Test micro F1 (tuned thresholds): {test_metrics['micro_f1']:.4f}")
+    _progress(f"Test macro F1 (fixed 0.5 threshold): {test_metrics_fixed['macro_f1']:.4f}")
+    _progress(
+        f"Test macro F1 (deployment floors, reference only): "
+        f"{test_metrics_deploy['macro_f1']:.4f}"
+    )
+    worst = sorted(test_metrics["per_label"], key=lambda row: row["f1"])[:3]
+    best = sorted(test_metrics["per_label"], key=lambda row: row["f1"], reverse=True)[:3]
+    _progress(
+        "Lowest per-label F1: "
+        + ", ".join(f"{row['label']}={row['f1']:.3f}" for row in worst)
+    )
+    _progress(
+        "Highest per-label F1: "
+        + ", ".join(f"{row['label']}={row['f1']:.3f}" for row in best)
+    )
     _progress(f"Total runtime: {time.time() - started:.1f}s")
     _progress("Next steps:")
     _progress("  python scripts/12_run_fusion_inference.py")

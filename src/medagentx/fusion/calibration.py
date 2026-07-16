@@ -140,6 +140,8 @@ def tune_thresholds_precision_favored(
     thresholds: np.ndarray | None = None,
     beta: float = 0.5,
     min_precision: float = 0.35,
+    apply_floors: bool = True,
+    default_threshold: float = 0.5,
 ) -> tuple[np.ndarray, list[float]]:
     if thresholds is None:
         thresholds = np.linspace(0.10, 0.95, 35)
@@ -148,7 +150,10 @@ def tune_thresholds_precision_favored(
     best_scores: list[float] = []
 
     for j, label in enumerate(label_names):
-        best_t = apply_threshold_floor(label, DEFAULT_PRESENT_THRESHOLD)
+        if apply_floors:
+            best_t = apply_threshold_floor(label, DEFAULT_PRESENT_THRESHOLD)
+        else:
+            best_t = float(default_threshold)
         best_score = -1.0
 
         valid = mask[:, j] > 0
@@ -177,7 +182,10 @@ def tune_thresholds_precision_favored(
                 best_score = score
                 best_t = float(t)
 
-        best_thresholds.append(apply_threshold_floor(label, best_t))
+        if apply_floors:
+            best_thresholds.append(apply_threshold_floor(label, best_t))
+        else:
+            best_thresholds.append(best_t)
         best_scores.append(best_score)
 
     return np.asarray(best_thresholds, dtype=np.float32), best_scores
