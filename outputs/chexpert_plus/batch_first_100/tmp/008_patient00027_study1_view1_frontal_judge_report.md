@@ -4,20 +4,20 @@
 
 - Total cases: `1`
 - Concordant: `0`
-- Partially concordant: `0`
-- Discordant: `1`
+- Partially concordant: `1`
+- Discordant: `0`
 
 ## Case
 
 - Study key: `patient00027/study1`
 - DICOM path: `patient00027/study1/view1_frontal.dcm`
-- Judge decision: **DISCORDANT**
+- Judge decision: **PARTIALLY_CONCORDANT**
 - Disease F1: `0.000`
-- Label macro score: `0.607`
+- Label macro score: `0.536`
 
 ### Explanation
 
-Very low disease F1 with critical false positives: 0.000
+Predicted present disease labels with uncertain ground truth: ['Atelectasis']
 
 ### Ground Truth Present Labels
 
@@ -26,16 +26,10 @@ Very low disease F1 with critical false positives: 0.000
 ### Predicted Present Labels
 
 - Atelectasis
-- Cardiomegaly
-- Fracture
-- Pleural Other
 
 ### Partial Or Mismatched Labels
 
 - Atelectasis: predicted `present`, ground truth `uncertain`
-- Cardiomegaly: predicted `present`, ground truth `absent`
-- Fracture: predicted `present`, ground truth `absent`
-- Pleural Other: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 

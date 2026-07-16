@@ -4,20 +4,20 @@
 
 - Total cases: `1`
 - Concordant: `0`
-- Partially concordant: `0`
-- Discordant: `1`
+- Partially concordant: `1`
+- Discordant: `0`
 
 ## Case
 
 - Study key: `patient00122/study4`
 - DICOM path: `patient00122/study4/view1_frontal.dcm`
-- Judge decision: **DISCORDANT**
-- Disease F1: `0.364`
-- Label macro score: `0.429`
+- Judge decision: **PARTIALLY_CONCORDANT**
+- Disease F1: `0.800`
+- Label macro score: `0.607`
 
 ### Explanation
 
-Multiple critical hallucinated disease labels: ['Edema', 'Pleural Effusion', 'Pneumonia', 'Lung Lesion']
+Critical hallucinated disease labels: ['Pleural Effusion'] Disease status mismatches: ['Pleural Effusion']
 
 ### Ground Truth Present Labels
 
@@ -27,24 +27,12 @@ Multiple critical hallucinated disease labels: ['Edema', 'Pleural Effusion', 'Pn
 ### Predicted Present Labels
 
 - Atelectasis
-- Consolidation
-- Edema
-- Fracture
-- Lung Lesion
 - Lung Opacity
 - Pleural Effusion
-- Pleural Other
-- Pneumonia
 
 ### Partial Or Mismatched Labels
 
-- Consolidation: predicted `present`, ground truth `uncertain`
-- Edema: predicted `present`, ground truth `absent`
 - Pleural Effusion: predicted `present`, ground truth `absent`
-- Pneumonia: predicted `present`, ground truth `absent`
-- Fracture: predicted `present`, ground truth `absent`
-- Lung Lesion: predicted `present`, ground truth `absent`
-- Pleural Other: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 

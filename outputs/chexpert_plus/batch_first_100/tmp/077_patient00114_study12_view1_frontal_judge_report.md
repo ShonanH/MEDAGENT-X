@@ -13,11 +13,11 @@
 - DICOM path: `patient00114/study12/view1_frontal.dcm`
 - Judge decision: **DISCORDANT**
 - Disease F1: `0.000`
-- Label macro score: `0.321`
+- Label macro score: `0.536`
 
 ### Explanation
 
-Multiple critical hallucinated disease labels: ['Atelectasis', 'Consolidation', 'Pleural Effusion', 'Pneumonia', 'Lung Lesion', 'Lung Opacity']
+Very low disease F1 with critical false positives: 0.000
 
 ### Ground Truth Present Labels
 
@@ -25,24 +25,10 @@ Multiple critical hallucinated disease labels: ['Atelectasis', 'Consolidation', 
 
 ### Predicted Present Labels
 
-- Atelectasis
-- Consolidation
-- Edema
-- Fracture
-- Lung Lesion
 - Lung Opacity
-- Pleural Effusion
-- Pneumonia
 
 ### Partial Or Mismatched Labels
 
-- Atelectasis: predicted `present`, ground truth `absent`
-- Consolidation: predicted `present`, ground truth `absent`
-- Edema: predicted `present`, ground truth `uncertain`
-- Pleural Effusion: predicted `present`, ground truth `absent`
-- Pneumonia: predicted `present`, ground truth `absent`
-- Fracture: predicted `present`, ground truth `absent`
-- Lung Lesion: predicted `present`, ground truth `absent`
 - Lung Opacity: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt

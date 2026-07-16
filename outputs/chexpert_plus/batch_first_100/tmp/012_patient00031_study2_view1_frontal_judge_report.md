@@ -4,20 +4,20 @@
 
 - Total cases: `1`
 - Concordant: `0`
-- Partially concordant: `0`
-- Discordant: `1`
+- Partially concordant: `1`
+- Discordant: `0`
 
 ## Case
 
 - Study key: `patient00031/study2`
 - DICOM path: `patient00031/study2/view1_frontal.dcm`
-- Judge decision: **DISCORDANT**
-- Disease F1: `0.400`
-- Label macro score: `0.536`
+- Judge decision: **PARTIALLY_CONCORDANT**
+- Disease F1: `0.667`
+- Label macro score: `0.607`
 
 ### Explanation
 
-Multiple critical hallucinated disease labels: ['Cardiomegaly', 'Pneumonia', 'Lung Lesion']
+Ground-truth present disease labels predicted uncertain: ['Edema']
 
 ### Ground Truth Present Labels
 
@@ -27,23 +27,11 @@ Multiple critical hallucinated disease labels: ['Cardiomegaly', 'Pneumonia', 'Lu
 
 ### Predicted Present Labels
 
-- Atelectasis
-- Cardiomegaly
-- Edema
-- Fracture
-- Lung Lesion
 - Lung Opacity
-- Pleural Other
-- Pneumonia
 
 ### Partial Or Mismatched Labels
 
-- Atelectasis: predicted `present`, ground truth `uncertain`
-- Cardiomegaly: predicted `present`, ground truth `absent`
-- Pneumonia: predicted `present`, ground truth `absent`
-- Fracture: predicted `present`, ground truth `absent`
-- Lung Lesion: predicted `present`, ground truth `absent`
-- Pleural Other: predicted `present`, ground truth `absent`
+- Edema: predicted `uncertain`, ground truth `present`
 
 ### Ground Truth Report Excerpt
 

@@ -17,7 +17,7 @@
 
 ### Explanation
 
-Multiple critical hallucinated disease labels: ['Atelectasis', 'Cardiomegaly', 'Lung Lesion', 'Lung Opacity']
+Very low disease F1 with critical false positives: 0.000
 
 ### Ground Truth Present Labels
 
@@ -25,19 +25,11 @@ Multiple critical hallucinated disease labels: ['Atelectasis', 'Cardiomegaly', '
 
 ### Predicted Present Labels
 
-- Atelectasis
-- Cardiomegaly
-- Lung Lesion
 - Lung Opacity
-- Pleural Other
 
 ### Partial Or Mismatched Labels
 
-- Atelectasis: predicted `present`, ground truth `absent`
-- Cardiomegaly: predicted `present`, ground truth `absent`
-- Lung Lesion: predicted `present`, ground truth `absent`
 - Lung Opacity: predicted `present`, ground truth `absent`
-- Pleural Other: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 
