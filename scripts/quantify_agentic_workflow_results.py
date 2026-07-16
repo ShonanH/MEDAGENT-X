@@ -30,7 +30,7 @@ CHEXPERT_LABELS = [
 
 NON_DISEASE_LABELS = {"Support Devices", "No Finding"}
 
-STATUS_ORDER = ["present", "absent", "uncertain", "unavailable"]
+STATUS_ORDER = ["present", "absent", "uncertain"]
 DECISION_ORDER = ["concordant", "partially_concordant", "discordant"]
 
 
