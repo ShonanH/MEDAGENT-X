@@ -13,7 +13,7 @@
 - DICOM path: `patient00009/study1/view1_frontal.dcm`
 - Judge decision: **DISCORDANT**
 - Disease F1: `0.000`
-- Label macro score: `0.607`
+- Label macro score: `0.536`
 
 ### Explanation
 
@@ -25,11 +25,17 @@ Very low disease F1 with critical false positives: 0.000
 
 ### Predicted Present Labels
 
+- Atelectasis
 - Cardiomegaly
+- Lung Opacity
+- Pleural Other
 
 ### Partial Or Mismatched Labels
 
+- Atelectasis: predicted `present`, ground truth `uncertain`
 - Cardiomegaly: predicted `present`, ground truth `absent`
+- Lung Opacity: predicted `present`, ground truth `absent`
+- Pleural Other: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 

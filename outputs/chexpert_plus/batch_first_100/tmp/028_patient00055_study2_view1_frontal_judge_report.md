@@ -12,12 +12,12 @@
 - Study key: `patient00055/study2`
 - DICOM path: `patient00055/study2/view1_frontal.dcm`
 - Judge decision: **DISCORDANT**
-- Disease F1: `0.000`
-- Label macro score: `0.679`
+- Disease F1: `0.400`
+- Label macro score: `0.500`
 
 ### Explanation
 
-High-risk missed disease labels marked absent/unavailable: ['Pneumothorax']
+Multiple critical hallucinated disease labels: ['Atelectasis', 'Cardiomegaly', 'Pneumonia']
 
 ### Ground Truth Present Labels
 
@@ -25,11 +25,16 @@ High-risk missed disease labels marked absent/unavailable: ['Pneumothorax']
 
 ### Predicted Present Labels
 
-- None
+- Atelectasis
+- Cardiomegaly
+- Pneumonia
+- Pneumothorax
 
 ### Partial Or Mismatched Labels
 
-- Pneumothorax: predicted `absent`, ground truth `present`
+- Atelectasis: predicted `present`, ground truth `absent`
+- Cardiomegaly: predicted `present`, ground truth `absent`
+- Pneumonia: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 

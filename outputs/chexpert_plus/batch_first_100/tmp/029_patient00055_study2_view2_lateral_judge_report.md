@@ -12,12 +12,12 @@
 - Study key: `patient00055/study2`
 - DICOM path: `patient00055/study2/view2_lateral.dcm`
 - Judge decision: **DISCORDANT**
-- Disease F1: `1.000`
+- Disease F1: `0.400`
 - Label macro score: `0.500`
 
 ### Explanation
 
-Multiple critical hallucinated disease labels: ['Pleural Effusion', 'Pneumonia', 'Lung Opacity']
+Multiple critical hallucinated disease labels: ['Atelectasis', 'Cardiomegaly', 'Pneumonia']
 
 ### Ground Truth Present Labels
 
@@ -25,16 +25,16 @@ Multiple critical hallucinated disease labels: ['Pleural Effusion', 'Pneumonia',
 
 ### Predicted Present Labels
 
-- Lung Opacity
-- Pleural Effusion
+- Atelectasis
+- Cardiomegaly
 - Pneumonia
+- Pneumothorax
 
 ### Partial Or Mismatched Labels
 
-- Pleural Effusion: predicted `present`, ground truth `absent`
+- Atelectasis: predicted `present`, ground truth `absent`
+- Cardiomegaly: predicted `present`, ground truth `absent`
 - Pneumonia: predicted `present`, ground truth `absent`
-- Pneumothorax: predicted `uncertain`, ground truth `present`
-- Lung Opacity: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 

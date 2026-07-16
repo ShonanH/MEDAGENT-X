@@ -12,12 +12,12 @@
 - Study key: `patient00096/study2`
 - DICOM path: `patient00096/study2/view1_frontal.dcm`
 - Judge decision: **DISCORDANT**
-- Disease F1: `0.000`
-- Label macro score: `0.643`
+- Disease F1: `0.222`
+- Label macro score: `0.429`
 
 ### Explanation
 
-High-risk missed disease labels marked absent/unavailable: ['Edema']
+Multiple critical hallucinated disease labels: ['Atelectasis', 'Cardiomegaly', 'Pneumonia', 'Lung Lesion', 'Lung Opacity']
 
 ### Ground Truth Present Labels
 
@@ -26,11 +26,24 @@ High-risk missed disease labels marked absent/unavailable: ['Edema']
 
 ### Predicted Present Labels
 
-- None
+- Atelectasis
+- Cardiomegaly
+- Edema
+- Fracture
+- Lung Lesion
+- Lung Opacity
+- Pleural Other
+- Pneumonia
 
 ### Partial Or Mismatched Labels
 
-- Edema: predicted `absent`, ground truth `present`
+- Atelectasis: predicted `present`, ground truth `absent`
+- Cardiomegaly: predicted `present`, ground truth `absent`
+- Pneumonia: predicted `present`, ground truth `absent`
+- Fracture: predicted `present`, ground truth `absent`
+- Lung Lesion: predicted `present`, ground truth `absent`
+- Lung Opacity: predicted `present`, ground truth `absent`
+- Pleural Other: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 

@@ -12,12 +12,12 @@
 - Study key: `patient00058/study1`
 - DICOM path: `patient00058/study1/view1_frontal.dcm`
 - Judge decision: **PARTIALLY_CONCORDANT**
-- Disease F1: `0.000`
-- Label macro score: `0.769`
+- Disease F1: `0.500`
+- Label macro score: `0.731`
 
 ### Explanation
 
-Ground-truth present disease labels predicted uncertain: ['Fracture']
+Critical hallucinated disease labels: ['Atelectasis', 'Cardiomegaly'] Disease status mismatches: ['Atelectasis', 'Cardiomegaly']
 
 ### Ground Truth Present Labels
 
@@ -25,12 +25,14 @@ Ground-truth present disease labels predicted uncertain: ['Fracture']
 
 ### Predicted Present Labels
 
-- None
+- Atelectasis
+- Cardiomegaly
+- Fracture
 
 ### Partial Or Mismatched Labels
 
-- Fracture: predicted `uncertain`, ground truth `present`
-- Lung Lesion: predicted `absent`, ground truth `uncertain`
+- Atelectasis: predicted `present`, ground truth `absent`
+- Cardiomegaly: predicted `present`, ground truth `absent`
 
 ### Ground Truth Report Excerpt
 
