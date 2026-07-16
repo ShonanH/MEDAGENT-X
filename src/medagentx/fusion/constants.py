@@ -20,6 +20,7 @@ DEFAULT_TRAINING_METRICS = DEFAULT_OUTPUT_DIR / "fusion_training_metrics.csv"
 DEFAULT_TEST_PREDICTIONS = DEFAULT_OUTPUT_DIR / "fusion_test_predictions.csv"
 DEFAULT_FUSION_PREDICTIONS = DEFAULT_OUTPUT_DIR / "fusion_predictions.csv"
 DEFAULT_ENSEMBLE_PREDICTIONS = DEFAULT_OUTPUT_DIR / "ensemble_classifier_predictions.csv"
+DEFAULT_ENSEMBLE_THRESHOLDS = DEFAULT_OUTPUT_DIR / "ensemble_thresholds.json"
 
 FUSION_MODEL_VERSION = "fusion_mlp_v1"
 

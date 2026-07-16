@@ -41,14 +41,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def prob_to_status(prob: float, threshold: float) -> str:
-    if prob >= threshold:
-        return "present"
-    if prob <= 0.20:
-        return "absent"
-    return "uncertain"
-
-
+from src.medagentx.fusion.calibration import prob_to_status
 def main():
     args = parse_args()
     args.output_csv.parent.mkdir(parents=True, exist_ok=True)

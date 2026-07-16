@@ -821,9 +821,11 @@ def deterministic_label_decision(
     if classifier_item is None:
         probability = None
         classifier_status = "unavailable"
+        classifier_threshold = None
     else:
         probability = classifier_item.get("probability")
         classifier_status = normalize_status(classifier_item.get("status"))
+        classifier_threshold = clean_value(classifier_item.get("threshold"))
 
     positive_count = int(retrieval_counts.get("positive_count", 0))
     negative_count = int(retrieval_counts.get("negative_count", 0))
@@ -839,14 +841,42 @@ def deterministic_label_decision(
             status = "unavailable"
             confidence = 0.0
             reason = "classifier unavailable and retrieval context insufficient"
+    elif classifier_status == "present":
+        probability = normalize_confidence(probability)
+        status = "present"
+        confidence = min(0.95, probability if probability is not None else 0.85)
+        reason = "calibrated classifier status=present"
+    elif classifier_status == "absent":
+        probability = normalize_confidence(probability)
+        status = "absent"
+        confidence = 0.85
+        reason = "calibrated classifier status=absent"
+    elif classifier_status == "uncertain":
+        probability = normalize_confidence(probability)
+        status = "uncertain"
+        confidence = 0.45
+        reason = "calibrated classifier status=uncertain"
     else:
         probability = normalize_confidence(probability)
 
-        if probability >= STRONG_PRESENT_LOW:
+        if probability is not None and classifier_threshold is not None:
+            threshold = float(classifier_threshold)
+            if probability >= threshold:
+                status = "present"
+                confidence = min(0.90, probability)
+                reason = f"classifier probability above tuned threshold ({threshold:.2f})"
+            elif probability <= UNCERTAIN_LOW:
+                status = "absent"
+                confidence = 0.85
+                reason = "low classifier probability"
+            else:
+                status = "uncertain"
+                confidence = 0.40
+                reason = f"classifier probability below tuned threshold ({threshold:.2f})"
+        elif probability >= STRONG_PRESENT_LOW:
             status = "present"
             confidence = min(0.95, probability)
             reason = "strong classifier probability"
-
         elif probability >= MODERATE_PRESENT_LOW:
             if label in BROAD_OR_NOISY_PRESENT_LABELS:
                 status = "uncertain"
@@ -856,17 +886,14 @@ def deterministic_label_decision(
                 status = "present"
                 confidence = min(0.85, probability)
                 reason = "moderate classifier probability"
-
         elif probability >= BORDERLINE_PRESENT_LOW:
             status = "uncertain"
             confidence = 0.45
             reason = "borderline classifier probability; retrieval mentions retained as context only"
-
         elif probability > UNCERTAIN_LOW:
             status = "uncertain"
             confidence = 0.35
             reason = "low-intermediate classifier probability"
-
         else:
             status = "absent"
             confidence = 0.85
@@ -875,9 +902,15 @@ def deterministic_label_decision(
     evidence_parts = [
         f"Classifier status={classifier_status}.",
         f"Classifier probability={probability if probability is not None else 'unavailable'}.",
-        f"Rule={reason}.",
-        f"Retrieval positive mentions={positive_count}; negative mentions={negative_count}.",
     ]
+    if classifier_threshold is not None:
+        evidence_parts.append(f"Classifier threshold={float(classifier_threshold):.3f}.")
+    evidence_parts.extend(
+        [
+            f"Rule={reason}.",
+            f"Retrieval positive mentions={positive_count}; negative mentions={negative_count}.",
+        ]
+    )
 
     if example_positive:
         evidence_parts.append(f"Example positive retrieval sentence: {example_positive}")
@@ -1086,10 +1119,22 @@ def extract_classifier_evidence(classifier_row: pd.Series | None) -> dict[str, A
         prob_col = f"classifier_prob_{slug}"
         status_col = f"classifier_status_{slug}"
         source_col = f"classifier_source_label_{slug}"
+        threshold_col = f"classifier_threshold_{slug}"
+        densenet_prob_col = f"densenet_prob_{slug}"
+        fusion_prob_col = f"fusion_prob_{slug}"
+        ensemble_prob_col = f"ensemble_prob_{slug}"
+        agreement_col = f"ensemble_agreement_{slug}"
 
         probability = clean_value(classifier_row.get(prob_col))
+        if probability is None:
+            probability = clean_value(classifier_row.get(ensemble_prob_col))
         status = clean_value(classifier_row.get(status_col))
+        if status is None:
+            status = clean_value(classifier_row.get(f"ensemble_status_{slug}"))
         source = clean_value(classifier_row.get(source_col))
+        threshold = clean_value(classifier_row.get(threshold_col))
+        if threshold is None:
+            threshold = clean_value(classifier_row.get(f"ensemble_threshold_{slug}"))
 
         if probability is not None:
             probability = normalize_confidence(probability)
@@ -1100,6 +1145,14 @@ def extract_classifier_evidence(classifier_row: pd.Series | None) -> dict[str, A
                 "probability": probability,
                 "status": normalize_status(status),
                 "source_label": clean_string(source) if source is not None else None,
+                "threshold": normalize_confidence(threshold) if threshold is not None else None,
+                "densenet_probability": normalize_confidence(classifier_row.get(densenet_prob_col))
+                if clean_value(classifier_row.get(densenet_prob_col)) is not None
+                else None,
+                "fusion_probability": normalize_confidence(classifier_row.get(fusion_prob_col))
+                if clean_value(classifier_row.get(fusion_prob_col)) is not None
+                else None,
+                "ensemble_agreement": clean_string(classifier_row.get(agreement_col)),
             }
         )
 

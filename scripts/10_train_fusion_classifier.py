@@ -44,6 +44,7 @@ from src.medagentx.fusion.metrics import (
     masked_bce_with_logits_loss,
     multilabel_metrics,
     tune_thresholds_on_validation,
+    tune_thresholds_precision_favored,
 )
 from src.medagentx.fusion.model import FusionMLP
 from src.medagentx.fusion.splits import assert_patient_level_integrity, build_patient_split_table
@@ -272,7 +273,9 @@ def main():
         epoch_started = time.time()
         train_loss = train_one_epoch(model, train_loader, optimizer, args.device, pos_weight)
         val_probs = predict_probs(model, val_loader, args.device)
-        thresholds, _ = tune_thresholds_on_validation(y_val, val_probs, m_val)
+        thresholds, _ = tune_thresholds_precision_favored(
+            y_val, val_probs, m_val, DISEASE_LABELS, beta=0.5, min_precision=0.35
+        )
         val_metrics = multilabel_metrics(y_val, val_probs, m_val, thresholds, DISEASE_LABELS)
 
         metrics_rows.append(

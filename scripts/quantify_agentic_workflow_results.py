@@ -35,6 +35,13 @@ DECISION_ORDER = ["concordant", "partially_concordant", "discordant"]
 
 
 DEFAULT_OUTPUT_DIR = "outputs/chexpert_plus/paper_figures"
+DEFAULT_BATCH_DIR = "outputs/chexpert_plus/batch_first_100"
+DEFAULT_ENSEMBLE_PREDICTIONS = (
+    "outputs/chexpert_plus/fusion_classifier/ensemble_classifier_predictions.csv"
+)
+DEFAULT_FUSION_TRAINING_METRICS = (
+    "outputs/chexpert_plus/fusion_classifier/fusion_training_metrics.csv"
+)
 
 
 def clean_string(value: Any) -> str:
@@ -115,6 +122,109 @@ def setup_plot_style() -> None:
             "ps.fonttype": 42,
         },
     )
+
+
+def load_batch_retrieval_results(batch_dir: str) -> pd.DataFrame:
+    tmp_dir = Path(batch_dir) / "tmp"
+    if not tmp_dir.exists():
+        return pd.DataFrame()
+
+    files = sorted(tmp_dir.glob("*_retrieval_results.csv"))
+    if not files:
+        return pd.DataFrame()
+
+    frames = [pd.read_csv(path, dtype=str) for path in files]
+    combined = pd.concat(frames, ignore_index=True)
+    print(f"[INFO] Combined {len(files)} batch retrieval CSVs ({len(combined)} rows)")
+    return combined
+
+
+def resolve_batch_paths(batch_dir: str) -> dict[str, str]:
+    batch_path = Path(batch_dir)
+    return {
+        "judge_results": str(batch_path / "judge_results_first_100.csv"),
+        "disease_reasoning": str(batch_path / "disease_reasoning_results_first_100.csv"),
+    }
+
+
+def plot_ensemble_figures(classifier_df: pd.DataFrame, figures_dir: Path, tables_dir: Path) -> None:
+    if classifier_df.empty:
+        return
+
+    agreement_cols = [col for col in classifier_df.columns if col.startswith("ensemble_agreement_")]
+    if agreement_cols:
+        rows = []
+        for col in agreement_cols:
+            label = col.replace("ensemble_agreement_", "").replace("_", " ").title()
+            for agreement, count in classifier_df[col].fillna("missing").value_counts().items():
+                rows.append({"label": label, "agreement": agreement, "count": count})
+
+        agreement_df = pd.DataFrame(rows)
+        agreement_df.to_csv(tables_dir / "ensemble_agreement_counts.csv", index=False)
+
+        fig, ax = plt.subplots(figsize=(6.8, 3.2))
+        sns.barplot(data=agreement_df, y="label", x="count", hue="agreement", ax=ax, palette="Set2")
+        ax.set_title("DenseNet vs Fusion Agreement by Label")
+        ax.set_xlabel("Count")
+        ax.set_ylabel("")
+        ax.legend(title="Agreement", loc="lower right")
+        save_figure(fig, figures_dir, "ensemble_agreement_distribution")
+
+    source_cols = {
+        "densenet_prob_": "DenseNet",
+        "fusion_prob_": "Fusion",
+        "ensemble_prob_": "Ensemble",
+    }
+
+    long_rows = []
+    for prefix, source in source_cols.items():
+        prob_cols = [col for col in classifier_df.columns if col.startswith(prefix)]
+        for col in prob_cols:
+            label = col.replace(prefix, "").replace("_", " ").title()
+            values = as_numeric(classifier_df[col]).dropna()
+            for value in values:
+                long_rows.append({"label": label, "source": source, "probability": value})
+
+    if long_rows:
+        compare_df = pd.DataFrame(long_rows)
+        compare_df.to_csv(tables_dir / "classifier_source_probability_long.csv", index=False)
+
+        fig, ax = plt.subplots(figsize=(6.8, 3.2))
+        sns.boxplot(data=compare_df, y="label", x="probability", hue="source", ax=ax, palette="Set2")
+        ax.set_title("Classifier Probability by Source")
+        ax.set_xlabel("Probability")
+        ax.set_ylabel("")
+        ax.set_xlim(-0.02, 1.02)
+        ax.legend(title="Source", loc="lower right")
+        save_figure(fig, figures_dir, "classifier_source_probability_boxplot")
+
+
+def plot_fusion_training_figures(metrics_path: str, figures_dir: Path) -> None:
+    metrics_file = Path(metrics_path)
+    if not metrics_file.exists():
+        print(f"[WARN] Missing fusion training metrics: {metrics_file}")
+        return
+
+    metrics_df = pd.read_csv(metrics_file)
+    if metrics_df.empty:
+        return
+
+    fig, ax = plt.subplots(figsize=(3.4, 2.4))
+    ax.plot(metrics_df["epoch"], metrics_df["train_loss"], marker="o", label="Train loss")
+    ax.set_title("Fusion Training Loss")
+    ax.set_xlabel("Epoch")
+    ax.set_ylabel("Loss")
+    ax.legend()
+    save_figure(fig, figures_dir, "fusion_training_loss_curve")
+
+    fig, ax = plt.subplots(figsize=(3.4, 2.4))
+    ax.plot(metrics_df["epoch"], metrics_df["val_macro_f1"], marker="o", label="Val macro F1")
+    ax.plot(metrics_df["epoch"], metrics_df["val_micro_f1"], marker="o", label="Val micro F1")
+    ax.set_title("Fusion Validation F1")
+    ax.set_xlabel("Epoch")
+    ax.set_ylabel("F1")
+    ax.legend()
+    save_figure(fig, figures_dir, "fusion_validation_f1_curve")
 
 
 def plot_count_bar(
@@ -675,8 +785,14 @@ def main() -> None:
     )
 
     parser.add_argument(
+        "--batch-dir",
+        default=DEFAULT_BATCH_DIR,
+        help="Batch output directory used to auto-resolve judge/disease-reasoning CSVs.",
+    )
+    parser.add_argument(
         "--judge-results",
-        default="outputs/chexpert_plus/batch_first_100/judge_results_first_100.csv",
+        default="",
+        help="Override judged-case CSV. Defaults to <batch-dir>/judge_results_first_100.csv",
     )
     parser.add_argument(
         "--quality-gate",
@@ -684,32 +800,47 @@ def main() -> None:
     )
     parser.add_argument(
         "--image-classifier",
-        default="outputs/chexpert_plus/fusion_classifier/ensemble_classifier_predictions.csv",
+        default=DEFAULT_ENSEMBLE_PREDICTIONS,
         help="Classifier predictions CSV (ensemble, DenseNet-only, or fusion-only).",
     )
     parser.add_argument(
         "--retrieval-results",
-        default="outputs/chexpert_plus/retrieval_results.csv",
+        default="",
+        help="Optional retrieval CSV override. Defaults to combined <batch-dir>/tmp/*_retrieval_results.csv",
     )
     parser.add_argument(
         "--disease-reasoning",
-        default="outputs/chexpert_plus/batch_first_100/disease_reasoning_results_first_100.csv",
+        default="",
+        help="Override disease reasoning CSV. Defaults to <batch-dir>/disease_reasoning_results_first_100.csv",
+    )
+    parser.add_argument(
+        "--fusion-training-metrics",
+        default=DEFAULT_FUSION_TRAINING_METRICS,
+        help="Fusion training metrics CSV for learning-curve figures.",
     )
     parser.add_argument(
         "--output-dir",
-        default=DEFAULT_OUTPUT_DIR,
+        default="outputs/chexpert_plus/paper_figures_ensemble_first_100",
     )
 
     args = parser.parse_args()
 
+    batch_paths = resolve_batch_paths(args.batch_dir)
+    judge_results_path = args.judge_results or batch_paths["judge_results"]
+    disease_reasoning_path = args.disease_reasoning or batch_paths["disease_reasoning"]
+    retrieval_results_path = args.retrieval_results
+
     setup_plot_style()
     output_dir, figures_dir, tables_dir = ensure_output_dirs(args.output_dir)
 
-    judge_df = read_optional_csv(args.judge_results)
+    judge_df = read_optional_csv(judge_results_path)
     quality_df = read_optional_csv(args.quality_gate)
     classifier_df = read_optional_csv(args.image_classifier)
-    retrieval_df = read_optional_csv(args.retrieval_results)
-    reasoning_df = read_optional_csv(args.disease_reasoning)
+    if retrieval_results_path:
+        retrieval_df = read_optional_csv(retrieval_results_path)
+    else:
+        retrieval_df = load_batch_retrieval_results(args.batch_dir)
+    reasoning_df = read_optional_csv(disease_reasoning_path)
 
     metric_summary = summarize_judge_results(judge_df, tables_dir)
     per_label_df = build_per_label_table(judge_df, tables_dir)
@@ -717,6 +848,8 @@ def main() -> None:
     plot_judge_figures(judge_df, per_label_df, figures_dir)
     plot_quality_gate_figures(quality_df, figures_dir, tables_dir)
     plot_classifier_figures(classifier_df, figures_dir, tables_dir)
+    plot_ensemble_figures(classifier_df, figures_dir, tables_dir)
+    plot_fusion_training_figures(args.fusion_training_metrics, figures_dir)
     plot_retrieval_figures(retrieval_df, figures_dir, tables_dir)
     plot_disease_reasoning_figures(reasoning_df, figures_dir, tables_dir)
 

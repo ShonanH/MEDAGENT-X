@@ -31,49 +31,25 @@ def compute_pos_weight(y_train: np.ndarray, mask_train: np.ndarray) -> np.ndarra
     return np.asarray(weights, dtype=np.float32)
 
 
+from src.medagentx.fusion.calibration import tune_thresholds_precision_favored
+from src.medagentx.fusion.constants import DISEASE_LABELS
+
+
 def tune_thresholds_on_validation(
     y_true: np.ndarray,
     y_prob: np.ndarray,
     mask: np.ndarray,
     thresholds: np.ndarray | None = None,
 ) -> tuple[np.ndarray, list[float]]:
-    if thresholds is None:
-        thresholds = np.linspace(0.05, 0.95, 19)
-
-    best_thresholds = []
-    best_f1s = []
-
-    for j in range(y_true.shape[1]):
-        best_t = 0.5
-        best_f1 = -1.0
-
-        valid = mask[:, j] > 0
-        if valid.sum() == 0:
-            best_thresholds.append(0.5)
-            best_f1s.append(float("nan"))
-            continue
-
-        yt = y_true[valid, j]
-        yp = y_prob[valid, j]
-
-        for t in thresholds:
-            pred = (yp >= t).astype(np.int32)
-            tp = ((pred == 1) & (yt == 1)).sum()
-            fp = ((pred == 1) & (yt == 0)).sum()
-            fn = ((pred == 0) & (yt == 1)).sum()
-
-            precision = tp / (tp + fp + 1e-8)
-            recall = tp / (tp + fn + 1e-8)
-            f1 = 2 * precision * recall / (precision + recall + 1e-8)
-
-            if f1 > best_f1:
-                best_f1 = f1
-                best_t = float(t)
-
-        best_thresholds.append(best_t)
-        best_f1s.append(best_f1)
-
-    return np.asarray(best_thresholds, dtype=np.float32), best_f1s
+    return tune_thresholds_precision_favored(
+        y_true,
+        y_prob,
+        mask,
+        DISEASE_LABELS,
+        thresholds=thresholds,
+        beta=0.5,
+        min_precision=0.35,
+    )
 
 
 def multilabel_metrics(

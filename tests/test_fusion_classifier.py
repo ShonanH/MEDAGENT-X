@@ -54,6 +54,22 @@ def test_masked_bce_ignores_uncertain_labels():
     assert torch.isfinite(loss)
 
 
+def test_ensemble_present_requires_agreement_for_rare_labels():
+    from src.medagentx.fusion.calibration import ensemble_present_status
+
+    status = ensemble_present_status(
+        label="Lung Lesion",
+        d_prob=0.80,
+        f_prob=0.30,
+        e_prob=0.55,
+        d_threshold=0.75,
+        f_threshold=0.80,
+        e_threshold=0.80,
+        require_agreement=True,
+    )
+    assert status == "uncertain"
+
+
 def test_merge_label_and_feature_tables_keeps_deid_patient_id():
     label_df = pd.DataFrame(
         {

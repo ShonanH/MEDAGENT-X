@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-Combine DenseNet and fusion classifier predictions into ensemble evidence.
+Combine DenseNet and fusion classifier predictions into calibrated ensemble evidence.
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -15,29 +16,47 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from src.medagentx.fusion.constants import DEFAULT_OUTPUT_DIR, snake_label
+from src.medagentx.fusion.calibration import DEFAULT_ABSENT_THRESHOLD, DEFAULT_PRESENT_THRESHOLD
+from src.medagentx.fusion.calibration import (
+    agreement_field,
+    apply_threshold_floor,
+    default_densenet_thresholds,
+    ensemble_present_status,
+    load_threshold_json,
+    prob_to_status,
+    thresholds_to_json_payload,
+)
 from src.medagentx.fusion.constants import (
     DEFAULT_DENSENET_PREDICTIONS,
     DEFAULT_ENSEMBLE_PREDICTIONS,
     DEFAULT_FUSION_PREDICTIONS,
+    DEFAULT_OUTPUT_DIR,
+    DEFAULT_THRESHOLDS_PATH,
     DISEASE_LABELS,
-    NON_DISEASE_LABELS,
     snake_label,
 )
 from src.medagentx.fusion.labels import derive_no_finding_status
 from src.medagentx.fusion.paths import clean_dicom_path
 
 
-STRONG_PRESENT = 0.75
-MODERATE_PRESENT = 0.60
-ABSENT_HIGH = 0.20
+DEFAULT_ENSEMBLE_THRESHOLDS = DEFAULT_OUTPUT_DIR / "ensemble_thresholds.json"
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--densenet-csv", type=Path, default=DEFAULT_DENSENET_PREDICTIONS)
     parser.add_argument("--fusion-csv", type=Path, default=DEFAULT_FUSION_PREDICTIONS)
+    parser.add_argument("--fusion-thresholds-path", type=Path, default=DEFAULT_THRESHOLDS_PATH)
+    parser.add_argument("--ensemble-thresholds-path", type=Path, default=DEFAULT_ENSEMBLE_THRESHOLDS)
     parser.add_argument("--output-csv", type=Path, default=DEFAULT_ENSEMBLE_PREDICTIONS)
     parser.add_argument("--fusion-weight", type=float, default=0.5)
+    parser.add_argument(
+        "--require-agreement",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Only call present when DenseNet and fusion strongly agree.",
+    )
     return parser.parse_args()
 
 
@@ -47,42 +66,59 @@ def safe_float(value):
     return float(value)
 
 
-def agreement_field(d_prob: float | None, f_prob: float | None) -> str:
-    if d_prob is None and f_prob is None:
-        return "insufficient_evidence"
-    if d_prob is None or f_prob is None:
-        return "insufficient_evidence"
-
-    d_present = d_prob >= MODERATE_PRESENT
-    f_present = f_prob >= MODERATE_PRESENT
-    d_absent = d_prob <= ABSENT_HIGH
-    f_absent = f_prob <= ABSENT_HIGH
-
-    if d_present and f_present:
-        return "strong_present"
-    if d_absent and f_absent:
-        return "strong_absent"
-    if d_present and not f_present and not f_absent:
-        return "weak_present"
-    if f_present and not d_present and not d_absent:
-        return "weak_present"
-    if d_absent and not f_absent and not f_present:
-        return "weak_absent"
-    if f_absent and not d_present and not d_present:
-        return "weak_absent"
-    if (d_present and f_absent) or (f_present and d_absent):
-        return "conflict"
-    return "insufficient_evidence"
+def load_fusion_thresholds(path: Path) -> dict[str, float]:
+    if path.exists():
+        loaded = load_threshold_json(path)
+        if loaded:
+            return loaded
+    return {label: apply_threshold_floor(label, DEFAULT_PRESENT_THRESHOLD) for label in DISEASE_LABELS}
 
 
-def prob_to_status(prob: float | None) -> str:
+def load_ensemble_thresholds(
+    path: Path,
+    fusion_thresholds: dict[str, float],
+    densenet_thresholds: dict[str, float],
+) -> dict[str, float]:
+    if path.exists():
+        loaded = load_threshold_json(path)
+        if loaded:
+            return loaded
+
+    return {
+        label: apply_threshold_floor(
+            label,
+            max(fusion_thresholds[label], densenet_thresholds[label]),
+        )
+        for label in DISEASE_LABELS
+    }
+
+
+def densenet_status_from_row(row: pd.Series, label: str, threshold: float) -> tuple[float | None, str]:
+    slug = snake_label(label)
+    prob = safe_float(row.get(f"classifier_prob_{slug}"))
+    status = clean_string(row.get(f"classifier_status_{slug}"))
     if prob is None:
-        return "unavailable"
-    if prob >= 0.50:
-        return "present"
-    if prob <= ABSENT_HIGH:
-        return "absent"
-    return "uncertain"
+        return None, "unavailable"
+    if status in {"present", "absent", "uncertain"}:
+        return prob, status
+    return prob, prob_to_status(prob, present_threshold=threshold)
+
+
+def fusion_status_from_row(row: pd.Series, label: str, threshold: float) -> tuple[float | None, str]:
+    slug = snake_label(label)
+    prob = safe_float(row.get(f"fusion_prob_{slug}"))
+    status = clean_string(row.get(f"fusion_status_{slug}"))
+    if prob is None:
+        return None, "unavailable"
+    if status in {"present", "absent", "uncertain"}:
+        return prob, status
+    return prob, prob_to_status(prob, present_threshold=threshold)
+
+
+def clean_string(value) -> str:
+    if value is None or (isinstance(value, float) and np.isnan(value)):
+        return ""
+    return str(value).strip()
 
 
 def main():
@@ -94,6 +130,26 @@ def main():
 
     densenet_df["dicom_path"] = densenet_df["dicom_path"].map(clean_dicom_path)
     fusion_df["dicom_path"] = fusion_df["dicom_path"].map(clean_dicom_path)
+
+    densenet_thresholds = default_densenet_thresholds()
+    fusion_thresholds = load_fusion_thresholds(args.fusion_thresholds_path)
+    ensemble_thresholds = load_ensemble_thresholds(
+        args.ensemble_thresholds_path,
+        fusion_thresholds,
+        densenet_thresholds,
+    )
+
+    args.ensemble_thresholds_path.parent.mkdir(parents=True, exist_ok=True)
+    args.ensemble_thresholds_path.write_text(
+        json.dumps(
+            thresholds_to_json_payload(
+                ensemble_thresholds,
+                model_version="ensemble_densenet_fusion_v2_calibrated",
+            ),
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
 
     merged = densenet_df.merge(
         fusion_df,
@@ -108,17 +164,23 @@ def main():
         out = {
             "study_key": row["study_key"],
             "dicom_path": row["dicom_path"],
-            "ensemble_model_version": "densenet_fusion_v1",
+            "ensemble_model_version": "densenet_fusion_v2_calibrated",
             "ensemble_fusion_weight": args.fusion_weight,
+            "ensemble_require_agreement": args.require_agreement,
+            "present_threshold_default": DEFAULT_PRESENT_THRESHOLD,
+            "absent_threshold_default": DEFAULT_ABSENT_THRESHOLD,
         }
 
         disease_statuses = {}
 
         for label in DISEASE_LABELS:
             slug = snake_label(label)
+            d_threshold = densenet_thresholds[label]
+            f_threshold = fusion_thresholds[label]
+            e_threshold = ensemble_thresholds[label]
 
-            d_prob = safe_float(row.get(f"classifier_prob_{slug}"))
-            f_prob = safe_float(row.get(f"fusion_prob_{slug}"))
+            d_prob, d_status = densenet_status_from_row(row, label, d_threshold)
+            f_prob, f_status = fusion_status_from_row(row, label, f_threshold)
 
             if d_prob is not None and f_prob is not None:
                 e_prob = (1.0 - args.fusion_weight) * d_prob + args.fusion_weight * f_prob
@@ -129,21 +191,36 @@ def main():
             else:
                 e_prob = None
 
-            e_status = prob_to_status(e_prob)
+            e_status = ensemble_present_status(
+                label=label,
+                d_prob=d_prob,
+                f_prob=f_prob,
+                e_prob=e_prob,
+                d_threshold=d_threshold,
+                f_threshold=f_threshold,
+                e_threshold=e_threshold,
+                require_agreement=args.require_agreement,
+            )
             disease_statuses[label] = e_status
+            agreement = agreement_field(d_prob, f_prob, d_threshold, f_threshold)
 
             out[f"densenet_prob_{slug}"] = d_prob
             out[f"fusion_prob_{slug}"] = f_prob
             out[f"ensemble_prob_{slug}"] = e_prob
 
-            out[f"densenet_status_{slug}"] = row.get(f"classifier_status_{slug}", prob_to_status(d_prob))
-            out[f"fusion_status_{slug}"] = row.get(f"fusion_status_{slug}", prob_to_status(f_prob))
-            out[f"ensemble_status_{slug}"] = e_status
-            out[f"ensemble_agreement_{slug}"] = agreement_field(d_prob, f_prob)
+            out[f"densenet_threshold_{slug}"] = d_threshold
+            out[f"fusion_threshold_{slug}"] = f_threshold
+            out[f"ensemble_threshold_{slug}"] = e_threshold
 
-            # Drop-in fields for Disease Reasoning Agent
+            out[f"densenet_status_{slug}"] = d_status
+            out[f"fusion_status_{slug}"] = f_status
+            out[f"ensemble_status_{slug}"] = e_status
+            out[f"ensemble_agreement_{slug}"] = agreement
+
+            # Drop-in fields for Disease Reasoning Agent.
             out[f"classifier_prob_{slug}"] = e_prob
             out[f"classifier_status_{slug}"] = e_status
+            out[f"classifier_threshold_{slug}"] = e_threshold
             out[f"classifier_source_label_{slug}"] = "ensemble"
 
         out["classifier_status_support_devices"] = "unavailable"
@@ -155,6 +232,7 @@ def main():
 
     pd.DataFrame(rows).to_csv(args.output_csv, index=False)
     print(f"Wrote {len(rows)} rows to {args.output_csv}")
+    print(f"Saved ensemble thresholds to {args.ensemble_thresholds_path}")
 
 
 if __name__ == "__main__":
