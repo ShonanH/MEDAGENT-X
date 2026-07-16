@@ -30,7 +30,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--model-weights",
-        default="densenet121-res224-chex",
+        default="densenet121-res224-all",
     )
     parser.add_argument(
         "--device",

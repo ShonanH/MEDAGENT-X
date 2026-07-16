@@ -52,6 +52,12 @@ def main() -> None:
         default="outputs/chexpert_plus/judge_report.md",
     )
 
+    parser.add_argument(
+        "--classifier-predictions-csv",
+        default="outputs/chexpert_plus/fusion_classifier/ensemble_classifier_predictions.csv",
+        help="Precomputed classifier predictions CSV (ensemble by default).",
+    )
+
     args = parser.parse_args()
 
     result = run_medagentx_graph(
@@ -62,6 +68,7 @@ def main() -> None:
         quality_gate_csv=args.quality_gate_csv,
         retrieval_results_csv=args.retrieval_results_csv,
         disease_reasoning_results_csv=args.disease_reasoning_results_csv,
+        classifier_predictions_csv=args.classifier_predictions_csv,
         reasoning_model=args.reasoning_model,
         ground_truth_csv=args.ground_truth_csv,
         judge_results_csv=args.judge_results_csv,
@@ -72,7 +79,6 @@ def main() -> None:
     print(f"Study key: {result['study_key']}")
     print(f"DICOM path: {result['dicom_path']}")
     print(f"Quality Gate decision: {result['quality_gate_decision']}")
-    print(f"Image classifier status: {result['image_classifier_status']}")
     print(f"Retrieved cases: {len(result['retrieved_cases'])}")
     print(f"Route next: {result['route_next']}")
     print(f"Completed steps: {result['completed_steps']}")

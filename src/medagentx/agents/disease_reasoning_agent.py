@@ -12,6 +12,9 @@ import pandas as pd
 import requests
 
 DEFAULT_OUTPUT_PATH = "outputs/chexpert_plus/disease_reasoning_results.csv"
+DEFAULT_CLASSIFIER_PREDICTIONS_PATH = (
+    "outputs/chexpert_plus/fusion_classifier/ensemble_classifier_predictions.csv"
+)
 DEFAULT_REPORT_PATH = "outputs/chexpert_plus/report.md"
 PROMPT_VERSION = "disease_reasoning_v3_fact_grounded_report_writer"
 
@@ -1491,7 +1494,7 @@ def disease_reasoning_node(state: dict[str, Any]) -> dict[str, Any]:
     )
     image_classifier_predictions_path = state.get(
         "image_classifier_predictions_path",
-        "outputs/chexpert_plus/image_classifier_predictions.csv",
+        DEFAULT_CLASSIFIER_PREDICTIONS_PATH,
     )
     output_path = state.get(
         "disease_reasoning_results_path",
@@ -1536,7 +1539,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--image-classifier-predictions",
-        default="outputs/chexpert_plus/image_classifier_predictions.csv",
+        default=DEFAULT_CLASSIFIER_PREDICTIONS_PATH,
     )
     parser.add_argument(
         "--output",

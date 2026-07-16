@@ -20,6 +20,9 @@ DEFAULT_QUALITY_GATE_CSV = "outputs/chexpert_plus/quality_gate_decisions.csv"
 DEFAULT_QUALITY_EVIDENCE_CSV = "outputs/chexpert_plus/quality_evidence_manifest.csv"
 DEFAULT_GROUND_TRUTH_CSV = "outputs/chexpert_plus/redivis_chexpert_plus_filtered_rows.csv"
 DEFAULT_BATCH_DIR = "outputs/chexpert_plus/batch_first_100"
+DEFAULT_CLASSIFIER_PREDICTIONS_CSV = (
+    "outputs/chexpert_plus/fusion_classifier/ensemble_classifier_predictions.csv"
+)
 
 
 def clean_string(value: Any) -> str:
@@ -86,6 +89,7 @@ def run_batch(
     ground_truth_csv: str,
     batch_dir: str,
     reasoning_model: str,
+    classifier_predictions_csv: str,
 ) -> None:
     batch_path = Path(batch_dir)
     tmp_path = batch_path / "tmp"
@@ -132,6 +136,7 @@ def run_batch(
                 quality_gate_csv=quality_gate_csv,
                 retrieval_results_csv=str(retrieval_csv),
                 disease_reasoning_results_csv=str(disease_csv),
+                classifier_predictions_csv=classifier_predictions_csv,
                 ground_truth_csv=ground_truth_csv,
                 judge_results_csv=str(judge_csv),
                 judge_report_path=str(judge_report),
@@ -148,7 +153,6 @@ def run_batch(
                     "dicom_path": dicom_path,
                     "status": "completed",
                     "quality_gate_decision": result.get("quality_gate_decision", ""),
-                    "image_classifier_status": result.get("image_classifier_status", ""),
                     "route_next": result.get("route_next", ""),
                     "completed_steps": " | ".join(result.get("completed_steps", [])),
                     "judge_case_count": result.get("judge_case_count", 0),
@@ -168,7 +172,6 @@ def run_batch(
                     "dicom_path": dicom_path,
                     "status": "failed",
                     "quality_gate_decision": "",
-                    "image_classifier_status": "",
                     "route_next": "",
                     "completed_steps": "",
                     "judge_case_count": 0,
@@ -232,6 +235,12 @@ def main() -> None:
         help="Optional Ollama model override. Empty uses the graph/agent default.",
     )
 
+    parser.add_argument(
+        "--classifier-predictions-csv",
+        default=DEFAULT_CLASSIFIER_PREDICTIONS_CSV,
+        help="Precomputed classifier predictions CSV passed to Disease Reasoning.",
+    )
+
     args = parser.parse_args()
 
     run_batch(
@@ -242,6 +251,7 @@ def main() -> None:
         ground_truth_csv=args.ground_truth_csv,
         batch_dir=args.batch_dir,
         reasoning_model=args.reasoning_model,
+        classifier_predictions_csv=args.classifier_predictions_csv,
     )
 
 

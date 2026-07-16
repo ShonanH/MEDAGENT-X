@@ -684,7 +684,8 @@ def main() -> None:
     )
     parser.add_argument(
         "--image-classifier",
-        default="outputs/chexpert_plus/image_classifier_predictions.csv",
+        default="outputs/chexpert_plus/fusion_classifier/ensemble_classifier_predictions.csv",
+        help="Classifier predictions CSV (ensemble, DenseNet-only, or fusion-only).",
     )
     parser.add_argument(
         "--retrieval-results",

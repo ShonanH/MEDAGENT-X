@@ -9,21 +9,22 @@ from langgraph.graph import END, START, StateGraph
 from src.medagentx.agents.quality_gate_agent import quality_gate_node
 from src.medagentx.agents.retrieval_agent import retrieval_agent_node
 from src.medagentx.agents.disease_reasoning_agent import disease_reasoning_node
-from src.medagentx.agents.image_classifier_agent import image_classifier_node
 from src.medagentx.agents.judge_agent import judge_node
-
 
 
 DEFAULT_QUALITY_EVIDENCE_CSV = "outputs/chexpert_plus/quality_evidence_manifest.csv"
 DEFAULT_QUALITY_GATE_CSV = "outputs/chexpert_plus/quality_gate_decisions.csv"
 DEFAULT_RETRIEVAL_RESULTS_CSV = "outputs/chexpert_plus/retrieval_results.csv"
-DEFAULT_DISEASE_REASONING_RESULTS_CSV="outputs/chexpert_plus/disease_reasoning_results.csv"
+DEFAULT_DISEASE_REASONING_RESULTS_CSV = "outputs/chexpert_plus/disease_reasoning_results.csv"
 DEFAULT_GROUND_TRUTH_CSV = "outputs/chexpert_plus/redivis_chexpert_plus_filtered_rows.csv"
 DEFAULT_JUDGE_RESULTS_CSV = "outputs/chexpert_plus/judge_results.csv"
 DEFAULT_JUDGE_REPORT_PATH = "outputs/chexpert_plus/judge_report.md"
+DEFAULT_CLASSIFIER_PREDICTIONS_CSV = (
+    "outputs/chexpert_plus/fusion_classifier/ensemble_classifier_predictions.csv"
+)
 
 
-class MedAgentXState(TypedDict):
+class MedAgentXState(TypedDict, total=False):
     study_key: str
     dicom_path: str
     top_k: int
@@ -31,11 +32,10 @@ class MedAgentXState(TypedDict):
     quality_gate_csv: str
     retrieval_results_csv: str
     disease_reasoning_results_csv: str
+    classifier_predictions_csv: str
     reasoning_model: str
     quality_gate_decision: str
     quality_route_next: str
-    image_classifier_status: str
-    image_classifier_output_csv: str
     retrieved_cases: list[dict[str, Any]]
     reasoning_result: dict[str, Any]
     route_next: str
@@ -107,41 +107,6 @@ def route_after_quality_gate(state: MedAgentXState) -> str:
         _progress("Stopping graph because Quality Gate marked this case unreliable.")
         return END
 
-    return "image_classifier_agent"
-
-
-def image_classifier_graph_node(state: MedAgentXState) -> dict[str, Any]:
-    _progress("Starting Image Classifier Agent.")
-
-    classifier_result = image_classifier_node(
-        {
-            "study_key": state["study_key"],
-            "dicom_path": state["dicom_path"],
-            "quality_evidence_csv": state["quality_evidence_csv"],
-            "quality_gate_csv": state["quality_gate_csv"],
-            "image_classifier_output_csv": "outputs/chexpert_plus/image_classifier_predictions.csv",
-            "image_classifier_model_weights": "densenet121-res224-all",
-            "image_classifier_device": "",
-        }
-    )
-
-    status = classifier_result.get("image_classifier_status", "")
-    route_next = classifier_result.get("route_next", "retrieval_agent")
-
-    _progress(f"Image Classifier complete. Status: {status}. Route: {route_next}.")
-
-    return {
-        "image_classifier_status": status,
-        "image_classifier_output_csv": classifier_result.get("image_classifier_output_csv", ""),
-        "route_next": route_next,
-        "completed_steps": _append_step(state, "image_classifier_agent"),
-    }
-
-def route_after_image_classifier(state: MedAgentXState) -> str:
-    if state.get("route_next") == "stop_unreliable":
-        _progress("Stopping graph after Image Classifier route decision.")
-        return END
-
     return "retrieval_agent"
 
 
@@ -182,12 +147,14 @@ def route_after_retrieval(state: MedAgentXState) -> str:
 def disease_reasoning_graph_node(state: MedAgentXState) -> dict[str, Any]:
     _progress("Starting Disease Reasoning Agent.")
 
+    classifier_predictions_csv = state.get(
+        "classifier_predictions_csv",
+        DEFAULT_CLASSIFIER_PREDICTIONS_CSV,
+    )
+
     node_state: dict[str, Any] = {
         "retrieval_results_path": state["retrieval_results_csv"],
-        "image_classifier_predictions_path": state.get(
-            "image_classifier_output_csv",
-            "outputs/chexpert_plus/image_classifier_predictions.csv",
-        ),
+        "image_classifier_predictions_path": classifier_predictions_csv,
         "disease_reasoning_results_path": state["disease_reasoning_results_csv"],
         "retrieval_top_k": state["top_k"],
         "reasoning_result": {},
@@ -240,12 +207,12 @@ def judge_graph_node(state: MedAgentXState) -> dict[str, Any]:
         "route_next": "complete",
         "completed_steps": _append_step(state, "judge_agent"),
     }
-    
+
+
 def build_medagentx_graph():
     graph = StateGraph(MedAgentXState)
 
     graph.add_node("quality_gate_agent", quality_gate_graph_node)
-    graph.add_node("image_classifier_agent", image_classifier_graph_node)
     graph.add_node("retrieval_agent", retrieval_graph_node)
     graph.add_node("disease_reasoning_agent", disease_reasoning_graph_node)
     graph.add_node("judge_agent", judge_graph_node)
@@ -255,12 +222,6 @@ def build_medagentx_graph():
     graph.add_conditional_edges(
         "quality_gate_agent",
         route_after_quality_gate,
-        ["image_classifier_agent", END],
-    )
-
-    graph.add_conditional_edges(
-        "image_classifier_agent",
-        route_after_image_classifier,
         ["retrieval_agent", END],
     )
 
@@ -284,11 +245,20 @@ def run_medagentx_graph(
     quality_gate_csv: str = DEFAULT_QUALITY_GATE_CSV,
     retrieval_results_csv: str = DEFAULT_RETRIEVAL_RESULTS_CSV,
     disease_reasoning_results_csv: str = DEFAULT_DISEASE_REASONING_RESULTS_CSV,
+    classifier_predictions_csv: str = DEFAULT_CLASSIFIER_PREDICTIONS_CSV,
     ground_truth_csv: str = DEFAULT_GROUND_TRUTH_CSV,
     judge_results_csv: str = DEFAULT_JUDGE_RESULTS_CSV,
     judge_report_path: str = DEFAULT_JUDGE_REPORT_PATH,
     reasoning_model: str = "",
 ) -> MedAgentXState:
+    classifier_path = Path(classifier_predictions_csv)
+    if not classifier_path.exists():
+        raise FileNotFoundError(
+            f"Missing classifier predictions: {classifier_path}. "
+            "Run scripts 11_run_densenet_predictions.py, 12_run_fusion_inference.py, "
+            "and 13_build_ensemble_classifier_predictions.py first."
+        )
+
     _progress("Starting continuous MEDAGENT-X graph.")
 
     graph = build_medagentx_graph()
@@ -302,11 +272,10 @@ def run_medagentx_graph(
             "quality_gate_csv": quality_gate_csv,
             "retrieval_results_csv": retrieval_results_csv,
             "disease_reasoning_results_csv": disease_reasoning_results_csv,
+            "classifier_predictions_csv": classifier_predictions_csv,
             "reasoning_model": reasoning_model,
             "quality_gate_decision": "",
             "quality_route_next": "",
-            "image_classifier_status": "",
-            "image_classifier_output_csv": "",
             "retrieved_cases": [],
             "reasoning_result": {},
             "route_next": "",

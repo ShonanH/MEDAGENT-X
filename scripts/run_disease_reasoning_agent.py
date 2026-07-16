@@ -7,13 +7,16 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 
-from src.medagentx.agents.disease_reasoning_agent import run_disease_reasoning_agent
+from src.medagentx.agents.disease_reasoning_agent import (
+    DEFAULT_CLASSIFIER_PREDICTIONS_PATH,
+    run_disease_reasoning_agent,
+)
 
 
 if __name__ == "__main__":
     run_disease_reasoning_agent(
         retrieval_results_path="outputs/chexpert_plus/retrieval_results.csv",
-        image_classifier_predictions_path="outputs/chexpert_plus/image_classifier_predictions.csv",
+        image_classifier_predictions_path=DEFAULT_CLASSIFIER_PREDICTIONS_PATH,
         output_path="outputs/chexpert_plus/disease_reasoning_results.csv",
         model="llama3.1:8b",
         ollama_url="http://localhost:11434",
