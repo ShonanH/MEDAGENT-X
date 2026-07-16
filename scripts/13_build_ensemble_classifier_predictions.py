@@ -30,6 +30,7 @@ from src.medagentx.fusion.calibration import (
 )
 from src.medagentx.fusion.constants import (
     DEFAULT_DENSENET_PREDICTIONS,
+    DEFAULT_ENSEMBLE_CALIBRATOR,
     DEFAULT_ENSEMBLE_PREDICTIONS,
     DEFAULT_FUSION_PREDICTIONS,
     DEFAULT_OUTPUT_DIR,
@@ -37,6 +38,7 @@ from src.medagentx.fusion.constants import (
     DISEASE_LABELS,
     snake_label,
 )
+from src.medagentx.fusion.ensemble_calibrator import load_ensemble_calibrator
 from src.medagentx.fusion.labels import derive_no_finding_status
 from src.medagentx.fusion.paths import clean_dicom_path
 
@@ -50,6 +52,7 @@ def parse_args():
     parser.add_argument("--fusion-csv", type=Path, default=DEFAULT_FUSION_PREDICTIONS)
     parser.add_argument("--fusion-thresholds-path", type=Path, default=DEFAULT_THRESHOLDS_PATH)
     parser.add_argument("--ensemble-thresholds-path", type=Path, default=DEFAULT_ENSEMBLE_THRESHOLDS)
+    parser.add_argument("--calibrator-path", type=Path, default=DEFAULT_ENSEMBLE_CALIBRATOR)
     parser.add_argument("--output-csv", type=Path, default=DEFAULT_ENSEMBLE_PREDICTIONS)
     parser.add_argument("--fusion-weight", type=float, default=0.5)
     parser.add_argument(
@@ -140,17 +143,23 @@ def main():
         densenet_thresholds,
     )
 
-    args.ensemble_thresholds_path.parent.mkdir(parents=True, exist_ok=True)
-    args.ensemble_thresholds_path.write_text(
-        json.dumps(
-            thresholds_to_json_payload(
-                ensemble_thresholds,
-                model_version="ensemble_densenet_fusion_v3_asymmetric",
+    calibrator = None
+    if args.calibrator_path.exists():
+        calibrator = load_ensemble_calibrator(args.calibrator_path)
+        print(f"Loaded ensemble calibrator from {args.calibrator_path}")
+
+    if not args.ensemble_thresholds_path.exists():
+        args.ensemble_thresholds_path.parent.mkdir(parents=True, exist_ok=True)
+        args.ensemble_thresholds_path.write_text(
+            json.dumps(
+                thresholds_to_json_payload(
+                    ensemble_thresholds,
+                    model_version="ensemble_densenet_fusion_v4_tiered",
+                ),
+                indent=2,
             ),
-            indent=2,
-        ),
-        encoding="utf-8",
-    )
+            encoding="utf-8",
+        )
 
     merged = densenet_df.merge(
         fusion_df,
@@ -165,7 +174,7 @@ def main():
         out = {
             "study_key": row["study_key"],
             "dicom_path": row["dicom_path"],
-            "ensemble_model_version": "densenet_fusion_v3_asymmetric",
+            "ensemble_model_version": "densenet_fusion_v4_tiered",
             "ensemble_fusion_weight": args.fusion_weight,
             "ensemble_require_agreement": args.require_agreement,
             "present_threshold_default": DEFAULT_PRESENT_THRESHOLD,
@@ -192,6 +201,10 @@ def main():
             else:
                 e_prob = None
 
+            raw_prob = e_prob
+            if calibrator is not None and e_prob is not None:
+                e_prob = calibrator.predict(label, d_prob, f_prob, e_prob)
+
             e_status = ensemble_present_status(
                 label=label,
                 d_prob=d_prob,
@@ -207,6 +220,7 @@ def main():
 
             out[f"densenet_prob_{slug}"] = d_prob
             out[f"fusion_prob_{slug}"] = f_prob
+            out[f"ensemble_prob_raw_{slug}"] = raw_prob
             out[f"ensemble_prob_{slug}"] = e_prob
 
             out[f"densenet_threshold_{slug}"] = d_threshold

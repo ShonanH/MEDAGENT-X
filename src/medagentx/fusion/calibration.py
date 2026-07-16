@@ -28,19 +28,15 @@ RARE_OR_HIGH_COST_FP_LABELS = {
     "Pleural Other",
 }
 
-# Labels where weak DenseNet/fusion agreement can still support a present call.
+# Clinically important labels where weak ensemble agreement may still call present.
 RECALL_LENIENT_LABELS = {
     "Edema",
     "Pneumothorax",
     "Pleural Effusion",
-    "Fracture",
-    "Pneumonia",
-    "Pleural Other",
-    "Lung Lesion",
 }
 
+# Broad labels that may call present on weak_present when calibrated probability clears threshold.
 MODERATE_RECALL_LABELS = {
-    "Atelectasis",
     "Consolidation",
     "Cardiomegaly",
     "Enlarged Cardiomediastinum",
@@ -50,12 +46,32 @@ STRICT_PRESENT_LABELS = {
     "Lung Opacity",
 }
 
-# Fusion is often overconfident on broad labels; down-weight it in the blend.
-DENSENET_HEAVY_BLEND_LABELS = BROAD_OR_NOISY_LABELS | MODERATE_RECALL_LABELS
+ATELECTASIS_STRICT_LABEL = "Atelectasis"
 
-LUNG_OPACITY_MIN_DENSENET = 0.82
-LUNG_OPACITY_MIN_ENSEMBLE = 0.92
-LUNG_OPACITY_MAX_FUSION_GAP = 0.12
+# Fusion is often overconfident on broad labels; down-weight it in the blend.
+DENSENET_HEAVY_BLEND_LABELS = BROAD_OR_NOISY_LABELS | MODERATE_RECALL_LABELS | {ATELECTASIS_STRICT_LABEL}
+
+LUNG_OPACITY_MIN_DENSENET = 0.84
+LUNG_OPACITY_MIN_ENSEMBLE = 0.88
+LUNG_OPACITY_MAX_FUSION_GAP = 0.15
+
+# Slightly lower effective threshold for recall-lenient labels.
+LENIENT_PRESENT_THRESHOLD_MULTIPLIER = 0.85
+
+# Shrink fusion-heavy probabilities when fusion is much higher than DenseNet.
+FUSION_INFLATION_GAP = 0.45
+FUSION_HIGH_CONFIDENCE = 0.75
+DENSENET_LOW_CONFIDENCE = 0.40
+
+# Minimum DenseNet probability required before calling present for selected labels.
+LABEL_DENSENET_PRESENT_FLOORS: dict[str, float] = {
+    "Atelectasis": 0.65,
+    "Lung Opacity": LUNG_OPACITY_MIN_DENSENET,
+    "Pneumonia": 0.75,
+    "Fracture": 0.75,
+    "Lung Lesion": 0.75,
+    "Pleural Other": 0.75,
+}
 
 # Conservative floors applied after validation tuning.
 LABEL_PRESENT_THRESHOLD_FLOORS: dict[str, float] = {
@@ -68,7 +84,7 @@ LABEL_PRESENT_THRESHOLD_FLOORS: dict[str, float] = {
     "Pneumothorax": 0.65,
     "Fracture": 0.80,
     "Lung Lesion": 0.80,
-    "Lung Opacity": 0.92,
+    "Lung Opacity": 0.88,
     "Enlarged Cardiomediastinum": 0.70,
     "Pleural Other": 0.75,
 }
@@ -84,6 +100,13 @@ for label in RARE_OR_HIGH_COST_FP_LABELS:
 def apply_threshold_floor(label: str, threshold: float) -> float:
     floor = LABEL_PRESENT_THRESHOLD_FLOORS.get(label, DEFAULT_PRESENT_THRESHOLD)
     return float(max(threshold, floor))
+
+
+def densenet_present_floor(label: str) -> float | None:
+    value = LABEL_DENSENET_PRESENT_FLOORS.get(label)
+    if value is None:
+        return None
+    return float(value)
 
 
 def prob_to_status(
@@ -182,6 +205,14 @@ def default_densenet_thresholds() -> dict[str, float]:
     }
 
 
+def _fusion_inflation_conflict(d_prob: float, f_prob: float) -> bool:
+    return (
+        (f_prob >= FUSION_HIGH_CONFIDENCE and d_prob <= DENSENET_LOW_CONFIDENCE)
+        or (f_prob - d_prob) >= FUSION_INFLATION_GAP
+        or (d_prob >= 0.65 and f_prob <= 0.20)
+    )
+
+
 def ensemble_prob_blend(
     label: str,
     d_prob: float | None,
@@ -194,6 +225,9 @@ def ensemble_prob_blend(
         return float(f_prob)
     if f_prob is None:
         return float(d_prob)
+
+    if label not in RECALL_LENIENT_LABELS and _fusion_inflation_conflict(d_prob, f_prob):
+        return float(min(d_prob, f_prob))
 
     if label in STRICT_PRESENT_LABELS:
         return float(min(d_prob, f_prob))
@@ -237,6 +271,21 @@ def agreement_field(
     return "insufficient_evidence"
 
 
+def _meets_densenet_floor(label: str, d_prob: float | None) -> bool:
+    floor = densenet_present_floor(label)
+    if floor is None:
+        return True
+    if d_prob is None:
+        return False
+    return float(d_prob) >= floor
+
+
+def _effective_present_threshold(label: str, e_threshold: float) -> float:
+    if label in RECALL_LENIENT_LABELS:
+        return float(e_threshold * LENIENT_PRESENT_THRESHOLD_MULTIPLIER)
+    return float(e_threshold)
+
+
 def ensemble_present_status(
     label: str,
     d_prob: float | None,
@@ -254,12 +303,24 @@ def ensemble_present_status(
         return "absent"
 
     agreement = agreement_field(d_prob, f_prob, d_threshold, f_threshold)
+    present_threshold = _effective_present_threshold(label, e_threshold)
+
+    if label == ATELECTASIS_STRICT_LABEL:
+        if agreement == "strong_absent":
+            return "absent"
+        if (
+            agreement == "strong_present"
+            and e_prob >= present_threshold
+            and _meets_densenet_floor(label, d_prob)
+        ):
+            return "present"
+        return "uncertain"
 
     if label in STRICT_PRESENT_LABELS:
         if agreement == "strong_absent":
             return "absent"
         if (
-            agreement == "strong_present"
+            agreement in {"strong_present", "weak_present"}
             and e_prob >= LUNG_OPACITY_MIN_ENSEMBLE
             and d_prob is not None
             and f_prob is not None
@@ -270,34 +331,42 @@ def ensemble_present_status(
         return "uncertain"
 
     if label in RECALL_LENIENT_LABELS:
-        if agreement == "strong_absent" and e_prob <= DEFAULT_ABSENT_THRESHOLD:
+        if agreement == "strong_absent":
             return "absent"
-        if agreement in {"weak_present", "strong_present"} and e_prob >= e_threshold:
+        if (
+            agreement in {"weak_present", "strong_present"}
+            and e_prob >= present_threshold
+            and _meets_densenet_floor(label, d_prob)
+        ):
             return "present"
         return "uncertain"
 
     if label in MODERATE_RECALL_LABELS:
-        if agreement == "strong_absent" and e_prob <= DEFAULT_ABSENT_THRESHOLD:
+        if agreement == "strong_absent":
             return "absent"
-        if agreement in {"weak_present", "strong_present"} and e_prob >= e_threshold:
+        if (
+            agreement in {"strong_present", "weak_present"}
+            and e_prob >= present_threshold
+            and _meets_densenet_floor(label, d_prob)
+        ):
             return "present"
         return "uncertain"
 
     if label in RARE_OR_HIGH_COST_FP_LABELS:
-        if agreement == "strong_present" and e_prob >= e_threshold:
+        if agreement == "strong_present" and e_prob >= present_threshold:
             return "present"
         if agreement == "strong_absent":
             return "absent"
         return "uncertain"
 
     if require_agreement:
-        if agreement == "strong_present" and e_prob >= e_threshold:
+        if agreement == "strong_present" and e_prob >= present_threshold:
             return "present"
         if agreement == "strong_absent":
             return "absent"
         return "uncertain"
 
-    if e_prob >= e_threshold:
+    if e_prob >= present_threshold:
         return "present"
     return "uncertain"
 

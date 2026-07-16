@@ -31,7 +31,7 @@ def parse_args():
     parser.add_argument("--quality-gate-csv", type=Path, default=DEFAULT_QUALITY_GATE_CSV)
     parser.add_argument("--quality-evidence-csv", type=Path, default=DEFAULT_QUALITY_EVIDENCE_CSV)
     parser.add_argument("--output-csv", type=Path, default=DEFAULT_OUTPUT_CSV)
-    parser.add_argument("--model-weights", default="densenet121-res224-all")
+    parser.add_argument("--model-weights", default="densenet121-res224-chex")
     parser.add_argument("--device", default="")
     parser.add_argument("--limit", type=int, default=None)
     parser.add_argument("--skip-existing", action="store_true")

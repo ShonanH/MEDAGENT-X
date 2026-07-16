@@ -21,8 +21,11 @@ DEFAULT_TEST_PREDICTIONS = DEFAULT_OUTPUT_DIR / "fusion_test_predictions.csv"
 DEFAULT_FUSION_PREDICTIONS = DEFAULT_OUTPUT_DIR / "fusion_predictions.csv"
 DEFAULT_ENSEMBLE_PREDICTIONS = DEFAULT_OUTPUT_DIR / "ensemble_classifier_predictions.csv"
 DEFAULT_ENSEMBLE_THRESHOLDS = DEFAULT_OUTPUT_DIR / "ensemble_thresholds.json"
+DEFAULT_ENSEMBLE_CALIBRATOR = DEFAULT_OUTPUT_DIR / "ensemble_calibrator.json"
 
-FUSION_MODEL_VERSION = "fusion_mlp_v1"
+FUSION_MODEL_VERSION = "fusion_mlp_v2_stacked"
+DEFAULT_DENSENET_MODEL_WEIGHTS = "densenet121-res224-chex"
+DENSENET_PROB_DIM = len(DISEASE_LABELS)
 
 DISEASE_LABELS = [
     "Atelectasis",

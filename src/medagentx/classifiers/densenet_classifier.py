@@ -18,7 +18,7 @@ DEFAULT_QUALITY_EVIDENCE_CSV = Path("outputs/chexpert_plus/quality_evidence_mani
 DEFAULT_QUALITY_GATE_CSV = Path("outputs/chexpert_plus/quality_gate_decisions.csv")
 DEFAULT_OUTPUT_CSV = Path("outputs/chexpert_plus/image_classifier_predictions.csv")
 
-DEFAULT_MODEL_WEIGHTS = "densenet121-res224-all"
+DEFAULT_MODEL_WEIGHTS = "densenet121-res224-chex"
 DEFAULT_PRESENT_THRESHOLD = 0.50
 DEFAULT_ABSENT_THRESHOLD = 0.20
 

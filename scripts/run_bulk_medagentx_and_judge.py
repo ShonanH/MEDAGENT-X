@@ -14,6 +14,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.medagentx.graphs.medagentx_graph import run_medagentx_graph
 from src.medagentx.agents.judge_agent import build_judge_markdown
+from src.medagentx.fusion.batch_metrics import print_batch_calibration_summary, write_batch_calibration_report
 
 
 DEFAULT_QUALITY_GATE_CSV = "outputs/chexpert_plus/quality_gate_decisions.csv"
@@ -95,10 +96,11 @@ def run_batch(
     tmp_path = batch_path / "tmp"
     tmp_path.mkdir(parents=True, exist_ok=True)
 
-    combined_disease_reasoning_csv = batch_path / "disease_reasoning_results_first_100.csv"
-    combined_judge_results_csv = batch_path / "judge_results_first_100.csv"
-    combined_judge_report_md = batch_path / "judge_report_first_100.md"
-    batch_status_csv = batch_path / "batch_status_first_100.csv"
+    suffix = f"first_{limit}"
+    combined_disease_reasoning_csv = batch_path / f"disease_reasoning_results_{suffix}.csv"
+    combined_judge_results_csv = batch_path / f"judge_results_{suffix}.csv"
+    combined_judge_report_md = batch_path / f"judge_report_{suffix}.md"
+    batch_status_csv = batch_path / f"batch_status_{suffix}.csv"
 
     cases = load_first_eligible_cases(
         quality_gate_csv=quality_gate_csv,
@@ -214,6 +216,20 @@ def run_batch(
     print(f"[Batch] Disease reasoning CSV: {combined_disease_reasoning_csv}", flush=True)
     print(f"[Batch] Judge results CSV: {combined_judge_results_csv}", flush=True)
     print(f"[Batch] Judge report: {combined_judge_report_md}", flush=True)
+
+    try:
+        metrics_report = write_batch_calibration_report(batch_path, limit=limit)
+        print_batch_calibration_summary(metrics_report)
+        print(
+            f"[Batch] Calibration metrics JSON: {batch_path / f'batch_calibration_metrics_{suffix}.json'}",
+            flush=True,
+        )
+        print(
+            f"[Batch] Calibration metrics MD: {batch_path / f'batch_calibration_metrics_{suffix}.md'}",
+            flush=True,
+        )
+    except Exception as exc:
+        print(f"[Batch] Calibration metrics logging skipped: {exc}", flush=True)
 
 
 def main() -> None:
