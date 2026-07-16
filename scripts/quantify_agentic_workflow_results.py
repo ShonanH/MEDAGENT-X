@@ -30,8 +30,9 @@ CHEXPERT_LABELS = [
 
 NON_DISEASE_LABELS = {"Support Devices", "No Finding"}
 
-STATUS_ORDER = ["present", "absent", "uncertain", "unavailable"]
-DECISION_ORDER = ["pass", "review", "fail"]
+STATUS_ORDER = ["present", "absent", "uncertain"]
+DECISION_ORDER = ["concordant", "partially_concordant", "discordant"]
+
 
 DEFAULT_OUTPUT_DIR = "outputs/chexpert_plus/paper_figures"
 

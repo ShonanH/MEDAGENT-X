@@ -11,6 +11,15 @@ import numpy as np
 import pandas as pd
 import requests
 
+DEFAULT_OUTPUT_PATH = "outputs/chexpert_plus/disease_reasoning_results.csv"
+DEFAULT_REPORT_PATH = "outputs/chexpert_plus/report.md"
+PROMPT_VERSION = "disease_reasoning_v3_fact_grounded_report_writer"
+
+BORDERLINE_PRESENT_LOW = 0.50
+MODERATE_PRESENT_LOW = 0.60
+STRONG_PRESENT_LOW = 0.75
+UNCERTAIN_LOW = 0.20
+
 
 CHEXPERT_LABELS = [
     "Atelectasis",
@@ -29,14 +38,14 @@ CHEXPERT_LABELS = [
     "No Finding",
 ]
 
-DEFAULT_OUTPUT_PATH = "outputs/chexpert_plus/disease_reasoning_results.csv"
-DEFAULT_REPORT_PATH = "outputs/chexpert_plus/report.md"
-PROMPT_VERSION = "disease_reasoning_v3_fact_grounded_report_writer"
+BROAD_OR_NOISY_PRESENT_LABELS = {
+    "Atelectasis",
+    "Cardiomegaly",
+    "Consolidation",
+    "Lung Opacity",
+    "Enlarged Cardiomediastinum",
+}
 
-BORDERLINE_PRESENT_LOW = 0.50
-MODERATE_PRESENT_LOW = 0.60
-STRONG_PRESENT_LOW = 0.75
-UNCERTAIN_LOW = 0.20
 
 LABEL_TERMS = {
     "Atelectasis": ["atelectasis", "volume loss"],
@@ -822,11 +831,11 @@ def deterministic_label_decision(
         if positive_count >= 2:
             status = "uncertain"
             confidence = 0.35
-            reason = "classifier unavailable with retrieval mentions"
+            reason = "classifier unavailable; retrieval mentions treated as contextual uncertainty only"
         else:
             status = "unavailable"
             confidence = 0.0
-            reason = "classifier unavailable and retrieval support insufficient"
+            reason = "classifier unavailable and retrieval context insufficient"
     else:
         probability = normalize_confidence(probability)
 
@@ -834,23 +843,27 @@ def deterministic_label_decision(
             status = "present"
             confidence = min(0.95, probability)
             reason = "strong classifier probability"
+
         elif probability >= MODERATE_PRESENT_LOW:
-            status = "present"
-            confidence = min(0.85, probability)
-            reason = "moderate classifier probability"
-        elif probability >= BORDERLINE_PRESENT_LOW:
-            if positive_count >= 1 and positive_count >= negative_count:
-                status = "present"
-                confidence = 0.60
-                reason = "borderline classifier probability with retrieval support"
-            else:
+            if label in BROAD_OR_NOISY_PRESENT_LABELS:
                 status = "uncertain"
-                confidence = 0.45
-                reason = "borderline classifier probability without enough retrieval support"
+                confidence = 0.55
+                reason = "moderate classifier probability for broad/noisy label; not promoted to present"
+            else:
+                status = "present"
+                confidence = min(0.85, probability)
+                reason = "moderate classifier probability"
+
+        elif probability >= BORDERLINE_PRESENT_LOW:
+            status = "uncertain"
+            confidence = 0.45
+            reason = "borderline classifier probability; retrieval mentions retained as context only"
+
         elif probability > UNCERTAIN_LOW:
             status = "uncertain"
             confidence = 0.35
             reason = "low-intermediate classifier probability"
+
         else:
             status = "absent"
             confidence = 0.85
@@ -875,7 +888,7 @@ def deterministic_label_decision(
         "evidence": " ".join(evidence_parts),
         "evidence_type": "combined",
     }
-
+    
 
 def build_deterministic_disease_evidence(evidence_packet: dict[str, Any]) -> list[dict[str, Any]]:
     classifier_items = classifier_label_map(evidence_packet["image_classifier_evidence"])

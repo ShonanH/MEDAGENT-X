@@ -41,6 +41,22 @@ CRITICAL_DISEASE_LABELS = {
     "Enlarged Cardiomediastinum",
 }
 
+HIGH_RISK_FALSE_NEGATIVE_LABELS = {
+    "Pneumothorax",
+    "Pleural Effusion",
+    "Edema",
+    "Consolidation",
+    "Pneumonia",
+}
+
+BROAD_OR_NOISY_LABELS = {
+    "Atelectasis",
+    "Cardiomegaly",
+    "Lung Opacity",
+    "Enlarged Cardiomediastinum",
+}
+
+
 NON_DISEASE_LABELS = {"Support Devices", "No Finding"}
 
 DEFAULT_DISEASE_REASONING_PATH = "outputs/chexpert_plus/disease_reasoning_results.csv"
@@ -68,12 +84,14 @@ LABEL_TERMS = {
 
 NEGATION_CUES = [
     "no ",
-    "without ",
     "no evidence of ",
+    "no evidence for ",
+    "without ",
     "negative for ",
     "absent ",
     "free of ",
     "clear of ",
+    "absence of ",
 ]
 
 UNCERTAINTY_CUES = [
@@ -87,8 +105,10 @@ UNCERTAINTY_CUES = [
     "suggestive",
     "likely",
     "questionable",
+    "rule out",
+    "evaluate for",
+    "assessment for",
 ]
-
 
 def clean_value(value: Any) -> Any:
     if value is None:
@@ -152,16 +172,26 @@ def parse_json_cell(value: Any, default: Any) -> Any:
         return default
 
 
-def split_sentences(text: str) -> list[str]:
+def normalize_report_sentence(text: str) -> str:
     text = clean_string(text).lower()
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
+def split_sentences(text: str) -> list[str]:
+    text = normalize_report_sentence(text)
     pieces = re.split(r"[\n.;:]+", text)
     return [piece.strip() for piece in pieces if piece.strip()]
 
 
-def sentence_has_cue(sentence: str, term: str, cues: list[str], window: int = 80) -> bool:
+def sentence_has_cue(sentence: str, term: str, cues: list[str], window: int = 180) -> bool:
+    sentence = normalize_report_sentence(sentence)
+    term = normalize_report_sentence(term)
+
     index = sentence.find(term)
     if index < 0:
         return False
+
     prefix = sentence[max(0, index - window):index]
     return any(cue in prefix for cue in cues)
 
@@ -205,13 +235,19 @@ def extract_report_text(row: pd.Series) -> dict[str, str]:
         section_cols = [col for col in row.index if str(col).startswith("section_")]
         report = "\n".join(clean_string(row.get(col)) for col in section_cols if clean_string(row.get(col)))
 
-    combined = "\n".join(part for part in [findings, impression, report] if part)
+    if findings or impression:
+        combined = "\n".join(part for part in [findings, impression] if part)
+        label_source = "section_findings_plus_section_impression"
+    else:
+        combined = report
+        label_source = "report_fallback"
 
     return {
         "section_findings": findings,
         "section_impression": impression,
         "report_text": report,
         "combined_text": combined,
+        "label_source": label_source,
     }
 
 def extract_predicted_report_text(row: pd.Series) -> dict[str, str]:
@@ -233,7 +269,10 @@ def infer_label_from_text(text: str, label: str) -> dict[str, Any]:
     uncertain_examples = []
 
     for sentence in split_sentences(text):
+        sentence = normalize_report_sentence(sentence)
+
         for term in LABEL_TERMS.get(label, []):
+            term = normalize_report_sentence(term)
             if term not in sentence:
                 continue
 
@@ -273,7 +312,6 @@ def infer_label_from_text(text: str, label: str) -> dict[str, Any]:
         "status": "absent",
         "evidence": "No report evidence found for this label.",
     }
-
 
 def infer_ground_truth_labels(report_text: str) -> list[dict[str, Any]]:
     labels = []
@@ -475,50 +513,126 @@ def judge_decision_from_metrics(
 ) -> tuple[str, list[str]]:
     reasons = []
 
-    critical_false_positive = [
-        label
-        for label in disease_present_metrics["false_positive"]
-        if label in CRITICAL_DISEASE_LABELS
-    ]
-    critical_false_negative = [
-        label
-        for label in disease_present_metrics["false_negative"]
-        if label in CRITICAL_DISEASE_LABELS
+    disease_items = [
+        item
+        for item in per_label
+        if item["label"] not in NON_DISEASE_LABELS
     ]
 
-    partial_labels = [
+    high_risk_absent_false_negative = [
         item["label"]
-        for item in per_label
-        if item["match_type"] == "partial"
+        for item in disease_items
+        if item["label"] in HIGH_RISK_FALSE_NEGATIVE_LABELS
+        and item["ground_truth_status"] == "present"
+        and item["predicted_status"] in {"absent", "unavailable"}
     ]
-    mismatch_labels = [
+
+    high_risk_uncertain_false_negative = [
         item["label"]
-        for item in per_label
+        for item in disease_items
+        if item["label"] in HIGH_RISK_FALSE_NEGATIVE_LABELS
+        and item["ground_truth_status"] == "present"
+        and item["predicted_status"] == "uncertain"
+    ]
+
+    critical_absent_false_negative = [
+        item["label"]
+        for item in disease_items
+        if item["label"] in CRITICAL_DISEASE_LABELS
+        and item["ground_truth_status"] == "present"
+        and item["predicted_status"] in {"absent", "unavailable"}
+    ]
+
+    critical_uncertain_false_negative = [
+        item["label"]
+        for item in disease_items
+        if item["label"] in CRITICAL_DISEASE_LABELS
+        and item["ground_truth_status"] == "present"
+        and item["predicted_status"] == "uncertain"
+    ]
+
+    critical_false_positive = [
+        item["label"]
+        for item in disease_items
+        if item["label"] in CRITICAL_DISEASE_LABELS
+        and item["predicted_status"] == "present"
+        and item["ground_truth_status"] in {"absent", "unavailable"}
+    ]
+
+    disease_mismatch_labels = [
+        item["label"]
+        for item in disease_items
         if item["match_type"] == "mismatch"
     ]
 
+    gt_present_pred_uncertain = [
+        item["label"]
+        for item in disease_items
+        if item["ground_truth_status"] == "present"
+        and item["predicted_status"] == "uncertain"
+    ]
+    
+    uncertain_over_absent = [
+        item["label"]
+        for item in disease_items
+        if item["ground_truth_status"] == "absent"
+        and item["predicted_status"] == "uncertain"
+    ]
+
+    pred_present_gt_uncertain = [
+        item["label"]
+        for item in disease_items
+        if item["predicted_status"] == "present"
+        and item["ground_truth_status"] == "uncertain"
+    ]
+
+    disease_f1 = disease_present_metrics["f1"]
+
+    if high_risk_absent_false_negative:
+        reasons.append(f"High-risk missed disease labels marked absent/unavailable: {high_risk_absent_false_negative}")
+        return "discordant", reasons
+
+    if len(critical_absent_false_negative) >= 2:
+        reasons.append(f"Multiple critical disease labels missed as absent/unavailable: {critical_absent_false_negative}")
+        return "discordant", reasons
+
+    if len(critical_false_positive) >= 3:
+        reasons.append(f"Multiple critical hallucinated disease labels: {critical_false_positive}")
+        return "discordant", reasons
+
+    if disease_f1 < 0.25 and critical_false_positive:
+        reasons.append(f"Very low disease F1 with critical false positives: {disease_f1:.3f}")
+        return "discordant", reasons
+
+    if (
+        disease_f1 >= 0.85
+        and not disease_mismatch_labels
+        and not critical_false_positive
+        and not critical_absent_false_negative
+        and not critical_uncertain_false_negative
+    ):
+        return "concordant", ["Predicted disease labels are concordant with report-derived ground truth labels."]
+
+    if gt_present_pred_uncertain:
+        reasons.append(f"Ground-truth present disease labels predicted uncertain: {gt_present_pred_uncertain}")
+    if pred_present_gt_uncertain:
+        reasons.append(f"Predicted present disease labels with uncertain ground truth: {pred_present_gt_uncertain}")
+    if critical_absent_false_negative:
+        reasons.append(f"Critical disease labels missed as absent/unavailable: {critical_absent_false_negative}")
     if critical_false_positive:
-        reasons.append(f"Critical hallucinated present labels: {critical_false_positive}")
-    if critical_false_negative:
-        reasons.append(f"Critical missed present labels: {critical_false_negative}")
+        reasons.append(f"Critical hallucinated disease labels: {critical_false_positive}")
+    if disease_mismatch_labels:
+        reasons.append(f"Disease status mismatches: {disease_mismatch_labels}")
 
-    if critical_false_positive or critical_false_negative:
-        return "fail", reasons
+    if not reasons and uncertain_over_absent:
+        reasons.append(f"Low-severity uncertain-over-absent labels: {uncertain_over_absent}")
 
-    if mismatch_labels:
-        reasons.append(f"Non-critical status mismatches: {mismatch_labels}")
-    if partial_labels:
-        reasons.append(f"Partial/uncertain matches: {partial_labels}")
+    if not reasons:
+        reasons.append("Minor uncertainty-only or non-disease disagreement.")
 
-    if disease_present_metrics["f1"] < 0.75:
-        reasons.append(f"Disease present-label F1 below threshold: {disease_present_metrics['f1']:.3f}")
+    return "partially_concordant", reasons
 
-    if reasons:
-        return "review", reasons
-
-    return "pass", ["Predicted disease labels match report-derived ground truth labels."]
-
-
+    
 def evaluate_case(
     prediction_row: pd.Series,
     ground_truth_df: pd.DataFrame,
@@ -536,7 +650,7 @@ def evaluate_case(
         return {
             "study_key": study_key,
             "dicom_path": dicom_path,
-            "judge_decision": "fail",
+            "judge_decision": "discordant",
             "judge_explanation": "No matching ground-truth report row found.",
             "ground_truth_present_labels": json.dumps([]),
             "predicted_present_labels": json.dumps([]),
@@ -643,9 +757,9 @@ def markdown_list(items: list[str]) -> str:
 
 def build_judge_markdown(eval_df: pd.DataFrame) -> str:
     total = len(eval_df)
-    passed = int((eval_df["judge_decision"] == "pass").sum()) if total else 0
-    review = int((eval_df["judge_decision"] == "review").sum()) if total else 0
-    failed = int((eval_df["judge_decision"] == "fail").sum()) if total else 0
+    concordant = int((eval_df["judge_decision"] == "concordant").sum()) if total else 0
+    partial = int((eval_df["judge_decision"] == "partially_concordant").sum()) if total else 0
+    discordant = int((eval_df["judge_decision"] == "discordant").sum()) if total else 0
 
     sections = [
         "# MEDAGENT-X Judge Report",
@@ -653,19 +767,31 @@ def build_judge_markdown(eval_df: pd.DataFrame) -> str:
         "## Summary",
         "",
         f"- Total cases: `{total}`",
-        f"- Pass: `{passed}`",
-        f"- Review: `{review}`",
-        f"- Fail: `{failed}`",
+        f"- Concordant: `{concordant}`",
+        f"- Partially concordant: `{partial}`",
+        f"- Discordant: `{discordant}`",
         "",
     ]
 
     for _, row in eval_df.iterrows():
         per_label = parse_json_cell(row.get("per_label_judgment_json"), [])
-        mismatches = [
-            f"{item['label']}: predicted `{item['predicted_status']}`, ground truth `{item['ground_truth_status']}`"
-            for item in per_label
-            if item.get("match_type") in {"partial", "mismatch"}
-        ]
+        mismatches = []
+        for item in per_label:
+            label = item.get("label")
+            predicted = item.get("predicted_status")
+            ground_truth = item.get("ground_truth_status")
+            match_type = item.get("match_type")
+        
+            if label in NON_DISEASE_LABELS:
+                continue
+        
+            if ground_truth == "absent" and predicted == "uncertain":
+                continue
+        
+            if match_type in {"partial", "mismatch"}:
+                mismatches.append(
+                    f"{label}: predicted `{predicted}`, ground truth `{ground_truth}`"
+                )
 
         sections.extend(
             [

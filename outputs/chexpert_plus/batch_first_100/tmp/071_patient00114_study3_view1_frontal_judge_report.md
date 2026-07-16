@@ -3,21 +3,21 @@
 ## Summary
 
 - Total cases: `1`
-- Pass: `0`
-- Review: `0`
-- Fail: `1`
+- Concordant: `0`
+- Partially concordant: `1`
+- Discordant: `0`
 
 ## Case
 
 - Study key: `patient00114/study3`
 - DICOM path: `patient00114/study3/view1_frontal.dcm`
-- Judge decision: **FAIL**
-- Disease F1: `0.444`
-- Label macro score: `0.464`
+- Judge decision: **PARTIALLY_CONCORDANT**
+- Disease F1: `0.667`
+- Label macro score: `0.607`
 
 ### Explanation
 
-Critical hallucinated present labels: ['Atelectasis', 'Edema', 'Pleural Effusion', 'Pneumonia']
+Ground-truth present disease labels predicted uncertain: ['Consolidation']
 
 ### Ground Truth Present Labels
 
@@ -27,29 +27,14 @@ Critical hallucinated present labels: ['Atelectasis', 'Edema', 'Pleural Effusion
 
 ### Predicted Present Labels
 
-- Atelectasis
-- Consolidation
-- Edema
-- Fracture
 - Lung Opacity
-- Pleural Effusion
-- Pneumonia
 
 ### Partial Or Mismatched Labels
 
-- Atelectasis: predicted `present`, ground truth `absent`
-- Cardiomegaly: predicted `uncertain`, ground truth `absent`
-- Edema: predicted `present`, ground truth `absent`
-- Pleural Effusion: predicted `present`, ground truth `absent`
-- Pneumonia: predicted `present`, ground truth `absent`
-- Pneumothorax: predicted `uncertain`, ground truth `absent`
-- Fracture: predicted `present`, ground truth `absent`
-- Enlarged Cardiomediastinum: predicted `uncertain`, ground truth `absent`
-- Pleural Other: predicted `uncertain`, ground truth `absent`
-- Support Devices: predicted `uncertain`, ground truth `present`
+- Consolidation: predicted `uncertain`, ground truth `present`
 
 ### Ground Truth Report Excerpt
 
-> THE ENDOTRACHEAL TUBE, NASOGASTRIC TUBE, FEEDING TUBE AND RIGHT INTERNAL JUGULAR CENTRAL VENOUS CATHETERS ALL APPEAR UNCHANGED IN CONFIGURATION. AGAIN NOTED IS A STENT GRAFT IN THE AORTA AT THE LEVEL OF THE ARCH. PERSISTENT OVOID OPACITY IN THE LEFT UPPER LUNG ZONE, GROSSLY UNCHANGED. EXTENSIVE ALVEOLAR OPACITY OF THE RIGHT LUNG, ALSO GROSSLY UNCHANGED. PERSISTENT LEFT LOWER LOBE CONSOLIDATION. THE OVERALL APPEARANCE OF THE CHEST DOES NOT SIGNIFICANTLY DIFFER FROM THE PRIOR STUDY. NARRATIVE: CHEST, 3/11/2015 COMPARISON: Comparison is made with 3-11-2015. IMPRESSION: THE ENDOTRACHEAL TUBE, NASOGASTRIC TUBE, FEEDING TUBE AND RIGHT INTERNAL JUGULAR CENTRAL VENOUS CATHETERS ALL APPEAR UNCHANGED IN CONFIGURATION. AGAIN NOTED IS A STENT GRAFT IN THE AORTA AT THE LEVEL OF THE ARCH. PERSISTENT OVOID OPACITY IN THE LEFT UPPER LUNG ZONE, GROSSLY UNCHANGED. EXTENSIVE ALVEOLAR OPACITY OF THE RIGHT L ...[truncated]
+> THE ENDOTRACHEAL TUBE, NASOGASTRIC TUBE, FEEDING TUBE AND RIGHT INTERNAL JUGULAR CENTRAL VENOUS CATHETERS ALL APPEAR UNCHANGED IN CONFIGURATION. AGAIN NOTED IS A STENT GRAFT IN THE AORTA AT THE LEVEL OF THE ARCH. PERSISTENT OVOID OPACITY IN THE LEFT UPPER LUNG ZONE, GROSSLY UNCHANGED. EXTENSIVE ALVEOLAR OPACITY OF THE RIGHT LUNG, ALSO GROSSLY UNCHANGED. PERSISTENT LEFT LOWER LOBE CONSOLIDATION. THE OVERALL APPEARANCE OF THE CHEST DOES NOT SIGNIFICANTLY DIFFER FROM THE PRIOR STUDY.
 
 ---

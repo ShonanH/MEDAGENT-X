@@ -3,21 +3,21 @@
 ## Summary
 
 - Total cases: `1`
-- Pass: `0`
-- Review: `0`
-- Fail: `1`
+- Concordant: `1`
+- Partially concordant: `0`
+- Discordant: `0`
 
 ## Case
 
 - Study key: `patient00087/study3`
 - DICOM path: `patient00087/study3/view1_frontal.dcm`
-- Judge decision: **FAIL**
-- Disease F1: `0.000`
-- Label macro score: `0.500`
+- Judge decision: **CONCORDANT**
+- Disease F1: `1.000`
+- Label macro score: `0.615`
 
 ### Explanation
 
-Critical hallucinated present labels: ['Cardiomegaly', 'Pleural Effusion', 'Pneumothorax']
+Predicted disease labels are concordant with report-derived ground truth labels.
 
 ### Ground Truth Present Labels
 
@@ -25,26 +25,14 @@ Critical hallucinated present labels: ['Cardiomegaly', 'Pleural Effusion', 'Pneu
 
 ### Predicted Present Labels
 
-- Cardiomegaly
-- Pleural Effusion
-- Pneumothorax
+- None
 
 ### Partial Or Mismatched Labels
 
-- Atelectasis: predicted `uncertain`, ground truth `absent`
-- Cardiomegaly: predicted `present`, ground truth `absent`
-- Consolidation: predicted `uncertain`, ground truth `absent`
-- Pleural Effusion: predicted `present`, ground truth `uncertain`
-- Pneumonia: predicted `uncertain`, ground truth `absent`
-- Pneumothorax: predicted `present`, ground truth `absent`
-- Fracture: predicted `uncertain`, ground truth `absent`
-- Lung Lesion: predicted `uncertain`, ground truth `absent`
-- Lung Opacity: predicted `uncertain`, ground truth `absent`
-- Enlarged Cardiomediastinum: predicted `uncertain`, ground truth `absent`
-- Pleural Other: predicted `uncertain`, ground truth `absent`
+- None
 
 ### Ground Truth Report Excerpt
 
-> 1. THE LUNGS APPEAR CLEAR WITHOUT A FOCAL PARENCHYMAL PROCESS. 2. THERE IS MINIMAL BLUNTING OF THE RIGHT COSTOPHRENIC ANGLE LIKELY REPRESENTING A SMALL PLEURAL EFFUSION. NARRATIVE: TWO VIEWS OF THE CHEST: 10/17/14. COMPARISON: Comparison is to previous exam from 14/10. IMPRESSION: 1. THE LUNGS APPEAR CLEAR WITHOUT A FOCAL PARENCHYMAL PROCESS. 2. THERE IS MINIMAL BLUNTING OF THE RIGHT COSTOPHRENIC ANGLE LIKELY REPRESENTING A SMALL PLEURAL EFFUSION. END OF IMPRESSION: I have personally reviewed the images for this examination and agree with the report transcribed above. By: Elleah E., Mcknight  on: 10-17-2014   ACCESSION NUMBER: 187-926-422-07 This report has been anonymized. All dates are offset from the actual dates by a fixed interval associated with the patient.
+> 1. THE LUNGS APPEAR CLEAR WITHOUT A FOCAL PARENCHYMAL PROCESS. 2. THERE IS MINIMAL BLUNTING OF THE RIGHT COSTOPHRENIC ANGLE LIKELY REPRESENTING A SMALL PLEURAL EFFUSION.
 
 ---

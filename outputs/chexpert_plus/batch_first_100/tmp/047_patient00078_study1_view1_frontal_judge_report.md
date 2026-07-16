@@ -3,21 +3,21 @@
 ## Summary
 
 - Total cases: `1`
-- Pass: `0`
-- Review: `1`
-- Fail: `0`
+- Concordant: `0`
+- Partially concordant: `1`
+- Discordant: `0`
 
 ## Case
 
 - Study key: `patient00078/study1`
 - DICOM path: `patient00078/study1/view1_frontal.dcm`
-- Judge decision: **REVIEW**
-- Disease F1: `1.000`
-- Label macro score: `0.893`
+- Judge decision: **PARTIALLY_CONCORDANT**
+- Disease F1: `0.000`
+- Label macro score: `0.857`
 
 ### Explanation
 
-Partial/uncertain matches: ['Fracture', 'Pleural Other', 'Support Devices']
+Ground-truth present disease labels predicted uncertain: ['Pneumothorax']
 
 ### Ground Truth Present Labels
 
@@ -26,13 +26,11 @@ Partial/uncertain matches: ['Fracture', 'Pleural Other', 'Support Devices']
 
 ### Predicted Present Labels
 
-- Pneumothorax
+- None
 
 ### Partial Or Mismatched Labels
 
-- Fracture: predicted `uncertain`, ground truth `absent`
-- Pleural Other: predicted `uncertain`, ground truth `absent`
-- Support Devices: predicted `uncertain`, ground truth `present`
+- Pneumothorax: predicted `uncertain`, ground truth `present`
 
 ### Ground Truth Report Excerpt
 
