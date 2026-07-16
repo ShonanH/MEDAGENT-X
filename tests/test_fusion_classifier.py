@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-from src.medagentx.fusion.features import aggregate_study_features
+from src.medagentx.fusion.features import aggregate_study_features, merge_label_and_feature_tables
 from src.medagentx.fusion.labels import build_report_text_for_weak_labels, infer_weak_label_status
 from src.medagentx.fusion.metrics import masked_bce_with_logits_loss
 from src.medagentx.fusion.paths import clean_dicom_path, parse_study_key_from_dcm
@@ -54,9 +54,37 @@ def test_masked_bce_ignores_uncertain_labels():
     assert torch.isfinite(loss)
 
 
+def test_merge_label_and_feature_tables_keeps_deid_patient_id():
+    label_df = pd.DataFrame(
+        {
+            "study_key": ["patient00003/study1"],
+            "dicom_path": ["patient00003/study1/view1_frontal.dcm"],
+            "deid_patient_id": ["patient00003"],
+            "weak_value_atelectasis": [1.0],
+        }
+    )
+    feature_df = pd.DataFrame(
+        {
+            "study_key": ["patient00003/study1"],
+            "dicom_path": ["patient00003/study1/view1_frontal.dcm"],
+            "deid_patient_id": ["patient00003"],
+            "convnext_feature_path": ["/tmp/conv.npz"],
+            "raddino_feature_path": ["/tmp/rad.npz"],
+            "convnext_status": ["ok"],
+            "raddino_status": ["success"],
+            "feature_ready": [True],
+        }
+    )
+
+    merged = merge_label_and_feature_tables(label_df, feature_df)
+    assert "deid_patient_id" in merged.columns
+    assert "deid_patient_id_x" not in merged.columns
+    assert merged.iloc[0]["deid_patient_id"] == "patient00003"
+
+
 def test_study_aggregation_handles_multiple_images():
-  for n in [1, 2, 3]:
-      feats = [np.ones(4, dtype=np.float32) * i for i in range(1, n + 1)]
-      out = aggregate_study_features(feats)
-      assert out.shape == (4,)
-      assert np.allclose(out, np.mean(np.stack(feats, axis=0), axis=0))
+    for n in [1, 2, 3]:
+        feats = [np.ones(4, dtype=np.float32) * i for i in range(1, n + 1)]
+        out = aggregate_study_features(feats)
+        assert out.shape == (4,)
+        assert np.allclose(out, np.mean(np.stack(feats, axis=0), axis=0))

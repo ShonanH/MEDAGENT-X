@@ -93,6 +93,17 @@ def load_feature_manifests(
     return merged
 
 
+def merge_label_and_feature_tables(
+    label_df: pd.DataFrame,
+    feature_df: pd.DataFrame,
+) -> pd.DataFrame:
+    join_keys = {"study_key", "dicom_path"}
+    overlap_cols = (set(label_df.columns) & set(feature_df.columns)) - join_keys
+    feature_subset = feature_df.drop(columns=list(overlap_cols), errors="ignore")
+    merged = label_df.merge(feature_subset, on=["study_key", "dicom_path"], how="inner")
+    return merged[merged["feature_ready"]].copy()
+
+
 def aggregate_study_features(
     image_features: list[np.ndarray],
 ) -> np.ndarray:

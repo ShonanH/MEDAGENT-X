@@ -35,6 +35,7 @@ from src.medagentx.fusion.features import (
     concat_image_features,
     feature_dim_for_mode,
     load_feature_manifests,
+    merge_label_and_feature_tables,
 )
 from src.medagentx.fusion.metrics import (
     compute_pos_weight,
@@ -77,8 +78,7 @@ def build_study_training_table(
     feature_df: pd.DataFrame,
     feature_mode: str,
 ) -> pd.DataFrame:
-    merged = label_df.merge(feature_df, on=["study_key", "dicom_path"], how="inner")
-    merged = merged[merged["feature_ready"]].copy()
+    merged = merge_label_and_feature_tables(label_df, feature_df)
 
     study_rows = []
 
