@@ -4,72 +4,16 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from src.medagentx.fusion.calibration import tune_thresholds_precision_favored
-from src.medagentx.fusion.constants import DISEASE_LABELS
-
 
 def masked_bce_with_logits_loss(
     logits: torch.Tensor,
     targets: torch.Tensor,
     mask: torch.Tensor,
     pos_weight: torch.Tensor | None = None,
-    label_smoothing_present: float = 0.0,
-    label_smoothing_absent: float = 0.0,
 ) -> torch.Tensor:
-    smoothed_targets = targets.clone()
-    if label_smoothing_present > 0:
-        smoothed_targets = torch.where(
-            (mask > 0) & (targets > 0.5),
-            torch.full_like(targets, 1.0 - label_smoothing_present),
-            smoothed_targets,
-        )
-    if label_smoothing_absent > 0:
-        smoothed_targets = torch.where(
-            (mask > 0) & (targets <= 0.5),
-            torch.full_like(targets, label_smoothing_absent),
-            smoothed_targets,
-        )
-
     criterion = nn.BCEWithLogitsLoss(reduction="none", pos_weight=pos_weight)
-    loss = criterion(logits, smoothed_targets)
+    loss = criterion(logits, targets)
     loss = loss * mask
-    denom = mask.sum().clamp_min(1.0)
-    return loss.sum() / denom
-
-
-def masked_focal_bce_with_logits_loss(
-    logits: torch.Tensor,
-    targets: torch.Tensor,
-    mask: torch.Tensor,
-    pos_weight: torch.Tensor | None = None,
-    gamma: float = 2.0,
-    label_smoothing_present: float = 0.05,
-    label_smoothing_absent: float = 0.02,
-) -> torch.Tensor:
-    smoothed_targets = targets.clone()
-    if label_smoothing_present > 0:
-        smoothed_targets = torch.where(
-            (mask > 0) & (targets > 0.5),
-            torch.full_like(targets, 1.0 - label_smoothing_present),
-            smoothed_targets,
-        )
-    if label_smoothing_absent > 0:
-        smoothed_targets = torch.where(
-            (mask > 0) & (targets <= 0.5),
-            torch.full_like(targets, label_smoothing_absent),
-            smoothed_targets,
-        )
-
-    bce = nn.functional.binary_cross_entropy_with_logits(
-        logits,
-        smoothed_targets,
-        reduction="none",
-        pos_weight=pos_weight,
-    )
-    probs = torch.sigmoid(logits)
-    pt = torch.where(smoothed_targets > 0.5, probs, 1.0 - probs)
-    focal_factor = (1.0 - pt).clamp_min(1e-6).pow(gamma)
-    loss = bce * focal_factor * mask
     denom = mask.sum().clamp_min(1.0)
     return loss.sum() / denom
 
@@ -83,8 +27,12 @@ def compute_pos_weight(y_train: np.ndarray, mask_train: np.ndarray) -> np.ndarra
         if pos == 0:
             weights.append(1.0)
         else:
-            weights.append(float(min(neg / pos, 20.0)))
+            weights.append(float(neg / pos))
     return np.asarray(weights, dtype=np.float32)
+
+
+from src.medagentx.fusion.calibration import tune_thresholds_precision_favored
+from src.medagentx.fusion.constants import DISEASE_LABELS
 
 
 def tune_thresholds_on_validation(
@@ -93,7 +41,6 @@ def tune_thresholds_on_validation(
     mask: np.ndarray,
     thresholds: np.ndarray | None = None,
 ) -> tuple[np.ndarray, list[float]]:
-    # Training-time tuning: no deployment floors (0.65-0.88). Those are applied in script 14.
     return tune_thresholds_precision_favored(
         y_true,
         y_prob,
@@ -101,9 +48,7 @@ def tune_thresholds_on_validation(
         DISEASE_LABELS,
         thresholds=thresholds,
         beta=0.5,
-        min_precision=0.25,
-        apply_floors=False,
-        default_threshold=0.5,
+        min_precision=0.35,
     )
 
 
@@ -177,84 +122,3 @@ def multilabel_metrics(
         "micro_recall": float(micro_recall),
         "micro_f1": float(micro_f1),
     }
-
-
-@torch.no_grad()
-def predict_probs(
-    model: torch.nn.Module,
-    loader: torch.utils.data.DataLoader,
-    device: torch.device,
-    temperature: float = 1.0,
-    uses_densenet: bool = False,
-) -> np.ndarray:
-    model.eval()
-    outputs = []
-    for batch in loader:
-        if uses_densenet:
-            X, densenet_probs, _, _ = batch
-            densenet_probs = densenet_probs.to(device)
-        else:
-            X, _, _ = batch
-            densenet_probs = None
-
-        X = X.to(device)
-        logits = model(X, densenet_probs=densenet_probs)
-        probs = torch.sigmoid(logits / max(temperature, 1e-3)).cpu().numpy()
-        outputs.append(probs)
-    return np.concatenate(outputs, axis=0)
-
-
-def fit_temperature_scaling(
-    logits: np.ndarray,
-    y_true: np.ndarray,
-    mask: np.ndarray,
-    max_iter: int = 200,
-    device: torch.device | None = None,
-) -> float:
-    if device is None:
-        device = torch.device("cpu")
-
-    valid = mask > 0
-    if valid.sum() < 8:
-        return 1.0
-
-    logits_t = torch.from_numpy(logits[valid].astype(np.float32)).to(device)
-    targets_t = torch.from_numpy(y_true[valid].astype(np.float32)).to(device)
-    temperature = nn.Parameter(torch.ones(1, device=device))
-
-    optimizer = torch.optim.LBFGS([temperature], lr=0.1, max_iter=max_iter)
-
-    def closure():
-        optimizer.zero_grad()
-        scaled = logits_t / temperature.clamp_min(1e-3)
-        loss = nn.functional.binary_cross_entropy_with_logits(scaled, targets_t)
-        loss.backward()
-        return loss
-
-    try:
-        optimizer.step(closure)
-        return float(temperature.detach().clamp_min(1e-3).item())
-    except Exception:
-        return 1.0
-
-
-def logits_from_model(
-    model: torch.nn.Module,
-    loader: torch.utils.data.DataLoader,
-    device: torch.device,
-    uses_densenet: bool = False,
-) -> np.ndarray:
-    model.eval()
-    outputs = []
-    with torch.no_grad():
-        for batch in loader:
-            if uses_densenet:
-                X, densenet_probs, _, _ = batch
-                densenet_probs = densenet_probs.to(device)
-            else:
-                X, _, _ = batch
-                densenet_probs = None
-            X = X.to(device)
-            logits = model(X, densenet_probs=densenet_probs).cpu().numpy()
-            outputs.append(logits)
-    return np.concatenate(outputs, axis=0)

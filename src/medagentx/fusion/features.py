@@ -111,20 +111,3 @@ def aggregate_study_features(
         raise ValueError("No image features to aggregate")
     stacked = np.stack(image_features, axis=0)
     return stacked.mean(axis=0)
-
-
-def attention_aggregate_study_features(
-    image_features: list[np.ndarray],
-) -> np.ndarray:
-    if not image_features:
-        raise ValueError("No image features to aggregate")
-    if len(image_features) == 1:
-        return image_features[0]
-
-    stacked = np.stack(image_features, axis=0).astype(np.float32)
-    norms = np.linalg.norm(stacked, axis=1)
-    if np.allclose(norms, 0):
-        return stacked.mean(axis=0)
-
-    scores = norms / (norms.sum() + 1e-8)
-    return (stacked * scores[:, None]).sum(axis=0)

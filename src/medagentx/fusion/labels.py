@@ -13,11 +13,7 @@ from src.medagentx.agents.judge_agent import (
     split_sentences,
     sentence_has_cue,
 )
-from src.medagentx.fusion.constants import DISEASE_LABELS, LABEL_VALUE_ABSENT, LABEL_VALUE_PRESENT, snake_label
-
-
-LABEL_MODE_WEAK = "weak"
-LABEL_MODE_JUDGE = "judge"
+from src.medagentx.fusion.constants import DISEASE_LABELS, LABEL_VALUE_ABSENT, LABEL_VALUE_PRESENT
 
 
 def clean_string(value: Any) -> str:
@@ -89,35 +85,6 @@ def weak_label_to_training_value(status: str) -> float | None:
     if status == "absent":
         return LABEL_VALUE_ABSENT
     return None  # uncertain / unmentioned -> mask out
-
-
-def judge_label_to_training_value(status: str) -> float | None:
-    if status == "present":
-        return LABEL_VALUE_PRESENT
-    if status == "absent":
-        return LABEL_VALUE_ABSENT
-    return None  # uncertain -> mask out
-
-
-def label_status_column(label_mode: str) -> str:
-    if label_mode == LABEL_MODE_JUDGE:
-        return "judge_status"
-    return "weak_status"
-
-
-def training_value_from_status(status: str, label_mode: str) -> float | None:
-    if label_mode == LABEL_MODE_JUDGE:
-        return judge_label_to_training_value(status)
-    return weak_label_to_training_value(status)
-
-
-def training_value_from_row(row: pd.Series, label: str, label_mode: str) -> float | None:
-    slug = snake_label(label)
-    status_col = label_status_column(label_mode)
-    status = clean_string(row.get(f"{status_col}_{slug}"))
-    if not status and label_mode == LABEL_MODE_JUDGE:
-        status = clean_string(row.get(f"weak_status_{slug}"))
-    return training_value_from_status(status, label_mode)
 
 
 def infer_study_weak_labels(report_text: str) -> dict[str, dict[str, Any]]:

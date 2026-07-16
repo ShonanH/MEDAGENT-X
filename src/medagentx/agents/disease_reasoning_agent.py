@@ -11,16 +11,13 @@ import numpy as np
 import pandas as pd
 import requests
 
-from src.medagentx.fusion import calibration as fusion_calibration
 from src.medagentx.fusion.calibration import (
     LUNG_OPACITY_MAX_FUSION_GAP,
     LUNG_OPACITY_MIN_ENSEMBLE,
-    RARE_OR_HIGH_COST_FP_LABELS,
+    MODERATE_RECALL_LABELS,
+    RECALL_LENIENT_LABELS,
     STRICT_PRESENT_LABELS,
 )
-
-DEFAULT_OUTPUT_PATH = "outputs/chexpert_plus/disease_reasoning_results.csv"
-
 DEFAULT_CLASSIFIER_PREDICTIONS_PATH = (
     "outputs/chexpert_plus/fusion_classifier/ensemble_classifier_predictions.csv"
 )
@@ -853,23 +850,16 @@ def refine_label_decision(
         threshold = float(classifier_threshold)
         prob = normalize_confidence(probability)
 
-        if label in RARE_OR_HIGH_COST_FP_LABELS:
-            pass
-        elif label in fusion_calibration.RECALL_LENIENT_LABELS and agreement in {
-            "weak_present",
-            "strong_present",
-        }:
-            floor = 0.55 if label == "Edema" else threshold * fusion_calibration.LENIENT_PRESENT_THRESHOLD_MULTIPLIER
-            densenet_probability = classifier_item.get("densenet_probability")
-            densenet_floor = fusion_calibration.densenet_present_floor(label)
-            densenet_ok = (
-                densenet_floor is None
-                or densenet_probability is None
-                or float(densenet_probability) >= densenet_floor
-            )
-            if prob >= floor and negative_count <= positive_count and densenet_ok:
+        if label in RECALL_LENIENT_LABELS and agreement in {"weak_present", "strong_present"}:
+            floor = 0.55 if label == "Edema" else threshold * 0.95
+            if prob >= floor and negative_count <= positive_count:
                 status = "present"
                 refinement_reason = "recall-lenient promotion from weak ensemble agreement"
+
+        elif label in MODERATE_RECALL_LABELS and agreement in {"weak_present", "strong_present"}:
+            if prob >= threshold and negative_count == 0:
+                status = "present"
+                refinement_reason = "moderate-recall promotion with non-negative retrieval context"
 
     if (
         status == "present"

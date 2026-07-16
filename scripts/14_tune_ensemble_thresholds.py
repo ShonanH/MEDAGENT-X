@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Tune ensemble per-label thresholds from report labels and classifier probabilities.
+Tune ensemble per-label thresholds from weak report labels and classifier probabilities.
 """
 
 from __future__ import annotations
@@ -24,7 +24,6 @@ from src.medagentx.fusion.constants import (
     DISEASE_LABELS,
     snake_label,
 )
-from src.medagentx.fusion.labels import LABEL_MODE_JUDGE, LABEL_MODE_WEAK, training_value_from_row
 from src.medagentx.fusion.paths import clean_dicom_path
 
 
@@ -36,35 +35,30 @@ def parse_args():
     parser.add_argument("--report-label-table", type=Path, default=DEFAULT_REPORT_LABEL_TABLE)
     parser.add_argument("--ensemble-csv", type=Path, default=DEFAULT_ENSEMBLE_PREDICTIONS)
     parser.add_argument("--output-path", type=Path, default=DEFAULT_ENSEMBLE_THRESHOLDS)
-    parser.add_argument("--label-mode", choices=[LABEL_MODE_WEAK, LABEL_MODE_JUDGE], default=LABEL_MODE_JUDGE)
-    parser.add_argument("--split", choices=["all", "validation"], default="validation")
-    parser.add_argument("--split-metadata", type=Path, default=DEFAULT_OUTPUT_DIR / "patient_split_metadata.csv")
     return parser.parse_args()
 
 
-def build_arrays(
-    label_df: pd.DataFrame,
-    ensemble_df: pd.DataFrame,
-    label_mode: str,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+def build_arrays(label_df: pd.DataFrame, ensemble_df: pd.DataFrame) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     merged = label_df.merge(
         ensemble_df[["study_key", "dicom_path"] + [f"ensemble_prob_{snake_label(l)}" for l in DISEASE_LABELS]],
         on=["study_key", "dicom_path"],
         how="inner",
     )
 
+    study_df = merged.groupby("study_key", sort=False).first().reset_index()
+
     y = []
     mask = []
     probs = []
 
-    for _, row in merged.iterrows():
+    for _, row in study_df.iterrows():
         y_row = []
         m_row = []
         p_row = []
         for label in DISEASE_LABELS:
             slug = snake_label(label)
-            value = training_value_from_row(row, label, label_mode)
-            if value is None:
+            value = row.get(f"weak_value_{slug}")
+            if value is None or value == "" or (isinstance(value, float) and np.isnan(value)):
                 y_row.append(0.0)
                 m_row.append(0.0)
             else:
@@ -82,14 +76,6 @@ def build_arrays(
     )
 
 
-def filter_validation_rows(label_df: pd.DataFrame, split_metadata: Path) -> pd.DataFrame:
-    if not split_metadata.exists():
-        return label_df
-    split_df = pd.read_csv(split_metadata, dtype=str)
-    val_patients = set(split_df[split_df["split"] == "validation"]["deid_patient_id"])
-    return label_df[label_df["deid_patient_id"].isin(val_patients)].copy()
-
-
 def main():
     args = parse_args()
 
@@ -98,10 +84,7 @@ def main():
     label_df["dicom_path"] = label_df["dicom_path"].map(clean_dicom_path)
     ensemble_df["dicom_path"] = ensemble_df["dicom_path"].map(clean_dicom_path)
 
-    if args.split == "validation":
-        label_df = filter_validation_rows(label_df, args.split_metadata)
-
-    probs, y, mask = build_arrays(label_df, ensemble_df, args.label_mode)
+    probs, y, mask = build_arrays(label_df, ensemble_df)
     thresholds, scores = tune_thresholds_precision_favored(
         y,
         probs,
@@ -114,10 +97,8 @@ def main():
     threshold_map = {label: float(thresholds[i]) for i, label in enumerate(DISEASE_LABELS)}
     payload = thresholds_to_json_payload(
         threshold_map,
-        model_version="ensemble_densenet_fusion_v4_judge_tuned",
+        model_version="ensemble_densenet_fusion_v2_tuned",
     )
-    payload["label_mode"] = args.label_mode
-    payload["split"] = args.split
     payload["validation_scores"] = {
         snake_label(label): float(scores[i]) for i, label in enumerate(DISEASE_LABELS)
     }
