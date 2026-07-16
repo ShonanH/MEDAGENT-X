@@ -102,6 +102,38 @@ def summarize_split(name: str, df: pd.DataFrame, y: np.ndarray, mask: np.ndarray
     )
 
 
+def log_training_coverage(
+    label_df: pd.DataFrame,
+    feature_df: pd.DataFrame,
+    image_table: pd.DataFrame,
+) -> None:
+    feature_ready = feature_df[feature_df["feature_ready"]].copy()
+    label_patients = label_df["deid_patient_id"].nunique() if "deid_patient_id" in label_df.columns else 0
+    ready_patients = (
+        feature_ready["deid_patient_id"].nunique()
+        if "deid_patient_id" in feature_ready.columns
+        else feature_ready["dicom_path"].nunique()
+    )
+    train_patients = image_table["deid_patient_id"].nunique()
+
+    _progress(
+        f"Label table: {len(label_df)} image rows ({label_patients} patients)"
+    )
+    _progress(
+        f"Feature manifests: {len(feature_ready)} ready images ({ready_patients} patients)"
+    )
+    _progress(
+        f"Training intersection: {len(image_table)} images ({train_patients} patients)"
+    )
+
+    if train_patients < 400:
+        _progress(
+            "Cohort is small for fusion MLP training. Expand DICOM + feature extraction "
+            "(scripts 01, 03, 05, 06) or fetch more Redivis rows "
+            "(scripts/fetch_redivis_chexpert_rows.py)."
+        )
+
+
 def train_one_epoch(
     model,
     loader,
@@ -185,6 +217,7 @@ def main():
         densenet_csv=args.densenet_csv if args.include_densenet_probs else None,
         label_mode=args.label_mode,
     )
+    log_training_coverage(label_df, feature_df, image_table)
 
     if args.training_level == "study":
         training_table = build_study_training_table(image_table, pool_mode=args.study_pool)
