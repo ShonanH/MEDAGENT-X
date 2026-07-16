@@ -28,6 +28,35 @@ RARE_OR_HIGH_COST_FP_LABELS = {
     "Pleural Other",
 }
 
+# Labels where weak DenseNet/fusion agreement can still support a present call.
+RECALL_LENIENT_LABELS = {
+    "Edema",
+    "Pneumothorax",
+    "Pleural Effusion",
+    "Fracture",
+    "Pneumonia",
+    "Pleural Other",
+    "Lung Lesion",
+}
+
+MODERATE_RECALL_LABELS = {
+    "Atelectasis",
+    "Consolidation",
+    "Cardiomegaly",
+    "Enlarged Cardiomediastinum",
+}
+
+STRICT_PRESENT_LABELS = {
+    "Lung Opacity",
+}
+
+# Fusion is often overconfident on broad labels; down-weight it in the blend.
+DENSENET_HEAVY_BLEND_LABELS = BROAD_OR_NOISY_LABELS | MODERATE_RECALL_LABELS
+
+LUNG_OPACITY_MIN_DENSENET = 0.82
+LUNG_OPACITY_MIN_ENSEMBLE = 0.92
+LUNG_OPACITY_MAX_FUSION_GAP = 0.12
+
 # Conservative floors applied after validation tuning.
 LABEL_PRESENT_THRESHOLD_FLOORS: dict[str, float] = {
     "Atelectasis": 0.65,
@@ -39,7 +68,7 @@ LABEL_PRESENT_THRESHOLD_FLOORS: dict[str, float] = {
     "Pneumothorax": 0.65,
     "Fracture": 0.80,
     "Lung Lesion": 0.80,
-    "Lung Opacity": 0.70,
+    "Lung Opacity": 0.92,
     "Enlarged Cardiomediastinum": 0.70,
     "Pleural Other": 0.75,
 }
@@ -153,6 +182,28 @@ def default_densenet_thresholds() -> dict[str, float]:
     }
 
 
+def ensemble_prob_blend(
+    label: str,
+    d_prob: float | None,
+    f_prob: float | None,
+    fusion_weight: float = 0.5,
+) -> float | None:
+    if d_prob is None and f_prob is None:
+        return None
+    if d_prob is None:
+        return float(f_prob)
+    if f_prob is None:
+        return float(d_prob)
+
+    if label in STRICT_PRESENT_LABELS:
+        return float(min(d_prob, f_prob))
+
+    if label in DENSENET_HEAVY_BLEND_LABELS:
+        return float(0.65 * d_prob + 0.35 * f_prob)
+
+    return float((1.0 - fusion_weight) * d_prob + fusion_weight * f_prob)
+
+
 def agreement_field(
     d_prob: float | None,
     f_prob: float | None,
@@ -202,23 +253,53 @@ def ensemble_present_status(
     if e_prob <= DEFAULT_ABSENT_THRESHOLD:
         return "absent"
 
-    if e_prob < e_threshold:
-        return "uncertain"
-
     agreement = agreement_field(d_prob, f_prob, d_threshold, f_threshold)
 
-    if require_agreement:
-        if agreement == "strong_present":
-            return "present"
-        if agreement in {"weak_present", "conflict", "insufficient_evidence"}:
-            return "uncertain"
+    if label in STRICT_PRESENT_LABELS:
         if agreement == "strong_absent":
             return "absent"
-
-    if label in RARE_OR_HIGH_COST_FP_LABELS and agreement != "strong_present":
+        if (
+            agreement == "strong_present"
+            and e_prob >= LUNG_OPACITY_MIN_ENSEMBLE
+            and d_prob is not None
+            and f_prob is not None
+            and d_prob >= LUNG_OPACITY_MIN_DENSENET
+            and (f_prob - d_prob) <= LUNG_OPACITY_MAX_FUSION_GAP
+        ):
+            return "present"
         return "uncertain"
 
-    return "present"
+    if label in RECALL_LENIENT_LABELS:
+        if agreement == "strong_absent" and e_prob <= DEFAULT_ABSENT_THRESHOLD:
+            return "absent"
+        if agreement in {"weak_present", "strong_present"} and e_prob >= e_threshold:
+            return "present"
+        return "uncertain"
+
+    if label in MODERATE_RECALL_LABELS:
+        if agreement == "strong_absent" and e_prob <= DEFAULT_ABSENT_THRESHOLD:
+            return "absent"
+        if agreement in {"weak_present", "strong_present"} and e_prob >= e_threshold:
+            return "present"
+        return "uncertain"
+
+    if label in RARE_OR_HIGH_COST_FP_LABELS:
+        if agreement == "strong_present" and e_prob >= e_threshold:
+            return "present"
+        if agreement == "strong_absent":
+            return "absent"
+        return "uncertain"
+
+    if require_agreement:
+        if agreement == "strong_present" and e_prob >= e_threshold:
+            return "present"
+        if agreement == "strong_absent":
+            return "absent"
+        return "uncertain"
+
+    if e_prob >= e_threshold:
+        return "present"
+    return "uncertain"
 
 
 def thresholds_to_json_payload(

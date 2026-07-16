@@ -70,6 +70,63 @@ def test_ensemble_present_requires_agreement_for_rare_labels():
     assert status == "uncertain"
 
 
+def test_recall_lenient_label_allows_weak_present():
+    from src.medagentx.fusion.calibration import ensemble_present_status
+
+    status = ensemble_present_status(
+        label="Edema",
+        d_prob=0.62,
+        f_prob=0.99,
+        e_prob=0.805,
+        d_threshold=0.60,
+        f_threshold=0.60,
+        e_threshold=0.60,
+        require_agreement=True,
+    )
+    assert status == "present"
+
+
+def test_lung_opacity_requires_strict_gate():
+    from src.medagentx.fusion.calibration import ensemble_present_status
+
+    status = ensemble_present_status(
+        label="Lung Opacity",
+        d_prob=0.84,
+        f_prob=0.99,
+        e_prob=0.84,
+        d_threshold=0.70,
+        f_threshold=0.92,
+        e_threshold=0.92,
+        require_agreement=True,
+    )
+    assert status == "uncertain"
+
+
+def test_ensemble_prob_blend_uses_min_for_lung_opacity():
+    from src.medagentx.fusion.calibration import ensemble_prob_blend
+
+    assert ensemble_prob_blend("Lung Opacity", 0.4, 0.95) == 0.4
+
+
+def test_refine_label_decision_promotes_edema_from_uncertain():
+    from src.medagentx.agents.disease_reasoning_agent import refine_label_decision
+
+    status, reason = refine_label_decision(
+        label="Edema",
+        status="uncertain",
+        classifier_item={
+            "probability": 0.58,
+            "ensemble_agreement": "weak_present",
+            "threshold": 0.60,
+            "densenet_probability": 0.58,
+            "fusion_probability": 0.99,
+        },
+        retrieval_counts={"positive_count": 2, "negative_count": 0},
+    )
+    assert status == "present"
+    assert reason is not None
+
+
 def test_merge_label_and_feature_tables_keeps_deid_patient_id():
     label_df = pd.DataFrame(
         {

@@ -23,6 +23,7 @@ from src.medagentx.fusion.calibration import (
     apply_threshold_floor,
     default_densenet_thresholds,
     ensemble_present_status,
+    ensemble_prob_blend,
     load_threshold_json,
     prob_to_status,
     thresholds_to_json_payload,
@@ -144,7 +145,7 @@ def main():
         json.dumps(
             thresholds_to_json_payload(
                 ensemble_thresholds,
-                model_version="ensemble_densenet_fusion_v2_calibrated",
+                model_version="ensemble_densenet_fusion_v3_asymmetric",
             ),
             indent=2,
         ),
@@ -164,7 +165,7 @@ def main():
         out = {
             "study_key": row["study_key"],
             "dicom_path": row["dicom_path"],
-            "ensemble_model_version": "densenet_fusion_v2_calibrated",
+            "ensemble_model_version": "densenet_fusion_v3_asymmetric",
             "ensemble_fusion_weight": args.fusion_weight,
             "ensemble_require_agreement": args.require_agreement,
             "present_threshold_default": DEFAULT_PRESENT_THRESHOLD,
@@ -183,7 +184,7 @@ def main():
             f_prob, f_status = fusion_status_from_row(row, label, f_threshold)
 
             if d_prob is not None and f_prob is not None:
-                e_prob = (1.0 - args.fusion_weight) * d_prob + args.fusion_weight * f_prob
+                e_prob = ensemble_prob_blend(label, d_prob, f_prob, fusion_weight=args.fusion_weight)
             elif d_prob is not None:
                 e_prob = d_prob
             elif f_prob is not None:

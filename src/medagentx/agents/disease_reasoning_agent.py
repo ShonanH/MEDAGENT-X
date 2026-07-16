@@ -11,7 +11,13 @@ import numpy as np
 import pandas as pd
 import requests
 
-DEFAULT_OUTPUT_PATH = "outputs/chexpert_plus/disease_reasoning_results.csv"
+from src.medagentx.fusion.calibration import (
+    LUNG_OPACITY_MAX_FUSION_GAP,
+    LUNG_OPACITY_MIN_ENSEMBLE,
+    MODERATE_RECALL_LABELS,
+    RECALL_LENIENT_LABELS,
+    STRICT_PRESENT_LABELS,
+)
 DEFAULT_CLASSIFIER_PREDICTIONS_PATH = (
     "outputs/chexpert_plus/fusion_classifier/ensemble_classifier_predictions.csv"
 )
@@ -804,6 +810,68 @@ def classifier_label_map(classifier_evidence: dict[str, Any]) -> dict[str, dict[
     return output
 
 
+def refine_label_decision(
+    label: str,
+    status: str,
+    classifier_item: dict[str, Any] | None,
+    retrieval_counts: dict[str, Any],
+) -> tuple[str, str | None]:
+    if label == "No Finding" or classifier_item is None:
+        return status, None
+
+    probability = classifier_item.get("probability")
+    agreement = clean_string(classifier_item.get("ensemble_agreement"))
+    densenet_probability = classifier_item.get("densenet_probability")
+    fusion_probability = classifier_item.get("fusion_probability")
+    classifier_threshold = clean_value(classifier_item.get("threshold"))
+
+    positive_count = int(retrieval_counts.get("positive_count", 0))
+    negative_count = int(retrieval_counts.get("negative_count", 0))
+    refinement_reason = None
+
+    if label in STRICT_PRESENT_LABELS and status == "present":
+        prob = normalize_confidence(probability)
+        if (
+            densenet_probability is not None
+            and fusion_probability is not None
+            and prob < LUNG_OPACITY_MIN_ENSEMBLE
+        ):
+            status = "uncertain"
+            refinement_reason = "lung opacity demoted below strict ensemble gate"
+        elif (
+            densenet_probability is not None
+            and fusion_probability is not None
+            and float(fusion_probability) - float(densenet_probability) > LUNG_OPACITY_MAX_FUSION_GAP
+        ):
+            status = "uncertain"
+            refinement_reason = "lung opacity demoted due to fusion inflation over DenseNet"
+
+    if status == "uncertain" and classifier_threshold is not None and probability is not None:
+        threshold = float(classifier_threshold)
+        prob = normalize_confidence(probability)
+
+        if label in RECALL_LENIENT_LABELS and agreement in {"weak_present", "strong_present"}:
+            floor = 0.55 if label == "Edema" else threshold * 0.95
+            if prob >= floor and negative_count <= positive_count:
+                status = "present"
+                refinement_reason = "recall-lenient promotion from weak ensemble agreement"
+
+        elif label in MODERATE_RECALL_LABELS and agreement in {"weak_present", "strong_present"}:
+            if prob >= threshold and negative_count == 0:
+                status = "present"
+                refinement_reason = "moderate-recall promotion with non-negative retrieval context"
+
+    if (
+        status == "present"
+        and label in BROAD_OR_NOISY_PRESENT_LABELS
+        and negative_count > positive_count
+    ):
+        status = "uncertain"
+        refinement_reason = "demoted broad label because retrieval negatives outweigh positives"
+
+    return status, refinement_reason
+
+
 def deterministic_label_decision(
     label: str,
     classifier_item: dict[str, Any] | None,
@@ -898,6 +966,22 @@ def deterministic_label_decision(
             status = "absent"
             confidence = 0.85
             reason = "low classifier probability"
+
+    classifier_item_for_refine = classifier_item or {}
+    if classifier_item is not None:
+        classifier_item_for_refine = dict(classifier_item)
+    status, refinement_reason = refine_label_decision(
+        label=label,
+        status=status,
+        classifier_item=classifier_item_for_refine if classifier_item is not None else None,
+        retrieval_counts=retrieval_counts,
+    )
+    if refinement_reason:
+        reason = refinement_reason
+        if status == "present":
+            confidence = max(confidence, 0.70)
+        elif status == "uncertain":
+            confidence = min(confidence, 0.50)
 
     evidence_parts = [
         f"Classifier status={classifier_status}.",

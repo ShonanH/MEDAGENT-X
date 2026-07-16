@@ -493,7 +493,10 @@ def compute_present_metrics(
 
     precision = safe_divide(len(true_positive), len(true_positive) + len(false_positive))
     recall = safe_divide(len(true_positive), len(true_positive) + len(false_negative))
-    f1 = safe_divide(2 * precision * recall, precision + recall)
+    if precision + recall == 0:
+        f1 = 0.0
+    else:
+        f1 = 2 * precision * recall / (precision + recall)
 
     return {
         "predicted_present": sorted(pred_present),
