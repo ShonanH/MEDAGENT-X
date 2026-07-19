@@ -6,7 +6,7 @@ This script reads:
   outputs/chexpert_plus/unified_evidence_manifest.csv
 
 Then it computes unsupervised evidence from:
-  - DICOM preprocessing / validation metrics
+  - DICOM preprocessing / validation metrics (optional; from script 04)
   - ConvNeXt local visual features
   - RAD-DINO Transformer/global features
 
@@ -46,6 +46,22 @@ VALIDATION_METRIC_COLUMNS = [
     "validation_sharpness_proxy",
     "validation_edge_density",
     "validation_entropy",
+]
+
+BASE_EVIDENCE_COLUMNS = [
+    "manifest_row_index",
+    "study_key",
+    "dicom_path",
+    "local_dicom_path",
+    "workflow_a_feature_ready",
+    "convnext_feature_path",
+    "raddino_feature_path",
+]
+
+OPTIONAL_VALIDATION_ID_COLUMNS = [
+    "validation_status",
+    "validation_preview_path",
+    "validation_metadata_path",
 ]
 
 
@@ -363,20 +379,20 @@ def main():
     print("Rows:", len(unified))
     print("Output:", output_path)
 
-    evidence = unified[
-        [
-            "manifest_row_index",
-            "study_key",
-            "dicom_path",
-            "local_dicom_path",
-            "workflow_a_feature_ready",
-            "convnext_feature_path",
-            "raddino_feature_path",
-            "validation_status",
-            "validation_preview_path",
-            "validation_metadata_path",
-        ]
-    ].copy()
+    has_validation_manifest = "validation_status" in unified.columns
+    if not has_validation_manifest:
+        print("Note: no validation manifest columns (script 04 skipped); using ConvNeXt/RAD-DINO evidence only.")
+
+    evidence_columns = [column for column in BASE_EVIDENCE_COLUMNS if column in unified.columns]
+    evidence = unified[evidence_columns].copy()
+
+    for column in OPTIONAL_VALIDATION_ID_COLUMNS:
+        if column in unified.columns:
+            evidence[column] = unified[column]
+        elif column == "validation_status":
+            evidence[column] = "not_run"
+        else:
+            evidence[column] = ""
 
     for column in VALIDATION_METRIC_COLUMNS:
         if column in unified.columns:
@@ -494,11 +510,17 @@ def main():
         prefix="raddino",
     )
 
+    validation_ok = (
+        evidence["validation_status"].map(as_bool)
+        if has_validation_manifest
+        else pd.Series(True, index=evidence.index)
+    )
+
     evidence["evidence_complete"] = (
         evidence["workflow_a_feature_ready"].map(as_bool)
         & evidence["convnext_vector_valid"].astype(bool)
         & evidence["raddino_vector_valid"].astype(bool)
-        & evidence["validation_status"].map(as_bool)
+        & validation_ok
     )
 
     evidence["max_handcrafted_quality_outlier_z"] = evidence[
