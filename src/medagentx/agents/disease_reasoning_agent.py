@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from medagentx.paths import CHEXPERT_OUTPUT_DIR, DATA_DIR, FUSION_OUTPUT_DIR, PROCESSED_DATA_DIR, RAW_DATA_DIR, SRC_ROOT, VECTOR_DB_DIR
+
 import argparse
 import json
 import math
@@ -11,7 +13,7 @@ import numpy as np
 import pandas as pd
 import requests
 
-from src.medagentx.fusion.calibration import (
+from medagentx.fusion.calibration import (
     LUNG_OPACITY_MAX_FUSION_GAP,
     LUNG_OPACITY_MIN_ENSEMBLE,
     MODERATE_RECALL_LABELS,
@@ -19,9 +21,9 @@ from src.medagentx.fusion.calibration import (
     STRICT_PRESENT_LABELS,
 )
 DEFAULT_CLASSIFIER_PREDICTIONS_PATH = (
-    "outputs/chexpert_plus/fusion_classifier/ensemble_classifier_predictions.csv"
+    str(FUSION_OUTPUT_DIR / "ensemble_classifier_predictions.csv")
 )
-DEFAULT_REPORT_PATH = "outputs/chexpert_plus/report.md"
+DEFAULT_REPORT_PATH = str(CHEXPERT_OUTPUT_DIR / "report.md")
 PROMPT_VERSION = "disease_reasoning_v3_fact_grounded_report_writer"
 
 BORDERLINE_PRESENT_LOW = 0.50
@@ -1627,7 +1629,7 @@ def run_disease_reasoning_agent(
 def disease_reasoning_node(state: dict[str, Any]) -> dict[str, Any]:
     retrieval_results_path = state.get(
         "retrieval_results_path",
-        "outputs/chexpert_plus/retrieval_results.csv",
+        str(CHEXPERT_OUTPUT_DIR / "retrieval_results.csv"),
     )
     image_classifier_predictions_path = state.get(
         "image_classifier_predictions_path",
@@ -1672,7 +1674,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--retrieval-results",
-        default="outputs/chexpert_plus/retrieval_results.csv",
+        default=str(CHEXPERT_OUTPUT_DIR / "retrieval_results.csv"),
     )
     parser.add_argument(
         "--image-classifier-predictions",

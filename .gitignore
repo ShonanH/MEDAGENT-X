@@ -12,7 +12,6 @@ venv/
 env/
 .env
 
-
 *.html
 *.log
 
@@ -23,3 +22,8 @@ env/
 *.mhd
 *.nrrd
 *.pt
+
+# Generated pipeline artifacts
+src/outputs/
+src/data/raw/
+src/data/processed/

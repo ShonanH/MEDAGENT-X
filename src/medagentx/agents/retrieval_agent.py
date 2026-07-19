@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from medagentx.paths import CHEXPERT_OUTPUT_DIR, DATA_DIR, FUSION_OUTPUT_DIR, PROCESSED_DATA_DIR, RAW_DATA_DIR, SRC_ROOT, VECTOR_DB_DIR
+
 import json
 import re
 from pathlib import Path
@@ -11,11 +13,11 @@ import requests
 from langgraph.graph import END, START, StateGraph
 
 
-DEFAULT_VECTOR_DB_DIR = Path("outputs/chexpert_plus/vector_db/chroma")
+DEFAULT_VECTOR_DB_DIR = Path(str(VECTOR_DB_DIR))
 DEFAULT_COLLECTION_NAME = "chexpert_plus_cases"
-DEFAULT_QUALITY_EVIDENCE_CSV = Path("outputs/chexpert_plus/quality_evidence_manifest.csv")
-DEFAULT_QUALITY_GATE_CSV = Path("outputs/chexpert_plus/quality_gate_decisions.csv")
-DEFAULT_OUTPUT_CSV = Path("outputs/chexpert_plus/retrieval_results.csv")
+DEFAULT_QUALITY_EVIDENCE_CSV = Path(str(CHEXPERT_OUTPUT_DIR / "quality_evidence_manifest.csv"))
+DEFAULT_QUALITY_GATE_CSV = Path(str(CHEXPERT_OUTPUT_DIR / "quality_gate_decisions.csv"))
+DEFAULT_OUTPUT_CSV = Path(str(CHEXPERT_OUTPUT_DIR / "retrieval_results.csv"))
 
 DEFAULT_OLLAMA_BASE_URL = "http://localhost:11434"
 DEFAULT_OLLAMA_EMBED_MODEL = "nomic-embed-text"

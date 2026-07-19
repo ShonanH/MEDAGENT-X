@@ -1,16 +1,18 @@
 from __future__ import annotations
 
 import re
-from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+from medagentx.paths import (
+    CHEXPERT_OUTPUT_DIR,
+    FUSION_OUTPUT_DIR,
+)
 
-DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "outputs" / "chexpert_plus" / "fusion_classifier"
+DEFAULT_OUTPUT_DIR = FUSION_OUTPUT_DIR
 
-DEFAULT_REDIVIS_CSV = PROJECT_ROOT / "outputs" / "chexpert_plus" / "redivis_chexpert_plus_filtered_rows.csv"
-DEFAULT_CONVNEXT_MANIFEST = PROJECT_ROOT / "outputs" / "chexpert_plus" / "convnext_feature_manifest.csv"
-DEFAULT_RADDINO_MANIFEST = PROJECT_ROOT / "outputs" / "chexpert_plus" / "raddino_feature_manifest.csv"
-DEFAULT_DENSENET_PREDICTIONS = PROJECT_ROOT / "outputs" / "chexpert_plus" / "image_classifier_predictions.csv"
+DEFAULT_REDIVIS_CSV = CHEXPERT_OUTPUT_DIR / "redivis_chexpert_plus_filtered_rows.csv"
+DEFAULT_CONVNEXT_MANIFEST = CHEXPERT_OUTPUT_DIR / "convnext_feature_manifest.csv"
+DEFAULT_RADDINO_MANIFEST = CHEXPERT_OUTPUT_DIR / "raddino_feature_manifest.csv"
+DEFAULT_DENSENET_PREDICTIONS = CHEXPERT_OUTPUT_DIR / "image_classifier_predictions.csv"
 
 DEFAULT_REPORT_LABEL_TABLE = DEFAULT_OUTPUT_DIR / "report_label_training_table.csv"
 DEFAULT_SPLIT_METADATA = DEFAULT_OUTPUT_DIR / "patient_split_metadata.csv"

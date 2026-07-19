@@ -4,7 +4,7 @@ import hashlib
 
 import pandas as pd
 
-from src.medagentx.fusion.constants import SPLIT_SEED, TEST_RATIO, TRAIN_RATIO, VAL_RATIO
+from medagentx.fusion.constants import SPLIT_SEED, TEST_RATIO, TRAIN_RATIO, VAL_RATIO
 
 
 def assign_patient_split(patient_id: str, seed: int = SPLIT_SEED) -> str:

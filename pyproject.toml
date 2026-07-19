@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "medagentx"
+version = "0.1.0"
+description = "Multi-agent medical imaging pipeline for CheXpert Plus"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "pandas",
+    "scipy",
+    "scikit-learn",
+    "torch",
+    "torchvision",
+    "timm",
+    "pydicom",
+    "opencv-python",
+    "Pillow",
+    "tqdm",
+    "PyYAML",
+    "matplotlib",
+    "seaborn",
+    "pytest",
+    "redivis",
+    "langgraph>=0.2.0",
+    "langchain-core>=0.3.0",
+    "langchain-ollama",
+    "chromadb",
+    "langchain-chroma",
+    "torchxrayvision",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["src/tests"]
+pythonpath = ["src"]

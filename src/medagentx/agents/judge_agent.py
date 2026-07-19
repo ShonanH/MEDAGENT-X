@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from medagentx.paths import CHEXPERT_OUTPUT_DIR, DATA_DIR, FUSION_OUTPUT_DIR, PROCESSED_DATA_DIR, RAW_DATA_DIR, SRC_ROOT, VECTOR_DB_DIR
+
 import argparse
 import json
 import math
@@ -59,10 +61,10 @@ BROAD_OR_NOISY_LABELS = {
 
 NON_DISEASE_LABELS = {"Support Devices", "No Finding"}
 
-DEFAULT_DISEASE_REASONING_PATH = "outputs/chexpert_plus/disease_reasoning_results.csv"
-DEFAULT_GROUND_TRUTH_PATH = "outputs/chexpert_plus/redivis_chexpert_plus_filtered_rows.csv"
-DEFAULT_OUTPUT_PATH = "outputs/chexpert_plus/judge_results.csv"
-DEFAULT_REPORT_PATH = "outputs/chexpert_plus/judge_report.md"
+DEFAULT_DISEASE_REASONING_PATH = str(CHEXPERT_OUTPUT_DIR / "disease_reasoning_results.csv")
+DEFAULT_GROUND_TRUTH_PATH = str(CHEXPERT_OUTPUT_DIR / "redivis_chexpert_plus_filtered_rows.csv")
+DEFAULT_OUTPUT_PATH = str(CHEXPERT_OUTPUT_DIR / "judge_results.csv")
+DEFAULT_REPORT_PATH = str(CHEXPERT_OUTPUT_DIR / "judge_report.md")
 
 PROMPT_VERSION = "judge_agent_v1_deterministic_report_label_eval"
 
@@ -427,7 +429,7 @@ def validate_ground_truth_source(ground_truth_df: pd.DataFrame, ground_truth_pat
             "Invalid Judge ground-truth source. "
             f"{ground_truth_path} contains retrieved_document but no current-case report columns. "
             "Use a current-case report source such as "
-            "outputs/chexpert_plus/redivis_chexpert_plus_filtered_rows.csv."
+            f"{CHEXPERT_OUTPUT_DIR / 'redivis_chexpert_plus_filtered_rows.csv'}."
         )
 
 def compare_label(predicted: dict[str, Any], ground_truth: dict[str, Any]) -> dict[str, Any]:

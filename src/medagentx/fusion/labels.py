@@ -4,7 +4,7 @@ from typing import Any
 
 import pandas as pd
 
-from src.medagentx.agents.judge_agent import (
+from medagentx.agents.judge_agent import (
     LABEL_TERMS,
     NEGATION_CUES,
     UNCERTAINTY_CUES,
@@ -13,7 +13,7 @@ from src.medagentx.agents.judge_agent import (
     split_sentences,
     sentence_has_cue,
 )
-from src.medagentx.fusion.constants import DISEASE_LABELS, LABEL_VALUE_ABSENT, LABEL_VALUE_PRESENT
+from medagentx.fusion.constants import DISEASE_LABELS, LABEL_VALUE_ABSENT, LABEL_VALUE_PRESENT
 
 
 def clean_string(value: Any) -> str:

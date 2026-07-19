@@ -31,8 +31,8 @@ def compute_pos_weight(y_train: np.ndarray, mask_train: np.ndarray) -> np.ndarra
     return np.asarray(weights, dtype=np.float32)
 
 
-from src.medagentx.fusion.calibration import tune_thresholds_precision_favored
-from src.medagentx.fusion.constants import DISEASE_LABELS
+from medagentx.fusion.calibration import tune_thresholds_precision_favored
+from medagentx.fusion.constants import DISEASE_LABELS
 
 
 def tune_thresholds_on_validation(

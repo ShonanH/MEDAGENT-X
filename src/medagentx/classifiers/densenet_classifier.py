@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from medagentx.paths import CHEXPERT_OUTPUT_DIR, DATA_DIR, FUSION_OUTPUT_DIR, PROCESSED_DATA_DIR, RAW_DATA_DIR, SRC_ROOT, VECTOR_DB_DIR
+
 import json
 import re
 from pathlib import Path
@@ -14,9 +16,9 @@ import torchxrayvision as xrv
 import torchvision
 
 
-DEFAULT_QUALITY_EVIDENCE_CSV = Path("outputs/chexpert_plus/quality_evidence_manifest.csv")
-DEFAULT_QUALITY_GATE_CSV = Path("outputs/chexpert_plus/quality_gate_decisions.csv")
-DEFAULT_OUTPUT_CSV = Path("outputs/chexpert_plus/image_classifier_predictions.csv")
+DEFAULT_QUALITY_EVIDENCE_CSV = Path(str(CHEXPERT_OUTPUT_DIR / "quality_evidence_manifest.csv"))
+DEFAULT_QUALITY_GATE_CSV = Path(str(CHEXPERT_OUTPUT_DIR / "quality_gate_decisions.csv"))
+DEFAULT_OUTPUT_CSV = Path(str(CHEXPERT_OUTPUT_DIR / "image_classifier_predictions.csv"))
 
 DEFAULT_MODEL_WEIGHTS = "densenet121-res224-all"
 DEFAULT_PRESENT_THRESHOLD = 0.50

@@ -1,26 +1,28 @@
 from __future__ import annotations
 
+from medagentx.paths import CHEXPERT_OUTPUT_DIR, DATA_DIR, FUSION_OUTPUT_DIR, PROCESSED_DATA_DIR, RAW_DATA_DIR, SRC_ROOT, VECTOR_DB_DIR
+
 from pathlib import Path
 from typing import Any, TypedDict
 
 import pandas as pd
 from langgraph.graph import END, START, StateGraph
 
-from src.medagentx.agents.quality_gate_agent import quality_gate_node
-from src.medagentx.agents.retrieval_agent import retrieval_agent_node
-from src.medagentx.agents.disease_reasoning_agent import disease_reasoning_node
-from src.medagentx.agents.judge_agent import judge_node
+from medagentx.agents.quality_gate_agent import quality_gate_node
+from medagentx.agents.retrieval_agent import retrieval_agent_node
+from medagentx.agents.disease_reasoning_agent import disease_reasoning_node
+from medagentx.agents.judge_agent import judge_node
 
 
-DEFAULT_QUALITY_EVIDENCE_CSV = "outputs/chexpert_plus/quality_evidence_manifest.csv"
-DEFAULT_QUALITY_GATE_CSV = "outputs/chexpert_plus/quality_gate_decisions.csv"
-DEFAULT_RETRIEVAL_RESULTS_CSV = "outputs/chexpert_plus/retrieval_results.csv"
-DEFAULT_DISEASE_REASONING_RESULTS_CSV = "outputs/chexpert_plus/disease_reasoning_results.csv"
-DEFAULT_GROUND_TRUTH_CSV = "outputs/chexpert_plus/redivis_chexpert_plus_filtered_rows.csv"
-DEFAULT_JUDGE_RESULTS_CSV = "outputs/chexpert_plus/judge_results.csv"
-DEFAULT_JUDGE_REPORT_PATH = "outputs/chexpert_plus/judge_report.md"
+DEFAULT_QUALITY_EVIDENCE_CSV = str(CHEXPERT_OUTPUT_DIR / "quality_evidence_manifest.csv")
+DEFAULT_QUALITY_GATE_CSV = str(CHEXPERT_OUTPUT_DIR / "quality_gate_decisions.csv")
+DEFAULT_RETRIEVAL_RESULTS_CSV = str(CHEXPERT_OUTPUT_DIR / "retrieval_results.csv")
+DEFAULT_DISEASE_REASONING_RESULTS_CSV = str(CHEXPERT_OUTPUT_DIR / "disease_reasoning_results.csv")
+DEFAULT_GROUND_TRUTH_CSV = str(CHEXPERT_OUTPUT_DIR / "redivis_chexpert_plus_filtered_rows.csv")
+DEFAULT_JUDGE_RESULTS_CSV = str(CHEXPERT_OUTPUT_DIR / "judge_results.csv")
+DEFAULT_JUDGE_REPORT_PATH = str(CHEXPERT_OUTPUT_DIR / "judge_report.md")
 DEFAULT_CLASSIFIER_PREDICTIONS_CSV = (
-    "outputs/chexpert_plus/fusion_classifier/ensemble_classifier_predictions.csv"
+    str(FUSION_OUTPUT_DIR / "ensemble_classifier_predictions.csv")
 )
 
 

@@ -5,8 +5,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from src.medagentx.fusion.constants import DEFAULT_CONVNEXT_MANIFEST, DEFAULT_RADDINO_MANIFEST
-from src.medagentx.fusion.paths import clean_dicom_path
+from medagentx.fusion.constants import DEFAULT_CONVNEXT_MANIFEST, DEFAULT_RADDINO_MANIFEST
+from medagentx.fusion.paths import clean_dicom_path
 
 
 CONVNEXT_OK_STATUSES = {"ok"}

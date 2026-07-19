@@ -6,7 +6,7 @@ from typing import Any
 
 import numpy as np
 
-from src.medagentx.fusion.constants import DISEASE_LABELS, snake_label
+from medagentx.fusion.constants import DISEASE_LABELS, snake_label
 
 
 DEFAULT_PRESENT_THRESHOLD = 0.60

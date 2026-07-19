@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from medagentx.paths import CHEXPERT_OUTPUT_DIR, DATA_DIR, FUSION_OUTPUT_DIR, PROCESSED_DATA_DIR, RAW_DATA_DIR, SRC_ROOT, VECTOR_DB_DIR
+
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Literal, TypedDict
@@ -20,8 +22,8 @@ class QualityGateState(TypedDict):
 
 @dataclass(frozen=True)
 class QualityGateConfig:
-    input_csv: Path = Path("outputs/chexpert_plus/quality_evidence_manifest.csv")
-    output_csv: Path = Path("outputs/chexpert_plus/quality_gate_decisions.csv")
+    input_csv: Path = Path(str(CHEXPERT_OUTPUT_DIR / "quality_evidence_manifest.csv"))
+    output_csv: Path = Path(str(CHEXPERT_OUTPUT_DIR / "quality_gate_decisions.csv"))
 
     warning_z_threshold: float = 2.0
     critical_z_threshold: float = 3.0
@@ -311,8 +313,8 @@ def build_quality_gate_graph():
 
 
 def run_quality_gate(
-    input_csv: str = "outputs/chexpert_plus/quality_evidence_manifest.csv",
-    output_csv: str = "outputs/chexpert_plus/quality_gate_decisions.csv",
+    input_csv: str = str(CHEXPERT_OUTPUT_DIR / "quality_evidence_manifest.csv"),
+    output_csv: str = str(CHEXPERT_OUTPUT_DIR / "quality_gate_decisions.csv"),
 ) -> QualityGateState:
     graph = build_quality_gate_graph()
 
