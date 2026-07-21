@@ -19,7 +19,7 @@ import requests
 REDIVIS_API_BASE_URL = "https://redivis.com/api/v1"
 REDIVIS_TABLE_REFERENCE = "aimi.chexpert_plus:5yyj:v1_0.df_chexpert_plus_240401:bavj"
 REDIVIS_CHEXPERT_LABELS_TABLE_REFERENCE = (
-    "aimi.chexpert_plus:5yyj:v1_0.chexpert_labels:y669"
+    "aimi.chexpert_plus:5yyj:v1_0.chexpert_labels:pmec"
 )
 
 CHEXPERT_LABEL_COLUMNS = [
