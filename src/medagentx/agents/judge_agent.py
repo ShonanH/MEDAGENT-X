@@ -1,6 +1,12 @@
 from __future__ import annotations
 
-from medagentx.paths import CHEXPERT_OUTPUT_DIR, DATA_DIR, FUSION_OUTPUT_DIR, PROCESSED_DATA_DIR, RAW_DATA_DIR, SRC_ROOT, VECTOR_DB_DIR
+from medagentx.paths import CHEXPERT_OUTPUT_DIR
+from medagentx.fusion.chexpert_labels import (
+    ALL_CHEXPERT_LABELS,
+    ground_truth_label_items_from_row,
+    load_judge_ground_truth,
+    row_has_chexpert_label_columns,
+)
 
 import argparse
 import json
@@ -670,7 +676,12 @@ def evaluate_case(
 
     report_parts = extract_report_text(gt_row)
     predicted_report_parts = extract_predicted_report_text(prediction_row)
-    gt_labels = infer_ground_truth_labels(report_parts["combined_text"])
+    if row_has_chexpert_label_columns(gt_row) or any(
+        label in gt_row.index for label in ALL_CHEXPERT_LABELS
+    ):
+        gt_labels = ground_truth_label_items_from_row(gt_row)
+    else:
+        gt_labels = infer_ground_truth_labels(report_parts["combined_text"])
 
     predictions = parse_json_cell(prediction_row.get("finding_predictions_json"), [])
     predicted_map = predictions_by_label(predictions)
@@ -841,6 +852,7 @@ def run_judge_agent(
     ground_truth_path: str = DEFAULT_GROUND_TRUTH_PATH,
     output_path: str = DEFAULT_OUTPUT_PATH,
     report_output_path: str | None = DEFAULT_REPORT_PATH,
+    labels_path: str | None = None,
     verbose: bool = True,
 ) -> pd.DataFrame:
     disease_reasoning_path = Path(disease_reasoning_results_path)
@@ -852,8 +864,8 @@ def run_judge_agent(
     disease_reasoning_df = pd.read_csv(disease_reasoning_path)
 
     if verbose:
-        print("[Judge Agent] Loading ground-truth report source...")
-    ground_truth_df = pd.read_csv(ground_truth_path_obj)
+        print("[Judge Agent] Loading CheXpert labeler ground truth...")
+    ground_truth_df = load_judge_ground_truth(ground_truth_path_obj, labels_path=labels_path)
     validate_ground_truth_source(ground_truth_df, ground_truth_path)
 
     rows = []

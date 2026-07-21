@@ -23,6 +23,7 @@ from medagentx.fusion.calibration import (
 DEFAULT_CLASSIFIER_PREDICTIONS_PATH = (
     str(FUSION_OUTPUT_DIR / "ensemble_classifier_predictions.csv")
 )
+DEFAULT_OUTPUT_PATH = str(CHEXPERT_OUTPUT_DIR / "disease_reasoning_results.csv")
 DEFAULT_REPORT_PATH = str(CHEXPERT_OUTPUT_DIR / "report.md")
 PROMPT_VERSION = "disease_reasoning_v3_fact_grounded_report_writer"
 

@@ -90,13 +90,8 @@ def main():
     patients = out_df["deid_patient_id"].nunique() if "deid_patient_id" in out_df.columns else 0
     print(f"Wrote {len(out_df)} rows ({patients} patients) to {args.output_csv}")
     print("Next: expand DICOM + features, then rebuild fusion labels:")
-    print("  python src/medagentx/cli/01_build_chexpert_manifest.py --study-limit 1500 --row-limit 20000")
-    print("  python src/medagentx/cli/03_download_manifest_dicoms.py --manifest-path <manifest.csv>")
-    print("  python src/medagentx/cli/05_extract_convnext_features.py --manifest-path <manifest.csv>")
-    print("  python src/medagentx/cli/06_extract_raddino_features.py --manifest-path <manifest.csv>")
-    print("  python src/medagentx/cli/11_run_densenet_predictions.py")
+    print("  python src/medagentx/cli/fetch_redivis_chexpert_labels.py")
     print("  python src/medagentx/cli/09_build_fusion_report_label_table.py")
-    print("  python src/medagentx/cli/10_train_fusion_classifier.py")
 
 
 if __name__ == "__main__":

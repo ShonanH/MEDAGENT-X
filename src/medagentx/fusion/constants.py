@@ -13,6 +13,7 @@ DEFAULT_REDIVIS_CSV = CHEXPERT_OUTPUT_DIR / "redivis_chexpert_plus_filtered_rows
 DEFAULT_CONVNEXT_MANIFEST = CHEXPERT_OUTPUT_DIR / "convnext_feature_manifest.csv"
 DEFAULT_RADDINO_MANIFEST = CHEXPERT_OUTPUT_DIR / "raddino_feature_manifest.csv"
 DEFAULT_DENSENET_PREDICTIONS = CHEXPERT_OUTPUT_DIR / "image_classifier_predictions.csv"
+DEFAULT_CHEXPERT_LABELS_CSV = CHEXPERT_OUTPUT_DIR / "chexpert_labels.csv"
 
 DEFAULT_REPORT_LABEL_TABLE = DEFAULT_OUTPUT_DIR / "report_label_training_table.csv"
 DEFAULT_SPLIT_METADATA = DEFAULT_OUTPUT_DIR / "patient_split_metadata.csv"

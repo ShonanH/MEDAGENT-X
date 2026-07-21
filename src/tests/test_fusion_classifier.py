@@ -19,6 +19,47 @@ def test_path_normalization_joins_train_prefix():
     assert parse_study_key_from_dcm(raw) == "patient00003/study1"
 
 
+def test_chexpert_value_mapping_uses_u_mask():
+    from medagentx.fusion.chexpert_labels import (
+        chexpert_value_to_status,
+        chexpert_value_to_training_value,
+    )
+
+    assert chexpert_value_to_status(1) == "present"
+    assert chexpert_value_to_status(0) == "absent"
+    assert chexpert_value_to_status(-1) == "uncertain"
+    assert chexpert_value_to_status(None) == "unmentioned"
+    assert chexpert_value_to_training_value(1) == 1.0
+    assert chexpert_value_to_training_value(0) == 0.0
+    assert chexpert_value_to_training_value(-1) is None
+
+
+def test_chexpert_row_labels_map_no_finding_from_diseases():
+    from medagentx.fusion.chexpert_labels import labels_from_chexpert_row
+
+    row = pd.Series(
+        {
+            "Atelectasis": 0.0,
+            "Cardiomegaly": 0.0,
+            "Consolidation": 0.0,
+            "Edema": 0.0,
+            "Pleural Effusion": 0.0,
+            "Pneumonia": 0.0,
+            "Pneumothorax": 0.0,
+            "Fracture": 0.0,
+            "Lung Lesion": 0.0,
+            "Lung Opacity": 0.0,
+            "Enlarged Cardiomediastinum": 0.0,
+            "Pleural Other": 0.0,
+            "Support Devices": 0.0,
+            "No Finding": None,
+        }
+    )
+    labels = labels_from_chexpert_row(row)
+    assert labels["No Finding"]["weak_status"] == "present"
+    assert labels["Pneumothorax"]["weak_status"] == "absent"
+
+
 def test_report_label_generation_handles_missing_findings():
     row = pd.Series(
         {

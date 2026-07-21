@@ -18,6 +18,26 @@ import requests
 
 REDIVIS_API_BASE_URL = "https://redivis.com/api/v1"
 REDIVIS_TABLE_REFERENCE = "aimi.chexpert_plus:5yyj:v1_0.df_chexpert_plus_240401:bavj"
+REDIVIS_CHEXPERT_LABELS_TABLE_REFERENCE = (
+    "aimi.chexpert_plus:5yyj:v1_0.chexpert_labels:y669"
+)
+
+CHEXPERT_LABEL_COLUMNS = [
+    "Atelectasis",
+    "Cardiomegaly",
+    "Consolidation",
+    "Edema",
+    "Pleural Effusion",
+    "Pneumonia",
+    "Pneumothorax",
+    "Fracture",
+    "Lung Lesion",
+    "Lung Opacity",
+    "Enlarged Cardiomediastinum",
+    "Pleural Other",
+    "Support Devices",
+    "No Finding",
+]
 
 IDENTIFIER_COLUMNS = [
     "path_to_image",
@@ -252,6 +272,54 @@ def limit_unique_patients(df: pd.DataFrame, patient_limit: int | None) -> pd.Dat
             rows.append(row)
 
     return pd.DataFrame(rows)
+
+
+def build_filtered_chexpert_labels_sql(path_to_images: list[str]) -> str:
+    selected_sql = ",\n        ".join(
+        ["`path_to_image`"] + [f"`{column}`" for column in CHEXPERT_LABEL_COLUMNS]
+    )
+
+    exact_clauses = [
+        f"LOWER(`path_to_image`) = {sql_quote(normalize_text(path))}"
+        for path in path_to_images
+        if normalize_text(path)
+    ]
+
+    if not exact_clauses:
+        raise RuntimeError("No path_to_image values were available for the labels query.")
+
+    where_sql = "\n        OR ".join(exact_clauses)
+
+    return f"""
+    SELECT
+        {selected_sql}
+    FROM `{REDIVIS_CHEXPERT_LABELS_TABLE_REFERENCE}`
+    WHERE
+        {where_sql}
+    """
+
+
+def fetch_chexpert_labels_for_paths(
+    path_to_images: list[str],
+    batch_size: int = 250,
+) -> pd.DataFrame:
+    paths = [normalize_text(path) for path in path_to_images if normalize_text(path)]
+    if not paths:
+        return pd.DataFrame(columns=["path_to_image", *CHEXPERT_LABEL_COLUMNS])
+
+    frames: list[pd.DataFrame] = []
+    for start in range(0, len(paths), batch_size):
+        batch = paths[start : start + batch_size]
+        query = build_filtered_chexpert_labels_sql(batch)
+        frames.append(run_redivis_query(query, max_results=len(batch)))
+
+    combined = pd.concat(frames, ignore_index=True)
+    if "path_to_image" not in combined.columns:
+        return combined
+
+    combined["_join_key"] = combined["path_to_image"].map(normalize_text)
+    combined = combined[combined["_join_key"].ne("")].copy()
+    return combined.drop_duplicates(subset=["_join_key"], keep="last").drop(columns=["_join_key"])
 
 
 def merge_redivis_row_tables(existing: pd.DataFrame, incoming: pd.DataFrame) -> pd.DataFrame:
