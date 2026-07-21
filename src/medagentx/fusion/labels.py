@@ -13,7 +13,12 @@ from medagentx.agents.judge_agent import (
     split_sentences,
     sentence_has_cue,
 )
-from medagentx.fusion.constants import DISEASE_LABELS, LABEL_VALUE_ABSENT, LABEL_VALUE_PRESENT
+from medagentx.fusion.constants import (
+    DISEASE_LABELS,
+    LABEL_VALUE_ABSENT,
+    LABEL_VALUE_PRESENT,
+    derive_no_finding_status,
+)
 
 
 def clean_string(value: Any) -> str:
@@ -102,11 +107,3 @@ def infer_study_weak_labels(report_text: str) -> dict[str, dict[str, Any]]:
         }
 
     return output
-
-
-def derive_no_finding_status(disease_statuses: dict[str, str]) -> str:
-    if any(status == "present" for status in disease_statuses.values()):
-        return "absent"
-    if any(status == "uncertain" for status in disease_statuses.values()):
-        return "uncertain"
-    return "present"

@@ -1,12 +1,6 @@
 from __future__ import annotations
 
 from medagentx.paths import CHEXPERT_OUTPUT_DIR
-from medagentx.fusion.chexpert_labels import (
-    ALL_CHEXPERT_LABELS,
-    ground_truth_label_items_from_row,
-    load_judge_ground_truth,
-    row_has_chexpert_label_columns,
-)
 
 import argparse
 import json
@@ -676,8 +670,13 @@ def evaluate_case(
 
     report_parts = extract_report_text(gt_row)
     predicted_report_parts = extract_predicted_report_text(prediction_row)
+    from medagentx.fusion.chexpert_labels import (
+        ground_truth_label_items_from_row,
+        row_has_chexpert_label_columns,
+    )
+
     if row_has_chexpert_label_columns(gt_row) or any(
-        label in gt_row.index for label in ALL_CHEXPERT_LABELS
+        label in gt_row.index for label in CHEXPERT_LABELS
     ):
         gt_labels = ground_truth_label_items_from_row(gt_row)
     else:
@@ -865,6 +864,8 @@ def run_judge_agent(
 
     if verbose:
         print("[Judge Agent] Loading CheXpert labeler ground truth...")
+    from medagentx.fusion.chexpert_labels import load_judge_ground_truth
+
     ground_truth_df = load_judge_ground_truth(ground_truth_path_obj, labels_path=labels_path)
     validate_ground_truth_source(ground_truth_df, ground_truth_path)
 

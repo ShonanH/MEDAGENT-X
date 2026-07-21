@@ -7,17 +7,14 @@ import numpy as np
 import pandas as pd
 
 from medagentx.fusion.constants import (
+    ALL_CHEXPERT_LABELS,
     DISEASE_LABELS,
     LABEL_VALUE_ABSENT,
     LABEL_VALUE_PRESENT,
-    NON_DISEASE_LABELS,
+    derive_no_finding_status,
     snake_label,
 )
-from medagentx.fusion.labels import derive_no_finding_status
-from medagentx.fusion.paths import clean_dicom_path
 from medagentx.helpers.redivis_query_client import normalize_text
-
-ALL_CHEXPERT_LABELS = DISEASE_LABELS + NON_DISEASE_LABELS
 
 CHEXPERT_VALUE_PRESENT = 1.0
 CHEXPERT_VALUE_ABSENT = 0.0

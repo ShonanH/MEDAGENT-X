@@ -44,6 +44,8 @@ DISEASE_LABELS = [
 
 NON_DISEASE_LABELS = ["Support Devices", "No Finding"]
 
+ALL_CHEXPERT_LABELS = DISEASE_LABELS + NON_DISEASE_LABELS
+
 # present=1, absent=0, uncertain/unmentioned=NaN (masked in loss)
 LABEL_VALUE_PRESENT = 1.0
 LABEL_VALUE_ABSENT = 0.0
@@ -52,6 +54,14 @@ SPLIT_SEED = 42
 TRAIN_RATIO = 0.70
 VAL_RATIO = 0.15
 TEST_RATIO = 0.15
+
+
+def derive_no_finding_status(disease_statuses: dict[str, str]) -> str:
+    if any(status == "present" for status in disease_statuses.values()):
+        return "absent"
+    if any(status == "uncertain" for status in disease_statuses.values()):
+        return "uncertain"
+    return "present"
 
 
 def snake_label(label: str) -> str:
