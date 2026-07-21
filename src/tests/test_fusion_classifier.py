@@ -202,3 +202,32 @@ def test_study_aggregation_handles_multiple_images():
         out = aggregate_study_features(feats)
         assert out.shape == (4,)
         assert np.allclose(out, np.mean(np.stack(feats, axis=0), axis=0))
+
+
+def test_findings_jsonl_filters_requested_paths(tmp_path):
+    from medagentx.fusion.chexpert_labels import merge_chexpert_labels
+    from medagentx.helpers.chexpert_findings_json import load_findings_labels_for_paths
+
+    json_path = tmp_path / "findings_fixed.json"
+    json_path.write_text(
+        "\n".join(
+            [
+                '{"path_to_image": "train/patient11162/study3/view1_frontal.jpg", "Edema": 1.0, "Atelectasis": 1.0, "Pleural Effusion": 1.0, "Support Devices": 1.0, "No Finding": null}',
+                '{"path_to_image": "train/patient42142/study1/view1_frontal.jpg", "No Finding": 1.0}',
+                '{"path_to_image": "train/patient99999/study1/view1_frontal.jpg", "Pneumothorax": 1.0}',
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    wanted = [
+        "train/patient11162/study3/view1_frontal.jpg",
+        "train/patient42142/study1/view1_frontal.jpg",
+    ]
+    labels_df = load_findings_labels_for_paths(json_path, wanted)
+    assert len(labels_df) == 2
+
+    rows_df = pd.DataFrame({"path_to_image": wanted})
+    merged = merge_chexpert_labels(rows_df, labels_df)
+    assert merged.iloc[0]["Edema"] == 1.0
+    assert merged.iloc[1]["No Finding"] == 1.0

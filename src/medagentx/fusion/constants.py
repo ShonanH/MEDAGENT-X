@@ -5,6 +5,7 @@ import re
 from medagentx.paths import (
     CHEXPERT_OUTPUT_DIR,
     FUSION_OUTPUT_DIR,
+    RAW_DATA_DIR,
 )
 
 DEFAULT_OUTPUT_DIR = FUSION_OUTPUT_DIR
@@ -14,6 +15,9 @@ DEFAULT_CONVNEXT_MANIFEST = CHEXPERT_OUTPUT_DIR / "convnext_feature_manifest.csv
 DEFAULT_RADDINO_MANIFEST = CHEXPERT_OUTPUT_DIR / "raddino_feature_manifest.csv"
 DEFAULT_DENSENET_PREDICTIONS = CHEXPERT_OUTPUT_DIR / "image_classifier_predictions.csv"
 DEFAULT_CHEXPERT_LABELS_CSV = CHEXPERT_OUTPUT_DIR / "chexpert_labels.csv"
+DEFAULT_CHEXPERT_FINDINGS_JSON = (
+    RAW_DATA_DIR / "chexpert_plus" / "chexpert_labels" / "findings_fixed.json"
+)
 
 DEFAULT_REPORT_LABEL_TABLE = DEFAULT_OUTPUT_DIR / "report_label_training_table.csv"
 DEFAULT_SPLIT_METADATA = DEFAULT_OUTPUT_DIR / "patient_split_metadata.csv"

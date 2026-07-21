@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Fetch per-image CheXpert labels from df_chexpert_plus_240401 for local metadata rows.
+Build per-image CheXpert labels for local metadata rows from findings_fixed.json.
 
-The Redivis "chexpert_labels" table is a file index (findings_fixed.json), not
-per-image SQL rows. Labels are queried from the main metadata table instead.
+Labels live in the Redivis CheXpert Labels asset (JSONL), not in the metadata SQL table.
+Use --download-findings to fetch the ~84MB file from Redivis on first run.
 
 Writes:
   src/outputs/chexpert_plus/chexpert_labels.csv
@@ -20,16 +20,42 @@ from medagentx._bootstrap import ensure_src_on_path
 
 ensure_src_on_path()
 
-from medagentx.fusion.chexpert_labels import ALL_CHEXPERT_LABELS, expand_label_columns, merge_chexpert_labels
-from medagentx.fusion.constants import DEFAULT_CHEXPERT_LABELS_CSV, DEFAULT_REDIVIS_CSV
-from medagentx.helpers.redivis_query_client import fetch_image_labels_for_paths
+from medagentx.fusion.chexpert_labels import (
+    expand_label_columns,
+    merge_chexpert_labels,
+    normalize_path_to_image,
+)
+from medagentx.fusion.constants import (
+    DEFAULT_CHEXPERT_FINDINGS_JSON,
+    DEFAULT_CHEXPERT_LABELS_CSV,
+    DEFAULT_REDIVIS_CSV,
+)
+from medagentx.helpers.chexpert_findings_json import (
+    ensure_findings_fixed_json,
+    load_findings_labels_for_paths,
+)
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--input-csv", type=Path, default=DEFAULT_REDIVIS_CSV)
     parser.add_argument("--output-csv", type=Path, default=DEFAULT_CHEXPERT_LABELS_CSV)
-    parser.add_argument("--batch-size", type=int, default=250)
+    parser.add_argument(
+        "--findings-json",
+        type=Path,
+        default=DEFAULT_CHEXPERT_FINDINGS_JSON,
+        help="Local path to findings_fixed.json (JSONL).",
+    )
+    parser.add_argument(
+        "--download-findings",
+        action="store_true",
+        help="Download findings_fixed.json from Redivis if missing.",
+    )
+    parser.add_argument(
+        "--overwrite-findings",
+        action="store_true",
+        help="Re-download findings_fixed.json even if cached locally.",
+    )
     parser.add_argument(
         "--expand-status-columns",
         action=argparse.BooleanOptionalAction,
@@ -48,28 +74,25 @@ def main():
         raise ValueError(f"{args.input_csv} must include path_to_image.")
 
     paths = rows_df["path_to_image"].dropna().astype(str).tolist()
-    print(f"Fetching CheXpert labels for {len(paths)} image paths from Redivis...")
-    labels_df = fetch_image_labels_for_paths(paths, batch_size=args.batch_size)
-    print(f"Redivis returned {len(labels_df)} label rows")
+    wanted_keys = {normalize_path_to_image(path) for path in paths if normalize_path_to_image(path)}
+
+    findings_json = ensure_findings_fixed_json(
+        args.findings_json,
+        download=args.download_findings or args.overwrite_findings or not args.findings_json.exists(),
+        overwrite=args.overwrite_findings,
+    )
+    print(f"Loading CheXpert labels from {findings_json} for {len(wanted_keys)} image paths...")
+    labels_df = load_findings_labels_for_paths(findings_json, paths)
+    print(f"Matched {len(labels_df)}/{len(wanted_keys)} local image paths in findings_fixed.json")
 
     merged = merge_chexpert_labels(rows_df, labels_df)
-    matched = 0
-    for label in ALL_CHEXPERT_LABELS:
-        if label in merged.columns:
-            matched = int(merged[label].notna().sum())
-            break
-    print(f"Matched {matched}/{len(rows_df)} local rows to CheXpert labels")
-
-    if args.expand_status_columns:
-        out_df = expand_label_columns(merged)
-    else:
-        out_df = merged
+    out_df = expand_label_columns(merged) if args.expand_status_columns else merged
 
     out_df.to_csv(args.output_csv, index=False)
     print(f"Wrote {len(out_df)} rows to {args.output_csv}")
     print("Next:")
-    print("  python src/medagentx/cli/09_build_fusion_report_label_table.py")
     print("  python src/medagentx/cli/audit_chexpert_labels.py")
+    print("  python src/medagentx/cli/09_build_fusion_report_label_table.py")
 
 
 if __name__ == "__main__":
