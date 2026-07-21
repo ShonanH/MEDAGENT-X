@@ -365,7 +365,7 @@ def main():
     _progress(f"Test macro F1: {test_metrics['macro_f1']:.4f}")
     _progress(f"Test micro F1: {test_metrics['micro_f1']:.4f}")
     _progress(f"Total runtime: {time.time() - started:.1f}s")
-    _progress("Next step: python -m medagentx.cli.12_run_fusion_inference.py")
+    _progress("Next step: python -m medagentx.cli.14_run_fusion_inference")
 
 
 if __name__ == "__main__":

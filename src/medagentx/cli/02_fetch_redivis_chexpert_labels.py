@@ -91,8 +91,7 @@ def main():
     out_df.to_csv(args.output_csv, index=False)
     print(f"Wrote {len(out_df)} rows to {args.output_csv}")
     print("Next:")
-    print("  python src/medagentx/cli/audit_chexpert_labels.py")
-    print("  python src/medagentx/cli/09_build_fusion_report_label_table.py")
+    print("  python src/medagentx/cli/03_build_fusion_report_label_table.py")
 
 
 if __name__ == "__main__":

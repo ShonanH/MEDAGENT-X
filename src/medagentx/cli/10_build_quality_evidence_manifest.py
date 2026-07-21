@@ -8,7 +8,7 @@ This script reads:
   outputs/chexpert_plus/unified_evidence_manifest.csv
 
 Then it computes unsupervised evidence from:
-  - DICOM preprocessing / validation metrics (optional; from script 04)
+  - DICOM preprocessing / validation metrics (optional)
   - ConvNeXt local visual features
   - RAD-DINO Transformer/global features
 
@@ -382,7 +382,7 @@ def main():
 
     has_validation_manifest = "validation_status" in unified.columns
     if not has_validation_manifest:
-        print("Note: no validation manifest columns (script 04 skipped); using ConvNeXt/RAD-DINO evidence only.")
+        print("Note: no validation manifest columns found; using ConvNeXt/RAD-DINO evidence only.")
 
     evidence_columns = [column for column in BASE_EVIDENCE_COLUMNS if column in unified.columns]
     evidence = unified[evidence_columns].copy()

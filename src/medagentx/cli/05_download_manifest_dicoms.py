@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-03_download_manifest_dicoms.py
+05_download_manifest_dicoms.py
 
 Download CheXpert Plus DICOM files listed in a MEDAGENT-X manifest.
 
@@ -23,13 +23,13 @@ Status output:
     outputs/chexpert_plus/dicom_download_status.csv
 
 TEST:
-python -m medagentx.cli.03_download_manifest_dicoms.py \
+python -m medagentx.cli.05_download_manifest_dicoms \
   --manifest-path data/processed/chexpert_plus/chexpert_plus_50_study_manifest.csv \
   --limit 5
 
 RUN:
 
-python -m medagentx.cli.03_download_manifest_dicoms.py \
+python -m medagentx.cli.05_download_manifest_dicoms \
   --manifest-path data/processed/chexpert_plus/chexpert_plus_v2_manifest.csv \
   --workers 4
 """

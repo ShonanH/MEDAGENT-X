@@ -64,7 +64,7 @@ def load_labeled_rows(input_csv: Path, labels_csv: Path) -> pd.DataFrame:
 
     raise FileNotFoundError(
         f"CheXpert labels not found at {labels_csv}. "
-        "Run: python src/medagentx/cli/fetch_redivis_chexpert_labels.py"
+        "Run: python src/medagentx/cli/02_fetch_redivis_chexpert_labels.py"
     )
 
 

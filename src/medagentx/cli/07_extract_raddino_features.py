@@ -18,7 +18,7 @@ Outputs:
   - outputs/chexpert_plus/raddino_features/*.npz
   - outputs/chexpert_plus/raddino_feature_manifest.csv
 
-python -m medagentx.cli.06_extract_raddino_features.py \
+python -m medagentx.cli.07_extract_raddino_features \
   --manifest-path data/processed/chexpert_plus/chexpert_plus_v2_manifest.csv
 """
 

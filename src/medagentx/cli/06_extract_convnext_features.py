@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-05_extract_convnext_features.py
+06_extract_convnext_features.py
 
 Workflow A: ConvNeXt feature extraction for CheXpert Plus DICOMs.
 
@@ -16,12 +16,12 @@ Outputs:
     outputs/chexpert_plus/convnext_features/
     outputs/chexpert_plus/convnext_feature_manifest.csv
 
-python -m medagentx.cli.05_extract_convnext_features.py \
+python -m medagentx.cli.06_extract_convnext_features \
   --manifest-path data/processed/chexpert_plus/chexpert_plus_v2_manifest.csv \
   --dicom-root data/raw/chexpert_plus/dicom_train \
   --limit 10
 
-python -m medagentx.cli.05_extract_convnext_features.py \
+python -m medagentx.cli.06_extract_convnext_features \
   --manifest-path data/processed/chexpert_plus/chexpert_plus_v2_manifest.csv \
   --dicom-root data/raw/chexpert_plus/dicom_train \
   --pretrained

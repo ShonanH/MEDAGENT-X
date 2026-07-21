@@ -11,7 +11,7 @@ Everything lives under `src/`:
 ```
 src/
   medagentx/          # Python package (agents, fusion, classifiers, helpers)
-    cli/              # Pipeline entry-point scripts
+    cli/              # Pipeline scripts numbered 01-16 in run order
     agents/
     fusion/
     ...
@@ -42,19 +42,35 @@ export REDIVIS_ACCESS_TOKEN='your_token'
 
 ## Running the pipeline
 
-Run scripts directly (from repo root):
+CLI scripts are numbered **01–16** in recommended run order under `src/medagentx/cli/`.
 
 ```bash
-python src/medagentx/cli/fetch_redivis_chexpert_rows.py
-python src/medagentx/cli/09_build_fusion_report_label_table.py
-python src/medagentx/cli/10_train_fusion_classifier.py
+# Labels + metadata
+python src/medagentx/cli/01_fetch_redivis_chexpert_rows.py
+python src/medagentx/cli/02_fetch_redivis_chexpert_labels.py --download-findings
+python src/medagentx/cli/03_build_fusion_report_label_table.py
+
+# DICOMs + image features
+python src/medagentx/cli/04_build_chexpert_manifest.py
+python src/medagentx/cli/05_download_manifest_dicoms.py --manifest-path <manifest.csv>
+python src/medagentx/cli/06_extract_convnext_features.py --manifest-path <manifest.csv>
+python src/medagentx/cli/07_extract_raddino_features.py --manifest-path <manifest.csv>
+
+# Fusion training
+python src/medagentx/cli/08_train_fusion_classifier.py
+
+# Agent workflow
+python src/medagentx/cli/09_build_unified_evidence_manifest.py
+python src/medagentx/cli/10_build_quality_evidence_manifest.py
+python src/medagentx/cli/11_run_quality_gate.py
+python src/medagentx/cli/12_build_chexpert_vector_db.py
+python src/medagentx/cli/13_run_densenet_predictions.py
+python src/medagentx/cli/14_run_fusion_inference.py
+python src/medagentx/cli/15_build_ensemble_classifier_predictions.py
+python src/medagentx/cli/16_run_bulk_medagentx_and_judge.py
 ```
 
-Or after `pip install -e .`:
-
-```bash
-PYTHONPATH=src python src/medagentx/cli/10_train_fusion_classifier.py
-```
+See `src/medagentx/cli/__init__.py` for the full list.
 
 ## Tests
 

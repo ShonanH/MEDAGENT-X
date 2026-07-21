@@ -5,9 +5,9 @@ Fetch CheXpert Plus report/metadata rows from the Redivis REST API.
 Writes or merges into:
   outputs/chexpert_plus/redivis_chexpert_plus_filtered_rows.csv
 
-This file feeds script 09 (fusion labels) and bulk judge ground truth.
+This file feeds script 03 (fusion labels) and bulk judge ground truth.
 Fusion training still requires ConvNeXt/RAD-DINO features for each row
-(scripts 01 -> 03 -> 05/06).
+(scripts 04 -> 05 -> 06/07).
 """
 
 from __future__ import annotations
@@ -90,8 +90,8 @@ def main():
     patients = out_df["deid_patient_id"].nunique() if "deid_patient_id" in out_df.columns else 0
     print(f"Wrote {len(out_df)} rows ({patients} patients) to {args.output_csv}")
     print("Next: expand DICOM + features, then rebuild fusion labels:")
-    print("  python src/medagentx/cli/fetch_redivis_chexpert_labels.py")
-    print("  python src/medagentx/cli/09_build_fusion_report_label_table.py")
+    print("  python src/medagentx/cli/02_fetch_redivis_chexpert_labels.py")
+    print("  python src/medagentx/cli/03_build_fusion_report_label_table.py")
 
 
 if __name__ == "__main__":
