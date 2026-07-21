@@ -12,6 +12,10 @@ from medagentx.fusion.constants import DISEASE_LABELS, snake_label
 DEFAULT_PRESENT_THRESHOLD = 0.60
 DEFAULT_ABSENT_THRESHOLD = 0.20
 
+# Used during fusion training threshold search (no deployment conservatism).
+TRAINING_DEFAULT_PRESENT_THRESHOLD = 0.40
+TRAINING_THRESHOLD_FLOOR = 0.35
+
 # Labels that are broad, noisy, or clinically rare on CXR reports.
 BROAD_OR_NOISY_LABELS = {
     "Atelectasis",
@@ -84,9 +88,31 @@ for label in RARE_OR_HIGH_COST_FP_LABELS:
     DEFAULT_DENSENET_PRESENT_THRESHOLDS[label] = 0.75
 
 
-def apply_threshold_floor(label: str, threshold: float) -> float:
-    floor = LABEL_PRESENT_THRESHOLD_FLOORS.get(label, DEFAULT_PRESENT_THRESHOLD)
+def apply_threshold_floor(
+    label: str,
+    threshold: float,
+    *,
+    deployment: bool = True,
+) -> float:
+    if deployment:
+        floor = LABEL_PRESENT_THRESHOLD_FLOORS.get(label, DEFAULT_PRESENT_THRESHOLD)
+    else:
+        floor = TRAINING_THRESHOLD_FLOOR
     return float(max(threshold, floor))
+
+
+def apply_deployment_thresholds(
+    thresholds: np.ndarray | list[float],
+    label_names: list[str] | None = None,
+) -> np.ndarray:
+    label_names = label_names or DISEASE_LABELS
+    return np.asarray(
+        [
+            apply_threshold_floor(label, float(threshold), deployment=True)
+            for label, threshold in zip(label_names, thresholds)
+        ],
+        dtype=np.float32,
+    )
 
 
 def prob_to_status(
@@ -120,6 +146,9 @@ def tune_thresholds_precision_favored(
     thresholds: np.ndarray | None = None,
     beta: float = 0.5,
     min_precision: float = 0.35,
+    *,
+    apply_floors: bool = True,
+    default_threshold: float = DEFAULT_PRESENT_THRESHOLD,
 ) -> tuple[np.ndarray, list[float]]:
     if thresholds is None:
         thresholds = np.linspace(0.10, 0.95, 35)
@@ -128,7 +157,11 @@ def tune_thresholds_precision_favored(
     best_scores: list[float] = []
 
     for j, label in enumerate(label_names):
-        best_t = apply_threshold_floor(label, DEFAULT_PRESENT_THRESHOLD)
+        best_t = apply_threshold_floor(
+            label,
+            default_threshold,
+            deployment=apply_floors,
+        )
         best_score = -1.0
 
         valid = mask[:, j] > 0
@@ -157,7 +190,12 @@ def tune_thresholds_precision_favored(
                 best_score = score
                 best_t = float(t)
 
-        best_thresholds.append(apply_threshold_floor(label, best_t))
+        if apply_floors:
+            best_thresholds.append(apply_threshold_floor(label, best_t, deployment=True))
+        else:
+            best_thresholds.append(
+                apply_threshold_floor(label, best_t, deployment=False)
+            )
         best_scores.append(best_score)
 
     return np.asarray(best_thresholds, dtype=np.float32), best_scores

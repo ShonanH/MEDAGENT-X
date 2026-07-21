@@ -4,6 +4,12 @@ import numpy as np
 import torch
 import torch.nn as nn
 
+from medagentx.fusion.calibration import (
+    TRAINING_DEFAULT_PRESENT_THRESHOLD,
+    tune_thresholds_precision_favored,
+)
+from medagentx.fusion.constants import DISEASE_LABELS
+
 
 def masked_bce_with_logits_loss(
     logits: torch.Tensor,
@@ -18,6 +24,24 @@ def masked_bce_with_logits_loss(
     return loss.sum() / denom
 
 
+def apply_no_finding_negative_downweight(
+    mask: torch.Tensor,
+    targets: torch.Tensor,
+    no_finding_mask: torch.Tensor | None,
+    weight: float,
+) -> torch.Tensor:
+    """Reduce loss contribution from explicit negatives on No Finding studies."""
+    if no_finding_mask is None or weight >= 1.0:
+        return mask
+
+    nf = no_finding_mask.unsqueeze(1)
+    negative = targets < 0.5
+    downweight = (nf > 0) & negative
+    scale = torch.ones_like(mask)
+    scale = torch.where(downweight, torch.full_like(mask, weight), scale)
+    return mask * scale
+
+
 def no_finding_penalty_loss(
     logits: torch.Tensor,
     no_finding_mask: torch.Tensor,
@@ -25,7 +49,7 @@ def no_finding_penalty_loss(
     weight: float = 1.0,
 ) -> torch.Tensor:
     """Penalize high disease probabilities when study-level No Finding is present."""
-    if no_finding_mask.sum() == 0:
+    if no_finding_mask.sum() == 0 or weight <= 0:
         return logits.new_tensor(0.0)
 
     probs = torch.sigmoid(logits)
@@ -40,11 +64,18 @@ def fusion_training_loss(
     mask: torch.Tensor,
     no_finding_mask: torch.Tensor | None = None,
     pos_weight: torch.Tensor | None = None,
-    no_finding_penalty_weight: float = 1.0,
+    no_finding_penalty_weight: float = 0.0,
     no_finding_prob_threshold: float = 0.5,
+    no_finding_negative_weight: float = 0.35,
 ) -> torch.Tensor:
-    loss = masked_bce_with_logits_loss(logits, targets, mask, pos_weight=pos_weight)
-    if no_finding_mask is not None and no_finding_mask.sum() > 0:
+    effective_mask = apply_no_finding_negative_downweight(
+        mask,
+        targets,
+        no_finding_mask,
+        weight=no_finding_negative_weight,
+    )
+    loss = masked_bce_with_logits_loss(logits, targets, effective_mask, pos_weight=pos_weight)
+    if no_finding_mask is not None and no_finding_penalty_weight > 0 and no_finding_mask.sum() > 0:
         loss = loss + no_finding_penalty_loss(
             logits,
             no_finding_mask,
@@ -54,7 +85,13 @@ def fusion_training_loss(
     return loss
 
 
-def compute_pos_weight(y_train: np.ndarray, mask_train: np.ndarray) -> np.ndarray:
+def compute_pos_weight(
+    y_train: np.ndarray,
+    mask_train: np.ndarray,
+    *,
+    boost: float = 2.0,
+    max_weight: float = 30.0,
+) -> np.ndarray:
     weights = []
     for j in range(y_train.shape[1]):
         m = mask_train[:, j] > 0
@@ -63,12 +100,9 @@ def compute_pos_weight(y_train: np.ndarray, mask_train: np.ndarray) -> np.ndarra
         if pos == 0:
             weights.append(1.0)
         else:
-            weights.append(float(neg / pos))
+            ratio = float(neg / pos) * boost
+            weights.append(min(ratio, max_weight))
     return np.asarray(weights, dtype=np.float32)
-
-
-from medagentx.fusion.calibration import tune_thresholds_precision_favored
-from medagentx.fusion.constants import DISEASE_LABELS
 
 
 def tune_thresholds_on_validation(
@@ -76,6 +110,10 @@ def tune_thresholds_on_validation(
     y_prob: np.ndarray,
     mask: np.ndarray,
     thresholds: np.ndarray | None = None,
+    *,
+    apply_floors: bool = False,
+    min_precision: float = 0.15,
+    beta: float = 1.0,
 ) -> tuple[np.ndarray, list[float]]:
     return tune_thresholds_precision_favored(
         y_true,
@@ -83,9 +121,65 @@ def tune_thresholds_on_validation(
         mask,
         DISEASE_LABELS,
         thresholds=thresholds,
-        beta=0.5,
-        min_precision=0.35,
+        beta=beta,
+        min_precision=min_precision,
+        apply_floors=apply_floors,
+        default_threshold=TRAINING_DEFAULT_PRESENT_THRESHOLD,
     )
+
+
+def _safe_auroc(y_true: np.ndarray, y_prob: np.ndarray) -> float:
+    try:
+        from sklearn.metrics import roc_auc_score
+
+        return float(roc_auc_score(y_true, y_prob))
+    except Exception:
+        return float("nan")
+
+
+def _safe_average_precision(y_true: np.ndarray, y_prob: np.ndarray) -> float:
+    try:
+        from sklearn.metrics import average_precision_score
+
+        return float(average_precision_score(y_true, y_prob))
+    except Exception:
+        return float("nan")
+
+
+def multilabel_ranking_metrics(
+    y_true: np.ndarray,
+    y_prob: np.ndarray,
+    mask: np.ndarray,
+    label_names: list[str],
+) -> dict:
+    rows = []
+    auroc_scores = []
+    ap_scores = []
+
+    for j, label in enumerate(label_names):
+        valid = mask[:, j] > 0
+        if valid.sum() == 0:
+            rows.append({"label": label, "auroc": float("nan"), "avg_precision": float("nan")})
+            continue
+
+        yt = y_true[valid, j]
+        yp = y_prob[valid, j]
+
+        if len(np.unique(yt)) < 2:
+            rows.append({"label": label, "auroc": float("nan"), "avg_precision": float("nan")})
+            continue
+
+        auroc = _safe_auroc(yt, yp)
+        ap = _safe_average_precision(yt, yp)
+        rows.append({"label": label, "auroc": auroc, "avg_precision": ap})
+        auroc_scores.append(auroc)
+        ap_scores.append(ap)
+
+    return {
+        "per_label": rows,
+        "macro_auroc": float(np.nanmean(auroc_scores)) if auroc_scores else float("nan"),
+        "macro_avg_precision": float(np.nanmean(ap_scores)) if ap_scores else float("nan"),
+    }
 
 
 def multilabel_metrics(

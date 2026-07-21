@@ -343,6 +343,80 @@ def test_ensemble_prob_blend_defaults_to_fusion_heavy():
     assert blended == pytest.approx(0.85 * 0.1 + 0.15 * 0.9)
 
 
+def test_training_threshold_tuning_allows_lower_values_than_deployment():
+    from medagentx.fusion.calibration import (
+        apply_deployment_thresholds,
+        tune_thresholds_precision_favored,
+    )
+
+    y_true = np.array([[1.0, 0.0], [0.0, 0.0], [1.0, 0.0], [0.0, 0.0]], dtype=np.float32)
+    y_prob = np.array([[0.72, 0.20], [0.18, 0.15], [0.68, 0.22], [0.12, 0.10]], dtype=np.float32)
+    mask = np.ones_like(y_true, dtype=np.float32)
+
+    tuned, _ = tune_thresholds_precision_favored(
+        y_true,
+        y_prob,
+        mask,
+        ["Atelectasis", "Edema"],
+        apply_floors=False,
+        min_precision=0.0,
+        beta=1.0,
+        default_threshold=0.40,
+    )
+    deployed = apply_deployment_thresholds(tuned, ["Atelectasis", "Edema"])
+
+    assert tuned[0] <= 0.72
+    assert deployed[0] >= tuned[0]
+
+
+def test_multilabel_ranking_metrics_computes_auroc():
+    from medagentx.fusion.metrics import multilabel_ranking_metrics
+
+    y_true = np.array([[1.0, 0.0], [0.0, 0.0], [1.0, 0.0], [0.0, 1.0]], dtype=np.float32)
+    y_prob = np.array([[0.9, 0.2], [0.1, 0.3], [0.8, 0.1], [0.2, 0.7]], dtype=np.float32)
+    mask = np.ones_like(y_true, dtype=np.float32)
+
+    metrics = multilabel_ranking_metrics(y_true, y_prob, mask, ["Atelectasis", "Edema"])
+    assert len(metrics["per_label"]) == 2
+    if not np.isnan(metrics["macro_auroc"]):
+        assert metrics["macro_auroc"] > 0.5
+        assert metrics["macro_avg_precision"] > 0.0
+
+
+def test_no_finding_negative_downweight_reduces_loss():
+    from medagentx.fusion.metrics import fusion_training_loss
+
+    logits = torch.tensor([[-1.0, 2.0]], dtype=torch.float32)
+    targets = torch.tensor([[0.0, 0.0]], dtype=torch.float32)
+    mask = torch.tensor([[1.0, 1.0]], dtype=torch.float32)
+    no_finding_mask = torch.tensor([1.0], dtype=torch.float32)
+
+    full_weight = fusion_training_loss(
+        logits,
+        targets,
+        mask,
+        no_finding_mask=no_finding_mask,
+        no_finding_negative_weight=1.0,
+    )
+    downweighted = fusion_training_loss(
+        logits,
+        targets,
+        mask,
+        no_finding_mask=no_finding_mask,
+        no_finding_negative_weight=0.25,
+    )
+    assert downweighted < full_weight
+
+
+def test_compute_pos_weight_applies_boost_and_cap():
+    from medagentx.fusion.metrics import compute_pos_weight
+
+    y = np.array([[1.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], dtype=np.float32)
+    mask = np.array([[1.0, 1.0], [1.0, 1.0], [1.0, 1.0], [1.0, 1.0]], dtype=np.float32)
+    weights = compute_pos_weight(y, mask, boost=2.0, max_weight=5.0)
+    assert weights[0] == 5.0
+
+
 def test_findings_jsonl_filters_requested_paths(tmp_path):
     from medagentx.fusion.chexpert_labels import merge_chexpert_labels
     from medagentx.helpers.chexpert_findings_json import load_findings_labels_for_paths
