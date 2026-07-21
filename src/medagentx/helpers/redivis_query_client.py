@@ -1,8 +1,7 @@
 """
-Redivis REST query client for CheXpert Plus metadata rows.
+Redivis REST query client for CheXpert Plus.
 
-Uses POST /queries and GET /queries/{id}/rows (CSV), avoiding Redivis Python
-file helpers that can fail on NRP with Arrow stream / timeout errors.
+HTTP execution lives here. SQL definitions live in redivis_queries.py.
 """
 
 from __future__ import annotations
@@ -11,64 +10,30 @@ import os
 import re
 import time
 from io import StringIO
+from pathlib import Path
 from typing import Any
 
 import pandas as pd
 import requests
 
-REDIVIS_API_BASE_URL = "https://redivis.com/api/v1"
-REDIVIS_TABLE_REFERENCE = "aimi.chexpert_plus:5yyj:v1_0.df_chexpert_plus_240401:bavj"
-REDIVIS_CHEXPERT_LABELS_TABLE_REFERENCE = (
-    "aimi.chexpert_plus:5yyj:v1_0.chexpert_labels:pmec"
+from medagentx.helpers.redivis_queries import (
+    CHEXPERT_LABEL_COLUMNS,
+    METADATA_EXPORT_COLUMNS,
+    REDIVIS_CHEXPERT_LABELS_TABLE_REFERENCE,
+    REDIVIS_EXPORTS,
+    REDIVIS_TABLE_REFERENCE,
+    SELECTED_REDIVIS_COLUMNS,
+    build_filtered_chexpert_labels_sql,
+    build_filtered_redivis_sql,
+    build_image_labels_for_dicom_paths_query,
+    build_image_labels_for_paths_query,
+    build_train_split_query,
+    get_export,
+    list_exports,
+    normalize_text,
 )
 
-CHEXPERT_LABEL_COLUMNS = [
-    "Atelectasis",
-    "Cardiomegaly",
-    "Consolidation",
-    "Edema",
-    "Pleural Effusion",
-    "Pneumonia",
-    "Pneumothorax",
-    "Fracture",
-    "Lung Lesion",
-    "Lung Opacity",
-    "Enlarged Cardiomediastinum",
-    "Pleural Other",
-    "Support Devices",
-    "No Finding",
-]
-
-IDENTIFIER_COLUMNS = [
-    "path_to_image",
-    "path_to_dcm",
-    "deid_patient_id",
-    "patient_report_date_order",
-    "section_accession_number",
-]
-
-DEMOGRAPHIC_COLUMNS = [
-    "age",
-    "sex",
-    "race",
-    "ethnicity",
-]
-
-REPORT_COLUMNS = [
-    "report",
-    "section_narrative",
-    "section_clinical_history",
-    "section_history",
-    "section_comparison",
-    "section_technique",
-    "section_procedure_comments",
-    "section_findings",
-    "section_impression",
-    "section_end_of_impression",
-    "section_summary",
-]
-
-SELECTED_REDIVIS_COLUMNS = IDENTIFIER_COLUMNS + DEMOGRAPHIC_COLUMNS + REPORT_COLUMNS
+REDIVIS_API_BASE_URL = "https://redivis.com/api/v1"
 
 
 def require_redivis_token() -> str:
@@ -88,53 +53,10 @@ def redivis_headers(token: str) -> dict[str, str]:
     }
 
 
-def normalize_text(value: Any) -> str:
-    if pd.isna(value):
-        return ""
-
-    normalized = str(value).strip().lower()
-    normalized = normalized.replace("\\", "/")
-    normalized = re.sub(r"/+", "/", normalized)
-    return normalized
-
-
 def sql_quote(value: str) -> str:
-    return "'" + value.replace("\\", "\\\\").replace("'", "\\'") + "'"
+    from medagentx.helpers.redivis_queries import sql_quote as _sql_quote
 
-
-def build_train_split_query(row_limit: int) -> str:
-    selected_sql = ",\n        ".join(f"`{column}`" for column in SELECTED_REDIVIS_COLUMNS)
-    return f"""
-    SELECT
-        {selected_sql}
-    FROM `{REDIVIS_TABLE_REFERENCE}`
-    WHERE path_to_dcm IS NOT NULL
-      AND split = 'train'
-    LIMIT {int(row_limit)}
-    """
-
-
-def build_filtered_redivis_sql(local_dicom_paths: list[str]) -> str:
-    selected_sql = ",\n        ".join(f"`{column}`" for column in SELECTED_REDIVIS_COLUMNS)
-
-    like_clauses = [
-        f"LOWER(`path_to_dcm`) LIKE {sql_quote('%' + normalize_text(dicom_path))}"
-        for dicom_path in local_dicom_paths
-        if normalize_text(dicom_path)
-    ]
-
-    if not like_clauses:
-        raise RuntimeError("No local DICOM paths were available for the Redivis query.")
-
-    where_sql = "\n        OR ".join(like_clauses)
-
-    return f"""
-    SELECT
-        {selected_sql}
-    FROM `{REDIVIS_TABLE_REFERENCE}`
-    WHERE
-        {where_sql}
-    """
+    return _sql_quote(value)
 
 
 def post_redivis_query(headers: dict[str, str], query: str) -> dict[str, Any]:
@@ -248,6 +170,25 @@ def run_redivis_query(query: str, max_results: int) -> pd.DataFrame:
     )
 
 
+def run_redivis_export(
+    export_name: str,
+    output_csv: str | Path | None = None,
+    max_results: int | None = None,
+    **query_kwargs: Any,
+) -> pd.DataFrame:
+    spec = get_export(export_name)
+    query = spec.build_query(**query_kwargs)
+    limit = max_results if max_results is not None else spec.default_max_results
+    df = run_redivis_query(query, max_results=limit)
+
+    if output_csv is not None:
+        out_path = Path(output_csv)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        df.to_csv(out_path, index=False)
+
+    return df
+
+
 def limit_unique_patients(df: pd.DataFrame, patient_limit: int | None) -> pd.DataFrame:
     if patient_limit is None or patient_limit <= 0:
         return df
@@ -274,52 +215,52 @@ def limit_unique_patients(df: pd.DataFrame, patient_limit: int | None) -> pd.Dat
     return pd.DataFrame(rows)
 
 
-def build_filtered_chexpert_labels_sql(path_to_images: list[str]) -> str:
-    selected_sql = ",\n        ".join(
-        ["`path_to_image`"] + [f"`{column}`" for column in CHEXPERT_LABEL_COLUMNS]
-    )
-
-    exact_clauses = [
-        f"LOWER(`path_to_image`) = {sql_quote(normalize_text(path))}"
-        for path in path_to_images
-        if normalize_text(path)
-    ]
-
-    if not exact_clauses:
-        raise RuntimeError("No path_to_image values were available for the labels query.")
-
-    where_sql = "\n        OR ".join(exact_clauses)
-
-    return f"""
-    SELECT
-        {selected_sql}
-    FROM `{REDIVIS_CHEXPERT_LABELS_TABLE_REFERENCE}`
-    WHERE
-        {where_sql}
-    """
-
-
-def fetch_chexpert_labels_for_paths(
+def fetch_image_labels_for_paths(
     path_to_images: list[str],
     batch_size: int = 250,
+    *,
+    path_column: str = "path_to_image",
 ) -> pd.DataFrame:
+    """
+    Fetch per-image label columns from df_chexpert_plus_240401.
+
+    The chexpert_labels Redivis table is a file index, not per-image labels.
+    """
     paths = [normalize_text(path) for path in path_to_images if normalize_text(path)]
     if not paths:
-        return pd.DataFrame(columns=["path_to_image", *CHEXPERT_LABEL_COLUMNS])
+        from medagentx.helpers.redivis_queries import IMAGE_LABEL_EXPORT_COLUMNS
+
+        empty_cols = (
+            IMAGE_LABEL_EXPORT_COLUMNS
+            if path_column == "path_to_image"
+            else ["path_to_dcm", *CHEXPERT_LABEL_COLUMNS]
+        )
+        return pd.DataFrame(columns=empty_cols)
+
+    builder = (
+        build_image_labels_for_paths_query
+        if path_column == "path_to_image"
+        else build_image_labels_for_dicom_paths_query
+    )
 
     frames: list[pd.DataFrame] = []
     for start in range(0, len(paths), batch_size):
         batch = paths[start : start + batch_size]
-        query = build_filtered_chexpert_labels_sql(batch)
+        query = builder(batch)
         frames.append(run_redivis_query(query, max_results=len(batch)))
 
     combined = pd.concat(frames, ignore_index=True)
-    if "path_to_image" not in combined.columns:
+    join_col = path_column if path_column in combined.columns else "path_to_image"
+    if join_col not in combined.columns:
         return combined
 
-    combined["_join_key"] = combined["path_to_image"].map(normalize_text)
+    combined["_join_key"] = combined[join_col].map(normalize_text)
     combined = combined[combined["_join_key"].ne("")].copy()
     return combined.drop_duplicates(subset=["_join_key"], keep="last").drop(columns=["_join_key"])
+
+
+# Backward-compatible alias
+fetch_chexpert_labels_for_paths = fetch_image_labels_for_paths
 
 
 def merge_redivis_row_tables(existing: pd.DataFrame, incoming: pd.DataFrame) -> pd.DataFrame:
@@ -331,3 +272,25 @@ def merge_redivis_row_tables(existing: pd.DataFrame, incoming: pd.DataFrame) -> 
     combined = combined[combined["_join_key"].ne("")].copy()
     combined = combined.drop_duplicates(subset=["_join_key"], keep="last")
     return combined.drop(columns=["_join_key"])
+
+
+__all__ = [
+    "CHEXPERT_LABEL_COLUMNS",
+    "METADATA_EXPORT_COLUMNS",
+    "REDIVIS_CHEXPERT_LABELS_TABLE_REFERENCE",
+    "REDIVIS_EXPORTS",
+    "REDIVIS_TABLE_REFERENCE",
+    "SELECTED_REDIVIS_COLUMNS",
+    "build_filtered_chexpert_labels_sql",
+    "build_filtered_redivis_sql",
+    "build_train_split_query",
+    "fetch_chexpert_labels_for_paths",
+    "fetch_image_labels_for_paths",
+    "list_exports",
+    "merge_redivis_row_tables",
+    "normalize_text",
+    "require_redivis_token",
+    "run_redivis_export",
+    "run_redivis_query",
+    "sql_quote",
+]

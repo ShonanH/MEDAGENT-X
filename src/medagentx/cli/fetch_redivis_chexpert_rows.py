@@ -24,10 +24,9 @@ ensure_src_on_path()
 
 from medagentx.fusion.constants import DEFAULT_REDIVIS_CSV
 from medagentx.helpers.redivis_query_client import (
-    build_train_split_query,
     limit_unique_patients,
     merge_redivis_row_tables,
-    run_redivis_query,
+    run_redivis_export,
 )
 
 
@@ -65,9 +64,10 @@ def main():
     args.output_csv.parent.mkdir(parents=True, exist_ok=True)
 
     print(f"Fetching up to {args.row_limit} train-split rows from Redivis...")
-    fetched = run_redivis_query(
-        build_train_split_query(args.row_limit),
+    fetched = run_redivis_export(
+        "metadata_train",
         max_results=args.row_limit,
+        row_limit=args.row_limit,
     )
     print(f"Redivis returned {len(fetched)} rows")
 

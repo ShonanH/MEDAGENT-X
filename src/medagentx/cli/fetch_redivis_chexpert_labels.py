@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-Fetch official CheXpert labeler labels from Redivis for rows in the local metadata CSV.
+Fetch per-image CheXpert labels from df_chexpert_plus_240401 for local metadata rows.
+
+The Redivis "chexpert_labels" table is a file index (findings_fixed.json), not
+per-image SQL rows. Labels are queried from the main metadata table instead.
 
 Writes:
   src/outputs/chexpert_plus/chexpert_labels.csv
-
-Join key: path_to_image
 """
 
 from __future__ import annotations
@@ -21,7 +22,7 @@ ensure_src_on_path()
 
 from medagentx.fusion.chexpert_labels import ALL_CHEXPERT_LABELS, expand_label_columns, merge_chexpert_labels
 from medagentx.fusion.constants import DEFAULT_CHEXPERT_LABELS_CSV, DEFAULT_REDIVIS_CSV
-from medagentx.helpers.redivis_query_client import fetch_chexpert_labels_for_paths
+from medagentx.helpers.redivis_query_client import fetch_image_labels_for_paths
 
 
 def parse_args():
@@ -48,7 +49,7 @@ def main():
 
     paths = rows_df["path_to_image"].dropna().astype(str).tolist()
     print(f"Fetching CheXpert labels for {len(paths)} image paths from Redivis...")
-    labels_df = fetch_chexpert_labels_for_paths(paths, batch_size=args.batch_size)
+    labels_df = fetch_image_labels_for_paths(paths, batch_size=args.batch_size)
     print(f"Redivis returned {len(labels_df)} label rows")
 
     merged = merge_chexpert_labels(rows_df, labels_df)
