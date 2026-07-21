@@ -17,12 +17,12 @@ Outputs:
     outputs/chexpert_plus/convnext_feature_manifest.csv
 
 python -m medagentx.cli.06_extract_convnext_features \
-  --manifest-path data/processed/chexpert_plus/chexpert_plus_v2_manifest.csv \
+  --manifest-path data/processed/chexpert_plus/chexpert_plus_500_study_manifest.csv \
   --dicom-root data/raw/chexpert_plus/dicom_train \
   --limit 10
 
 python -m medagentx.cli.06_extract_convnext_features \
-  --manifest-path data/processed/chexpert_plus/chexpert_plus_v2_manifest.csv \
+  --manifest-path data/processed/chexpert_plus/chexpert_plus_500_study_manifest.csv \
   --dicom-root data/raw/chexpert_plus/dicom_train \
   --pretrained
 """
@@ -50,7 +50,7 @@ from medagentx.helpers.dicom_loader import load_normalized_dicom_image
 DEFAULT_MANIFEST_PATH = (
     PROCESSED_DATA_DIR
     / "chexpert_plus"
-    / "chexpert_plus_v2_manifest.csv"
+    / "chexpert_plus_500_study_manifest.csv"
 )
 
 DEFAULT_DICOM_ROOT = (

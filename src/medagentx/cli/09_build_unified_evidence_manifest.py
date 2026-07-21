@@ -32,7 +32,7 @@ DEFAULT_OUTPUT_DIR = CHEXPERT_OUTPUT_DIR
 DEFAULT_STUDY_MANIFEST = (
     PROCESSED_DATA_DIR
     / "chexpert_plus"
-    / "chexpert_plus_v2_manifest.csv"
+    / "chexpert_plus_500_study_manifest.csv"
 )
 
 DEFAULT_DICOM_ROOT = (

@@ -52,7 +52,8 @@ def parse_args():
     parser.add_argument("--fusion-thresholds-path", type=Path, default=DEFAULT_THRESHOLDS_PATH)
     parser.add_argument("--ensemble-thresholds-path", type=Path, default=DEFAULT_ENSEMBLE_THRESHOLDS)
     parser.add_argument("--output-csv", type=Path, default=DEFAULT_ENSEMBLE_PREDICTIONS)
-    parser.add_argument("--fusion-weight", type=float, default=0.5)
+    parser.add_argument("--fusion-weight", type=float, default=0.85,
+                        help="Fusion weight in ensemble blend (default 0.85; DenseNet=0.15).")
     parser.add_argument(
         "--require-agreement",
         action=argparse.BooleanOptionalAction,

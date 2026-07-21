@@ -24,13 +24,13 @@ Status output:
 
 TEST:
 python -m medagentx.cli.05_download_manifest_dicoms \
-  --manifest-path data/processed/chexpert_plus/chexpert_plus_50_study_manifest.csv \
+  --manifest-path data/processed/chexpert_plus/chexpert_plus_500_study_manifest.csv \
   --limit 5
 
 RUN:
 
 python -m medagentx.cli.05_download_manifest_dicoms \
-  --manifest-path data/processed/chexpert_plus/chexpert_plus_v2_manifest.csv \
+  --manifest-path data/processed/chexpert_plus/chexpert_plus_500_study_manifest.csv \
   --workers 4
 """
 
@@ -54,7 +54,7 @@ from medagentx.helpers.redivis_rest_client import RedivisRestClient
 DEFAULT_MANIFEST_PATH = (
     PROCESSED_DATA_DIR
     / "chexpert_plus"
-    / "chexpert_plus_50_study_manifest.csv"
+    / "chexpert_plus_500_study_manifest.csv"
 )
 
 DEFAULT_INDEX_DIR = (

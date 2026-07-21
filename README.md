@@ -52,9 +52,9 @@ python src/medagentx/cli/03_build_fusion_report_label_table.py
 
 # DICOMs + image features
 python src/medagentx/cli/04_build_chexpert_manifest.py
-python src/medagentx/cli/05_download_manifest_dicoms.py --manifest-path <manifest.csv>
-python src/medagentx/cli/06_extract_convnext_features.py --manifest-path <manifest.csv>
-python src/medagentx/cli/07_extract_raddino_features.py --manifest-path <manifest.csv>
+python src/medagentx/cli/05_download_manifest_dicoms.py
+python src/medagentx/cli/06_extract_convnext_features.py
+python src/medagentx/cli/07_extract_raddino_features.py
 
 # Fusion training
 python src/medagentx/cli/08_train_fusion_classifier.py

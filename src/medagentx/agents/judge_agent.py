@@ -364,8 +364,35 @@ def predictions_by_label(predictions: list[dict[str, Any]]) -> dict[str, dict[st
 def find_ground_truth_row(
     ground_truth_df: pd.DataFrame,
     study_key: str,
-    dicom_path: str,
+    dicom_path: str = "",
 ) -> pd.Series | None:
+    study_row = find_study_ground_truth_group(ground_truth_df, study_key)
+    if study_row is None:
+        return None
+
+    group = study_row if isinstance(study_row, pd.DataFrame) else pd.DataFrame([study_row])
+    if dicom_path and len(group) > 1:
+        dicom_columns = [
+            col for col in [
+                "dicom_path",
+                "query_dicom_path",
+                "path_to_dcm",
+                "local_dicom_path",
+                "image_path",
+                "path_to_image",
+            ]
+            if col in group.columns
+        ]
+        for _, row in group.iterrows():
+            if any(paths_match(row.get(col), dicom_path) for col in dicom_columns):
+                return row
+    return group.iloc[0]
+
+
+def find_study_ground_truth_group(
+    ground_truth_df: pd.DataFrame,
+    study_key: str,
+) -> pd.DataFrame | None:
     study_columns = [
         col for col in ["study_key", "query_study_key"]
         if col in ground_truth_df.columns
@@ -391,25 +418,130 @@ def find_ground_truth_row(
                 ground_truth_df[study_col].astype(str) == str(study_key)
             ]
             if not same_study.empty:
-                if dicom_columns:
-                    for _, row in same_study.iterrows():
-                        for dicom_col in dicom_columns:
-                            if paths_match(row.get(dicom_col), dicom_path):
-                                return row
-                return same_study.iloc[0]
+                return same_study
 
     for _, row in ground_truth_df.iterrows():
         derived_keys = [
             derive_study_key_from_path(row.get(col))
             for col in dicom_columns
         ]
-
         if study_key in derived_keys:
-            if any(paths_match(row.get(col), dicom_path) for col in dicom_columns):
-                return row
-            return row
+            return ground_truth_df[
+                ground_truth_df.index == row.name
+            ]
 
     return None
+
+
+def study_ground_truth_items_from_group(group: pd.DataFrame) -> list[dict[str, Any]]:
+    from medagentx.fusion.chexpert_labels import (
+        aggregate_study_label_items,
+        labels_from_chexpert_row,
+        labels_from_status_columns,
+        row_has_chexpert_label_columns,
+    )
+
+    view_maps = []
+    for _, row in group.iterrows():
+        if row_has_chexpert_label_columns(row):
+            view_maps.append(labels_from_status_columns(row))
+        elif any(label in row.index for label in CHEXPERT_LABELS):
+            view_maps.append(labels_from_chexpert_row(row))
+        else:
+            return infer_ground_truth_labels(extract_report_text(group.iloc[0])["combined_text"])
+
+    label_items = aggregate_study_label_items(view_maps)
+    return [
+        {
+            "label": label,
+            "status": item["judge_status"],
+            "evidence": item["evidence"],
+        }
+        for label, item in label_items.items()
+    ]
+
+
+PREDICTION_STATUS_PRIORITY = {
+    "present": 4,
+    "uncertain": 3,
+    "absent": 2,
+    "unavailable": 1,
+}
+
+
+def aggregate_prediction_items(items: list[dict[str, Any]]) -> dict[str, Any]:
+    if not items:
+        return {
+            "status": "unavailable",
+            "confidence": None,
+            "evidence": "Prediction missing.",
+            "evidence_type": "missing",
+        }
+
+    best = max(
+        items,
+        key=lambda item: PREDICTION_STATUS_PRIORITY.get(
+            normalize_status(item.get("status")),
+            0,
+        ),
+    )
+    return {
+        "label": best.get("label"),
+        "status": normalize_status(best.get("status")),
+        "confidence": best.get("confidence"),
+        "evidence": clean_string(best.get("evidence")),
+        "evidence_type": clean_string(best.get("evidence_type")),
+    }
+
+
+def aggregate_study_prediction_row(group: pd.DataFrame) -> pd.Series:
+    first = group.iloc[0].copy()
+    study_key = clean_string(first.get("study_key"))
+    dicom_paths = sorted(
+        {
+            clean_string(value)
+            for value in group.get("dicom_path", pd.Series(dtype=str)).tolist()
+            if clean_string(value)
+        }
+    )
+
+    label_predictions: dict[str, list[dict[str, Any]]] = {label: [] for label in CHEXPERT_LABELS}
+    for _, row in group.iterrows():
+        predictions = parse_json_cell(row.get("finding_predictions_json"), [])
+        for item in predictions:
+            if not isinstance(item, dict):
+                continue
+            label = normalize_label(item.get("label"))
+            if label in CHEXPERT_LABELS:
+                label_predictions[label].append(item)
+
+    aggregated_predictions = []
+    for label in CHEXPERT_LABELS:
+        aggregated = aggregate_prediction_items(label_predictions[label])
+        aggregated["label"] = label
+        aggregated_predictions.append(aggregated)
+
+    findings_sections = [
+        clean_string(value)
+        for value in group.get("predicted_findings_section", pd.Series(dtype=str)).tolist()
+        if clean_string(value)
+    ]
+    impression_sections = [
+        clean_string(value)
+        for value in group.get("predicted_impression_section", pd.Series(dtype=str)).tolist()
+        if clean_string(value)
+    ]
+
+    out = first.copy()
+    out["study_key"] = study_key
+    out["dicom_path"] = dicom_paths[0] if dicom_paths else clean_string(first.get("dicom_path"))
+    out["dicom_paths"] = " | ".join(dicom_paths)
+    out["image_count"] = len(group)
+    out["eval_granularity"] = "study"
+    out["finding_predictions_json"] = json.dumps(aggregated_predictions)
+    out["predicted_findings_section"] = findings_sections[0] if findings_sections else ""
+    out["predicted_impression_section"] = impression_sections[0] if impression_sections else ""
+    return out
 
 def validate_ground_truth_source(ground_truth_df: pd.DataFrame, ground_truth_path: str) -> None:
     current_report_columns = {
@@ -644,17 +776,18 @@ def evaluate_case(
 ) -> dict[str, Any]:
     study_key = clean_string(prediction_row.get("study_key"))
     dicom_path = clean_string(prediction_row.get("dicom_path"))
+    dicom_paths = clean_string(prediction_row.get("dicom_paths"))
+    image_count = int(clean_value(prediction_row.get("image_count")) or 1)
 
-    gt_row = find_ground_truth_row(
-        ground_truth_df=ground_truth_df,
-        study_key=study_key,
-        dicom_path=dicom_path,
-    )
+    gt_group = find_study_ground_truth_group(ground_truth_df, study_key)
 
-    if gt_row is None:
+    if gt_group is None or gt_group.empty:
         return {
             "study_key": study_key,
             "dicom_path": dicom_path,
+            "dicom_paths": dicom_paths,
+            "image_count": image_count,
+            "eval_granularity": "study",
             "judge_decision": "discordant",
             "judge_explanation": "No matching ground-truth report row found.",
             "ground_truth_present_labels": json.dumps([]),
@@ -668,17 +801,18 @@ def evaluate_case(
             "ground_truth_report_excerpt": "",
         }
 
+    gt_row = gt_group.iloc[0]
     report_parts = extract_report_text(gt_row)
     predicted_report_parts = extract_predicted_report_text(prediction_row)
-    from medagentx.fusion.chexpert_labels import (
-        ground_truth_label_items_from_row,
-        row_has_chexpert_label_columns,
-    )
+    from medagentx.fusion.chexpert_labels import row_has_chexpert_label_columns
 
-    if row_has_chexpert_label_columns(gt_row) or any(
-        label in gt_row.index for label in CHEXPERT_LABELS
-    ):
-        gt_labels = ground_truth_label_items_from_row(gt_row)
+    has_chexpert_labels = (
+        row_has_chexpert_label_columns(gt_row)
+        or any(label in gt_row.index for label in CHEXPERT_LABELS)
+        or len(gt_group) > 1
+    )
+    if has_chexpert_labels:
+        gt_labels = study_ground_truth_items_from_group(gt_group)
     else:
         gt_labels = infer_ground_truth_labels(report_parts["combined_text"])
 
@@ -732,6 +866,9 @@ def evaluate_case(
     return {
         "study_key": study_key,
         "dicom_path": dicom_path,
+        "dicom_paths": dicom_paths,
+        "image_count": image_count,
+        "eval_granularity": "study",
         "judge_decision": judge_decision,
         "judge_explanation": " ".join(judge_reasons),
         "exact_label_match_count": exact_count,
@@ -814,6 +951,9 @@ def build_judge_markdown(eval_df: pd.DataFrame) -> str:
                 "",
                 f"- Study key: `{clean_string(row.get('study_key'))}`",
                 f"- DICOM path: `{clean_string(row.get('dicom_path'))}`",
+                f"- DICOM paths: `{clean_string(row.get('dicom_paths'))}`",
+                f"- Image count: `{int(clean_value(row.get('image_count')) or 1)}`",
+                f"- Eval granularity: `{clean_string(row.get('eval_granularity')) or 'study'}`",
                 f"- Judge decision: **{clean_string(row.get('judge_decision')).upper()}**",
                 f"- Disease F1: `{float(row.get('disease_f1')):.3f}`",
                 f"- Label macro score: `{float(row.get('label_macro_score')):.3f}`",
@@ -870,13 +1010,15 @@ def run_judge_agent(
     validate_ground_truth_source(ground_truth_df, ground_truth_path)
 
     rows = []
-    total = len(disease_reasoning_df)
+    grouped = disease_reasoning_df.groupby("study_key", sort=False)
+    total = len(grouped)
 
-    for index, (_, prediction_row) in enumerate(disease_reasoning_df.iterrows(), start=1):
+    for index, (study_key, group) in enumerate(grouped, start=1):
+        prediction_row = aggregate_study_prediction_row(group)
         if verbose:
             print(
-                f"[Judge Agent] Judging case {index}/{total}: "
-                f"{prediction_row.get('study_key')} | {prediction_row.get('dicom_path')}"
+                f"[Judge Agent] Judging study {index}/{total}: "
+                f"{study_key} ({len(group)} image row(s))"
             )
         rows.append(evaluate_case(prediction_row, ground_truth_df))
 

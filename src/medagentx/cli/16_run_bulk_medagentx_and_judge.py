@@ -15,7 +15,7 @@ from medagentx.paths import CHEXPERT_OUTPUT_DIR, DATA_DIR, FUSION_OUTPUT_DIR, PR
 ensure_src_on_path()
 
 from medagentx.graphs.medagentx_graph import run_medagentx_graph
-from medagentx.agents.judge_agent import build_judge_markdown
+from medagentx.agents.judge_agent import run_judge_agent
 
 
 DEFAULT_QUALITY_GATE_CSV = str(CHEXPERT_OUTPUT_DIR / "quality_gate_decisions.csv")
@@ -108,7 +108,6 @@ def run_batch(
     )
 
     disease_outputs: list[pd.DataFrame] = []
-    judge_outputs: list[pd.DataFrame] = []
     status_rows: list[dict[str, Any]] = []
 
     total = len(cases)
@@ -146,7 +145,6 @@ def run_batch(
             )
 
             append_csv_if_present(disease_csv, disease_outputs)
-            append_csv_if_present(judge_csv, judge_outputs)
 
             status_rows.append(
                 {
@@ -194,21 +192,15 @@ def run_batch(
             f"See {batch_status_csv}."
         )
 
-    if not judge_outputs:
-        raise RuntimeError(
-            "Batch finished, but no Judge outputs were produced. "
-            "Confirm that judge_agent is part of medagentx_graph.py. "
-            f"See {batch_status_csv}."
-        )
-
     combined_disease_df = pd.concat(disease_outputs, ignore_index=True)
     combined_disease_df.to_csv(combined_disease_reasoning_csv, index=False)
 
-    combined_judge_df = pd.concat(judge_outputs, ignore_index=True)
-    combined_judge_df.to_csv(combined_judge_results_csv, index=False)
-    combined_judge_report_md.write_text(
-        build_judge_markdown(combined_judge_df),
-        encoding="utf-8",
+    run_judge_agent(
+        disease_reasoning_results_path=str(combined_disease_reasoning_csv),
+        ground_truth_path=ground_truth_csv,
+        output_path=str(combined_judge_results_csv),
+        report_output_path=str(combined_judge_report_md),
+        verbose=True,
     )
 
     print("[Batch] Complete.", flush=True)

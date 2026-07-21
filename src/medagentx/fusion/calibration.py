@@ -50,7 +50,10 @@ STRICT_PRESENT_LABELS = {
     "Lung Opacity",
 }
 
-# Fusion is often overconfident on broad labels; down-weight it in the blend.
+# Default ensemble blend: fusion-heavy (DenseNet often overcalls on broad labels).
+DEFAULT_FUSION_BLEND_WEIGHT = 0.85
+DENSENET_HEAVY_BLEND_DENSENET_WEIGHT = 0.15
+DENSENET_HEAVY_BLEND_FUSION_WEIGHT = 0.85
 DENSENET_HEAVY_BLEND_LABELS = BROAD_OR_NOISY_LABELS | MODERATE_RECALL_LABELS
 
 LUNG_OPACITY_MIN_DENSENET = 0.82
@@ -186,7 +189,7 @@ def ensemble_prob_blend(
     label: str,
     d_prob: float | None,
     f_prob: float | None,
-    fusion_weight: float = 0.5,
+    fusion_weight: float = DEFAULT_FUSION_BLEND_WEIGHT,
 ) -> float | None:
     if d_prob is None and f_prob is None:
         return None
@@ -199,7 +202,10 @@ def ensemble_prob_blend(
         return float(min(d_prob, f_prob))
 
     if label in DENSENET_HEAVY_BLEND_LABELS:
-        return float(0.65 * d_prob + 0.35 * f_prob)
+        return float(
+            DENSENET_HEAVY_BLEND_DENSENET_WEIGHT * d_prob
+            + DENSENET_HEAVY_BLEND_FUSION_WEIGHT * f_prob
+        )
 
     return float((1.0 - fusion_weight) * d_prob + fusion_weight * f_prob)
 

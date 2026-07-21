@@ -20,6 +20,7 @@ ensure_src_on_path()
 from medagentx.fusion.chexpert_labels import (
     ALL_CHEXPERT_LABELS,
     LABEL_SOURCE_CHEXPERT,
+    aggregate_study_label_items,
     expand_label_columns,
     labels_from_chexpert_row,
     merge_chexpert_labels,
@@ -29,7 +30,6 @@ from medagentx.fusion.constants import (
     DEFAULT_CHEXPERT_LABELS_CSV,
     DEFAULT_REDIVIS_CSV,
     DEFAULT_REPORT_LABEL_TABLE,
-    DISEASE_LABELS,
     snake_label,
 )
 from medagentx.fusion.labels import build_report_text_for_weak_labels
@@ -74,7 +74,8 @@ def build_study_label_table(df: pd.DataFrame) -> pd.DataFrame:
     for study_key, group in df.groupby("study_key", sort=False):
         first = group.iloc[0]
         report_text, _ = build_report_text_for_weak_labels(first)
-        label_items = labels_from_chexpert_row(first)
+        view_label_maps = [labels_from_chexpert_row(row) for _, row in group.iterrows()]
+        label_items = aggregate_study_label_items(view_label_maps)
         conflicts = study_label_conflict_flags(group)
 
         row = {
@@ -125,7 +126,7 @@ def main():
             "label_source": study_info["label_source"],
         }
 
-        for label in DISEASE_LABELS:
+        for label in ALL_CHEXPERT_LABELS:
             slug = snake_label(label)
             out[f"weak_status_{slug}"] = study_info[f"weak_status_{slug}"]
             out[f"weak_value_{slug}"] = study_info[f"weak_value_{slug}"]

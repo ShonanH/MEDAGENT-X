@@ -4,6 +4,7 @@ import json
 
 import numpy as np
 import pandas as pd
+import pytest
 import torch
 
 from medagentx.fusion.features import aggregate_study_features, merge_label_and_feature_tables
@@ -202,6 +203,144 @@ def test_study_aggregation_handles_multiple_images():
         out = aggregate_study_features(feats)
         assert out.shape == (4,)
         assert np.allclose(out, np.mean(np.stack(feats, axis=0), axis=0))
+
+
+def test_no_finding_present_sets_unmentioned_diseases_to_absent_for_training():
+    from medagentx.fusion.chexpert_labels import labels_from_chexpert_row
+
+    row = pd.Series(
+        {
+            "Atelectasis": None,
+            "Cardiomegaly": None,
+            "Consolidation": None,
+            "Edema": None,
+            "Pleural Effusion": None,
+            "Pneumonia": None,
+            "Pneumothorax": None,
+            "Fracture": None,
+            "Lung Lesion": None,
+            "Lung Opacity": None,
+            "Enlarged Cardiomediastinum": None,
+            "Pleural Other": None,
+            "Support Devices": None,
+            "No Finding": 1.0,
+        }
+    )
+    labels = labels_from_chexpert_row(row)
+    assert labels["No Finding"]["weak_status"] == "present"
+    assert labels["Atelectasis"]["weak_status"] == "unmentioned"
+    assert labels["Atelectasis"]["weak_value"] == 0.0
+    assert labels["Pneumothorax"]["weak_value"] == 0.0
+
+
+def test_no_finding_present_keeps_uncertain_diseases_masked():
+    from medagentx.fusion.chexpert_labels import labels_from_chexpert_row
+
+    row = pd.Series(
+        {
+            "Atelectasis": -1.0,
+            "Cardiomegaly": None,
+            "Consolidation": None,
+            "Edema": None,
+            "Pleural Effusion": None,
+            "Pneumonia": None,
+            "Pneumothorax": None,
+            "Fracture": None,
+            "Lung Lesion": None,
+            "Lung Opacity": None,
+            "Enlarged Cardiomediastinum": None,
+            "Pleural Other": None,
+            "Support Devices": None,
+            "No Finding": 1.0,
+        }
+    )
+    labels = labels_from_chexpert_row(row)
+    assert labels["Atelectasis"]["weak_status"] == "uncertain"
+    assert labels["Atelectasis"]["weak_value"] is None
+    assert labels["Cardiomegaly"]["weak_value"] == 0.0
+
+
+def test_aggregate_study_labels_present_if_any_view_present():
+    from medagentx.fusion.chexpert_labels import aggregate_study_label_items, labels_from_chexpert_row
+
+    view_a = labels_from_chexpert_row(
+        pd.Series(
+            {
+                "Atelectasis": 0.0,
+                "Cardiomegaly": 0.0,
+                "Consolidation": 0.0,
+                "Edema": 0.0,
+                "Pleural Effusion": 0.0,
+                "Pneumonia": 0.0,
+                "Pneumothorax": 0.0,
+                "Fracture": 0.0,
+                "Lung Lesion": 0.0,
+                "Lung Opacity": 0.0,
+                "Enlarged Cardiomediastinum": 0.0,
+                "Pleural Other": 0.0,
+                "Support Devices": 0.0,
+                "No Finding": 1.0,
+            }
+        )
+    )
+    view_b = labels_from_chexpert_row(
+        pd.Series(
+            {
+                "Atelectasis": 1.0,
+                "Cardiomegaly": 0.0,
+                "Consolidation": 0.0,
+                "Edema": 0.0,
+                "Pleural Effusion": 0.0,
+                "Pneumonia": 0.0,
+                "Pneumothorax": 0.0,
+                "Fracture": 0.0,
+                "Lung Lesion": 0.0,
+                "Lung Opacity": 0.0,
+                "Enlarged Cardiomediastinum": 0.0,
+                "Pleural Other": 0.0,
+                "Support Devices": 0.0,
+                "No Finding": 0.0,
+            }
+        )
+    )
+
+    study_labels = aggregate_study_label_items([view_a, view_b])
+    assert study_labels["Atelectasis"]["weak_status"] == "present"
+    assert study_labels["Atelectasis"]["weak_value"] == 1.0
+    assert study_labels["No Finding"]["weak_status"] == "absent"
+
+
+def test_no_finding_penalty_increases_when_disease_probs_high():
+    from medagentx.fusion.metrics import fusion_training_loss, no_finding_penalty_loss
+
+    logits = torch.tensor([[2.0, -2.0]], dtype=torch.float32)
+    targets = torch.tensor([[0.0, 0.0]], dtype=torch.float32)
+    mask = torch.tensor([[1.0, 1.0]], dtype=torch.float32)
+    no_finding_mask = torch.tensor([1.0], dtype=torch.float32)
+
+    base_loss = fusion_training_loss(
+        logits,
+        targets,
+        mask,
+        no_finding_mask=None,
+    )
+    penalized_loss = fusion_training_loss(
+        logits,
+        targets,
+        mask,
+        no_finding_mask=no_finding_mask,
+        no_finding_penalty_weight=1.0,
+    )
+    assert penalized_loss > base_loss
+    assert no_finding_penalty_loss(logits, no_finding_mask) > 0.0
+
+
+def test_ensemble_prob_blend_defaults_to_fusion_heavy():
+    from medagentx.fusion.calibration import DEFAULT_FUSION_BLEND_WEIGHT, ensemble_prob_blend
+
+    assert DEFAULT_FUSION_BLEND_WEIGHT == 0.85
+    blended = ensemble_prob_blend("Edema", 0.9, 0.1)
+    assert blended == pytest.approx(0.85 * 0.1 + 0.15 * 0.9)
 
 
 def test_findings_jsonl_filters_requested_paths(tmp_path):

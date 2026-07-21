@@ -69,6 +69,97 @@ def chexpert_value_to_training_value(value: Any) -> float | None:
     return None
 
 
+def apply_no_finding_training_rule(
+    label_map: dict[str, dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    """When No Finding is present, unmentioned diseases train as absent (0.0)."""
+    no_finding = label_map.get("No Finding", {})
+    if no_finding.get("weak_status") != "present":
+        return label_map
+
+    for label in DISEASE_LABELS:
+        item = label_map[label]
+        if item.get("weak_status") == "unmentioned":
+            item["weak_value"] = LABEL_VALUE_ABSENT
+    return label_map
+
+
+def aggregate_chexpert_statuses(statuses: list[str]) -> str:
+    normalized = [str(status).strip().lower() for status in statuses if str(status).strip()]
+    if not normalized:
+        return "unmentioned"
+    if any(status == "present" for status in normalized):
+        return "present"
+    if any(status == "uncertain" for status in normalized):
+        return "uncertain"
+    return "absent"
+
+
+def status_to_training_value(status: str) -> float | None:
+    if status == "present":
+        return LABEL_VALUE_PRESENT
+    if status == "absent":
+        return LABEL_VALUE_ABSENT
+    return None
+
+
+def aggregate_study_label_items(
+    view_label_maps: list[dict[str, dict[str, Any]]],
+) -> dict[str, dict[str, Any]]:
+    """Aggregate per-view CheXpert labels to one study-level label map."""
+    if not view_label_maps:
+        return {}
+
+    output: dict[str, dict[str, Any]] = {}
+    aggregate_labels = [label for label in ALL_CHEXPERT_LABELS if label != "No Finding"]
+
+    for label in aggregate_labels:
+        statuses = [view_map[label]["weak_status"] for view_map in view_label_maps]
+        agg_status = aggregate_chexpert_statuses(statuses)
+        raw_values = [
+            view_map[label]["chexpert_raw_value"]
+            for view_map in view_label_maps
+            if view_map[label]["chexpert_raw_value"] is not None
+        ]
+        evidence_sources = [
+            view_map[label]["evidence"]
+            for view_map in view_label_maps
+            if view_map[label]["evidence"]
+        ]
+
+        output[label] = {
+            "weak_status": agg_status,
+            "weak_value": status_to_training_value(agg_status),
+            "judge_status": agg_status if agg_status != "unmentioned" else "absent",
+            "evidence": evidence_sources[0] if evidence_sources else f"Study-level {label}={agg_status}.",
+            "chexpert_raw_value": raw_values[0] if raw_values else None,
+        }
+
+    disease_statuses = {
+        label: item["weak_status"]
+        for label, item in output.items()
+        if label != "No Finding"
+    }
+    no_finding_status = derive_no_finding_status(disease_statuses)
+    no_finding_evidence = next(
+        (
+            view_map["No Finding"]["evidence"]
+            for view_map in view_label_maps
+            if view_map["No Finding"]["evidence"]
+        ),
+        f"Study-level No Finding={no_finding_status}.",
+    )
+    output["No Finding"] = {
+        "weak_status": no_finding_status,
+        "weak_value": status_to_training_value(no_finding_status),
+        "judge_status": no_finding_status,
+        "evidence": no_finding_evidence,
+        "chexpert_raw_value": None,
+    }
+
+    return apply_no_finding_training_rule(output)
+
+
 def chexpert_status_to_evidence(label: str, status: str, raw_value: Any) -> str:
     parsed = parse_chexpert_raw_value(raw_value)
     if parsed is None and status == "unmentioned":
@@ -146,7 +237,7 @@ def labels_from_chexpert_row(row: pd.Series) -> dict[str, dict[str, Any]]:
         "chexpert_raw_value": parse_chexpert_raw_value(no_finding_raw),
     }
 
-    return output
+    return apply_no_finding_training_rule(output)
 
 
 def labels_from_status_columns(row: pd.Series) -> dict[str, dict[str, Any]]:
@@ -167,7 +258,7 @@ def labels_from_status_columns(row: pd.Series) -> dict[str, dict[str, Any]]:
             "evidence": f"CheXpert label table status={status or 'unmentioned'}.",
             "chexpert_raw_value": parse_chexpert_raw_value(row.get(f"chexpert_value_{slug}")),
         }
-    return output
+    return apply_no_finding_training_rule(output)
 
 
 def row_has_chexpert_label_columns(row: pd.Series) -> bool:
@@ -273,11 +364,17 @@ def summarize_label_coverage(df: pd.DataFrame) -> pd.DataFrame:
             if raw_col not in df.columns:
                 continue
             statuses = df[raw_col].map(chexpert_value_to_status)
+            value_col = None
         else:
             statuses = df[status_col].astype(str).str.lower()
+            value_col = f"weak_value_{slug}" if f"weak_value_{slug}" in df.columns else None
 
         total = len(df)
         counts = statuses.value_counts()
+        if value_col is not None:
+            masked_training = int(df[value_col].isna().sum() + (df[value_col] == "").sum())
+        else:
+            masked_training = int(counts.get("uncertain", 0) + counts.get("unmentioned", 0))
         rows.append(
             {
                 "label": label,
@@ -286,7 +383,7 @@ def summarize_label_coverage(df: pd.DataFrame) -> pd.DataFrame:
                 "absent": int(counts.get("absent", 0)),
                 "uncertain": int(counts.get("uncertain", 0)),
                 "unmentioned": int(counts.get("unmentioned", 0)),
-                "masked_training": int(counts.get("uncertain", 0) + counts.get("unmentioned", 0)),
+                "masked_training": masked_training,
             }
         )
     return pd.DataFrame(rows)

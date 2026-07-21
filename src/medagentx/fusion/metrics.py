@@ -18,6 +18,42 @@ def masked_bce_with_logits_loss(
     return loss.sum() / denom
 
 
+def no_finding_penalty_loss(
+    logits: torch.Tensor,
+    no_finding_mask: torch.Tensor,
+    threshold: float = 0.5,
+    weight: float = 1.0,
+) -> torch.Tensor:
+    """Penalize high disease probabilities when study-level No Finding is present."""
+    if no_finding_mask.sum() == 0:
+        return logits.new_tensor(0.0)
+
+    probs = torch.sigmoid(logits)
+    max_prob = probs.max(dim=1).values
+    penalty = torch.relu(max_prob - threshold) * no_finding_mask
+    return weight * penalty.sum() / no_finding_mask.sum().clamp_min(1.0)
+
+
+def fusion_training_loss(
+    logits: torch.Tensor,
+    targets: torch.Tensor,
+    mask: torch.Tensor,
+    no_finding_mask: torch.Tensor | None = None,
+    pos_weight: torch.Tensor | None = None,
+    no_finding_penalty_weight: float = 1.0,
+    no_finding_prob_threshold: float = 0.5,
+) -> torch.Tensor:
+    loss = masked_bce_with_logits_loss(logits, targets, mask, pos_weight=pos_weight)
+    if no_finding_mask is not None and no_finding_mask.sum() > 0:
+        loss = loss + no_finding_penalty_loss(
+            logits,
+            no_finding_mask,
+            threshold=no_finding_prob_threshold,
+            weight=no_finding_penalty_weight,
+        )
+    return loss
+
+
 def compute_pos_weight(y_train: np.ndarray, mask_train: np.ndarray) -> np.ndarray:
     weights = []
     for j in range(y_train.shape[1]):

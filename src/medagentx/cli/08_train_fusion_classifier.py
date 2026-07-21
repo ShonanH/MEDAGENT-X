@@ -42,7 +42,7 @@ from medagentx.fusion.features import (
 )
 from medagentx.fusion.metrics import (
     compute_pos_weight,
-    masked_bce_with_logits_loss,
+    fusion_training_loss,
     multilabel_metrics,
     tune_thresholds_on_validation,
     tune_thresholds_precision_favored,
@@ -52,16 +52,17 @@ from medagentx.fusion.splits import assert_patient_level_integrity, build_patien
 
 
 class StudyFeatureDataset(Dataset):
-    def __init__(self, X: np.ndarray, y: np.ndarray, mask: np.ndarray):
+    def __init__(self, X: np.ndarray, y: np.ndarray, mask: np.ndarray, no_finding_mask: np.ndarray):
         self.X = torch.from_numpy(X.astype(np.float32))
         self.y = torch.from_numpy(y.astype(np.float32))
         self.mask = torch.from_numpy(mask.astype(np.float32))
+        self.no_finding_mask = torch.from_numpy(no_finding_mask.astype(np.float32))
 
     def __len__(self):
         return self.X.shape[0]
 
     def __getitem__(self, idx):
-        return self.X[idx], self.y[idx], self.mask[idx]
+        return self.X[idx], self.y[idx], self.mask[idx], self.no_finding_mask[idx]
 
 
 def _progress(message: str) -> None:
@@ -78,6 +79,12 @@ def parse_args():
     parser.add_argument("--lr", type=float, default=1e-3)
     parser.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     parser.add_argument("--limit-studies", type=int, default=None)
+    parser.add_argument(
+        "--no-finding-penalty-weight",
+        type=float,
+        default=1.0,
+        help="Auxiliary loss weight when No Finding=1 but disease heads are high.",
+    )
     return parser.parse_args()
 
 
@@ -131,12 +138,18 @@ def build_study_training_table(
             out[f"weak_value_{slug}"] = value
             out[f"weak_status_{slug}"] = status
 
+        no_finding_slug = snake_label("No Finding")
+        out[f"weak_value_{no_finding_slug}"] = first.get(f"weak_value_{no_finding_slug}")
+        out[f"weak_status_{no_finding_slug}"] = first.get(f"weak_status_{no_finding_slug}")
+
         study_rows.append(out)
 
     return pd.DataFrame(study_rows)
 
 
-def arrays_from_study_table(study_df: pd.DataFrame) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+def arrays_from_study_table(
+    study_df: pd.DataFrame,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     X = np.stack(
         [np.asarray(json.loads(v), dtype=np.float32) for v in study_df["feature_vector_json"]],
         axis=0,
@@ -144,6 +157,8 @@ def arrays_from_study_table(study_df: pd.DataFrame) -> tuple[np.ndarray, np.ndar
 
     y = []
     mask = []
+    no_finding_mask = []
+    no_finding_slug = snake_label("No Finding")
 
     for _, row in study_df.iterrows():
         y_row = []
@@ -160,21 +175,42 @@ def arrays_from_study_table(study_df: pd.DataFrame) -> tuple[np.ndarray, np.ndar
         y.append(y_row)
         mask.append(m_row)
 
-    return X, np.asarray(y, dtype=np.float32), np.asarray(mask, dtype=np.float32)
+        no_finding_value = row.get(f"weak_value_{no_finding_slug}")
+        no_finding_status = str(row.get(f"weak_status_{no_finding_slug}", "")).strip().lower()
+        is_no_finding = (
+            no_finding_status == "present"
+            or (no_finding_value is not None and float(no_finding_value) >= 0.5)
+        )
+        no_finding_mask.append(1.0 if is_no_finding else 0.0)
+
+    return (
+        X,
+        np.asarray(y, dtype=np.float32),
+        np.asarray(mask, dtype=np.float32),
+        np.asarray(no_finding_mask, dtype=np.float32),
+    )
 
 
-def train_one_epoch(model, loader, optimizer, device, pos_weight):
+def train_one_epoch(model, loader, optimizer, device, pos_weight, no_finding_penalty_weight):
     model.train()
     total_loss = 0.0
     n = 0
 
-    for X, y, mask in loader:
+    for X, y, mask, no_finding_mask in loader:
         X = X.to(device)
         y = y.to(device)
         mask = mask.to(device)
+        no_finding_mask = no_finding_mask.to(device)
 
         logits = model(X)
-        loss = masked_bce_with_logits_loss(logits, y, mask, pos_weight=pos_weight)
+        loss = fusion_training_loss(
+            logits,
+            y,
+            mask,
+            no_finding_mask=no_finding_mask,
+            pos_weight=pos_weight,
+            no_finding_penalty_weight=no_finding_penalty_weight,
+        )
 
         optimizer.zero_grad()
         loss.backward()
@@ -190,7 +226,7 @@ def train_one_epoch(model, loader, optimizer, device, pos_weight):
 def predict_probs(model, loader, device) -> np.ndarray:
     model.eval()
     outputs = []
-    for X, _, _ in loader:
+    for X, _, _, _ in loader:
         logits = model(X.to(device))
         probs = torch.sigmoid(logits).cpu().numpy()
         outputs.append(probs)
@@ -238,19 +274,32 @@ def main():
     val_df = study_df[study_df["split"] == "validation"].reset_index(drop=True)
     test_df = study_df[study_df["split"] == "test"].reset_index(drop=True)
 
-    X_train, y_train, m_train = arrays_from_study_table(train_df)
-    X_val, y_val, m_val = arrays_from_study_table(val_df)
-    X_test, y_test, m_test = arrays_from_study_table(test_df)
+    X_train, y_train, m_train, nf_train = arrays_from_study_table(train_df)
+    X_val, y_val, m_val, nf_val = arrays_from_study_table(val_df)
+    X_test, y_test, m_test, nf_test = arrays_from_study_table(test_df)
 
     summarize_split("Train split", train_df, y_train, m_train)
     summarize_split("Validation split", val_df, y_val, m_val)
     summarize_split("Test split", test_df, y_test, m_test)
+    _progress(f"No Finding present studies (train): {int(nf_train.sum())}")
 
     pos_weight = torch.tensor(compute_pos_weight(y_train, m_train), device=args.device)
 
-    train_loader = DataLoader(StudyFeatureDataset(X_train, y_train, m_train), batch_size=args.batch_size, shuffle=True)
-    val_loader = DataLoader(StudyFeatureDataset(X_val, y_val, m_val), batch_size=args.batch_size, shuffle=False)
-    test_loader = DataLoader(StudyFeatureDataset(X_test, y_test, m_test), batch_size=args.batch_size, shuffle=False)
+    train_loader = DataLoader(
+        StudyFeatureDataset(X_train, y_train, m_train, nf_train),
+        batch_size=args.batch_size,
+        shuffle=True,
+    )
+    val_loader = DataLoader(
+        StudyFeatureDataset(X_val, y_val, m_val, nf_val),
+        batch_size=args.batch_size,
+        shuffle=False,
+    )
+    test_loader = DataLoader(
+        StudyFeatureDataset(X_test, y_test, m_test, nf_test),
+        batch_size=args.batch_size,
+        shuffle=False,
+    )
 
     model = FusionMLP(
         input_dim=input_dim,
@@ -272,7 +321,14 @@ def main():
 
     for epoch in range(1, args.epochs + 1):
         epoch_started = time.time()
-        train_loss = train_one_epoch(model, train_loader, optimizer, args.device, pos_weight)
+        train_loss = train_one_epoch(
+            model,
+            train_loader,
+            optimizer,
+            args.device,
+            pos_weight,
+            args.no_finding_penalty_weight,
+        )
         val_probs = predict_probs(model, val_loader, args.device)
         thresholds, _ = tune_thresholds_precision_favored(
             y_val, val_probs, m_val, DISEASE_LABELS, beta=0.5, min_precision=0.35
