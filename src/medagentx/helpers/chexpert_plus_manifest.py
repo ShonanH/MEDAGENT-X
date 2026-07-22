@@ -80,6 +80,9 @@ def build_study_manifest_records(rows, study_limit):
             continue
 
         if study_key not in studies:
+            if len(studies) >= int(study_limit):
+                continue
+
             studies[study_key] = {
                 "study_key": study_key,
                 "deid_patient_id": row["deid_patient_id"],
@@ -101,9 +104,6 @@ def build_study_manifest_records(rows, study_limit):
         studies[study_key]["image_paths"].append(row["path_to_image"])
         studies[study_key]["frontal_lateral_views"].append(row["frontal_lateral"])
         studies[study_key]["ap_pa_views"].append(row["ap_pa"])
-
-        if len(studies) >= int(study_limit):
-            break
 
     manifest = []
 

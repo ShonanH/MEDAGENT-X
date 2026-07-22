@@ -8,7 +8,7 @@ import redivis
 
 
 from medagentx._bootstrap import ensure_src_on_path
-from medagentx.paths import CHEXPERT_OUTPUT_DIR, DATA_DIR, PROCESSED_DATA_DIR, RAW_DATA_DIR, SRC_ROOT
+from medagentx.paths import PROCESSED_DATA_DIR, RAW_DATA_DIR
 
 ensure_src_on_path()
 
@@ -38,8 +38,21 @@ def parse_args():
         description="Build a CheXpert Plus study-level manifest from Redivis CSV downloads."
     )
 
-    parser.add_argument("--row-limit", type=int, default=10000)
-    parser.add_argument("--study-limit", type=int, default=500)
+    parser.add_argument(
+        "--row-limit",
+        type=int,
+        default=None,
+        help=(
+            "Optional cap on image-level metadata rows to scan. "
+            "Default: scan the full train split (use this only for quick tests)."
+        ),
+    )
+    parser.add_argument(
+        "--study-limit",
+        type=int,
+        default=25000,
+        help="Maximum number of studies to include in the manifest.",
+    )
 
     parser.add_argument(
         "--metadata-cache-dir",
@@ -59,10 +72,9 @@ def parse_args():
     parser.add_argument(
         "--output-path",
         type=Path,
-        default=SRC_ROOT
-        / "data"
-        / "processed"
-        / "chexpert_plus_500_study_manifest.csv",
+        default=PROCESSED_DATA_DIR
+        / "chexpert_plus"
+        / "chexpert_plus_study_manifest.csv",
     )
 
     return parser.parse_args()
@@ -168,8 +180,12 @@ def load_available_dicom_paths(dicom_index_csv_path):
     return available_paths
 
 
-def read_metadata_rows(metadata_csv_path, row_limit):
+def read_metadata_rows(metadata_csv_path, row_limit=None):
     print(f"Reading metadata CSV: {metadata_csv_path}")
+    if row_limit is None:
+        print("Row scan limit: none (full train split)")
+    else:
+        print(f"Row scan limit: {row_limit}")
 
     header = pd.read_csv(metadata_csv_path, nrows=0).columns.tolist()
     usecols = [column for column in MANIFEST_COLUMNS if column in header]
@@ -178,6 +194,7 @@ def read_metadata_rows(metadata_csv_path, row_limit):
         raise ValueError(f"path_to_dcm column not found. Available columns: {header}")
 
     rows = []
+    rows_scanned = 0
 
     for chunk in pd.read_csv(metadata_csv_path, usecols=usecols, chunksize=5000):
         chunk = chunk[chunk["path_to_dcm"].notna()].copy()
@@ -189,9 +206,10 @@ def read_metadata_rows(metadata_csv_path, row_limit):
             continue
 
         for row in chunk.to_dict(orient="records"):
+            rows_scanned += 1
             rows.append(row)
 
-            if len(rows) >= row_limit:
+            if row_limit is not None and rows_scanned >= row_limit:
                 return rows
 
     return rows
@@ -248,13 +266,12 @@ def main():
 
     available_dicom_paths = load_available_dicom_paths(dicom_index_csv_path)
 
-    print(f"Reading up to {args.row_limit} image-level rows from CSV...")
     rows = read_metadata_rows(
         metadata_csv_path=metadata_csv_path,
         row_limit=args.row_limit,
     )
 
-    print(f"Rows returned from metadata CSV: {len(rows)}")
+    print(f"Image-level rows read from metadata CSV: {len(rows)}")
 
     rows = filter_rows_with_available_dicoms(
         rows=rows,

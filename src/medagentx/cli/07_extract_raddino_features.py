@@ -19,7 +19,7 @@ Outputs:
   - outputs/chexpert_plus/raddino_feature_manifest.csv
 
 python -m medagentx.cli.07_extract_raddino_features \
-  --manifest-path data/processed/chexpert_plus/chexpert_plus_500_study_manifest.csv
+  --manifest-path data/processed/chexpert_plus/chexpert_plus_study_manifest.csv
 """
 
 import argparse
@@ -52,7 +52,7 @@ def parse_args():
     parser.add_argument(
         "--manifest-path",
         type=Path,
-        default=PROCESSED_DATA_DIR / "chexpert_plus" / "chexpert_plus_500_study_manifest.csv",
+        default=PROCESSED_DATA_DIR / "chexpert_plus" / "chexpert_plus_study_manifest.csv",
     )
 
     parser.add_argument(
