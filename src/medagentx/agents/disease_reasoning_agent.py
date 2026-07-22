@@ -813,6 +813,22 @@ def classifier_label_map(classifier_evidence: dict[str, Any]) -> dict[str, dict[
     return output
 
 
+def is_fusion_only_classifier(classifier_item: dict[str, Any]) -> bool:
+    """True when disease reasoning is driven by fusion predictions, not ensemble."""
+    source = clean_string(classifier_item.get("source_label")).lower()
+    if source == "fusion":
+        return True
+
+    agreement = clean_string(classifier_item.get("ensemble_agreement"))
+    if agreement:
+        return False
+
+    return (
+        classifier_item.get("densenet_probability") is None
+        and classifier_item.get("fusion_probability") is not None
+    )
+
+
 def refine_label_decision(
     label: str,
     status: str,
@@ -849,6 +865,28 @@ def refine_label_decision(
             status = "uncertain"
             refinement_reason = "lung opacity demoted due to fusion inflation over DenseNet"
 
+    fusion_only = is_fusion_only_classifier(classifier_item)
+
+    if status == "absent" and fusion_only:
+        if (
+            label in RECALL_LENIENT_LABELS
+            and positive_count >= 2
+            and negative_count == 0
+        ):
+            status = "present"
+            refinement_reason = (
+                "fusion-only recall promotion: strong retrieval context overrides absent classifier"
+            )
+        elif (
+            label in MODERATE_RECALL_LABELS
+            and positive_count >= 2
+            and negative_count == 0
+        ):
+            status = "uncertain"
+            refinement_reason = (
+                "fusion-only moderate promotion: retrieval context softens absent classifier"
+            )
+
     if status == "uncertain" and classifier_threshold is not None and probability is not None:
         threshold = float(classifier_threshold)
         prob = normalize_confidence(probability)
@@ -859,10 +897,33 @@ def refine_label_decision(
                 status = "present"
                 refinement_reason = "recall-lenient promotion from weak ensemble agreement"
 
+        elif (
+            label in RECALL_LENIENT_LABELS
+            and fusion_only
+            and positive_count >= 2
+            and negative_count == 0
+        ):
+            status = "present"
+            refinement_reason = (
+                "fusion-only recall promotion from retrieval with uncertain classifier"
+            )
+
         elif label in MODERATE_RECALL_LABELS and agreement in {"weak_present", "strong_present"}:
             if prob >= threshold and negative_count == 0:
                 status = "present"
                 refinement_reason = "moderate-recall promotion with non-negative retrieval context"
+
+        elif (
+            label in MODERATE_RECALL_LABELS
+            and fusion_only
+            and positive_count >= 2
+            and negative_count == 0
+            and prob >= threshold
+        ):
+            status = "present"
+            refinement_reason = (
+                "fusion-only moderate promotion from retrieval with uncertain classifier"
+            )
 
     if (
         status == "present"

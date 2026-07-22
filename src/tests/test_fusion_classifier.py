@@ -235,6 +235,64 @@ def test_refine_label_decision_promotes_edema_from_uncertain():
     assert reason is not None
 
 
+def test_refine_label_decision_promotes_edema_from_absent_fusion_only():
+    from medagentx.agents.disease_reasoning_agent import (
+        deterministic_label_decision,
+        refine_label_decision,
+    )
+
+    classifier_item = {
+        "probability": 2.4e-05,
+        "status": "absent",
+        "source_label": "fusion",
+        "threshold": 0.375,
+        "densenet_probability": None,
+        "fusion_probability": 2.4e-05,
+        "ensemble_agreement": "",
+    }
+    retrieval_counts = {
+        "positive_count": 6,
+        "negative_count": 0,
+        "example_positive": "pulmonary edema",
+    }
+
+    status, reason = refine_label_decision(
+        label="Edema",
+        status="absent",
+        classifier_item=classifier_item,
+        retrieval_counts=retrieval_counts,
+    )
+    assert status == "present"
+    assert reason is not None
+
+    decision = deterministic_label_decision(
+        label="Edema",
+        classifier_item=classifier_item,
+        retrieval_counts=retrieval_counts,
+    )
+    assert decision["status"] == "present"
+
+
+def test_refine_label_decision_does_not_promote_absent_without_retrieval_support():
+    from medagentx.agents.disease_reasoning_agent import refine_label_decision
+
+    status, reason = refine_label_decision(
+        label="Edema",
+        status="absent",
+        classifier_item={
+            "probability": 0.01,
+            "source_label": "fusion",
+            "threshold": 0.375,
+            "fusion_probability": 0.01,
+            "densenet_probability": None,
+            "ensemble_agreement": "",
+        },
+        retrieval_counts={"positive_count": 0, "negative_count": 2},
+    )
+    assert status == "absent"
+    assert reason is None
+
+
 def test_merge_label_and_feature_tables_keeps_deid_patient_id():
     label_df = pd.DataFrame(
         {
