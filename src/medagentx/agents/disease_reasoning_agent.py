@@ -32,6 +32,12 @@ MODERATE_PRESENT_LOW = 0.60
 STRONG_PRESENT_LOW = 0.75
 UNCERTAIN_LOW = 0.20
 
+# Fusion-only retrieval override (v2): narrow labels and stricter retrieval support.
+FUSION_RETRIEVAL_OVERRIDE_ABSENT_LABELS = {"Edema"}
+FUSION_RETRIEVAL_OVERRIDE_UNCERTAIN_LABELS = {"Edema"}
+FUSION_RETRIEVAL_OVERRIDE_MIN_POSITIVE = 4
+FUSION_RETRIEVAL_GRAY_ZONE_LOW = 0.01
+
 
 CHEXPERT_LABELS = [
     "Atelectasis",
@@ -829,6 +835,31 @@ def is_fusion_only_classifier(classifier_item: dict[str, Any]) -> bool:
     )
 
 
+def retrieval_supports_fusion_override(
+    positive_count: int,
+    negative_count: int,
+    *,
+    min_positive: int = FUSION_RETRIEVAL_OVERRIDE_MIN_POSITIVE,
+) -> bool:
+    """Strong, net-positive retrieval context required before overriding fusion absent."""
+    return (
+        positive_count >= min_positive
+        and negative_count == 0
+        and positive_count >= 2 * negative_count
+    )
+
+
+def fusion_prob_in_retrieval_gray_zone(
+    probability: float | None,
+    threshold: float | None,
+) -> bool:
+    """Classifier is weakly positive/negative but not confidently absent."""
+    if probability is None or threshold is None:
+        return False
+    prob = normalize_confidence(probability)
+    return FUSION_RETRIEVAL_GRAY_ZONE_LOW <= prob < float(threshold)
+
+
 def refine_label_decision(
     label: str,
     status: str,
@@ -866,25 +897,17 @@ def refine_label_decision(
             refinement_reason = "lung opacity demoted due to fusion inflation over DenseNet"
 
     fusion_only = is_fusion_only_classifier(classifier_item)
+    threshold_value = float(classifier_threshold) if classifier_threshold is not None else None
+    prob_value = normalize_confidence(probability) if probability is not None else None
 
     if status == "absent" and fusion_only:
         if (
-            label in RECALL_LENIENT_LABELS
-            and positive_count >= 2
-            and negative_count == 0
+            label in FUSION_RETRIEVAL_OVERRIDE_ABSENT_LABELS
+            and retrieval_supports_fusion_override(positive_count, negative_count)
         ):
             status = "present"
             refinement_reason = (
-                "fusion-only recall promotion: strong retrieval context overrides absent classifier"
-            )
-        elif (
-            label in MODERATE_RECALL_LABELS
-            and positive_count >= 2
-            and negative_count == 0
-        ):
-            status = "uncertain"
-            refinement_reason = (
-                "fusion-only moderate promotion: retrieval context softens absent classifier"
+                "fusion-only Edema promotion: strong retrieval context overrides absent classifier"
             )
 
     if status == "uncertain" and classifier_threshold is not None and probability is not None:
@@ -898,14 +921,14 @@ def refine_label_decision(
                 refinement_reason = "recall-lenient promotion from weak ensemble agreement"
 
         elif (
-            label in RECALL_LENIENT_LABELS
+            label in FUSION_RETRIEVAL_OVERRIDE_UNCERTAIN_LABELS
             and fusion_only
-            and positive_count >= 2
-            and negative_count == 0
+            and retrieval_supports_fusion_override(positive_count, negative_count)
+            and fusion_prob_in_retrieval_gray_zone(prob, threshold)
         ):
             status = "present"
             refinement_reason = (
-                "fusion-only recall promotion from retrieval with uncertain classifier"
+                "fusion-only Edema promotion from gray-zone classifier with strong retrieval"
             )
 
         elif label in MODERATE_RECALL_LABELS and agreement in {"weak_present", "strong_present"}:
@@ -913,17 +936,20 @@ def refine_label_decision(
                 status = "present"
                 refinement_reason = "moderate-recall promotion with non-negative retrieval context"
 
-        elif (
-            label in MODERATE_RECALL_LABELS
-            and fusion_only
-            and positive_count >= 2
-            and negative_count == 0
-            and prob >= threshold
-        ):
-            status = "present"
-            refinement_reason = (
-                "fusion-only moderate promotion from retrieval with uncertain classifier"
-            )
+    if (
+        status == "present"
+        and fusion_only
+        and label in RECALL_LENIENT_LABELS | MODERATE_RECALL_LABELS
+        and negative_count >= 2
+        and positive_count <= negative_count
+        and prob_value is not None
+        and threshold_value is not None
+        and prob_value < threshold_value + 0.20
+    ):
+        status = "uncertain"
+        refinement_reason = (
+            "fusion-only demotion: retrieval negatives outweigh positives for weak present call"
+        )
 
     if (
         status == "present"

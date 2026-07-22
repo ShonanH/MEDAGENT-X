@@ -293,6 +293,66 @@ def test_refine_label_decision_does_not_promote_absent_without_retrieval_support
     assert reason is None
 
 
+def test_refine_label_decision_does_not_promote_pleural_effusion_from_absent_v2():
+    from medagentx.agents.disease_reasoning_agent import refine_label_decision
+
+    status, reason = refine_label_decision(
+        label="Pleural Effusion",
+        status="absent",
+        classifier_item={
+            "probability": 2.8e-06,
+            "source_label": "fusion",
+            "threshold": 0.95,
+            "fusion_probability": 2.8e-06,
+            "densenet_probability": None,
+            "ensemble_agreement": "",
+        },
+        retrieval_counts={"positive_count": 6, "negative_count": 0},
+    )
+    assert status == "absent"
+    assert reason is None
+
+
+def test_refine_label_decision_does_not_promote_edema_with_weak_retrieval_v2():
+    from medagentx.agents.disease_reasoning_agent import refine_label_decision
+
+    status, reason = refine_label_decision(
+        label="Edema",
+        status="absent",
+        classifier_item={
+            "probability": 2.4e-05,
+            "source_label": "fusion",
+            "threshold": 0.375,
+            "fusion_probability": 2.4e-05,
+            "densenet_probability": None,
+            "ensemble_agreement": "",
+        },
+        retrieval_counts={"positive_count": 2, "negative_count": 0},
+    )
+    assert status == "absent"
+    assert reason is None
+
+
+def test_refine_label_decision_demotes_weak_present_when_retrieval_negative():
+    from medagentx.agents.disease_reasoning_agent import refine_label_decision
+
+    status, reason = refine_label_decision(
+        label="Pleural Effusion",
+        status="present",
+        classifier_item={
+            "probability": 0.949,
+            "source_label": "fusion",
+            "threshold": 0.95,
+            "fusion_probability": 0.949,
+            "densenet_probability": None,
+            "ensemble_agreement": "",
+        },
+        retrieval_counts={"positive_count": 0, "negative_count": 4},
+    )
+    assert status == "uncertain"
+    assert reason is not None
+
+
 def test_merge_label_and_feature_tables_keeps_deid_patient_id():
     label_df = pd.DataFrame(
         {
