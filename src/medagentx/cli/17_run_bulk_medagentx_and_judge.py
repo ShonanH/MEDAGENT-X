@@ -15,13 +15,13 @@ from medagentx.paths import CHEXPERT_OUTPUT_DIR, DATA_DIR, FUSION_OUTPUT_DIR, PR
 ensure_src_on_path()
 
 from medagentx.fusion.constants import (
+    AGENT_EVAL_MIN_CASES,
     AGENT_EVAL_SPLIT,
-    DEFAULT_AGENT_EVAL_MANIFEST,
     DEFAULT_SPLIT_METADATA,
 )
 from medagentx.fusion.splits import (
-    attach_patient_ids,
     assert_cohort_split_integrity,
+    filter_quality_gate_eligible,
     get_patients_for_split,
     load_patient_split_table,
 )
@@ -58,40 +58,34 @@ def load_agent_eval_eligible_cases(
     quality_gate_csv: str,
     split_metadata_csv: str,
     *,
+    min_cases: int = AGENT_EVAL_MIN_CASES,
     max_cases: int | None = None,
 ) -> pd.DataFrame:
     split_table = load_patient_split_table(Path(split_metadata_csv))
     assert_cohort_split_integrity(split_table)
     agent_eval_patients = get_patients_for_split(split_table, AGENT_EVAL_SPLIT)
 
-    gate_df = pd.read_csv(quality_gate_csv, dtype=str)
-    gate_df = attach_patient_ids(gate_df)
+    gate_df = filter_quality_gate_eligible(pd.read_csv(quality_gate_csv, dtype=str))
+    eligible = gate_df[gate_df["deid_patient_id"].isin(agent_eval_patients)].copy()
 
-    required_columns = {
-        "study_key",
-        "dicom_path",
-        "quality_gate_decision",
-        "route_next",
-        "deid_patient_id",
-    }
-    missing = required_columns - set(gate_df.columns)
-    if missing:
-        raise ValueError(
-            f"Missing required columns in {quality_gate_csv}: {sorted(missing)}"
-        )
-
-    eligible = gate_df[
-        gate_df["quality_gate_decision"].isin(
-            ["pass", "review_with_technical_warning"]
-        )
-        & gate_df["route_next"].eq("retrieval_agent")
-        & gate_df["deid_patient_id"].isin(agent_eval_patients)
-    ].copy()
+    print(
+        "[Batch] Cohort: "
+        f"{len(agent_eval_patients)} agent_eval patients in split metadata, "
+        f"{eligible['deid_patient_id'].nunique()} with quality-gate-passing cases, "
+        f"{len(eligible)} eligible views",
+        flush=True,
+    )
 
     if eligible.empty:
         raise RuntimeError(
             "No eligible pass/review cases found for agent_eval patients. "
-            f"Expected patients from split={AGENT_EVAL_SPLIT} in {split_metadata_csv}."
+            f"Re-run scripts 10 and 11 before script 17 ({split_metadata_csv})."
+        )
+
+    if len(eligible) < min_cases:
+        raise RuntimeError(
+            f"Only {len(eligible)} agent_eval cases available; need at least {min_cases}. "
+            "Re-run script 11 with a larger quality-gate passing cohort."
         )
 
     eligible = eligible.sort_values(
@@ -114,6 +108,7 @@ def append_csv_if_present(csv_path: Path, collected_rows: list[pd.DataFrame]) ->
 
 
 def run_batch(
+    min_cases: int,
     max_cases: int | None,
     top_k: int,
     quality_gate_csv: str,
@@ -136,6 +131,7 @@ def run_batch(
     cases = load_agent_eval_eligible_cases(
         quality_gate_csv=quality_gate_csv,
         split_metadata_csv=split_metadata_csv,
+        min_cases=min_cases,
         max_cases=max_cases,
     )
 
@@ -257,6 +253,12 @@ def main() -> None:
         )
     )
     parser.add_argument(
+        "--min-cases",
+        type=int,
+        default=AGENT_EVAL_MIN_CASES,
+        help="Minimum agent_eval cases required before the batch starts.",
+    )
+    parser.add_argument(
         "--max-cases",
         type=int,
         default=None,
@@ -270,7 +272,7 @@ def main() -> None:
     parser.add_argument(
         "--split-metadata-csv",
         default=str(DEFAULT_SPLIT_METADATA),
-        help="Frozen patient splits from script 03/03a.",
+        help="Frozen patient splits from script 11.",
     )
     parser.add_argument(
         "--reasoning-model",
@@ -287,6 +289,7 @@ def main() -> None:
     args = parser.parse_args()
 
     run_batch(
+        min_cases=args.min_cases,
         max_cases=args.max_cases,
         top_k=args.top_k,
         quality_gate_csv=args.quality_gate_csv,

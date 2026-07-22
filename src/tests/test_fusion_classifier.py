@@ -16,6 +16,7 @@ from medagentx.fusion.splits import (
     assert_cohort_split_integrity,
     assert_patient_level_integrity,
     build_cohort_split_table,
+    build_cohort_split_table_from_quality_gate,
     build_patient_split_table,
     get_patients_for_split,
     patient_id_from_study_key,
@@ -101,7 +102,7 @@ def test_build_cohort_split_table_reserves_agent_eval_holdout():
     df = pd.DataFrame({"deid_patient_id": patients, "study_key": [f"{p}/study1" for p in patients]})
 
     split_table = build_cohort_split_table(df, agent_eval_count=100, seed=42)
-    assert_cohort_split_integrity(split_table, agent_eval_count=100)
+    assert_cohort_split_integrity(split_table, min_agent_eval_patients=100)
 
     agent_eval = get_patients_for_split(split_table, AGENT_EVAL_SPLIT)
     fusion_patients = set(split_table["deid_patient_id"]) - agent_eval
@@ -123,6 +124,34 @@ def test_build_cohort_split_table_is_deterministic():
 def test_patient_id_from_study_key():
     assert patient_id_from_study_key("patient00003/study1") == "patient00003"
     assert patient_id_from_study_key("") == ""
+
+
+def test_build_cohort_split_table_from_quality_gate_enforces_min_cases():
+    rows = []
+    for patient_idx in range(120):
+        patient_id = f"patient{patient_idx:05d}"
+        for view_idx in range(2):
+            rows.append(
+                {
+                    "study_key": f"{patient_id}/study1",
+                    "dicom_path": f"{patient_id}/study1/view{view_idx}.dcm",
+                    "quality_gate_decision": "pass",
+                    "route_next": "retrieval_agent",
+                }
+            )
+    quality_gate_df = pd.DataFrame(rows)
+
+    split_table, eligible_df, stats = build_cohort_split_table_from_quality_gate(
+        quality_gate_df,
+        agent_eval_patient_count=100,
+        agent_eval_min_cases=100,
+        seed=42,
+    )
+
+    assert len(eligible_df) == 240
+    assert stats["agent_eval_cases"] >= 100
+    assert stats["agent_eval_patients"] >= 100
+    assert len(get_patients_for_split(split_table, AGENT_EVAL_SPLIT)) == stats["agent_eval_patients"]
 
 
 def test_masked_bce_ignores_uncertain_labels():

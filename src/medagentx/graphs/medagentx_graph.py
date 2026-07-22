@@ -257,8 +257,8 @@ def run_medagentx_graph(
     if not classifier_path.exists():
         raise FileNotFoundError(
             f"Missing classifier predictions: {classifier_path}. "
-            "Run scripts 13_run_densenet_predictions.py, 14_run_fusion_inference.py, "
-            "and 15_build_ensemble_classifier_predictions.py first."
+            "Run scripts 14_run_densenet_predictions.py, 15_run_fusion_inference.py, "
+            "and 16_build_ensemble_classifier_predictions.py first."
         )
 
     _progress("Starting continuous MEDAGENT-X graph.")

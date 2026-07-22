@@ -24,6 +24,8 @@ ensure_src_on_path()
 from medagentx.fusion.constants import (
     DEFAULT_MODEL_PATH,
     DEFAULT_OUTPUT_DIR,
+    DEFAULT_QUALITY_GATE_CSV,
+    DEFAULT_QUALITY_GATE_ELIGIBLE_COHORT,
     DEFAULT_REPORT_LABEL_TABLE,
     DEFAULT_SPLIT_METADATA,
     DEFAULT_TEST_PREDICTIONS,
@@ -60,7 +62,9 @@ from medagentx.fusion.splits import (
     assert_cohort_split_integrity,
     assert_patient_level_integrity,
     assert_patients_not_in_splits,
+    eligible_study_keys,
     load_patient_split_table,
+    load_quality_gate_eligible_cases,
 )
 
 
@@ -95,7 +99,13 @@ def parse_args():
         "--split-metadata",
         type=Path,
         default=DEFAULT_SPLIT_METADATA,
-        help="Frozen patient split metadata from script 03/03a (required).",
+        help="Frozen patient split metadata from script 11 (required).",
+    )
+    parser.add_argument(
+        "--quality-gate-eligible-cohort",
+        type=Path,
+        default=DEFAULT_QUALITY_GATE_ELIGIBLE_COHORT,
+        help="Eligible quality-gate cohort CSV from script 11.",
     )
     parser.add_argument("--limit-studies", type=int, default=None)
     parser.add_argument(
@@ -289,6 +299,25 @@ def main():
     label_df = pd.read_csv(args.report_label_table, dtype=str)
     _progress(f"Loaded {len(label_df)} image-level label rows across {label_df['study_key'].nunique()} studies")
 
+    if args.quality_gate_eligible_cohort.exists():
+        eligible_df = pd.read_csv(args.quality_gate_eligible_cohort, dtype=str)
+        _progress(f"Loaded quality-gate eligible cohort from {args.quality_gate_eligible_cohort}")
+    else:
+        eligible_df = load_quality_gate_eligible_cases(DEFAULT_QUALITY_GATE_CSV)
+        _progress(f"Loaded quality-gate eligible cases from {DEFAULT_QUALITY_GATE_CSV}")
+    allowed_studies = eligible_study_keys(eligible_df)
+    before_rows = len(label_df)
+    label_df = label_df[label_df["study_key"].isin(allowed_studies)].copy()
+    _progress(
+        f"Filtered to quality-gate eligible studies: {len(label_df)} rows "
+        f"({label_df['study_key'].nunique()} studies, {before_rows} rows before)"
+    )
+    if label_df.empty:
+        raise ValueError(
+            "No label rows remain after quality-gate filtering. "
+            "Run scripts 10 and 11 before fusion training."
+        )
+
     _progress("Loading ConvNeXt and RAD-DINO feature manifests")
     feature_df = load_feature_manifests()
     ready_count = int(feature_df["feature_ready"].sum())
@@ -315,7 +344,7 @@ def main():
     if missing_split:
         raise ValueError(
             f"{missing_split} studies have patients missing from {split_metadata_path}. "
-            "Re-run script 03 or 03a after updating the cohort."
+            "Re-run script 11 after updating the quality-gate cohort."
         )
     assert_patient_level_integrity(study_df)
 
@@ -525,7 +554,7 @@ def main():
     _progress(f"Test macro AUROC: {test_ranking['macro_auroc']:.4f}")
     _progress(f"Test macro AP: {test_ranking['macro_avg_precision']:.4f}")
     _progress(f"Total runtime: {time.time() - started:.1f}s")
-    _progress("Next step: python -m medagentx.cli.14_run_fusion_inference")
+    _progress("Next step: python -m medagentx.cli.15_run_fusion_inference")
 
 
 if __name__ == "__main__":
