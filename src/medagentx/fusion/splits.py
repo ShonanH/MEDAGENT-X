@@ -250,11 +250,17 @@ def build_cohort_split_table_from_quality_gate(
         eligible_df=eligible_df,
     )
 
+    eligible_with_split = eligible_df.merge(split_table, on="deid_patient_id", how="left")
+    split_case_counts = eligible_with_split.groupby("split").size().to_dict()
+
     stats = {
         "eligible_cases": len(eligible_df),
         "eligible_patients": eligible_df["deid_patient_id"].nunique(),
         "agent_eval_patients": len(agent_eval_patients),
-        "agent_eval_cases": agent_eval_cases,
+        "agent_eval_cases": int(split_case_counts.get(AGENT_EVAL_SPLIT, 0)),
+        "train_cases": int(split_case_counts.get(FUSION_TRAIN_SPLIT, 0)),
+        "validation_cases": int(split_case_counts.get(FUSION_VAL_SPLIT, 0)),
+        "test_cases": int(split_case_counts.get(FUSION_TEST_SPLIT, 0)),
         "train_patients": int((split_table["split"] == FUSION_TRAIN_SPLIT).sum()),
         "validation_patients": int((split_table["split"] == FUSION_VAL_SPLIT).sum()),
         "test_patients": int((split_table["split"] == FUSION_TEST_SPLIT).sum()),

@@ -86,14 +86,14 @@ def main() -> None:
         stats=stats,
     )
 
-    print(f"Wrote {len(eligible_df)} eligible cases to {args.eligible_cohort_csv}")
-    print(f"Wrote {len(split_table)} patients to {split_metadata_path}")
+    print(f"Wrote {stats['eligible_cases']} eligible cases to {args.eligible_cohort_csv}")
+    print(f"Wrote patient split metadata to {split_metadata_path}")
     print(f"Wrote agent eval manifest to {agent_eval_manifest_path}")
-    print(f"Eligible patients: {stats['eligible_patients']}")
-    print(f"agent_eval: {stats['agent_eval_patients']} patients, {stats['agent_eval_cases']} cases")
-    print(f"train: {stats['train_patients']}")
-    print(f"validation: {stats['validation_patients']}")
-    print(f"test: {stats['test_patients']}")
+    print(f"Eligible cases: {stats['eligible_cases']}")
+    print(f"agent_eval: {stats['agent_eval_cases']} cases")
+    print(f"train: {stats['train_cases']} cases")
+    print(f"validation: {stats['validation_cases']} cases")
+    print(f"test: {stats['test_cases']} cases")
 
 
 if __name__ == "__main__":
