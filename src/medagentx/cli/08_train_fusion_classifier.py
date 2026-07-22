@@ -53,7 +53,15 @@ from medagentx.fusion.metrics import (
     tune_thresholds_precision_favored,
 )
 from medagentx.fusion.model import FusionMLP
-from medagentx.fusion.splits import assert_patient_level_integrity, build_patient_split_table
+from medagentx.fusion.splits import (
+    AGENT_EVAL_SPLIT,
+    FUSION_TRAIN_SPLIT,
+    FUSION_VAL_SPLIT,
+    assert_cohort_split_integrity,
+    assert_patient_level_integrity,
+    assert_patients_not_in_splits,
+    load_patient_split_table,
+)
 
 
 class StudyFeatureDataset(Dataset):
@@ -83,6 +91,12 @@ def parse_args():
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--lr", type=float, default=1e-3)
     parser.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
+    parser.add_argument(
+        "--split-metadata",
+        type=Path,
+        default=DEFAULT_SPLIT_METADATA,
+        help="Frozen patient split metadata from script 03/03a (required).",
+    )
     parser.add_argument("--limit-studies", type=int, default=None)
     parser.add_argument(
         "--no-finding-penalty-weight",
@@ -288,13 +302,39 @@ def main():
         study_df = study_df.head(args.limit_studies).copy()
         _progress(f"Limiting to first {len(study_df)} studies for this run")
 
-    _progress("Creating patient-level train/validation/test splits")
-    split_table = build_patient_split_table(study_df)
-    split_table.to_csv(args.output_dir / DEFAULT_SPLIT_METADATA.name, index=False)
-    _progress(f"Saved split metadata to {args.output_dir / DEFAULT_SPLIT_METADATA.name}")
+    _progress("Loading frozen patient-level cohort splits")
+    split_metadata_path = args.split_metadata
+    if not split_metadata_path.is_absolute():
+        split_metadata_path = args.output_dir / split_metadata_path.name
+    split_table = load_patient_split_table(split_metadata_path)
+    assert_cohort_split_integrity(split_table)
+    _progress(f"Loaded split metadata from {split_metadata_path}")
 
     study_df = study_df.merge(split_table, on="deid_patient_id", how="left")
+    missing_split = study_df["split"].isna().sum()
+    if missing_split:
+        raise ValueError(
+            f"{missing_split} studies have patients missing from {split_metadata_path}. "
+            "Re-run script 03 or 03a after updating the cohort."
+        )
     assert_patient_level_integrity(study_df)
+
+    agent_eval_patients = set(
+        split_table.loc[split_table["split"] == AGENT_EVAL_SPLIT, "deid_patient_id"].astype(str)
+    )
+    if agent_eval_patients:
+        assert_patients_not_in_splits(
+            agent_eval_patients,
+            split_table,
+            forbidden_splits={FUSION_TRAIN_SPLIT, FUSION_VAL_SPLIT},
+            context="agent_eval holdout must not be in fusion train/validation",
+        )
+        excluded = int(study_df["split"].eq(AGENT_EVAL_SPLIT).sum())
+        study_df = study_df[study_df["split"] != AGENT_EVAL_SPLIT].reset_index(drop=True)
+        _progress(
+            f"Excluded {len(agent_eval_patients)} agent_eval patients "
+            f"({excluded} studies) from fusion training"
+        )
 
     train_df = study_df[study_df["split"] == "train"].reset_index(drop=True)
     val_df = study_df[study_df["split"] == "validation"].reset_index(drop=True)

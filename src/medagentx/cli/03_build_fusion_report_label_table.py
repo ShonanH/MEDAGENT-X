@@ -27,13 +27,19 @@ from medagentx.fusion.chexpert_labels import (
     study_label_conflict_flags,
 )
 from medagentx.fusion.constants import (
+    AGENT_EVAL_PATIENT_COUNT,
+    DEFAULT_AGENT_EVAL_MANIFEST,
     DEFAULT_CHEXPERT_LABELS_CSV,
+    DEFAULT_OUTPUT_DIR,
     DEFAULT_REDIVIS_CSV,
     DEFAULT_REPORT_LABEL_TABLE,
+    DEFAULT_SPLIT_METADATA,
+    SPLIT_SEED,
     snake_label,
 )
 from medagentx.fusion.labels import build_report_text_for_weak_labels
 from medagentx.fusion.paths import clean_dicom_path, parse_study_key_from_dcm
+from medagentx.fusion.splits import build_cohort_split_table, save_patient_split_artifacts
 
 
 def parse_args():
@@ -137,10 +143,28 @@ def main():
     out_df = pd.DataFrame(image_rows)
     out_df.to_csv(args.output_csv, index=False)
 
+    patient_count = out_df["deid_patient_id"].nunique()
+    split_table = build_cohort_split_table(
+        out_df,
+        agent_eval_count=AGENT_EVAL_PATIENT_COUNT,
+        seed=SPLIT_SEED,
+    )
+    split_metadata_path = DEFAULT_OUTPUT_DIR / DEFAULT_SPLIT_METADATA.name
+    agent_eval_manifest_path = DEFAULT_OUTPUT_DIR / DEFAULT_AGENT_EVAL_MANIFEST.name
+    save_patient_split_artifacts(
+        split_table,
+        split_metadata_path,
+        agent_eval_manifest_path,
+        cohort_patient_count=patient_count,
+        seed=SPLIT_SEED,
+    )
+
     print(f"Wrote {len(out_df)} rows to {args.output_csv}")
     print(f"Unique studies: {out_df['study_key'].nunique()}")
-    print(f"Unique patients: {out_df['deid_patient_id'].nunique()}")
+    print(f"Unique patients: {patient_count}")
     print(f"Label source: {LABEL_SOURCE_CHEXPERT}")
+    print(f"Wrote patient splits to {split_metadata_path}")
+    print(f"Wrote agent eval manifest to {agent_eval_manifest_path}")
 
 
 if __name__ == "__main__":

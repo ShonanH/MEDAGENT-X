@@ -5,6 +5,7 @@ Recommended run order:
   01_fetch_redivis_chexpert_rows.py
   02_fetch_redivis_chexpert_labels.py
   03_build_fusion_report_label_table.py
+  03a_build_patient_splits.py
   04_build_chexpert_manifest.py
   05_download_manifest_dicoms.py
   06_extract_convnext_features.py

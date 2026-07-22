@@ -11,7 +11,15 @@ from medagentx.fusion.features import aggregate_study_features, merge_label_and_
 from medagentx.fusion.labels import build_report_text_for_weak_labels, infer_weak_label_status
 from medagentx.fusion.metrics import masked_bce_with_logits_loss
 from medagentx.fusion.paths import clean_dicom_path, parse_study_key_from_dcm
-from medagentx.fusion.splits import assert_patient_level_integrity, build_patient_split_table
+from medagentx.fusion.splits import (
+    AGENT_EVAL_SPLIT,
+    assert_cohort_split_integrity,
+    assert_patient_level_integrity,
+    build_cohort_split_table,
+    build_patient_split_table,
+    get_patients_for_split,
+    patient_id_from_study_key,
+)
 
 
 def test_path_normalization_joins_train_prefix():
@@ -86,6 +94,35 @@ def test_patient_level_split_integrity():
     split_table = build_patient_split_table(df)
     merged = df.merge(split_table, on="deid_patient_id", how="left")
     assert_patient_level_integrity(merged)
+
+
+def test_build_cohort_split_table_reserves_agent_eval_holdout():
+    patients = [f"patient{i:05d}" for i in range(588)]
+    df = pd.DataFrame({"deid_patient_id": patients, "study_key": [f"{p}/study1" for p in patients]})
+
+    split_table = build_cohort_split_table(df, agent_eval_count=100, seed=42)
+    assert_cohort_split_integrity(split_table, agent_eval_count=100)
+
+    agent_eval = get_patients_for_split(split_table, AGENT_EVAL_SPLIT)
+    fusion_patients = set(split_table["deid_patient_id"]) - agent_eval
+    assert len(agent_eval) == 100
+    assert len(fusion_patients) == 488
+    assert agent_eval.isdisjoint(fusion_patients)
+
+
+def test_build_cohort_split_table_is_deterministic():
+    patients = [f"patient{i:05d}" for i in range(200)]
+    df = pd.DataFrame({"deid_patient_id": patients})
+
+    first = build_cohort_split_table(df, agent_eval_count=50, seed=42)
+    second = build_cohort_split_table(df, agent_eval_count=50, seed=42)
+    pd.testing.assert_frame_equal(first.sort_values("deid_patient_id").reset_index(drop=True),
+                                  second.sort_values("deid_patient_id").reset_index(drop=True))
+
+
+def test_patient_id_from_study_key():
+    assert patient_id_from_study_key("patient00003/study1") == "patient00003"
+    assert patient_id_from_study_key("") == ""
 
 
 def test_masked_bce_ignores_uncertain_labels():

@@ -49,6 +49,7 @@ CLI scripts are numbered **01–16** in recommended run order under `src/medagen
 python src/medagentx/cli/01_fetch_redivis_chexpert_rows.py
 python src/medagentx/cli/02_fetch_redivis_chexpert_labels.py --download-findings
 python src/medagentx/cli/03_build_fusion_report_label_table.py
+python src/medagentx/cli/03a_build_patient_splits.py  # optional: rebuild frozen splits only
 
 # DICOMs + image features
 python src/medagentx/cli/04_build_chexpert_manifest.py

@@ -21,6 +21,7 @@ DEFAULT_CHEXPERT_FINDINGS_JSON = (
 
 DEFAULT_REPORT_LABEL_TABLE = DEFAULT_OUTPUT_DIR / "report_label_training_table.csv"
 DEFAULT_SPLIT_METADATA = DEFAULT_OUTPUT_DIR / "patient_split_metadata.csv"
+DEFAULT_AGENT_EVAL_MANIFEST = DEFAULT_OUTPUT_DIR / "agent_eval_patient_manifest.csv"
 DEFAULT_MODEL_PATH = DEFAULT_OUTPUT_DIR / "fusion_model.pt"
 DEFAULT_THRESHOLDS_PATH = DEFAULT_OUTPUT_DIR / "fusion_thresholds.json"
 DEFAULT_TRAINING_METRICS = DEFAULT_OUTPUT_DIR / "fusion_training_metrics.csv"
@@ -58,6 +59,13 @@ SPLIT_SEED = 42
 TRAIN_RATIO = 0.70
 VAL_RATIO = 0.15
 TEST_RATIO = 0.15
+
+# Held-out patients for script 16 agent+judge evaluation (never used in fusion train/val).
+AGENT_EVAL_PATIENT_COUNT = 100
+AGENT_EVAL_SPLIT = "agent_eval"
+FUSION_TRAIN_SPLIT = "train"
+FUSION_VAL_SPLIT = "validation"
+FUSION_TEST_SPLIT = "test"
 
 
 def derive_no_finding_status(disease_statuses: dict[str, str]) -> str:
