@@ -2,12 +2,17 @@
 
 from __future__ import annotations
 
+import time
 from pathlib import Path
 
 import pandas as pd
 
 from medagentx.data.balanced_select import select_enriched_cohort
-from medagentx.data.dicoms import reuse_existing_dicoms
+from medagentx.data.dicoms import (
+    download_eligible_dicoms,
+    reuse_existing_dicoms,
+)
+from medagentx.data.redivis_client import RedivisClient, RedivisDownloadResult
 from medagentx.labels.constants import DISEASE_LABELS
 from medagentx.labels.schema import label_column_names
 from medagentx.splits.assign import assign_patient_split
@@ -181,3 +186,47 @@ def test_matching_dicoms_are_reused_without_network(
 
     assert status.iloc[0]["status"] in {"reused_hardlink", "reused_copy"}
     assert (destination / relative).read_bytes() == b"dicom-bytes"
+
+
+def test_parallel_downloads_keep_input_row_order(tmp_path: Path) -> None:
+    eligible = pd.DataFrame(
+        [_eligible_row(f"patient{index:03d}") for index in range(40)]
+    )
+
+    class _StubClient(RedivisClient):
+        def download_raw_file(
+            self,
+            file_id: str,
+            output_path: object,
+            *,
+            overwrite: bool = False,
+            resume: bool = True,
+        ) -> RedivisDownloadResult:
+            # Reverse-order sleeps force out-of-order completion.
+            time.sleep(0.002 * (40 - int(file_id.rsplit("patient", 1)[1])))
+            return RedivisDownloadResult(
+                file_id=file_id,
+                output_path=str(output_path),
+                status="downloaded",
+                bytes_written=11,
+            )
+
+    client = _StubClient(api_token="test-token")
+    serial = download_eligible_dicoms(
+        client,
+        eligible,
+        tmp_path / "serial",
+        max_workers=1,
+        progress_every=0,
+    )
+    parallel = download_eligible_dicoms(
+        client,
+        eligible,
+        tmp_path / "parallel",
+        max_workers=8,
+        progress_every=0,
+    )
+
+    assert parallel["file_id"].tolist() == eligible["file_id"].tolist()
+    assert parallel["dicom_path"].tolist() == serial["dicom_path"].tolist()
+    assert (parallel["status"] == "downloaded").all()

@@ -35,6 +35,7 @@ from medagentx.data.cohort import (
     summarize_label_gated_cohort,
 )
 from medagentx.data.dicoms import (
+    DEFAULT_PROGRESS_EVERY,
     download_eligible_dicoms,
     reuse_existing_dicoms,
     summarize_download_status,
@@ -126,6 +127,18 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--skip-reports", action="store_true")
     parser.add_argument("--skip-dicom-download", action="store_true")
+    parser.add_argument(
+        "--download-workers",
+        type=int,
+        default=8,
+        help="Concurrent DICOM downloads. Status order stays reproducible.",
+    )
+    parser.add_argument(
+        "--progress-every",
+        type=int,
+        default=DEFAULT_PROGRESS_EVERY,
+        help="Print download progress every N files (0 disables).",
+    )
     parser.add_argument("--overwrite-dicoms", action="store_true")
     parser.add_argument("--overwrite-findings", action="store_true")
     return parser
@@ -381,7 +394,9 @@ def main(argv: list[str] | None = None) -> int:
         ]
 
     print(
-        f"[Balanced Cohort] DICOMs needing download={len(needs_download)}"
+        f"[Balanced Cohort] DICOMs needing download={len(needs_download)} "
+        f"workers={args.download_workers}",
+        flush=True,
     )
     download_status = download_eligible_dicoms(
         client,
@@ -389,6 +404,8 @@ def main(argv: list[str] | None = None) -> int:
         dicom_root,
         overwrite=args.overwrite_dicoms,
         resume=False,
+        max_workers=args.download_workers,
+        progress_every=args.progress_every,
     )
     kept_reuse_status = (
         reuse_status[

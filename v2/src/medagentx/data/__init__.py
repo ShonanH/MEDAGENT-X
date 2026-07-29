@@ -54,6 +54,8 @@ from medagentx.data.cohort import (
     write_label_gated_cohort_artifacts,
 )
 from medagentx.data.dicoms import (
+    DEFAULT_DOWNLOAD_WORKERS,
+    DEFAULT_PROGRESS_EVERY,
     download_eligible_dicoms,
     local_dicom_path,
     reuse_existing_dicoms,
@@ -95,6 +97,8 @@ from medagentx.data.rows import (
 __all__ = [
     "BALANCED_COHORT_POLICY_VERSION",
     "BALANCED_EVAL_MODE",
+    "DEFAULT_DOWNLOAD_WORKERS",
+    "DEFAULT_PROGRESS_EVERY",
     "DEFAULT_SPLIT",
     "METADATA_IDENTITY_COLUMNS",
     "NEGATIVE_TO_POSITIVE_RATIO",
