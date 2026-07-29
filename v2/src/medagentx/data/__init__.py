@@ -22,6 +22,20 @@ from medagentx.data.catalog import (
     build_metadata_train_sql,
     get_table,
 )
+from medagentx.data.balanced_constants import (
+    BALANCED_COHORT_POLICY_VERSION,
+    BALANCED_EVAL_MODE,
+    NEGATIVE_TO_POSITIVE_RATIO,
+    POST_QUALITY_POSITIVE_TARGETS,
+    PRE_QUALITY_POSITIVE_TARGETS,
+    SOFT_PATIENT_CAP,
+)
+from medagentx.data.balanced_select import (
+    EnrichedCohortSelection,
+    build_label_count_audit,
+    build_patient_label_features,
+    select_enriched_cohort,
+)
 from medagentx.data.constants import (
     DEFAULT_SPLIT,
     FINDINGS_FIXED_JSON_NAME,
@@ -42,6 +56,7 @@ from medagentx.data.cohort import (
 from medagentx.data.dicoms import (
     download_eligible_dicoms,
     local_dicom_path,
+    reuse_existing_dicoms,
     summarize_download_status,
 )
 from medagentx.data.findings import (
@@ -77,9 +92,15 @@ from medagentx.data.rows import (
 )
 
 __all__ = [
+    "BALANCED_COHORT_POLICY_VERSION",
+    "BALANCED_EVAL_MODE",
     "DEFAULT_SPLIT",
     "METADATA_IDENTITY_COLUMNS",
+    "NEGATIVE_TO_POSITIVE_RATIO",
+    "POST_QUALITY_POSITIVE_TARGETS",
+    "PRE_QUALITY_POSITIVE_TARGETS",
     "REPORT_COLUMNS",
+    "SOFT_PATIENT_CAP",
     "FINDINGS_FIXED_JSON_NAME",
     "REDIVIS_API_BASE_URL",
     "REDIVIS_API_TOKEN_ENV",
@@ -94,6 +115,8 @@ __all__ = [
     "apply_eligibility_limits",
     "apply_label_gated_cohort",
     "attach_report_columns",
+    "build_label_count_audit",
+    "build_patient_label_features",
     "build_chexpert_labels_index_sql",
     "build_dicom_file_id_lookup",
     "build_dicom_train_index_probe_sql",
@@ -104,6 +127,7 @@ __all__ = [
     "build_metadata_train_sql",
     "clean_dicom_path",
     "download_eligible_dicoms",
+    "EnrichedCohortSelection",
     "ensure_findings_fixed_json",
     "fetch_dicom_train_index",
     "fetch_eligible_dicom_rows",
@@ -120,6 +144,8 @@ __all__ = [
     "patient_id_from_study_key",
     "resolve_dicom_index_path_column",
     "resolve_findings_fixed_file_id",
+    "reuse_existing_dicoms",
+    "select_enriched_cohort",
     "study_key_from_path",
     "summarize_download_status",
     "summarize_findings_index",

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+import shutil
 import sys
 from pathlib import Path
 from typing import Any
@@ -122,6 +124,64 @@ def download_eligible_dicoms(
                     "error": str(exc),
                 }
             )
+
+    return pd.DataFrame(status_rows)
+
+
+def reuse_existing_dicoms(
+    eligible_rows: pd.DataFrame,
+    source_root: str | Path,
+    output_root: str | Path,
+) -> pd.DataFrame:
+    """Hardlink matching DICOMs from an earlier cohort, copying as fallback."""
+    _require_columns(eligible_rows, REQUIRED_ELIGIBLE_COLUMNS)
+    source_root = Path(source_root)
+    output_root = Path(output_root)
+    output_root.mkdir(parents=True, exist_ok=True)
+
+    status_rows: list[dict[str, Any]] = []
+    for _, row in eligible_rows.iterrows():
+        patient_id = str(row["deid_patient_id"]).strip()
+        study_key = str(row["study_key"]).strip()
+        dicom_path = str(row["dicom_path"]).strip()
+        file_id = str(row["file_id"]).strip()
+        destination = local_dicom_path(output_root, dicom_path)
+        source = local_dicom_path(source_root, dicom_path)
+        status = "not_found"
+        error = ""
+        bytes_written = 0
+
+        try:
+            if destination.is_file() and destination.stat().st_size > 0:
+                status = "already_exists"
+                bytes_written = destination.stat().st_size
+            elif source.is_file() and source.stat().st_size > 0:
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                if destination.exists():
+                    destination.unlink()
+                try:
+                    os.link(source, destination)
+                    status = "reused_hardlink"
+                except OSError:
+                    shutil.copy2(source, destination)
+                    status = "reused_copy"
+                bytes_written = destination.stat().st_size
+        except Exception as exc:  # noqa: BLE001 - capture per-row reuse failure
+            status = "failed"
+            error = str(exc)
+
+        status_rows.append(
+            {
+                "deid_patient_id": patient_id,
+                "study_key": study_key,
+                "dicom_path": dicom_path,
+                "file_id": file_id,
+                "local_path": str(destination),
+                "status": status,
+                "bytes_written": bytes_written,
+                "error": error,
+            }
+        )
 
     return pd.DataFrame(status_rows)
 
