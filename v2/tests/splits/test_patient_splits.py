@@ -6,6 +6,7 @@ import pandas as pd
 
 from medagentx.splits.assign import assign_patient_split
 from medagentx.splits.build import (
+    SOURCE_SPLIT_COLUMN,
     build_patient_split_table,
     build_study_split_table,
     build_view_split_table,
@@ -69,3 +70,24 @@ def test_all_views_of_a_patient_share_one_split() -> None:
     assert summary["patients"] == 2
     assert summary["studies"] == 3
     assert summary["views"] == 4
+
+
+def test_metadata_split_column_is_preserved_without_collision() -> None:
+    eligible = pd.DataFrame(
+        [
+            {
+                "deid_patient_id": "patient1",
+                "study_key": "patient1/study1",
+                "dicom_path": "patient1/study1/frontal.dcm",
+                "split": "train",
+            }
+        ]
+    )
+
+    patient_splits = build_patient_split_table(eligible)
+    view_splits = build_view_split_table(eligible, patient_splits)
+
+    assert "split_x" not in view_splits.columns
+    assert "split_y" not in view_splits.columns
+    assert view_splits.iloc[0][SOURCE_SPLIT_COLUMN] == "train"
+    assert view_splits.iloc[0]["split"] in ALL_SPLITS

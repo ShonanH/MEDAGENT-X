@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from medagentx.splits.assign import assign_patient_split
 from medagentx.splits.build import (
+    SOURCE_SPLIT_COLUMN,
     build_and_write_splits,
     build_patient_split_table,
     build_study_split_table,
@@ -25,6 +26,7 @@ from medagentx.splits.constants import (
 
 __all__ = [
     "ALL_SPLITS",
+    "SOURCE_SPLIT_COLUMN",
     "SPLIT_POLICY_VERSION",
     "SPLIT_SEED",
     "TEST_RATIO",

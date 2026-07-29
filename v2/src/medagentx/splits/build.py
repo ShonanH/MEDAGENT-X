@@ -19,6 +19,10 @@ from medagentx.splits.constants import (
 
 _REQUIRED_COLUMNS = ("deid_patient_id", "study_key", "dicom_path")
 
+# Redivis metadata ships its own `split` column; preserve it under this name so
+# `split` always means the patient-level assignment.
+SOURCE_SPLIT_COLUMN = "source_split"
+
 
 def _require_columns(df: pd.DataFrame, columns: tuple[str, ...], name: str) -> None:
     missing = [column for column in columns if column not in df.columns]
@@ -27,6 +31,22 @@ def _require_columns(df: pd.DataFrame, columns: tuple[str, ...], name: str) -> N
             f"{name} missing required columns {missing}. "
             f"Available: {list(df.columns)}"
         )
+
+
+def _reserve_split_column(df: pd.DataFrame) -> pd.DataFrame:
+    """Free the `split` name for the patient assignment.
+
+    Redivis metadata already ships a `split` column (`train`), which would
+    collide with the assignment and produce `split_x`/`split_y` after a merge.
+    """
+    if "split" not in df.columns:
+        return df
+    if SOURCE_SPLIT_COLUMN in df.columns:
+        raise ValueError(
+            f"eligible_rows already contains {SOURCE_SPLIT_COLUMN!r}; "
+            "cannot preserve the source split column"
+        )
+    return df.rename(columns={"split": SOURCE_SPLIT_COLUMN})
 
 
 def build_patient_split_table(
@@ -119,7 +139,7 @@ def build_view_split_table(
         "patient_splits",
     )
 
-    views = eligible_rows.copy()
+    views = _reserve_split_column(eligible_rows.copy())
     views["deid_patient_id"] = views["deid_patient_id"].astype(str).str.strip()
     views["study_key"] = views["study_key"].astype(str).str.strip()
     views["dicom_path"] = views["dicom_path"].astype(str).str.strip()
