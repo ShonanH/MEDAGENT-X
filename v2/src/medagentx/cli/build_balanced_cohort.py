@@ -20,6 +20,7 @@ from medagentx.data.balanced_constants import (
     BALANCED_EVAL_MODE,
     DEFAULT_BALANCED_COHORT_ROOT,
     DEFAULT_REUSE_DICOM_ROOT,
+    MAX_STUDIES_PER_PATIENT,
     NEGATIVE_TO_POSITIVE_RATIO,
     POST_QUALITY_POSITIVE_TARGETS,
     PRE_QUALITY_POSITIVE_TARGETS,
@@ -108,6 +109,16 @@ def build_parser() -> argparse.ArgumentParser:
         type=int,
         default=NEGATIVE_TO_POSITIVE_RATIO,
     )
+    parser.add_argument(
+        "--max-studies-per-patient",
+        type=int,
+        default=MAX_STUDIES_PER_PATIENT,
+        help=(
+            "Cap on studies taken per selected patient. Studies are chosen for "
+            "the labels still short of target; raise this if the audit reports "
+            "positive shortages."
+        ),
+    )
     parser.add_argument("--metadata-limit", type=int, default=None)
     parser.add_argument("--index-limit", type=int, default=None)
     parser.add_argument(
@@ -179,6 +190,10 @@ def _write_selection_artifacts(
     selection_root.mkdir(parents=True, exist_ok=True)
     selection.patient_selection.to_csv(
         selection_root / "patient_selection.csv",
+        index=False,
+    )
+    selection.study_selection.to_csv(
+        selection_root / "study_selection.csv",
         index=False,
     )
     selection.reserve_patients.to_csv(
@@ -276,6 +291,7 @@ def main(argv: list[str] | None = None) -> int:
         positive_targets=targets,
         negative_ratio=args.negative_ratio,
         patient_cap=args.patient_cap,
+        max_studies_per_patient=args.max_studies_per_patient,
         seed=SPLIT_SEED,
     )
     _write_selection_artifacts(
@@ -306,6 +322,7 @@ def main(argv: list[str] | None = None) -> int:
                 ),
                 "selected_views": int(len(selection.eligible_rows)),
                 "patient_cap": int(args.patient_cap),
+                "max_studies_per_patient": int(args.max_studies_per_patient),
                 "policy_version": BALANCED_COHORT_POLICY_VERSION,
                 "eval_mode": BALANCED_EVAL_MODE,
             }
@@ -331,10 +348,18 @@ def main(argv: list[str] | None = None) -> int:
     shortages = selection.label_audit[
         ~selection.label_audit["target_met"].astype(bool)
     ]
+    studies_per_patient = (
+        selection.patient_selection["selected_study_count"].mean()
+        if not selection.patient_selection.empty
+        else 0.0
+    )
     print(
         f"[Balanced Cohort] Selected patients={len(selection.patient_selection)} "
         f"studies={selected_rows['study_key'].astype(str).nunique()} "
-        f"views={len(selected_rows)} shortages={len(shortages)}"
+        f"views={len(selected_rows)} "
+        f"studies_per_patient={studies_per_patient:.1f} "
+        f"(cap={args.max_studies_per_patient}) shortages={len(shortages)}",
+        flush=True,
     )
     if not shortages.empty:
         print(
@@ -347,6 +372,7 @@ def main(argv: list[str] | None = None) -> int:
         "eval_mode": BALANCED_EVAL_MODE,
         "split_seed": SPLIT_SEED,
         "patient_cap": args.patient_cap,
+        "max_studies_per_patient": args.max_studies_per_patient,
         "negative_to_positive_ratio": args.negative_ratio,
         "pre_quality_positive_targets": targets,
         "post_quality_positive_targets": POST_QUALITY_POSITIVE_TARGETS,

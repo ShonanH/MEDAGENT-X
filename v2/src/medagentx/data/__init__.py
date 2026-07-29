@@ -25,6 +25,7 @@ from medagentx.data.catalog import (
 from medagentx.data.balanced_constants import (
     BALANCED_COHORT_POLICY_VERSION,
     BALANCED_EVAL_MODE,
+    MAX_STUDIES_PER_PATIENT,
     NEGATIVE_TO_POSITIVE_RATIO,
     POST_QUALITY_POSITIVE_TARGETS,
     PRE_QUALITY_POSITIVE_TARGETS,
@@ -32,8 +33,10 @@ from medagentx.data.balanced_constants import (
 )
 from medagentx.data.balanced_select import (
     EnrichedCohortSelection,
+    aggregate_patient_features,
     build_label_count_audit,
     build_patient_label_features,
+    build_study_label_features,
     select_enriched_cohort,
 )
 from medagentx.data.constants import (
@@ -100,6 +103,7 @@ __all__ = [
     "DEFAULT_DOWNLOAD_WORKERS",
     "DEFAULT_PROGRESS_EVERY",
     "DEFAULT_SPLIT",
+    "MAX_STUDIES_PER_PATIENT",
     "METADATA_IDENTITY_COLUMNS",
     "NEGATIVE_TO_POSITIVE_RATIO",
     "POST_QUALITY_POSITIVE_TARGETS",
@@ -117,11 +121,13 @@ __all__ = [
     "RedivisClient",
     "RedivisDownloadResult",
     "RedivisTable",
+    "aggregate_patient_features",
     "apply_eligibility_limits",
     "apply_label_gated_cohort",
     "attach_report_columns",
     "build_label_count_audit",
     "build_patient_label_features",
+    "build_study_label_features",
     "build_chexpert_labels_index_sql",
     "build_dicom_file_id_lookup",
     "build_dicom_train_index_probe_sql",

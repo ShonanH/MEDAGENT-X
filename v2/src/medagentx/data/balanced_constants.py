@@ -4,8 +4,14 @@ from __future__ import annotations
 
 from medagentx.splits.constants import TEST_SPLIT, TRAIN_SPLIT, VAL_SPLIT
 
-BALANCED_COHORT_POLICY_VERSION = "label_enriched_cohort_policy_v1"
+BALANCED_COHORT_POLICY_VERSION = "label_enriched_cohort_policy_v2"
 BALANCED_EVAL_MODE = "label_sufficient_eval"
+
+# Patients contribute a bounded, label-aware subset of their studies. Every
+# selected study still lands in that patient's single deterministic split, so
+# patient-level leakage protection is unchanged; we simply stop downloading
+# redundant repeat studies from the same patient.
+MAX_STUDIES_PER_PATIENT = 4
 
 DEFAULT_BALANCED_COHORT_ROOT = "v2/artifacts/cohort_balanced_v1"
 DEFAULT_REUSE_DICOM_ROOT = "v2/artifacts/cohort/dicom_train"

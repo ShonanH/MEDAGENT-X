@@ -35,28 +35,33 @@ def _study_label_row(
     *,
     positive: bool,
     supervised: bool = True,
+    study_index: int = 1,
+    positive_labels: frozenset[str] | None = None,
 ) -> dict[str, object]:
-    study_key = f"{patient_id}/study1"
+    study_key = f"{patient_id}/study{study_index}"
     row: dict[str, object] = {
         "study_key": study_key,
         "deid_patient_id": patient_id,
     }
     for label in DISEASE_LABELS:
         columns = label_column_names(label)
+        is_positive = (
+            positive if positive_labels is None else label in positive_labels
+        )
         row[columns["training_mask"]] = int(supervised)
         row[columns["training_target"]] = (
-            float(positive) if supervised else None
+            float(is_positive) if supervised else None
         )
     return row
 
 
-def _eligible_row(patient_id: str) -> dict[str, str]:
-    study_key = f"{patient_id}/study1"
+def _eligible_row(patient_id: str, *, study_index: int = 1) -> dict[str, str]:
+    study_key = f"{patient_id}/study{study_index}"
     return {
         "deid_patient_id": patient_id,
         "study_key": study_key,
         "dicom_path": f"{study_key}/view1.dcm",
-        "file_id": f"file-{patient_id}",
+        "file_id": f"file-{patient_id}-{study_index}",
     }
 
 
@@ -149,6 +154,94 @@ def test_selection_never_exceeds_patient_cap() -> None:
     assert (result.label_audit["positive_shortage"] > 0).any()
 
 
+def test_studies_per_patient_respect_the_cap() -> None:
+    patients = _patients_for_split("train", 3)
+    studies_available = 6
+    eligible = pd.DataFrame(
+        [
+            _eligible_row(patient, study_index=index)
+            for patient in patients
+            for index in range(1, studies_available + 1)
+        ]
+    )
+    labels = pd.DataFrame(
+        [
+            _study_label_row(patient, positive=True, study_index=index)
+            for patient in patients
+            for index in range(1, studies_available + 1)
+        ]
+    )
+
+    result = select_enriched_cohort(
+        eligible,
+        labels,
+        positive_targets={split: 10 for split in ALL_SPLITS},
+        negative_ratio=0,
+        patient_cap=20,
+        max_studies_per_patient=2,
+    )
+    repeat = select_enriched_cohort(
+        eligible,
+        labels,
+        positive_targets={split: 10 for split in ALL_SPLITS},
+        negative_ratio=0,
+        patient_cap=20,
+        max_studies_per_patient=2,
+    )
+
+    assert result.patient_selection["selected_study_count"].max() == 2
+    assert len(result.study_selection) == len(patients) * 2
+    assert result.eligible_rows["study_key"].nunique() == len(patients) * 2
+    assert not result.study_selection["study_key"].duplicated().any()
+    assert result.study_selection.equals(repeat.study_selection)
+    assert set(result.study_selection["deid_patient_id"]) == set(
+        result.patient_selection["deid_patient_id"]
+    )
+
+
+def test_capped_selection_prefers_studies_that_close_deficits() -> None:
+    patient = _patients_for_split("train", 1)[0]
+    target_label = DISEASE_LABELS[-1]
+    eligible = pd.DataFrame(
+        [
+            _eligible_row(patient, study_index=index)
+            for index in range(1, 4)
+        ]
+    )
+    labels = pd.DataFrame(
+        [
+            _study_label_row(patient, positive=False, study_index=1),
+            _study_label_row(
+                patient,
+                positive=False,
+                study_index=2,
+                positive_labels=frozenset({target_label}),
+            ),
+            _study_label_row(patient, positive=False, study_index=3),
+        ]
+    )
+
+    result = select_enriched_cohort(
+        eligible,
+        labels,
+        positive_targets={split: 1 for split in ALL_SPLITS},
+        negative_ratio=0,
+        patient_cap=20,
+        max_studies_per_patient=1,
+    )
+
+    assert result.study_selection["study_key"].tolist() == [
+        f"{patient}/study2"
+    ]
+    train_rows = result.label_audit[result.label_audit["split"] == "train"]
+    assert (
+        train_rows.loc[
+            train_rows["label"] == target_label, "positive_shortage"
+        ]
+        == 0
+    ).all()
+
+
 def test_selection_rejects_misaligned_study_labels() -> None:
     patient = _patients_for_split("train", 1)[0]
     eligible = pd.DataFrame([_eligible_row(patient)])
@@ -203,7 +296,8 @@ def test_parallel_downloads_keep_input_row_order(tmp_path: Path) -> None:
             resume: bool = True,
         ) -> RedivisDownloadResult:
             # Reverse-order sleeps force out-of-order completion.
-            time.sleep(0.002 * (40 - int(file_id.rsplit("patient", 1)[1])))
+            index = int(file_id.split("patient", 1)[1].split("-", 1)[0])
+            time.sleep(0.002 * (40 - index))
             return RedivisDownloadResult(
                 file_id=file_id,
                 output_path=str(output_path),
