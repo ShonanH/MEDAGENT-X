@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import sys
+from collections.abc import Iterator, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -13,7 +14,7 @@ if str(_V2_SRC) not in sys.path:
     sys.path.insert(0, str(_V2_SRC))
 
 from medagentx.data.findings_index import FindingsIndex
-from medagentx.data.paths import path_to_image_key_from_row
+from medagentx.data.paths import path_to_image_join_keys
 
 DROP_REASON_MISSING_LABELS = "missing_labels"
 DROP_REASON_CONFLICTING_FINDINGS = "conflicting_findings_records"
@@ -40,6 +41,23 @@ def _study_order(df: pd.DataFrame) -> list[str]:
     return list(dict.fromkeys(df["study_key"].astype(str).tolist()))
 
 
+def _study_groups(df: pd.DataFrame) -> Iterator[tuple[str, pd.DataFrame]]:
+    """Yield (study_key, rows) once per study in first-appearance order."""
+    keys = df["study_key"].astype(str)
+    for study_key, group in df.groupby(keys, sort=False):
+        yield str(study_key), group
+
+
+def _select_studies(df: pd.DataFrame, study_keys: Sequence[str]) -> pd.DataFrame:
+    """Keep every row belonging to the given studies in one pass."""
+    if not study_keys:
+        return pd.DataFrame(columns=df.columns)
+
+    keep = set(study_keys)
+    mask = df["study_key"].astype(str).isin(keep)
+    return df.loc[mask].reset_index(drop=True)
+
+
 def limit_to_whole_studies(
     eligible_rows: pd.DataFrame,
     *,
@@ -52,14 +70,11 @@ def limit_to_whole_studies(
         raise ValueError("max_rows must be > 0 when provided")
 
     _require_columns(eligible_rows, ("study_key",), "eligible_rows")
-    kept_frames: list[pd.DataFrame] = []
+    kept_keys: list[str] = []
     dropped_rows: list[dict[str, Any]] = []
     used_rows = 0
 
-    for study_key in _study_order(eligible_rows):
-        study_rows = eligible_rows[
-            eligible_rows["study_key"].astype(str) == study_key
-        ].copy()
+    for study_key, study_rows in _study_groups(eligible_rows):
         view_count = len(study_rows)
         if used_rows + view_count > max_rows:
             dropped_rows.append(
@@ -74,16 +89,12 @@ def limit_to_whole_studies(
             )
             continue
 
-        kept_frames.append(study_rows)
+        kept_keys.append(study_key)
         used_rows += view_count
 
-    kept = (
-        pd.concat(kept_frames, ignore_index=True)
-        if kept_frames
-        else pd.DataFrame(columns=eligible_rows.columns)
-    )
+    kept = _select_studies(eligible_rows, kept_keys)
     dropped = pd.DataFrame(dropped_rows)
-    return kept.reset_index(drop=True), dropped
+    return kept, dropped
 
 
 def apply_label_gated_cohort(
@@ -104,16 +115,14 @@ def apply_label_gated_cohort(
     if eligible_rows.empty:
         raise ValueError("eligible_rows must be non-empty")
 
-    kept_frames: list[pd.DataFrame] = []
+    rows = eligible_rows.reset_index(drop=True)
+    join_keys = path_to_image_join_keys(rows)
+    kept_keys: list[str] = []
     dropped_rows: list[dict[str, Any]] = []
 
-    for study_key in _study_order(eligible_rows):
-        study_rows = eligible_rows[
-            eligible_rows["study_key"].astype(str) == study_key
-        ].copy()
-
+    for study_key, study_rows in _study_groups(rows):
         drop_reason, detail, missing_paths = _evaluate_study_labels(
-            study_rows,
+            join_keys.loc[study_rows.index].tolist(),
             findings_index,
         )
         if drop_reason is not None:
@@ -127,14 +136,9 @@ def apply_label_gated_cohort(
             )
             continue
 
-        kept_frames.append(study_rows)
+        kept_keys.append(study_key)
 
-    kept = (
-        pd.concat(kept_frames, ignore_index=True)
-        if kept_frames
-        else pd.DataFrame(columns=eligible_rows.columns)
-    )
-    kept = kept.reset_index(drop=True)
+    kept = _select_studies(rows, kept_keys)
 
     kept, row_limit_dropped = limit_to_whole_studies(kept, max_rows=max_rows)
     if not row_limit_dropped.empty:
@@ -174,11 +178,8 @@ def load_findings_for_cohort(
     eligible_rows: pd.DataFrame,
 ) -> FindingsIndex:
     """Load only the findings records needed for one cohort."""
-    keys = [
-        path_to_image_key_from_row(row)
-        for _, row in eligible_rows.iterrows()
-    ]
-    return FindingsIndex.subset_for_paths(findings_path, keys)
+    keys = path_to_image_join_keys(eligible_rows)
+    return FindingsIndex.subset_for_paths(findings_path, keys.tolist())
 
 
 def write_label_gated_cohort_artifacts(
@@ -210,15 +211,14 @@ def write_label_gated_cohort_artifacts(
 
 
 def _evaluate_study_labels(
-    study_rows: pd.DataFrame,
+    join_keys: Sequence[str],
     findings_index: FindingsIndex,
 ) -> tuple[str | None, str, list[str]]:
     missing_paths: list[str] = []
     invalid_details: list[str] = []
     conflicting_paths: list[str] = []
 
-    for _, row in study_rows.iterrows():
-        join_key = path_to_image_key_from_row(row)
+    for join_key in join_keys:
         if not join_key:
             missing_paths.append("<missing_path_to_image>")
             continue

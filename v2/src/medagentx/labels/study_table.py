@@ -13,7 +13,7 @@ if str(_V2_SRC) not in sys.path:
     sys.path.insert(0, str(_V2_SRC))
 
 from medagentx.data.findings_index import FindingsIndex
-from medagentx.data.paths import path_to_image_key_from_row
+from medagentx.data.paths import path_to_image_join_keys
 from medagentx.labels.builder import build_study_label_bundle
 from medagentx.labels.schema import study_bundle_to_row
 
@@ -58,16 +58,17 @@ def build_study_label_table(
     if eligible_rows.empty:
         raise ValueError("eligible_rows must be non-empty")
 
-    study_keys = list(dict.fromkeys(eligible_rows["study_key"].astype(str).tolist()))
+    views = eligible_rows.reset_index(drop=True)
+    join_keys = path_to_image_join_keys(views)
     rows: list[dict[str, Any]] = []
 
-    for study_key in study_keys:
-        study_rows = eligible_rows[
-            eligible_rows["study_key"].astype(str) == study_key
-        ].copy()
+    for study_key, study_rows in views.groupby(
+        views["study_key"].astype(str),
+        sort=False,
+    ):
+        study_key = str(study_key)
         view_raw_maps = []
-        for _, row in study_rows.iterrows():
-            join_key = path_to_image_key_from_row(row)
+        for join_key in join_keys.loc[study_rows.index]:
             raw_map = findings_index.build_view_raw_map(join_key)
             if raw_map is None:
                 raise ValueError(

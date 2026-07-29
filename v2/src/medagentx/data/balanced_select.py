@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from functools import lru_cache
 from typing import Mapping, Sequence
 
 import pandas as pd
@@ -52,6 +53,7 @@ def _require_columns(
         )
 
 
+@lru_cache(maxsize=None)
 def _feature_column(label: str, outcome: str) -> str:
     slug = label_column_names(label)["training_target"].removeprefix(
         "training_target_"
@@ -204,7 +206,7 @@ def _split_patient_caps(patient_cap: int) -> dict[str, int]:
 
 
 def _positive_sort_key(
-    row: pd.Series,
+    row: Mapping[str, object],
     *,
     availability: Mapping[str, int],
     target: int,
@@ -246,7 +248,7 @@ def _select_positive_patients(
     records = split_features.to_dict(orient="records")
     records.sort(
         key=lambda row: _positive_sort_key(
-            pd.Series(row),
+            row,
             availability=availability,
             target=target,
         )

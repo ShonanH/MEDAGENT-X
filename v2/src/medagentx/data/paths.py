@@ -7,12 +7,18 @@ import sys
 from pathlib import Path
 from typing import Any
 
+import pandas as pd
+
 _V2_SRC = Path(__file__).resolve().parents[2]
 if str(_V2_SRC) not in sys.path:
     sys.path.insert(0, str(_V2_SRC))
 
 _STUDY_KEY_RE = re.compile(r"(patient\d+/study\d+)", re.IGNORECASE)
 _PREFIXES = ("train/", "DICOM_train/", "dicom_train/")
+
+# Preference order when resolving one findings join key from a metadata row.
+_IMAGE_KEY_SOURCE_COLUMNS = ("path_to_image", "path_to_dcm", "dicom_path")
+_BLANK_TEXT_VALUES = frozenset({"", "nan", "none"})
 
 
 def clean_dicom_path(path: Any) -> str:
@@ -87,22 +93,62 @@ def path_to_image_join_key(path: Any) -> str:
     return key
 
 
+def _is_blank_value(value: Any) -> bool:
+    """Return True for None, NaN, or blank/placeholder path text."""
+    if value is None:
+        return True
+    return str(value).strip().lower() in _BLANK_TEXT_VALUES
+
+
 def path_to_image_key_from_row(row: Any) -> str:
     """Resolve the findings join key from one eligible metadata row."""
     if hasattr(row, "get"):
-        path_to_image = row.get("path_to_image")
-        if path_to_image is not None and str(path_to_image).strip():
-            key = path_to_image_join_key(path_to_image)
+        for column in _IMAGE_KEY_SOURCE_COLUMNS:
+            value = row.get(column)
+            if _is_blank_value(value):
+                continue
+            key = path_to_image_join_key(value)
             if key:
                 return key
-
-        for column in ("path_to_dcm", "dicom_path"):
-            value = row.get(column)
-            if value is not None and str(value).strip():
-                key = path_to_image_join_key(value)
-                if key:
-                    return key
     return ""
+
+
+def path_to_image_join_keys(frame: pd.DataFrame) -> pd.Series:
+    """Resolve findings join keys for a whole metadata table at once.
+
+    Matches path_to_image_key_from_row per row, but stays vectorized so full
+    cohort pools do not pay a Python-level cost for every view.
+    """
+    available = [
+        column for column in _IMAGE_KEY_SOURCE_COLUMNS if column in frame.columns
+    ]
+    if not available:
+        raise ValueError(
+            "frame must contain at least one of "
+            f"{list(_IMAGE_KEY_SOURCE_COLUMNS)}. Available: {list(frame.columns)}"
+        )
+
+    keys = pd.Series("", index=frame.index, dtype="object")
+    for column in available:
+        pending = keys == ""
+        if not pending.any():
+            break
+
+        values = frame.loc[pending, column]
+        text = (
+            values.astype(str)
+            .str.strip()
+            .str.replace("\\", "/", regex=False)
+            .str.replace(r"^[./]+", "", regex=True)
+        )
+        candidate = text.mask(
+            text.str.lower().str.endswith(".dcm"),
+            text.str.slice(stop=-4) + ".jpg",
+        )
+        blank = values.isna() | text.str.lower().isin(_BLANK_TEXT_VALUES)
+        keys.loc[pending] = candidate.mask(blank, "")
+
+    return keys
 
 
 def patient_id_from_study_key(study_key: str) -> str:

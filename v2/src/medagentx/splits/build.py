@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
 
 import pandas as pd
 
@@ -55,43 +54,50 @@ def build_patient_split_table(
     seed: int = SPLIT_SEED,
 ) -> pd.DataFrame:
     """Return one row per patient with a locked split assignment."""
-    _require_columns(eligible_rows, ("deid_patient_id",), "eligible_rows")
+    _require_columns(
+        eligible_rows,
+        ("deid_patient_id", "study_key"),
+        "eligible_rows",
+    )
     if eligible_rows.empty:
         raise ValueError("eligible_rows must be non-empty")
 
-    patients = list(
-        dict.fromkeys(eligible_rows["deid_patient_id"].astype(str).str.strip().tolist())
+    views = pd.DataFrame(
+        {
+            "deid_patient_id": eligible_rows["deid_patient_id"]
+            .astype(str)
+            .str.strip(),
+            "study_key": eligible_rows["study_key"].astype(str).str.strip(),
+        }
     )
-    if any(not patient or patient.lower() == "nan" for patient in patients):
+    if views["deid_patient_id"].str.lower().isin({"", "nan"}).any():
         raise ValueError("eligible_rows contains blank deid_patient_id values")
 
-    rows: list[dict[str, Any]] = []
-    for patient_id in patients:
-        study_count = int(
-            eligible_rows.loc[
-                eligible_rows["deid_patient_id"].astype(str).str.strip() == patient_id,
-                "study_key",
-            ]
-            .astype(str)
-            .nunique()
+    summary = (
+        views.groupby("deid_patient_id", sort=False)
+        .agg(
+            study_count=("study_key", "nunique"),
+            view_count=("study_key", "size"),
         )
-        view_count = int(
-            (
-                eligible_rows["deid_patient_id"].astype(str).str.strip() == patient_id
-            ).sum()
-        )
-        rows.append(
-            {
-                "deid_patient_id": patient_id,
-                "split": assign_patient_split(patient_id, seed=seed),
-                "study_count": study_count,
-                "view_count": view_count,
-                "split_seed": seed,
-                "split_policy_version": SPLIT_POLICY_VERSION,
-            }
-        )
+        .reset_index()
+    )
+    summary["split"] = [
+        assign_patient_split(patient_id, seed=seed)
+        for patient_id in summary["deid_patient_id"]
+    ]
+    summary["split_seed"] = seed
+    summary["split_policy_version"] = SPLIT_POLICY_VERSION
 
-    return pd.DataFrame(rows)
+    return summary[
+        [
+            "deid_patient_id",
+            "split",
+            "study_count",
+            "view_count",
+            "split_seed",
+            "split_policy_version",
+        ]
+    ]
 
 
 def build_study_split_table(
