@@ -1,0 +1,178 @@
+"""Study-level RAD-DINO classifier with partial backbone fine-tuning."""
+
+from __future__ import annotations
+
+from typing import Any, Iterable, Sequence
+
+import torch
+from torch import nn
+
+from medagentx.vision.constants import (
+    DEFAULT_MODEL_NAME,
+    NUM_DISEASES,
+    TRAINABLE_LAST_BLOCKS,
+)
+
+
+def _transformer_blocks(backbone: nn.Module) -> Sequence[nn.Module]:
+    """Resolve the transformer block list for Hugging Face DINO variants."""
+    candidates = (
+        ("encoder", "layer"),
+        ("encoder", "layers"),
+        ("blocks",),
+        ("layer",),
+    )
+    for path in candidates:
+        value: Any = backbone
+        for part in path:
+            value = getattr(value, part, None)
+            if value is None:
+                break
+        if isinstance(value, (nn.ModuleList, list, tuple)):
+            return value
+    raise RuntimeError(
+        "Could not locate RAD-DINO transformer blocks. "
+        "Expected encoder.layer, encoder.layers, blocks, or layer."
+    )
+
+
+def configure_partial_fine_tuning(
+    backbone: nn.Module,
+    *,
+    trainable_last_blocks: int = TRAINABLE_LAST_BLOCKS,
+) -> dict[str, int]:
+    """Freeze RAD-DINO except for the locked final transformer blocks."""
+    if trainable_last_blocks <= 0:
+        raise ValueError("trainable_last_blocks must be > 0")
+
+    for parameter in backbone.parameters():
+        parameter.requires_grad = False
+
+    blocks = _transformer_blocks(backbone)
+    if trainable_last_blocks > len(blocks):
+        raise ValueError(
+            f"Requested {trainable_last_blocks} trainable blocks, "
+            f"but backbone has {len(blocks)}"
+        )
+    for block in blocks[-trainable_last_blocks:]:
+        for parameter in block.parameters():
+            parameter.requires_grad = True
+
+    total = sum(parameter.numel() for parameter in backbone.parameters())
+    trainable = sum(
+        parameter.numel()
+        for parameter in backbone.parameters()
+        if parameter.requires_grad
+    )
+    return {
+        "total_backbone_parameters": int(total),
+        "trainable_backbone_parameters": int(trainable),
+        "total_transformer_blocks": len(blocks),
+        "trainable_transformer_blocks": trainable_last_blocks,
+    }
+
+
+class RadDinoStudyClassifier(nn.Module):
+    """Encode every view, mean-pool by study, and predict 12 diseases."""
+
+    def __init__(
+        self,
+        backbone: nn.Module,
+        *,
+        hidden_size: int,
+        num_labels: int = NUM_DISEASES,
+        dropout: float = 0.1,
+        trainable_last_blocks: int = TRAINABLE_LAST_BLOCKS,
+    ) -> None:
+        super().__init__()
+        if hidden_size <= 0:
+            raise ValueError("hidden_size must be > 0")
+        if num_labels != NUM_DISEASES:
+            raise ValueError(
+                f"num_labels must equal the locked 12 diseases, got {num_labels}"
+            )
+
+        self.backbone = backbone
+        self.hidden_size = hidden_size
+        self.num_labels = num_labels
+        self.trainable_last_blocks = trainable_last_blocks
+        self.freeze_summary = configure_partial_fine_tuning(
+            self.backbone,
+            trainable_last_blocks=trainable_last_blocks,
+        )
+        self.classifier = nn.Sequential(
+            nn.Dropout(dropout),
+            nn.Linear(hidden_size, num_labels),
+        )
+
+    @classmethod
+    def from_pretrained(
+        cls,
+        model_name: str = DEFAULT_MODEL_NAME,
+        **kwargs: Any,
+    ) -> "RadDinoStudyClassifier":
+        from transformers import AutoModel
+
+        backbone = AutoModel.from_pretrained(model_name)
+        hidden_size = int(getattr(backbone.config, "hidden_size"))
+        return cls(backbone, hidden_size=hidden_size, **kwargs)
+
+    def trainable_backbone_parameters(self) -> Iterable[nn.Parameter]:
+        return (
+            parameter
+            for parameter in self.backbone.parameters()
+            if parameter.requires_grad
+        )
+
+    def forward(
+        self,
+        pixel_values: torch.Tensor,
+        study_indices: torch.Tensor,
+        num_studies: int,
+    ) -> dict[str, torch.Tensor]:
+        if pixel_values.ndim != 4:
+            raise ValueError(
+                "pixel_values must have shape [views, channels, height, width]"
+            )
+        if study_indices.ndim != 1 or len(study_indices) != len(pixel_values):
+            raise ValueError(
+                "study_indices must contain one index for every input view"
+            )
+        if num_studies <= 0:
+            raise ValueError("num_studies must be > 0")
+
+        outputs = self.backbone(pixel_values=pixel_values)
+        if not hasattr(outputs, "last_hidden_state"):
+            raise RuntimeError("RAD-DINO output has no last_hidden_state")
+        view_embeddings = outputs.last_hidden_state[:, 0, :]
+        if view_embeddings.shape[-1] != self.hidden_size:
+            raise RuntimeError(
+                f"Expected hidden size {self.hidden_size}, "
+                f"got {view_embeddings.shape[-1]}"
+            )
+
+        study_embeddings = torch.zeros(
+            (num_studies, self.hidden_size),
+            dtype=view_embeddings.dtype,
+            device=view_embeddings.device,
+        )
+        study_embeddings.index_add_(0, study_indices, view_embeddings)
+        counts = torch.zeros(
+            num_studies,
+            dtype=view_embeddings.dtype,
+            device=view_embeddings.device,
+        )
+        counts.index_add_(
+            0,
+            study_indices,
+            torch.ones_like(study_indices, dtype=view_embeddings.dtype),
+        )
+        if torch.any(counts == 0):
+            raise ValueError("Every study must contribute at least one view")
+        study_embeddings = study_embeddings / counts.unsqueeze(1)
+        logits = self.classifier(study_embeddings)
+        return {
+            "logits": logits,
+            "study_embeddings": study_embeddings,
+            "view_embeddings": view_embeddings,
+        }

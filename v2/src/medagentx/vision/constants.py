@@ -1,0 +1,24 @@
+"""Locked identifiers and defaults for the fine-tuned RAD-DINO backend."""
+
+from __future__ import annotations
+
+from medagentx.labels.constants import DISEASE_LABELS
+
+VISION_BACKEND_ID = "raddino_finetuned_v1"
+DEFAULT_MODEL_NAME = "microsoft/rad-dino"
+TRAINABLE_LAST_BLOCKS = 2
+NUM_DISEASES = len(DISEASE_LABELS)
+
+DEFAULT_BATCH_SIZE = 2
+DEFAULT_GRADIENT_ACCUMULATION_STEPS = 4
+DEFAULT_EPOCHS = 15
+DEFAULT_EARLY_STOPPING_PATIENCE = 5
+DEFAULT_BACKBONE_LR = 1e-5
+DEFAULT_HEAD_LR = 1e-3
+DEFAULT_WEIGHT_DECAY = 1e-4
+DEFAULT_NUM_WORKERS = 2
+DEFAULT_SEED = 42
+
+THRESHOLD_MIN = 0.05
+THRESHOLD_MAX = 0.95
+THRESHOLD_STEP = 0.01
