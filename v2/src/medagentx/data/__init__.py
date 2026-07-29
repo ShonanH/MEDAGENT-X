@@ -32,6 +32,13 @@ from medagentx.data.constants import (
     REDIVIS_DICOM_TRAIN_INDEX_TABLE_ID,
     REDIVIS_METADATA_TABLE_ID,
 )
+from medagentx.data.cohort import (
+    apply_label_gated_cohort,
+    limit_to_whole_studies,
+    load_findings_for_cohort,
+    summarize_label_gated_cohort,
+    write_label_gated_cohort_artifacts,
+)
 from medagentx.data.dicoms import (
     download_eligible_dicoms,
     local_dicom_path,
@@ -41,8 +48,16 @@ from medagentx.data.findings import (
     ensure_findings_fixed_json,
     resolve_findings_fixed_file_id,
 )
+from medagentx.data.findings_index import (
+    FindingsIndex,
+    FindingsRecord,
+    summarize_findings_index,
+)
 from medagentx.data.paths import (
     clean_dicom_path,
+    normalize_path_to_image,
+    path_to_image_join_key,
+    path_to_image_key_from_row,
     patient_id_from_study_key,
     study_key_from_path,
 )
@@ -77,6 +92,7 @@ __all__ = [
     "RedivisDownloadResult",
     "RedivisTable",
     "apply_eligibility_limits",
+    "apply_label_gated_cohort",
     "attach_report_columns",
     "build_chexpert_labels_index_sql",
     "build_dicom_file_id_lookup",
@@ -92,11 +108,21 @@ __all__ = [
     "fetch_dicom_train_index",
     "fetch_eligible_dicom_rows",
     "fetch_metadata_train_rows",
+    "FindingsIndex",
+    "FindingsRecord",
     "get_table",
+    "limit_to_whole_studies",
+    "load_findings_for_cohort",
     "local_dicom_path",
+    "normalize_path_to_image",
+    "path_to_image_join_key",
+    "path_to_image_key_from_row",
     "patient_id_from_study_key",
     "resolve_dicom_index_path_column",
     "resolve_findings_fixed_file_id",
     "study_key_from_path",
     "summarize_download_status",
+    "summarize_findings_index",
+    "summarize_label_gated_cohort",
+    "write_label_gated_cohort_artifacts",
 ]

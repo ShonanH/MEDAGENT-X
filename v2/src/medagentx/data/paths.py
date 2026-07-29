@@ -68,6 +68,43 @@ def study_key_from_path(path: Any) -> str:
     raise ValueError(f"Cannot derive study_key from path: {path!r}")
 
 
+def normalize_path_to_image(path: Any) -> str:
+    """Normalize a CheXpert image path for findings_fixed.json joins."""
+    if path is None:
+        return ""
+
+    cleaned = str(path).strip().replace("\\", "/").lstrip("./")
+    return cleaned
+
+
+def path_to_image_join_key(path: Any) -> str:
+    """Return the canonical findings join key for one metadata image path."""
+    key = normalize_path_to_image(path)
+    if not key:
+        return ""
+    if key.lower().endswith(".dcm"):
+        key = f"{key[:-4]}.jpg"
+    return key
+
+
+def path_to_image_key_from_row(row: Any) -> str:
+    """Resolve the findings join key from one eligible metadata row."""
+    if hasattr(row, "get"):
+        path_to_image = row.get("path_to_image")
+        if path_to_image is not None and str(path_to_image).strip():
+            key = path_to_image_join_key(path_to_image)
+            if key:
+                return key
+
+        for column in ("path_to_dcm", "dicom_path"):
+            value = row.get(column)
+            if value is not None and str(value).strip():
+                key = path_to_image_join_key(value)
+                if key:
+                    return key
+    return ""
+
+
 def patient_id_from_study_key(study_key: str) -> str:
     """Extract deid_patient_id from study_key."""
     if not isinstance(study_key, str) or not study_key.strip():

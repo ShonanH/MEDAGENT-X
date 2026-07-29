@@ -21,6 +21,7 @@ from medagentx.data.catalog import (
     build_metadata_reports_sql,
     build_metadata_train_sql,
 )
+from medagentx.data.cohort import limit_to_whole_studies
 from medagentx.data.paths import clean_dicom_path, study_key_from_path
 from medagentx.data.redivis_client import RedivisClient
 
@@ -232,7 +233,7 @@ def apply_eligibility_limits(
         out = out[out["study_key"].astype(str).isin(keep)].copy()
 
     if max_rows is not None:
-        out = out.head(max_rows).copy()
+        out, _ = limit_to_whole_studies(out, max_rows=max_rows)
 
     return out.reset_index(drop=True)
 
