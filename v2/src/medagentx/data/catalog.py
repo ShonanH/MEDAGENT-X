@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import sys
+from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
@@ -115,6 +116,12 @@ METADATA_COLUMNS: tuple[str, ...] = (
     IDENTIFIER_COLUMNS + DEMOGRAPHIC_COLUMNS + REPORT_COLUMNS + VIEW_COLUMNS
 )
 
+# Eligibility only needs identifiers/views; report text is fetched later for the
+# selected cohort so query responses stay under the Redivis 100MB rows limit.
+METADATA_IDENTITY_COLUMNS: tuple[str, ...] = (
+    IDENTIFIER_COLUMNS + DEMOGRAPHIC_COLUMNS + VIEW_COLUMNS
+)
+
 DICOM_INDEX_COLUMNS: tuple[str, ...] = (
     "name",
     "file_id",
@@ -146,45 +153,114 @@ def sql_quote(value: str) -> str:
     return "'" + value.replace("'", "''") + "'"
 
 
-def build_metadata_train_sql(*, limit: int | None = None) -> str:
-    """Build Stage A metadata SQL: train rows with non-null path_to_dcm."""
+def sql_quote_identifier(name: str) -> str:
+    """Escape a SQL identifier for BigQuery-style backtick quoting."""
+    if not isinstance(name, str) or not name.strip():
+        raise ValueError("identifier must be a non-empty string")
+    cleaned = name.strip()
+    if "`" in cleaned:
+        raise ValueError(f"Invalid identifier: {name!r}")
+    return f"`{cleaned}`"
+
+
+def _paged(sql: str, *, limit: int | None, offset: int | None) -> str:
+    """Append LIMIT/OFFSET, requiring LIMIT whenever OFFSET is used."""
     if limit is not None and limit <= 0:
         raise ValueError("limit must be > 0 when provided")
+    if offset is not None:
+        if offset < 0:
+            raise ValueError("offset must be >= 0 when provided")
+        if limit is None:
+            raise ValueError("offset requires a limit")
 
-    columns = ",\n  ".join(METADATA_COLUMNS)
+    if limit is not None:
+        sql = f"{sql}\nLIMIT {int(limit)}"
+    if offset:
+        sql = f"{sql}\nOFFSET {int(offset)}"
+    return sql
+
+
+def build_metadata_train_sql(
+    *,
+    limit: int | None = None,
+    offset: int | None = None,
+    columns: Sequence[str] = METADATA_IDENTITY_COLUMNS,
+) -> str:
+    """Build Stage A metadata SQL: train rows with non-null path_to_dcm.
+
+    Defaults to identifier/view columns only. Report text is large enough that
+    fetching it for the full train split exceeds the Redivis rows size limit.
+    """
+    if not columns:
+        raise ValueError("columns must be non-empty")
+
+    selected = ",\n  ".join(sql_quote_identifier(column) for column in columns)
     table = get_table("metadata").qualified_reference
     sql = f"""
 SELECT
-  {columns}
+  {selected}
 FROM `{table}`
 WHERE split = {sql_quote(DEFAULT_SPLIT)}
   AND path_to_dcm IS NOT NULL
   AND TRIM(CAST(path_to_dcm AS STRING)) != ''
+ORDER BY path_to_dcm
 """.strip()
 
-    if limit is not None:
-        sql = f"{sql}\nLIMIT {int(limit)}"
-    return sql
+    return _paged(sql, limit=limit, offset=offset)
 
 
-def build_dicom_train_index_sql(*, limit: int | None = None) -> str:
-    """Build SQL for the train DICOM file index.
+def build_metadata_reports_sql(paths: Sequence[str]) -> str:
+    """Build report-column SQL for one batch of exact path_to_dcm values."""
+    if not paths:
+        raise ValueError("paths must be non-empty")
 
-    File-index schemas vary across Redivis exports, so fetch all columns and
-    resolve the path column locally.
-    """
-    if limit is not None and limit <= 0:
-        raise ValueError("limit must be > 0 when provided")
+    columns = ("path_to_dcm",) + REPORT_COLUMNS
+    selected = ",\n  ".join(sql_quote_identifier(column) for column in columns)
+    table = get_table("metadata").qualified_reference
+    values = ", ".join(sql_quote(str(path)) for path in paths)
+    return f"""
+SELECT
+  {selected}
+FROM `{table}`
+WHERE path_to_dcm IN ({values})
+""".strip()
+
+
+def build_dicom_train_index_probe_sql(*, limit: int = 5) -> str:
+    """Build a tiny probe query used to resolve the file-index schema."""
+    if limit <= 0:
+        raise ValueError("limit must be > 0")
 
     table = get_table("dicom_train_index").qualified_reference
-    sql = f"""
+    return f"""
 SELECT *
 FROM `{table}`
+LIMIT {int(limit)}
 """.strip()
 
-    if limit is not None:
-        sql = f"{sql}\nLIMIT {int(limit)}"
-    return sql
+
+def build_dicom_train_index_sql(
+    *,
+    path_column: str,
+    limit: int | None = None,
+    offset: int | None = None,
+) -> str:
+    """Build SQL for the train DICOM file index, narrowed to path + file_id.
+
+    File-index schemas vary across Redivis exports, so the path column is
+    resolved by probing before this query is built.
+    """
+    table = get_table("dicom_train_index").qualified_reference
+    path_ref = sql_quote_identifier(path_column)
+    sql = f"""
+SELECT
+  `file_id`,
+  {path_ref}
+FROM `{table}`
+ORDER BY {path_ref}
+""".strip()
+
+    return _paged(sql, limit=limit, offset=offset)
 
 
 def build_chexpert_labels_index_sql() -> str:

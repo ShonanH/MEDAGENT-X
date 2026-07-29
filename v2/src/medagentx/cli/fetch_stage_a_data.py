@@ -16,7 +16,12 @@ from medagentx.data.dicoms import (
 )
 from medagentx.data.findings import ensure_findings_fixed_json
 from medagentx.data.redivis_client import RedivisClient
-from medagentx.data.rows import fetch_eligible_dicom_rows
+from medagentx.data.rows import (
+    DEFAULT_INDEX_PAGE_SIZE,
+    DEFAULT_METADATA_PAGE_SIZE,
+    DEFAULT_REPORT_BATCH_SIZE,
+    fetch_eligible_dicom_rows,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -48,6 +53,29 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Optional SQL DICOM-index row limit for development only.",
     )
+    parser.add_argument(
+        "--metadata-page-size",
+        type=int,
+        default=DEFAULT_METADATA_PAGE_SIZE,
+        help="Rows per metadata SQL page (Redivis caps responses at 100MB).",
+    )
+    parser.add_argument(
+        "--index-page-size",
+        type=int,
+        default=DEFAULT_INDEX_PAGE_SIZE,
+        help="Rows per DICOM-index SQL page.",
+    )
+    parser.add_argument(
+        "--report-batch-size",
+        type=int,
+        default=DEFAULT_REPORT_BATCH_SIZE,
+        help="Cohort paths per report-text query batch.",
+    )
+    parser.add_argument(
+        "--skip-reports",
+        action="store_true",
+        help="Skip fetching report text for the eligible cohort.",
+    )
     parser.add_argument("--overwrite-dicoms", action="store_true")
     parser.add_argument("--overwrite-findings", action="store_true")
     parser.add_argument(
@@ -74,6 +102,10 @@ def main(argv: list[str] | None = None) -> int:
         max_patients=args.max_patients,
         max_studies=args.max_studies,
         max_rows=args.max_rows,
+        metadata_page_size=args.metadata_page_size,
+        index_page_size=args.index_page_size,
+        include_reports=not args.skip_reports,
+        report_batch_size=args.report_batch_size,
     )
     eligible_csv = output_root / "eligible_dicom_rows.csv"
     eligible.to_csv(eligible_csv, index=False)

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import sys
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -13,7 +14,11 @@ if str(_V2_SRC) not in sys.path:
     sys.path.insert(0, str(_V2_SRC))
 
 from medagentx.data.catalog import (
+    METADATA_IDENTITY_COLUMNS,
+    REPORT_COLUMNS,
+    build_dicom_train_index_probe_sql,
     build_dicom_train_index_sql,
+    build_metadata_reports_sql,
     build_metadata_train_sql,
 )
 from medagentx.data.paths import clean_dicom_path, study_key_from_path
@@ -28,6 +33,12 @@ _DICOM_INDEX_PATH_COLUMNS = (
     "dicom_path",
     "path_to_dcm",
 )
+
+# Redivis rejects query results larger than 100MB on the rows endpoint, so every
+# full-table read is paged with SQL LIMIT/OFFSET over a stable ORDER BY.
+DEFAULT_METADATA_PAGE_SIZE = 50000
+DEFAULT_INDEX_PAGE_SIZE = 100000
+DEFAULT_REPORT_BATCH_SIZE = 500
 
 
 def _require_columns(df: pd.DataFrame, columns: list[str], frame_name: str) -> None:
@@ -47,18 +58,67 @@ def _positive_limit(name: str, value: int | None) -> int | None:
     return value
 
 
+def _fetch_paged(
+    client: RedivisClient,
+    build_sql: Callable[[int, int], str],
+    *,
+    limit: int | None,
+    page_size: int,
+    label: str,
+) -> pd.DataFrame:
+    """Read a table in LIMIT/OFFSET pages and concatenate the results."""
+    if not isinstance(client, RedivisClient):
+        raise ValueError("client must be a RedivisClient")
+    if page_size <= 0:
+        raise ValueError("page_size must be > 0")
+
+    limit = _positive_limit("limit", limit)
+
+    frames: list[pd.DataFrame] = []
+    fetched = 0
+    offset = 0
+
+    while True:
+        take = page_size if limit is None else min(page_size, limit - fetched)
+        if take <= 0:
+            break
+
+        page = client.run_sql_query(build_sql(take, offset), max_results=take)
+        if page.empty:
+            break
+
+        frames.append(page)
+        fetched += len(page)
+        offset += len(page)
+        print(f"[{label}] fetched {fetched} rows")
+
+        if len(page) < take:
+            break
+
+    if not frames:
+        raise ValueError(f"{label} returned no rows")
+
+    return pd.concat(frames, ignore_index=True)
+
+
 def fetch_metadata_train_rows(
     client: RedivisClient,
     *,
     limit: int | None = None,
-    max_results: int = 100000,
+    page_size: int = DEFAULT_METADATA_PAGE_SIZE,
 ) -> pd.DataFrame:
-    """Fetch train metadata rows with non-null path_to_dcm."""
-    if not isinstance(client, RedivisClient):
-        raise ValueError("client must be a RedivisClient")
-
-    sql = build_metadata_train_sql(limit=limit)
-    df = client.run_sql_query(sql, max_results=max_results)
+    """Fetch train metadata identity rows with non-null path_to_dcm."""
+    df = _fetch_paged(
+        client,
+        lambda take, offset: build_metadata_train_sql(
+            limit=take,
+            offset=offset,
+            columns=METADATA_IDENTITY_COLUMNS,
+        ),
+        limit=limit,
+        page_size=page_size,
+        label="metadata",
+    )
     _require_columns(
         df,
         ["path_to_dcm", "path_to_image", "deid_patient_id", "split"],
@@ -67,25 +127,50 @@ def fetch_metadata_train_rows(
     return df
 
 
+def resolve_dicom_index_path_column(client: RedivisClient) -> str:
+    """Probe the DICOM file index and return its usable path column."""
+    if not isinstance(client, RedivisClient):
+        raise ValueError("client must be a RedivisClient")
+
+    probe = client.run_sql_query(build_dicom_train_index_probe_sql(), max_results=5)
+    _require_columns(probe, ["file_id"], "dicom_train_index")
+
+    for column in _DICOM_INDEX_PATH_COLUMNS:
+        if column not in probe.columns:
+            continue
+        values = probe[column].dropna().astype(str).str.strip()
+        if not values.empty and (values != "").any():
+            return column
+
+    raise ValueError(
+        "dicom_train_index has no recognized path column. "
+        f"Available: {list(probe.columns)}"
+    )
+
+
 def fetch_dicom_train_index(
     client: RedivisClient,
     *,
     limit: int | None = None,
-    max_results: int = 500000,
+    page_size: int = DEFAULT_INDEX_PAGE_SIZE,
+    path_column: str | None = None,
 ) -> pd.DataFrame:
-    """Fetch the train DICOM file index."""
-    if not isinstance(client, RedivisClient):
-        raise ValueError("client must be a RedivisClient")
+    """Fetch the train DICOM file index as path + file_id pairs."""
+    if path_column is None:
+        path_column = resolve_dicom_index_path_column(client)
 
-    sql = build_dicom_train_index_sql(limit=limit)
-    df = client.run_sql_query(sql, max_results=max_results)
-    _require_columns(df, ["file_id"], "dicom_train_index")
-
-    if not any(column in df.columns for column in _DICOM_INDEX_PATH_COLUMNS):
-        raise ValueError(
-            "dicom_train_index has no recognized path column. "
-            f"Available: {list(df.columns)}"
-        )
+    df = _fetch_paged(
+        client,
+        lambda take, offset: build_dicom_train_index_sql(
+            path_column=path_column,
+            limit=take,
+            offset=offset,
+        ),
+        limit=limit,
+        page_size=page_size,
+        label="dicom_index",
+    )
+    _require_columns(df, ["file_id", path_column], "dicom_train_index")
     return df
 
 
@@ -208,6 +293,55 @@ def build_eligible_dicom_rows(
     )
 
 
+def attach_report_columns(
+    client: RedivisClient,
+    eligible_rows: pd.DataFrame,
+    *,
+    batch_size: int = DEFAULT_REPORT_BATCH_SIZE,
+) -> pd.DataFrame:
+    """Fetch report text for the eligible cohort only and join it back.
+
+    Report columns are excluded from the eligibility scan because the full train
+    split of report text exceeds the Redivis rows response limit.
+    """
+    if not isinstance(client, RedivisClient):
+        raise ValueError("client must be a RedivisClient")
+    if batch_size <= 0:
+        raise ValueError("batch_size must be > 0")
+
+    _require_columns(eligible_rows, ["path_to_dcm"], "eligible_rows")
+    if eligible_rows.empty:
+        raise ValueError("eligible_rows must be non-empty")
+
+    paths = list(dict.fromkeys(eligible_rows["path_to_dcm"].astype(str).tolist()))
+
+    frames: list[pd.DataFrame] = []
+    for start in range(0, len(paths), batch_size):
+        batch = paths[start : start + batch_size]
+        page = client.run_sql_query(
+            build_metadata_reports_sql(batch),
+            max_results=len(batch),
+        )
+        if not page.empty:
+            frames.append(page)
+        print(f"[reports] fetched {min(start + batch_size, len(paths))}/{len(paths)}")
+
+    if not frames:
+        raise ValueError("No report rows returned for the eligible cohort")
+
+    reports = pd.concat(frames, ignore_index=True)
+    _require_columns(reports, ["path_to_dcm"], "metadata_reports")
+    reports = reports.drop_duplicates(subset=["path_to_dcm"], keep="first")
+
+    drop = [column for column in REPORT_COLUMNS if column in eligible_rows.columns]
+    out = eligible_rows.drop(columns=drop) if drop else eligible_rows
+    out = out.copy()
+    out["path_to_dcm"] = out["path_to_dcm"].astype(str)
+    reports["path_to_dcm"] = reports["path_to_dcm"].astype(str)
+
+    return out.merge(reports, on="path_to_dcm", how="left")
+
+
 def fetch_eligible_dicom_rows(
     client: RedivisClient,
     *,
@@ -216,24 +350,34 @@ def fetch_eligible_dicom_rows(
     max_patients: int | None = None,
     max_studies: int | None = None,
     max_rows: int | None = None,
-    metadata_max_results: int = 100000,
-    index_max_results: int = 500000,
+    metadata_page_size: int = DEFAULT_METADATA_PAGE_SIZE,
+    index_page_size: int = DEFAULT_INDEX_PAGE_SIZE,
+    include_reports: bool = True,
+    report_batch_size: int = DEFAULT_REPORT_BATCH_SIZE,
 ) -> pd.DataFrame:
-    """End-to-end Stage A fetch: metadata ∩ DICOM index."""
+    """End-to-end Stage A fetch: metadata ∩ DICOM index (+ cohort reports)."""
     metadata_df = fetch_metadata_train_rows(
         client,
         limit=metadata_limit,
-        max_results=metadata_max_results,
+        page_size=metadata_page_size,
     )
     index_df = fetch_dicom_train_index(
         client,
         limit=index_limit,
-        max_results=index_max_results,
+        page_size=index_page_size,
     )
-    return build_eligible_dicom_rows(
+    eligible = build_eligible_dicom_rows(
         metadata_df,
         index_df,
         max_patients=max_patients,
         max_studies=max_studies,
         max_rows=max_rows,
+    )
+    if not include_reports:
+        return eligible
+
+    return attach_report_columns(
+        client,
+        eligible,
+        batch_size=report_batch_size,
     )

@@ -10,11 +10,15 @@ if str(_V2_SRC) not in sys.path:
     sys.path.insert(0, str(_V2_SRC))
 
 from medagentx.data.catalog import (
+    METADATA_IDENTITY_COLUMNS,
+    REPORT_COLUMNS,
     TABLES,
     RedivisTable,
     build_chexpert_labels_index_sql,
+    build_dicom_train_index_probe_sql,
     build_dicom_train_index_sql,
     build_findings_fixed_lookup_sql,
+    build_metadata_reports_sql,
     build_metadata_train_sql,
     get_table,
 )
@@ -48,15 +52,19 @@ from medagentx.data.redivis_client import (
 )
 from medagentx.data.rows import (
     apply_eligibility_limits,
+    attach_report_columns,
     build_dicom_file_id_lookup,
     build_eligible_dicom_rows,
     fetch_dicom_train_index,
     fetch_eligible_dicom_rows,
     fetch_metadata_train_rows,
+    resolve_dicom_index_path_column,
 )
 
 __all__ = [
     "DEFAULT_SPLIT",
+    "METADATA_IDENTITY_COLUMNS",
+    "REPORT_COLUMNS",
     "FINDINGS_FIXED_JSON_NAME",
     "REDIVIS_API_BASE_URL",
     "REDIVIS_API_TOKEN_ENV",
@@ -69,11 +77,14 @@ __all__ = [
     "RedivisDownloadResult",
     "RedivisTable",
     "apply_eligibility_limits",
+    "attach_report_columns",
     "build_chexpert_labels_index_sql",
     "build_dicom_file_id_lookup",
+    "build_dicom_train_index_probe_sql",
     "build_dicom_train_index_sql",
     "build_eligible_dicom_rows",
     "build_findings_fixed_lookup_sql",
+    "build_metadata_reports_sql",
     "build_metadata_train_sql",
     "clean_dicom_path",
     "download_eligible_dicoms",
@@ -84,6 +95,7 @@ __all__ = [
     "get_table",
     "local_dicom_path",
     "patient_id_from_study_key",
+    "resolve_dicom_index_path_column",
     "resolve_findings_fixed_file_id",
     "study_key_from_path",
     "summarize_download_status",

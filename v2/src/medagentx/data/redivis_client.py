@@ -166,7 +166,13 @@ class RedivisClient:
                 f"{rows.text[:2000]}"
             )
 
-        return pd.read_csv(StringIO(rows.text), dtype=str)
+        text = rows.text
+        if not text.strip():
+            return pd.DataFrame()
+        try:
+            return pd.read_csv(StringIO(text), dtype=str)
+        except pd.errors.EmptyDataError:
+            return pd.DataFrame()
 
     def download_raw_file(
         self,
