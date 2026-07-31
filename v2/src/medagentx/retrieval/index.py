@@ -199,9 +199,13 @@ def write_chroma_index(
     if rebuild:
         try:
             client.delete_collection(collection_name)
+            print(f"[Retrieval] deleted existing Chroma collection {collection_name!r}")
         except Exception:
             pass
 
+    print(
+        f"[Retrieval] opening Chroma collection {collection_name!r} at {root}"
+    )
     collection = client.get_or_create_collection(
         name=collection_name,
         metadata={
@@ -224,12 +228,17 @@ def write_chroma_index(
         for record in records
     ]
 
+    print(
+        f"[Retrieval] writing {len(records)} study embeddings to Chroma "
+        f"(space={CHROMA_DISTANCE_SPACE})"
+    )
     collection.add(
         ids=ids,
         documents=documents,
         metadatas=metadatas,
         embeddings=embeddings,
     )
+    print(f"[Retrieval] Chroma write complete count={collection.count()}")
     return collection
 
 

@@ -43,8 +43,12 @@ DEFAULT_RETRIEVAL_SUBDIR = f"retrieval/{RETRIEVAL_INDEX_ID}"
 EMBEDDING_BACKEND_ID = VISION_BACKEND_ID
 
 # Index-build runtime defaults.
-DEFAULT_EMBED_BATCH_SIZE = 8
+DEFAULT_EMBED_BATCH_SIZE = 16
 DEFAULT_EMBED_NUM_WORKERS = 0
+DEFAULT_PROGRESS_EVERY_BATCHES = 10
+
+# Cached RAD-DINO study embeddings written after the first successful embed pass.
+DEFAULT_EMBEDDINGS_CACHE_NAME = "study_embeddings.npz"
 
 # Truncate long report payloads before writing to Chroma.
 DEFAULT_MAX_DOCUMENT_CHARS = 12_000

@@ -5,7 +5,9 @@ from medagentx.retrieval.constants import (
     DEFAULT_COLLECTION_NAME,
     DEFAULT_EMBED_BATCH_SIZE,
     DEFAULT_EMBED_NUM_WORKERS,
+    DEFAULT_EMBEDDINGS_CACHE_NAME,
     DEFAULT_MAX_DOCUMENT_CHARS,
+    DEFAULT_PROGRESS_EVERY_BATCHES,
     DEFAULT_RETRIEVAL_SUBDIR,
     DEFAULT_TOP_K,
     EMBEDDING_BACKEND_ID,
@@ -30,6 +32,10 @@ from medagentx.retrieval.embed import (
     extract_study_embeddings,
     load_embedding_model,
 )
+from medagentx.retrieval.embed_cache import (
+    load_embeddings_cache,
+    save_embeddings_cache,
+)
 from medagentx.retrieval.index import (
     IndexedStudy,
     RetrievedStudy,
@@ -49,7 +55,9 @@ __all__ = [
     "DEFAULT_COLLECTION_NAME",
     "DEFAULT_EMBED_BATCH_SIZE",
     "DEFAULT_EMBED_NUM_WORKERS",
+    "DEFAULT_EMBEDDINGS_CACHE_NAME",
     "DEFAULT_MAX_DOCUMENT_CHARS",
+    "DEFAULT_PROGRESS_EVERY_BATCHES",
     "DEFAULT_RETRIEVAL_SUBDIR",
     "DEFAULT_TOP_K",
     "EMBEDDING_BACKEND_ID",
@@ -75,8 +83,10 @@ __all__ = [
     "filter_retrieved_studies",
     "get_chroma_collection",
     "load_embedding_model",
+    "load_embeddings_cache",
     "query_candidate_count",
     "query_similar_studies",
+    "save_embeddings_cache",
     "truncate_document",
     "write_chroma_index",
     "write_index_manifest",

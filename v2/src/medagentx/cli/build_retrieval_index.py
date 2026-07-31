@@ -13,7 +13,9 @@ from medagentx.retrieval.constants import (
     DEFAULT_COLLECTION_NAME,
     DEFAULT_EMBED_BATCH_SIZE,
     DEFAULT_EMBED_NUM_WORKERS,
+    DEFAULT_EMBEDDINGS_CACHE_NAME,
     DEFAULT_MAX_DOCUMENT_CHARS,
+    DEFAULT_PROGRESS_EVERY_BATCHES,
     DEFAULT_RETRIEVAL_SUBDIR,
     EMBEDDING_BACKEND_ID,
     INDEX_BUILD_SPLIT,
@@ -23,6 +25,10 @@ from medagentx.retrieval.documents import (
     truncate_document,
 )
 from medagentx.retrieval.embed import extract_study_embeddings
+from medagentx.retrieval.embed_cache import (
+    load_embeddings_cache,
+    save_embeddings_cache,
+)
 from medagentx.retrieval.index import (
     build_index_records,
     write_chroma_index,
@@ -78,6 +84,15 @@ def build_parser() -> argparse.ArgumentParser:
         help=f"Defaults to cohort-root/{DEFAULT_RETRIEVAL_SUBDIR}",
     )
     parser.add_argument(
+        "--embeddings-cache",
+        type=Path,
+        default=None,
+        help=(
+            "Defaults to output-root/study_embeddings.npz. Saved after embed; "
+            "reused with --reuse-embeddings."
+        ),
+    )
+    parser.add_argument(
         "--collection-name",
         default=DEFAULT_COLLECTION_NAME,
     )
@@ -92,6 +107,18 @@ def build_parser() -> argparse.ArgumentParser:
         "--num-workers", type=int, default=DEFAULT_EMBED_NUM_WORKERS
     )
     parser.add_argument(
+        "--progress-every",
+        type=int,
+        default=DEFAULT_PROGRESS_EVERY_BATCHES,
+        help="Log embedding progress every N batches.",
+    )
+    parser.add_argument(
+        "--max-studies",
+        type=int,
+        default=None,
+        help="Optional smoke-test limit on the number of train studies.",
+    )
+    parser.add_argument(
         "--device",
         default="cuda" if torch.cuda.is_available() else "cpu",
     )
@@ -100,6 +127,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--max-document-chars",
         type=int,
         default=DEFAULT_MAX_DOCUMENT_CHARS,
+    )
+    parser.add_argument(
+        "--reuse-embeddings",
+        action="store_true",
+        help="Skip DICOM embedding when a compatible cache file already exists.",
     )
     parser.add_argument(
         "--rebuild",
@@ -118,6 +150,10 @@ def main(argv: list[str] | None = None) -> int:
         raise ValueError("num-workers must be >= 0")
     if args.max_document_chars <= 0:
         raise ValueError("max-document-chars must be > 0")
+    if args.progress_every <= 0:
+        raise ValueError("progress-every must be > 0")
+    if args.max_studies is not None and args.max_studies <= 0:
+        raise ValueError("max-studies must be > 0")
 
     cohort_root: Path = args.cohort_root
     views_csv = args.views_csv or (cohort_root / "splits" / "view_splits.csv")
@@ -135,6 +171,9 @@ def main(argv: list[str] | None = None) -> int:
         cohort_root / DEFAULT_RETRIEVAL_SUBDIR
     )
     vector_db_dir = output_root / "chroma"
+    embeddings_cache = args.embeddings_cache or (
+        output_root / DEFAULT_EMBEDDINGS_CACHE_NAME
+    )
 
     for path in (views_csv, reports_csv, checkpoint_path):
         if not path.exists():
@@ -146,12 +185,18 @@ def main(argv: list[str] | None = None) -> int:
     if device.type == "cuda" and not torch.cuda.is_available():
         raise RuntimeError("CUDA requested but torch.cuda.is_available() is false")
 
+    print(f"[Retrieval] loading views from {views_csv}")
     views = pd.read_csv(views_csv, dtype=str)
+    print(f"[Retrieval] loading reports from {reports_csv}")
     reports = pd.read_csv(reports_csv, dtype=str)
     train_views = views[views["split"].astype(str).str.strip() == args.split].copy()
     if train_views.empty:
         raise ValueError(f"No views found for split={args.split!r}")
 
+    print(
+        f"[Retrieval] building study report table for split={args.split!r} "
+        f"views={len(train_views)}"
+    )
     report_table = build_study_report_table(reports)
     train_study_keys = set(train_views["study_key"].astype(str).str.strip())
     report_table = report_table[
@@ -177,22 +222,72 @@ def main(argv: list[str] | None = None) -> int:
     }
 
     records = build_study_inference_records(train_views, split=args.split)
-    print(
-        f"[Retrieval] embedding train studies={len(records)} "
-        f"device={device} batch_size={args.batch_size}"
-    )
-    embedding_payload = extract_study_embeddings(
-        records,
-        checkpoint_path=checkpoint_path,
-        dicom_root=dicom_root,
-        device=device,
-        batch_size=args.batch_size,
-        num_workers=args.num_workers,
-        mixed_precision=not args.no_mixed_precision,
-    )
-    if len(embedding_payload["study_keys"]) != len(records):
-        raise RuntimeError("Embedding extraction returned an unexpected study count")
+    if args.max_studies is not None:
+        records = records[: args.max_studies]
+        allowed = {record.study_key for record in records}
+        documents = {
+            study_key: document
+            for study_key, document in documents.items()
+            if study_key in allowed
+        }
+        print(f"[Retrieval] limiting to max_studies={args.max_studies}")
 
+    checkpoint_meta: dict[str, object] = {
+        "checkpoint": str(checkpoint_path),
+        "device": str(device),
+        "batch_size": args.batch_size,
+        "num_workers": args.num_workers,
+        "split": args.split,
+        "study_count": len(records),
+    }
+
+    embedding_payload: dict[str, object] | None = None
+    if args.reuse_embeddings:
+        print(f"[Retrieval] checking embeddings cache {embeddings_cache}")
+        embedding_payload = load_embeddings_cache(embeddings_cache)
+        if embedding_payload is None:
+            print("[Retrieval] cache miss; will embed from DICOMs")
+        elif len(embedding_payload["study_keys"]) != len(records):
+            print(
+                "[Retrieval] cache study count mismatch; will re-embed from DICOMs"
+            )
+            embedding_payload = None
+        else:
+            print(
+                f"[Retrieval] reusing cached embeddings "
+                f"studies={len(embedding_payload['study_keys'])}"
+            )
+
+    if embedding_payload is None:
+        print(
+            f"[Retrieval] embedding train studies={len(records)} "
+            f"device={device} batch_size={args.batch_size} "
+            f"num_workers={args.num_workers}"
+        )
+        embedding_payload = extract_study_embeddings(
+            records,
+            checkpoint_path=checkpoint_path,
+            dicom_root=dicom_root,
+            device=device,
+            batch_size=args.batch_size,
+            num_workers=args.num_workers,
+            mixed_precision=not args.no_mixed_precision,
+            progress_every=args.progress_every,
+        )
+        if len(embedding_payload["study_keys"]) != len(records):
+            raise RuntimeError(
+                "Embedding extraction returned an unexpected study count"
+            )
+        save_embeddings_cache(
+            embeddings_cache,
+            embedding_payload,
+            build_config=checkpoint_meta,
+        )
+        print(f"[Retrieval] saved embeddings cache -> {embeddings_cache}")
+    else:
+        embedding_payload["checkpoint"] = {"vision_backend_id": EMBEDDING_BACKEND_ID}
+
+    print("[Retrieval] assembling index records")
     indexed = build_index_records(
         embeddings=embedding_payload["embeddings"],
         study_keys=embedding_payload["study_keys"],
@@ -214,12 +309,14 @@ def main(argv: list[str] | None = None) -> int:
             "reports_csv": str(reports_csv),
             "dicom_root": str(dicom_root),
             "checkpoint": str(checkpoint_path),
+            "embeddings_cache": str(embeddings_cache),
             "vector_db_dir": str(vector_db_dir),
             "collection_name": args.collection_name,
             "split": args.split,
             "device": str(device),
             "batch_size": args.batch_size,
             "num_workers": args.num_workers,
+            "max_studies": args.max_studies,
             "max_document_chars": args.max_document_chars,
             "embedding_backend_id": embedding_payload["checkpoint"].get(
                 "vision_backend_id",
