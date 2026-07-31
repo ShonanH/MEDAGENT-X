@@ -238,6 +238,7 @@ def collect_inference_predictions(
     model.eval()
     use_amp = bool(mixed_precision and device.type == "cuda")
     probabilities: list[np.ndarray] = []
+    study_embeddings: list[np.ndarray] = []
     study_keys: list[str] = []
     patient_ids: list[str] = []
     splits: list[str] = []
@@ -259,6 +260,9 @@ def collect_inference_predictions(
         probabilities.append(
             torch.sigmoid(output["logits"]).detach().cpu().float().numpy()
         )
+        study_embeddings.append(
+            output["study_embeddings"].detach().cpu().float().numpy()
+        )
         study_keys.extend(raw_batch["study_keys"])
         patient_ids.extend(raw_batch["patient_ids"])
         splits.extend(raw_batch["splits"])
@@ -267,6 +271,7 @@ def collect_inference_predictions(
 
     return {
         "probabilities": np.concatenate(probabilities, axis=0),
+        "study_embeddings": np.concatenate(study_embeddings, axis=0),
         "study_keys": study_keys,
         "patient_ids": patient_ids,
         "splits": splits,

@@ -16,9 +16,13 @@ from medagentx.vision.data import (
     StudyBatchCollator,
     StudyInferenceRecord,
 )
+from medagentx.vision.inference_output import (
+    VisionStudyOutput,
+    build_study_outputs,
+    study_outputs_to_prediction_frame,
+)
 from medagentx.vision.trainer import (
     collect_inference_predictions,
-    inference_prediction_table,
     load_finetuned_checkpoint,
 )
 
@@ -69,16 +73,16 @@ class FineTunedRadDinoBackend:
             mixed_precision=mixed_precision,
         )
 
-    def predict_studies(
+    def _build_loader(
         self,
         records: Sequence[StudyInferenceRecord],
         *,
         dicom_root: str | Path,
         batch_size: int,
         num_workers: int,
-    ) -> pd.DataFrame:
+    ) -> DataLoader:
         dataset = InferenceStudyDataset(records, dicom_root=dicom_root)
-        loader = DataLoader(
+        return DataLoader(
             dataset,
             batch_size=batch_size,
             shuffle=False,
@@ -87,10 +91,84 @@ class FineTunedRadDinoBackend:
             persistent_workers=num_workers > 0,
             collate_fn=StudyBatchCollator(self.processor),
         )
-        predictions = collect_inference_predictions(
+
+    def _collect_predictions(
+        self,
+        records: Sequence[StudyInferenceRecord],
+        *,
+        dicom_root: str | Path,
+        batch_size: int,
+        num_workers: int,
+    ) -> dict[str, object]:
+        loader = self._build_loader(
+            records,
+            dicom_root=dicom_root,
+            batch_size=batch_size,
+            num_workers=num_workers,
+        )
+        return collect_inference_predictions(
             self.model,
             loader,
             device=self.device,
             mixed_precision=self.mixed_precision,
         )
-        return inference_prediction_table(predictions, self.thresholds)
+
+    def predict_study_outputs(
+        self,
+        records: Sequence[StudyInferenceRecord],
+        *,
+        dicom_root: str | Path,
+        batch_size: int,
+        num_workers: int,
+    ) -> list[VisionStudyOutput]:
+        """Run one DICOM pass and return probabilities plus study embeddings."""
+        predictions = self._collect_predictions(
+            records,
+            dicom_root=dicom_root,
+            batch_size=batch_size,
+            num_workers=num_workers,
+        )
+        return build_study_outputs(
+            predictions,
+            self.thresholds,
+            vision_backend_id=self.backend_id,
+        )
+
+    def predict_studies(
+        self,
+        records: Sequence[StudyInferenceRecord],
+        *,
+        dicom_root: str | Path,
+        batch_size: int,
+        num_workers: int,
+    ) -> pd.DataFrame:
+        """Return the permanent vision prediction table without embeddings."""
+        outputs = self.predict_study_outputs(
+            records,
+            dicom_root=dicom_root,
+            batch_size=batch_size,
+            num_workers=num_workers,
+        )
+        return study_outputs_to_prediction_frame(outputs)
+
+    def predict_studies_with_outputs(
+        self,
+        records: Sequence[StudyInferenceRecord],
+        *,
+        dicom_root: str | Path,
+        batch_size: int,
+        num_workers: int,
+    ) -> tuple[pd.DataFrame, list[VisionStudyOutput]]:
+        """Return both the CSV contract and embedding-bearing study outputs."""
+        predictions = self._collect_predictions(
+            records,
+            dicom_root=dicom_root,
+            batch_size=batch_size,
+            num_workers=num_workers,
+        )
+        outputs = build_study_outputs(
+            predictions,
+            self.thresholds,
+            vision_backend_id=self.backend_id,
+        )
+        return study_outputs_to_prediction_frame(outputs), outputs
