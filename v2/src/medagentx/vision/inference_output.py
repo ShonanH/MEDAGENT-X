@@ -68,16 +68,28 @@ def build_study_outputs(
     thresholds: Mapping[str, float],
     *,
     vision_backend_id: str = VISION_BACKEND_ID,
+    threshold_overrides: Mapping[str, float] | None = None,
 ) -> list[VisionStudyOutput]:
     """Convert a collect_inference_predictions payload into study outputs."""
     probabilities = np.asarray(predictions["probabilities"], dtype=np.float32)
     embeddings = np.asarray(predictions["study_embeddings"], dtype=np.float32)
     study_keys = list(predictions["study_keys"])
+    active_thresholds = dict(thresholds)
+    if threshold_overrides is not None:
+        unexpected = sorted(set(threshold_overrides) - set(DISEASE_LABELS))
+        if unexpected:
+            raise ValueError(f"Unexpected threshold override labels: {unexpected}")
+        active_thresholds.update(
+            {label: float(value) for label, value in threshold_overrides.items()}
+        )
 
     if len(probabilities) != len(study_keys):
         raise ValueError("probabilities and study_keys length mismatch")
     if len(embeddings) != len(study_keys):
         raise ValueError("study_embeddings and study_keys length mismatch")
+    missing_thresholds = sorted(set(DISEASE_LABELS) - set(active_thresholds))
+    if missing_thresholds:
+        raise ValueError(f"Missing thresholds for labels: {missing_thresholds}")
 
     outputs: list[VisionStudyOutput] = []
     for index, study_key in enumerate(study_keys):
@@ -85,7 +97,7 @@ def build_study_outputs(
             VisionLabelOutput.from_probability(
                 label,
                 float(probabilities[index, label_index]),
-                float(thresholds[label]),
+                float(active_thresholds[label]),
             )
             for label_index, label in enumerate(DISEASE_LABELS)
         )

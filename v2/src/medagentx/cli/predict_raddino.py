@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -26,6 +27,15 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--views-csv", type=Path, default=None)
     parser.add_argument("--dicom-root", type=Path, default=None)
     parser.add_argument("--checkpoint", type=Path, default=None)
+    parser.add_argument(
+        "--threshold-policy-json",
+        type=Path,
+        default=None,
+        help=(
+            "Optional threshold_policy_v2.json. When provided, selected_thresholds "
+            "override checkpoint thresholds during vision prediction."
+        ),
+    )
     parser.add_argument("--output-csv", type=Path, default=None)
     parser.add_argument(
         "--split",
@@ -69,6 +79,24 @@ def main(argv: list[str] | None = None) -> int:
             raise FileNotFoundError(f"Required inference artifact missing: {path}")
     if not dicom_root.exists():
         raise FileNotFoundError(f"DICOM root missing: {dicom_root}")
+    threshold_overrides = None
+    threshold_policy_version = None
+    if args.threshold_policy_json is not None:
+        if not args.threshold_policy_json.exists():
+            raise FileNotFoundError(
+                f"Threshold policy JSON missing: {args.threshold_policy_json}"
+            )
+        threshold_policy = json.loads(args.threshold_policy_json.read_text())
+        selected_thresholds = threshold_policy.get("selected_thresholds")
+        if not isinstance(selected_thresholds, dict):
+            raise ValueError(
+                "Threshold policy JSON must contain selected_thresholds object"
+            )
+        threshold_overrides = {
+            str(label): float(value)
+            for label, value in selected_thresholds.items()
+        }
+        threshold_policy_version = threshold_policy.get("threshold_policy_version")
 
     device = torch.device(args.device)
     if device.type == "cuda" and not torch.cuda.is_available():
@@ -78,6 +106,12 @@ def main(argv: list[str] | None = None) -> int:
         device=device,
         mixed_precision=not args.no_mixed_precision,
     )
+    if args.threshold_policy_json is not None:
+        print(
+            "[Vision] using threshold policy "
+            f"{threshold_policy_version or 'unknown'} -> "
+            f"{args.threshold_policy_json}"
+        )
 
     views = pd.read_csv(views_csv, dtype=str)
     records = build_study_inference_records(
@@ -89,6 +123,7 @@ def main(argv: list[str] | None = None) -> int:
         dicom_root=dicom_root,
         batch_size=args.batch_size,
         num_workers=args.num_workers,
+        threshold_overrides=threshold_overrides,
     )
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     table.to_csv(output_csv, index=False)

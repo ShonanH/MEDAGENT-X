@@ -64,6 +64,15 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--dicom-root", type=Path, default=None)
     parser.add_argument("--checkpoint", type=Path, default=None)
     parser.add_argument(
+        "--threshold-policy-json",
+        type=Path,
+        default=None,
+        help=(
+            "Optional threshold_policy_v2.json. When provided, selected_thresholds "
+            "override checkpoint thresholds during vision prediction."
+        ),
+    )
+    parser.add_argument(
         "--vector-db-dir",
         type=Path,
         default=None,
@@ -148,6 +157,24 @@ def main(argv: list[str] | None = None) -> int:
             raise FileNotFoundError(f"Required fusion-eval artifact missing: {path}")
     if not dicom_root.exists():
         raise FileNotFoundError(f"DICOM root missing: {dicom_root}")
+    threshold_overrides = None
+    threshold_policy_version = None
+    if args.threshold_policy_json is not None:
+        if not args.threshold_policy_json.exists():
+            raise FileNotFoundError(
+                f"Threshold policy JSON missing: {args.threshold_policy_json}"
+            )
+        threshold_policy = json.loads(args.threshold_policy_json.read_text())
+        selected_thresholds = threshold_policy.get("selected_thresholds")
+        if not isinstance(selected_thresholds, dict):
+            raise ValueError(
+                "Threshold policy JSON must contain selected_thresholds object"
+            )
+        threshold_overrides = {
+            str(label): float(value)
+            for label, value in selected_thresholds.items()
+        }
+        threshold_policy_version = threshold_policy.get("threshold_policy_version")
 
     device = torch.device(args.device)
     if device.type == "cuda" and not torch.cuda.is_available():
@@ -157,6 +184,12 @@ def main(argv: list[str] | None = None) -> int:
         f"[FusionEval] split={args.split} policy={FUSION_POLICY_VERSION} "
         f"device={device} gray_margin={args.gray_zone_margin}"
     )
+    if args.threshold_policy_json is not None:
+        print(
+            "[FusionEval] using threshold policy "
+            f"{threshold_policy_version or 'unknown'} -> "
+            f"{args.threshold_policy_json}"
+        )
     print(f"[FusionEval] loading views from {views_csv}")
     views = pd.read_csv(views_csv, dtype=str)
     records = build_study_inference_records(views, split=args.split)
@@ -184,6 +217,7 @@ def main(argv: list[str] | None = None) -> int:
         dicom_root=dicom_root,
         batch_size=args.batch_size,
         num_workers=args.num_workers,
+        threshold_overrides=threshold_overrides,
     )
     vision_elapsed = time.perf_counter() - vision_start
     print(
@@ -263,6 +297,12 @@ def main(argv: list[str] | None = None) -> int:
     judge_payload = {
         "split": args.split,
         "fusion_policy_version": FUSION_POLICY_VERSION,
+        "threshold_policy_version": threshold_policy_version,
+        "threshold_policy_json": (
+            str(args.threshold_policy_json)
+            if args.threshold_policy_json is not None
+            else None
+        ),
         "gray_zone_margin": args.gray_zone_margin,
         "study_count": len(study_outputs),
         "ground_truth_rows": len(ground_truth_records),
