@@ -13,15 +13,22 @@ import torch
 from medagentx.data.balanced_constants import DEFAULT_BALANCED_COHORT_ROOT
 from medagentx.evaluation.fusion_eval import (
     filter_gray_zone_ground_truth,
+    fusion_change_analysis_frame,
+    fusion_changed_cells_frame,
     fusion_results_to_frame,
     fusion_status_map,
-    run_named_judge,
+    named_judge_summary_payload,
+    per_label_metrics_frame,
+    run_named_judge_result,
+    status_confusion_by_label_frame,
     study_labels_to_ground_truth,
     study_outputs_by_key,
+    uncertain_status_metrics_frame,
     vision_status_map,
 )
 from medagentx.reasoning.constants import (
     DEFAULT_FUSION_SUBDIR,
+    FUSION_RETRIEVAL_TOP_K,
     FUSION_POLICY_VERSION,
     GRAY_ZONE_MARGIN,
 )
@@ -227,6 +234,32 @@ def main(argv: list[str] | None = None) -> int:
     vision_predictions = vision_status_map(study_outputs)
     fusion_predictions = fusion_status_map(fusion_results)
 
+    judge_runs = [
+        run_named_judge_result(
+            name="vision_full",
+            eval_scope="full",
+            ground_truth_records=ground_truth_records,
+            predicted_statuses=vision_predictions,
+        ),
+        run_named_judge_result(
+            name="fusion_full",
+            eval_scope="full",
+            ground_truth_records=ground_truth_records,
+            predicted_statuses=fusion_predictions,
+        ),
+        run_named_judge_result(
+            name="vision_gray_zone",
+            eval_scope="gray_zone",
+            ground_truth_records=gray_zone_records,
+            predicted_statuses=vision_predictions,
+        ),
+        run_named_judge_result(
+            name="fusion_gray_zone",
+            eval_scope="gray_zone",
+            ground_truth_records=gray_zone_records,
+            predicted_statuses=fusion_predictions,
+        ),
+    ]
     judge_payload = {
         "split": args.split,
         "fusion_policy_version": FUSION_POLICY_VERSION,
@@ -234,42 +267,55 @@ def main(argv: list[str] | None = None) -> int:
         "study_count": len(study_outputs),
         "ground_truth_rows": len(ground_truth_records),
         "gray_zone_rows": len(gray_zone_records),
-        "runs": [
-            run_named_judge(
-                name="vision_full",
-                ground_truth_records=ground_truth_records,
-                predicted_statuses=vision_predictions,
-            ),
-            run_named_judge(
-                name="fusion_full",
-                ground_truth_records=ground_truth_records,
-                predicted_statuses=fusion_predictions,
-            ),
-            run_named_judge(
-                name="vision_gray_zone",
-                ground_truth_records=gray_zone_records,
-                predicted_statuses=vision_predictions,
-            ),
-            run_named_judge(
-                name="fusion_gray_zone",
-                ground_truth_records=gray_zone_records,
-                predicted_statuses=fusion_predictions,
-            ),
-        ],
+        "runs": [named_judge_summary_payload(run) for run in judge_runs],
     }
 
     output_dir.mkdir(parents=True, exist_ok=True)
     vision_csv = output_dir / "vision_study_predictions.csv"
     fusion_csv = output_dir / "fusion_label_predictions.csv"
     judge_json = output_dir / "judge_summary.json"
+    per_label_metrics_csv = output_dir / "per_label_metrics.csv"
+    fusion_change_analysis_csv = output_dir / "fusion_change_analysis.csv"
+    fusion_changed_cells_csv = output_dir / "fusion_changed_cells.csv"
+    uncertain_status_metrics_csv = output_dir / "uncertain_status_metrics.csv"
+    status_confusion_csv = output_dir / "status_confusion_by_label.csv"
 
     study_outputs_to_prediction_frame(study_outputs).to_csv(vision_csv, index=False)
     fusion_results_to_frame(fusion_results).to_csv(fusion_csv, index=False)
+    per_label_metrics_frame(judge_runs).to_csv(per_label_metrics_csv, index=False)
+    fusion_change_analysis_frame(
+        ground_truth_records=ground_truth_records,
+        fusion_results=fusion_results,
+    ).to_csv(fusion_change_analysis_csv, index=False)
+    fusion_changed_cells_frame(
+        ground_truth_records=ground_truth_records,
+        fusion_results=fusion_results,
+        retrieved_top_k=FUSION_RETRIEVAL_TOP_K,
+    ).to_csv(fusion_changed_cells_csv, index=False)
+    uncertain_status_metrics_frame(judge_runs).to_csv(
+        uncertain_status_metrics_csv,
+        index=False,
+    )
+    status_confusion_by_label_frame(judge_runs).to_csv(
+        status_confusion_csv,
+        index=False,
+    )
     judge_json.write_text(json.dumps(judge_payload, indent=2, sort_keys=True) + "\n")
 
     print(f"[FusionEval] wrote vision predictions -> {vision_csv}")
     print(f"[FusionEval] wrote fusion predictions -> {fusion_csv}")
     print(f"[FusionEval] wrote judge summary -> {judge_json}")
+    print(f"[FusionEval] wrote per-label metrics -> {per_label_metrics_csv}")
+    print(
+        "[FusionEval] wrote fusion change analysis -> "
+        f"{fusion_change_analysis_csv}"
+    )
+    print(f"[FusionEval] wrote fusion changed cells -> {fusion_changed_cells_csv}")
+    print(
+        "[FusionEval] wrote uncertain status metrics -> "
+        f"{uncertain_status_metrics_csv}"
+    )
+    print(f"[FusionEval] wrote status confusion -> {status_confusion_csv}")
     for run in judge_payload["runs"]:
         if run.get("skipped"):
             print(f"[FusionEval] {run['name']}: skipped ({run['reason']})")

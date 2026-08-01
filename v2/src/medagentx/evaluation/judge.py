@@ -17,8 +17,12 @@ from medagentx.evaluation.matching import LabelMatch, compare_statuses
 from medagentx.evaluation.metrics import (
     AggregateMetrics,
     LabelMetrics,
+    StatusConfusionCount,
+    UncertainStatusMetrics,
     compute_aggregate_metrics,
     compute_label_metrics,
+    compute_status_confusion_counts,
+    compute_uncertain_status_metrics,
 )
 from medagentx.labels.statuses import LabelStatus
 
@@ -29,6 +33,8 @@ class JudgeResult:
 
     matches: tuple[LabelMatch, ...]
     per_label_metrics: tuple[LabelMetrics, ...]
+    uncertain_status_metrics: tuple[UncertainStatusMetrics, ...]
+    status_confusion_counts: tuple[StatusConfusionCount, ...]
     aggregate_metrics: AggregateMetrics
     judge_metric_version: str = JUDGE_METRIC_VERSION
 
@@ -102,10 +108,21 @@ def run_judge(
     per_label_metrics = tuple(
         compute_label_metrics(by_label[label]) for label in sorted(by_label)
     )
+    uncertain_status_metrics = tuple(
+        compute_uncertain_status_metrics(by_label[label])
+        for label in sorted(by_label)
+    )
+    status_confusion_counts = tuple(
+        count
+        for label in sorted(by_label)
+        for count in compute_status_confusion_counts(by_label[label])
+    )
     aggregate_metrics = compute_aggregate_metrics(per_label_metrics)
 
     return JudgeResult(
         matches=tuple(matches),
         per_label_metrics=per_label_metrics,
+        uncertain_status_metrics=uncertain_status_metrics,
+        status_confusion_counts=status_confusion_counts,
         aggregate_metrics=aggregate_metrics,
     )
