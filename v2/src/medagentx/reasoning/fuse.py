@@ -7,10 +7,12 @@ from typing import Any, Mapping, Sequence
 
 from medagentx.labels.statuses import LabelStatus
 from medagentx.reasoning.constants import (
+    DEMOTION_MIN_NEGATIVE_COUNT,
     DEMOTION_REQUIRES_NEGATIVE_MAJORITY,
     FUSION_LABELS,
     FUSION_POLICY_VERSION,
     GRAY_ZONE_MARGIN,
+    LABEL_FUSION_RULE_OVERRIDES,
     PROMOTION_MAX_NEGATIVE_COUNT,
     PROMOTION_MIN_POSITIVE_COUNT,
 )
@@ -72,6 +74,28 @@ class FusionStudyResult:
     labels: tuple[FusedLabelPrediction, ...]
 
 
+@dataclass(frozen=True)
+class FusionLabelRule:
+    """Per-label deterministic fusion knobs."""
+
+    promotion_min_positive_count: int = PROMOTION_MIN_POSITIVE_COUNT
+    promotion_max_negative_count: int = PROMOTION_MAX_NEGATIVE_COUNT
+    demotion_min_negative_count: int = DEMOTION_MIN_NEGATIVE_COUNT
+    demotion_requires_negative_majority: bool = DEMOTION_REQUIRES_NEGATIVE_MAJORITY
+
+
+def fusion_rule_for_label(label: str) -> FusionLabelRule:
+    """Return the default rule plus any label-specific overrides."""
+    if label not in FUSION_LABELS:
+        raise ValueError(f"Unsupported fusion label: {label!r}")
+    overrides = LABEL_FUSION_RULE_OVERRIDES.get(label, {})
+    allowed = set(FusionLabelRule.__dataclass_fields__)
+    unexpected = sorted(set(overrides) - allowed)
+    if unexpected:
+        raise ValueError(f"Unexpected fusion rule keys for {label}: {unexpected}")
+    return FusionLabelRule(**overrides)
+
+
 def vision_status_from_probability(
     probability: float,
     threshold: float,
@@ -94,26 +118,39 @@ def is_gray_zone(
     return abs(float(probability) - float(threshold)) <= float(margin)
 
 
-def retrieval_supports_promotion(counts: MentionCounts) -> bool:
+def retrieval_supports_promotion(
+    counts: MentionCounts,
+    rule: FusionLabelRule,
+) -> bool:
     """Strong net-positive retrieval evidence required before promotion."""
     return (
-        counts.positive_count >= PROMOTION_MIN_POSITIVE_COUNT
-        and counts.negative_count <= PROMOTION_MAX_NEGATIVE_COUNT
+        counts.positive_count >= rule.promotion_min_positive_count
+        and counts.negative_count <= rule.promotion_max_negative_count
     )
 
 
-def retrieval_supports_demotion(counts: MentionCounts) -> bool:
+def retrieval_supports_demotion(
+    counts: MentionCounts,
+    rule: FusionLabelRule,
+) -> bool:
     """Return True when retrieval negatives outweigh positives."""
+    if counts.negative_count < rule.demotion_min_negative_count:
+        return False
+    if not rule.demotion_requires_negative_majority:
+        return True
     if not DEMOTION_REQUIRES_NEGATIVE_MAJORITY:
         return False
     return counts.negative_count > counts.positive_count
 
 
-def retrieval_strongly_negative(counts: MentionCounts) -> bool:
+def retrieval_strongly_negative(
+    counts: MentionCounts,
+    rule: FusionLabelRule,
+) -> bool:
     """Mirror the promotion bar for strong negative-only retrieval context."""
     return (
         counts.positive_count == 0
-        and counts.negative_count >= PROMOTION_MIN_POSITIVE_COUNT
+        and counts.negative_count >= rule.promotion_min_positive_count
     )
 
 
@@ -125,6 +162,7 @@ def fuse_label(
 ) -> FusedLabelPrediction:
     """Apply the locked fusion policy to one disease label."""
     vision_status = prediction.vision_status
+    rule = fusion_rule_for_label(prediction.label)
     gray_zone = is_gray_zone(
         prediction.probability,
         prediction.threshold,
@@ -137,7 +175,7 @@ def fuse_label(
         reason = "vision kept (gray zone, insufficient retrieval signal)"
         if (
             vision_status == LabelStatus.ABSENT
-            and retrieval_supports_promotion(mention_counts)
+            and retrieval_supports_promotion(mention_counts, rule)
         ):
             fused_status = LabelStatus.PRESENT
             reason = (
@@ -147,9 +185,9 @@ def fuse_label(
             )
         elif (
             vision_status == LabelStatus.PRESENT
-            and retrieval_supports_demotion(mention_counts)
+            and retrieval_supports_demotion(mention_counts, rule)
         ):
-            if retrieval_strongly_negative(mention_counts):
+            if retrieval_strongly_negative(mention_counts, rule):
                 fused_status = LabelStatus.ABSENT
                 reason = (
                     "demoted present to absent: "
