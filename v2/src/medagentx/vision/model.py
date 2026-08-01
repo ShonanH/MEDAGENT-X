@@ -73,7 +73,7 @@ def configure_partial_fine_tuning(
 
 
 class RadDinoStudyClassifier(nn.Module):
-    """Encode every view, mean-pool by study, and predict 12 diseases."""
+    """Encode every view, pool by study, and predict 12 diseases."""
 
     def __init__(
         self,
@@ -83,6 +83,7 @@ class RadDinoStudyClassifier(nn.Module):
         num_labels: int = NUM_DISEASES,
         dropout: float = 0.1,
         trainable_last_blocks: int = TRAINABLE_LAST_BLOCKS,
+        pooling_mode: str = "mean",
     ) -> None:
         super().__init__()
         if hidden_size <= 0:
@@ -96,13 +97,19 @@ class RadDinoStudyClassifier(nn.Module):
         self.hidden_size = hidden_size
         self.num_labels = num_labels
         self.trainable_last_blocks = trainable_last_blocks
+        self.pooling_mode = pooling_mode.strip().lower()
+        if self.pooling_mode not in {"mean", "mean_max"}:
+            raise ValueError("pooling_mode must be 'mean' or 'mean_max'")
         self.freeze_summary = configure_partial_fine_tuning(
             self.backbone,
             trainable_last_blocks=trainable_last_blocks,
         )
+        classifier_input_size = (
+            hidden_size * 2 if self.pooling_mode == "mean_max" else hidden_size
+        )
         self.classifier = nn.Sequential(
             nn.Dropout(dropout),
-            nn.Linear(hidden_size, num_labels),
+            nn.Linear(classifier_input_size, num_labels),
         )
 
     @classmethod
@@ -151,12 +158,12 @@ class RadDinoStudyClassifier(nn.Module):
                 f"got {view_embeddings.shape[-1]}"
             )
 
-        study_embeddings = torch.zeros(
+        mean_embeddings = torch.zeros(
             (num_studies, self.hidden_size),
             dtype=view_embeddings.dtype,
             device=view_embeddings.device,
         )
-        study_embeddings.index_add_(0, study_indices, view_embeddings)
+        mean_embeddings.index_add_(0, study_indices, view_embeddings)
         counts = torch.zeros(
             num_studies,
             dtype=view_embeddings.dtype,
@@ -169,7 +176,21 @@ class RadDinoStudyClassifier(nn.Module):
         )
         if torch.any(counts == 0):
             raise ValueError("Every study must contribute at least one view")
-        study_embeddings = study_embeddings / counts.unsqueeze(1)
+        mean_embeddings = mean_embeddings / counts.unsqueeze(1)
+
+        if self.pooling_mode == "mean_max":
+            max_embeddings = []
+            for study_index in range(num_studies):
+                max_embeddings.append(
+                    view_embeddings[study_indices == study_index].max(dim=0).values
+                )
+            study_embeddings = torch.cat(
+                [mean_embeddings, torch.stack(max_embeddings, dim=0)],
+                dim=1,
+            )
+        else:
+            study_embeddings = mean_embeddings
+
         logits = self.classifier(study_embeddings)
         return {
             "logits": logits,

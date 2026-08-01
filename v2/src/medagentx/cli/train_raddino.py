@@ -58,6 +58,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--dicom-root", type=Path, default=None)
     parser.add_argument("--output-root", type=Path, default=None)
     parser.add_argument("--model-name", default=DEFAULT_MODEL_NAME)
+    parser.add_argument(
+        "--pooling-mode",
+        choices=("mean", "mean_max"),
+        default="mean_max",
+        help="Study-level view pooling mode for the classifier head.",
+    )
     parser.add_argument("--batch-size", type=int, default=DEFAULT_BATCH_SIZE)
     parser.add_argument(
         "--gradient-accumulation-steps",
@@ -77,6 +83,23 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--weight-decay", type=float, default=DEFAULT_WEIGHT_DECAY
     )
+    parser.add_argument(
+        "--loss-name",
+        choices=("bce", "asymmetric"),
+        default="asymmetric",
+        help="Masked multi-label loss. Use asymmetric for recall-focused retraining.",
+    )
+    parser.add_argument("--asl-gamma-neg", type=float, default=4.0)
+    parser.add_argument("--asl-gamma-pos", type=float, default=1.0)
+    parser.add_argument("--asl-clip", type=float, default=0.05)
+    parser.add_argument(
+        "--selection-metric",
+        choices=("macro_f1", "macro_average_precision", "macro_auroc"),
+        default="macro_f1",
+        help="Validation metric used to select best checkpoint.",
+    )
+    parser.add_argument("--warmup-ratio", type=float, default=0.05)
+    parser.add_argument("--max-grad-norm", type=float, default=1.0)
     parser.add_argument(
         "--num-workers", type=int, default=DEFAULT_NUM_WORKERS
     )
@@ -141,6 +164,24 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     if args.batch_size <= 0:
         raise ValueError("batch-size must be > 0")
+    if args.gradient_accumulation_steps <= 0:
+        raise ValueError("gradient-accumulation-steps must be > 0")
+    if args.epochs <= 0:
+        raise ValueError("epochs must be > 0")
+    if args.early_stopping_patience <= 0:
+        raise ValueError("early-stopping-patience must be > 0")
+    if args.backbone_lr <= 0 or args.head_lr <= 0:
+        raise ValueError("learning rates must be > 0")
+    if args.weight_decay < 0:
+        raise ValueError("weight-decay must be >= 0")
+    if args.asl_gamma_neg < 0 or args.asl_gamma_pos < 0:
+        raise ValueError("ASL gamma values must be >= 0")
+    if args.asl_clip < 0:
+        raise ValueError("asl-clip must be >= 0")
+    if not 0 <= args.warmup_ratio < 1:
+        raise ValueError("warmup-ratio must satisfy 0 <= warmup-ratio < 1")
+    if args.max_grad_norm < 0:
+        raise ValueError("max-grad-norm must be >= 0")
     if args.num_workers < 0:
         raise ValueError("num-workers must be >= 0")
     for name in (
@@ -220,7 +261,10 @@ def main(argv: list[str] | None = None) -> int:
         train=False,
     )
 
-    model = RadDinoStudyClassifier.from_pretrained(args.model_name)
+    model = RadDinoStudyClassifier.from_pretrained(
+        args.model_name,
+        pooling_mode=args.pooling_mode,
+    )
     print(f"[Vision] freeze summary: {model.freeze_summary}")
     config = TrainingConfig(
         model_name=args.model_name,
@@ -234,6 +278,13 @@ def main(argv: list[str] | None = None) -> int:
         mixed_precision=not args.no_mixed_precision,
         batch_size=args.batch_size,
         num_workers=args.num_workers,
+        loss_name=args.loss_name,
+        asl_gamma_neg=args.asl_gamma_neg,
+        asl_gamma_pos=args.asl_gamma_pos,
+        asl_clip=args.asl_clip,
+        selection_metric=args.selection_metric,
+        warmup_ratio=args.warmup_ratio,
+        max_grad_norm=args.max_grad_norm,
     )
     output_root.mkdir(parents=True, exist_ok=True)
     (output_root / "run_config.json").write_text(
@@ -247,6 +298,7 @@ def main(argv: list[str] | None = None) -> int:
                 "train_studies": len(train_records),
                 "val_studies": len(val_records),
                 "test_studies": len(test_records),
+                "pooling_mode": args.pooling_mode,
                 "training_config": config.__dict__,
             },
             indent=2,
@@ -275,12 +327,14 @@ def main(argv: list[str] | None = None) -> int:
         val_loader,
         device=device,
         mixed_precision=config.mixed_precision,
+        config=config,
     )
     test_predictions = collect_predictions(
         best_model,
         test_loader,
         device=device,
         mixed_precision=config.mixed_precision,
+        config=config,
     )
     prediction_table(val_predictions, thresholds, split="val").to_csv(
         output_root / "val_study_predictions.csv",
@@ -296,7 +350,8 @@ def main(argv: list[str] | None = None) -> int:
         test_predictions["masks"],
         thresholds,
     )
-    test_metrics["masked_bce"] = test_predictions["masked_bce"]
+    test_metrics["masked_loss"] = test_predictions["masked_loss"]
+    test_metrics["loss_name"] = config.loss_name
     (output_root / "test_metrics.json").write_text(
         json.dumps(test_metrics, indent=2, sort_keys=True)
     )

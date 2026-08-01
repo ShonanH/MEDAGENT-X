@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import random
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -11,7 +12,6 @@ from typing import Any
 import numpy as np
 import pandas as pd
 import torch
-import torch.nn.functional as F
 
 from medagentx.labels.constants import DISEASE_LABELS
 from medagentx.labels.constants import CHEXPERT_TRAINING_POLICY_VERSION
@@ -30,6 +30,7 @@ from medagentx.vision.constants import (
     DEFAULT_WEIGHT_DECAY,
     VISION_BACKEND_ID,
 )
+from medagentx.vision.losses import masked_multilabel_loss
 from medagentx.vision.metrics import (
     compute_masked_metrics,
     tune_validation_thresholds,
@@ -51,6 +52,13 @@ class TrainingConfig:
     mixed_precision: bool = True
     batch_size: int = DEFAULT_BATCH_SIZE
     num_workers: int = DEFAULT_NUM_WORKERS
+    loss_name: str = "bce"
+    asl_gamma_neg: float = 4.0
+    asl_gamma_pos: float = 1.0
+    asl_clip: float = 0.05
+    selection_metric: str = "macro_f1"
+    warmup_ratio: float = 0.05
+    max_grad_norm: float = 1.0
 
 
 def set_reproducible_seed(seed: int) -> None:
@@ -61,22 +69,22 @@ def set_reproducible_seed(seed: int) -> None:
         torch.cuda.manual_seed_all(seed)
 
 
-def masked_binary_cross_entropy(
+def compute_training_loss(
     logits: torch.Tensor,
     targets: torch.Tensor,
     masks: torch.Tensor,
+    config: TrainingConfig,
 ) -> tuple[torch.Tensor, int]:
-    """Average BCE over U-mask supervised disease cells only."""
-    if logits.shape != targets.shape or logits.shape != masks.shape:
-        raise ValueError("logits, targets, and masks must have identical shapes")
-    loss_cells = F.binary_cross_entropy_with_logits(
+    """Compute the configured masked multi-label loss."""
+    return masked_multilabel_loss(
         logits,
         targets,
-        reduction="none",
+        masks,
+        loss_name=config.loss_name,
+        gamma_neg=config.asl_gamma_neg,
+        gamma_pos=config.asl_gamma_pos,
+        clip=config.asl_clip,
     )
-    supervised = int(masks.sum().item())
-    denominator = masks.sum().clamp_min(1.0)
-    return (loss_cells * masks).sum() / denominator, supervised
 
 
 def build_optimizer(
@@ -100,6 +108,29 @@ def build_optimizer(
     )
 
 
+def build_lr_scheduler(
+    optimizer: torch.optim.Optimizer,
+    *,
+    total_optimizer_steps: int,
+    warmup_ratio: float,
+) -> torch.optim.lr_scheduler.LambdaLR:
+    """Create warmup + cosine decay scheduler over optimizer steps."""
+    if total_optimizer_steps <= 0:
+        raise ValueError("total_optimizer_steps must be > 0")
+    if not 0.0 <= warmup_ratio < 1.0:
+        raise ValueError("warmup_ratio must satisfy 0 <= warmup_ratio < 1")
+    warmup_steps = int(total_optimizer_steps * warmup_ratio)
+
+    def lr_lambda(step: int) -> float:
+        if warmup_steps > 0 and step < warmup_steps:
+            return float(step + 1) / float(warmup_steps)
+        decay_steps = max(total_optimizer_steps - warmup_steps, 1)
+        progress = min(max(step - warmup_steps, 0), decay_steps) / decay_steps
+        return 0.5 * (1.0 + math.cos(math.pi * progress))
+
+    return torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
+
+
 def _move_batch(batch: dict[str, Any], device: torch.device) -> dict[str, Any]:
     output = dict(batch)
     for key in ("pixel_values", "study_indices", "targets", "masks"):
@@ -116,8 +147,10 @@ def train_one_epoch(
     device: torch.device,
     gradient_accumulation_steps: int,
     mixed_precision: bool,
+    config: TrainingConfig,
+    scheduler: torch.optim.lr_scheduler.LRScheduler | None = None,
 ) -> float:
-    """Train one epoch and return supervised-cell-weighted masked BCE."""
+    """Train one epoch and return supervised-cell-weighted masked loss."""
     if gradient_accumulation_steps <= 0:
         raise ValueError("gradient_accumulation_steps must be > 0")
 
@@ -140,10 +173,11 @@ def train_one_epoch(
                 batch["study_indices"],
                 batch["num_studies"],
             )
-            loss, supervised = masked_binary_cross_entropy(
+            loss, supervised = compute_training_loss(
                 output["logits"],
                 batch["targets"],
                 batch["masks"],
+                config,
             )
             scaled_loss = loss / gradient_accumulation_steps
 
@@ -153,8 +187,16 @@ def train_one_epoch(
             or step + 1 == len(loader)
         )
         if should_step:
+            if config.max_grad_norm > 0:
+                scaler.unscale_(optimizer)
+                torch.nn.utils.clip_grad_norm_(
+                    model.parameters(),
+                    config.max_grad_norm,
+                )
             scaler.step(optimizer)
             scaler.update()
+            if scheduler is not None:
+                scheduler.step()
             optimizer.zero_grad(set_to_none=True)
 
         loss_sum += float(loss.detach().item()) * supervised
@@ -170,6 +212,7 @@ def collect_predictions(
     *,
     device: torch.device,
     mixed_precision: bool,
+    config: TrainingConfig,
 ) -> dict[str, Any]:
     """Collect study-level probabilities, masks, metadata, and masked loss."""
     model.eval()
@@ -196,10 +239,11 @@ def collect_predictions(
                 batch["study_indices"],
                 batch["num_studies"],
             )
-            loss, supervised = masked_binary_cross_entropy(
+            loss, supervised = compute_training_loss(
                 output["logits"],
                 batch["targets"],
                 batch["masks"],
+                config,
             )
 
         probabilities.append(
@@ -222,8 +266,31 @@ def collect_predictions(
         "patient_ids": patient_ids,
         "view_counts": view_counts,
         "dicom_paths": dicom_paths,
-        "masked_bce": loss_sum / max(supervised_sum, 1),
+        "masked_loss": loss_sum / max(supervised_sum, 1),
+        "loss_name": config.loss_name,
     }
+
+
+def score_for_selection(
+    val_metrics: dict[str, Any],
+    *,
+    selection_metric: str,
+) -> tuple[float, str]:
+    """Return the checkpoint-selection score and metric name."""
+    metric = selection_metric.strip().lower()
+    if metric == "macro_f1":
+        return float(val_metrics.get("macro_f1") or 0.0), "macro_f1"
+    if metric == "macro_average_precision":
+        return (
+            float(val_metrics.get("macro_average_precision") or 0.0),
+            "macro_average_precision",
+        )
+    if metric == "macro_auroc":
+        return float(val_metrics.get("macro_auroc") or 0.0), "macro_auroc"
+    raise ValueError(
+        "selection_metric must be one of: macro_f1, "
+        "macro_average_precision, macro_auroc"
+    )
 
 
 @torch.no_grad()
@@ -360,6 +427,14 @@ def train_with_validation(
         head_lr=config.head_lr,
         weight_decay=config.weight_decay,
     )
+    optimizer_steps_per_epoch = math.ceil(
+        len(train_loader) / config.gradient_accumulation_steps
+    )
+    scheduler = build_lr_scheduler(
+        optimizer,
+        total_optimizer_steps=max(optimizer_steps_per_epoch * config.epochs, 1),
+        warmup_ratio=config.warmup_ratio,
+    )
 
     best_score = float("-inf")
     best_epoch = 0
@@ -377,12 +452,15 @@ def train_with_validation(
             device=device,
             gradient_accumulation_steps=config.gradient_accumulation_steps,
             mixed_precision=config.mixed_precision,
+            config=config,
+            scheduler=scheduler,
         )
         val_predictions = collect_predictions(
             model,
             val_loader,
             device=device,
             mixed_precision=config.mixed_precision,
+            config=config,
         )
         thresholds = tune_validation_thresholds(
             val_predictions["targets"],
@@ -395,23 +473,23 @@ def train_with_validation(
             val_predictions["masks"],
             thresholds,
         )
-        val_metrics["masked_bce"] = val_predictions["masked_bce"]
+        val_metrics["masked_loss"] = val_predictions["masked_loss"]
+        val_metrics["loss_name"] = config.loss_name
         val_metrics["epoch"] = epoch
-        val_metrics["train_masked_bce"] = train_loss
+        val_metrics["train_masked_loss"] = train_loss
 
+        score, selection_metric = score_for_selection(
+            val_metrics,
+            selection_metric=config.selection_metric,
+        )
         macro_auroc = val_metrics["macro_auroc"]
         macro_f1 = val_metrics["macro_f1"]
-        if macro_auroc is not None:
-            score = float(macro_auroc)
-            selection_metric = "macro_auroc"
-        else:
-            score = float(macro_f1 or 0.0)
-            selection_metric = "macro_f1_fallback"
         history.append(dict(val_metrics))
         print(
-            f"[Vision] epoch={epoch} train_bce={train_loss:.5f} "
-            f"val_bce={val_predictions['masked_bce']:.5f} "
-            f"macro_auroc={macro_auroc} macro_f1={macro_f1}"
+            f"[Vision] epoch={epoch} train_loss={train_loss:.5f} "
+            f"val_loss={val_predictions['masked_loss']:.5f} "
+            f"macro_auroc={macro_auroc} macro_f1={macro_f1} "
+            f"selection={selection_metric}:{score}"
         )
 
         if score > best_score:
@@ -425,6 +503,7 @@ def train_with_validation(
                 "disease_labels": list(DISEASE_LABELS),
                 "trainable_last_blocks": model.trainable_last_blocks,
                 "hidden_size": model.hidden_size,
+                "pooling_mode": getattr(model, "pooling_mode", "mean"),
                 "thresholds": thresholds,
                 "epoch": epoch,
                 "selection_metric": selection_metric,
@@ -485,6 +564,7 @@ def load_finetuned_checkpoint(
     model = RadDinoStudyClassifier.from_pretrained(
         checkpoint["model_name"],
         trainable_last_blocks=int(checkpoint["trainable_last_blocks"]),
+        pooling_mode=str(checkpoint.get("pooling_mode", "mean")),
     )
     model.load_state_dict(checkpoint["model_state_dict"], strict=True)
     model.to(device)
