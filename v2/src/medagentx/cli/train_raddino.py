@@ -22,6 +22,7 @@ from medagentx.vision.constants import (
     DEFAULT_NUM_WORKERS,
     DEFAULT_SEED,
     DEFAULT_WEIGHT_DECAY,
+    TRAINABLE_LAST_BLOCKS,
 )
 from medagentx.vision.data import (
     LightCxrAugment,
@@ -44,7 +45,7 @@ def build_parser() -> argparse.ArgumentParser:
     """Build the RAD-DINO training command-line parser."""
     parser = argparse.ArgumentParser(
         description=(
-            "Fine-tune the last two RAD-DINO transformer blocks plus a "
+            "Fine-tune configurable RAD-DINO transformer blocks plus a "
             "12-disease study-level head using masked CheXpert supervision."
         )
     )
@@ -80,6 +81,15 @@ def build_parser() -> argparse.ArgumentParser:
         "--backbone-lr", type=float, default=DEFAULT_BACKBONE_LR
     )
     parser.add_argument("--head-lr", type=float, default=DEFAULT_HEAD_LR)
+    parser.add_argument(
+        "--trainable-last-blocks",
+        type=int,
+        default=TRAINABLE_LAST_BLOCKS,
+        help=(
+            "Number of final RAD-DINO transformer blocks to fine-tune. "
+            f"Default preserves the locked baseline: {TRAINABLE_LAST_BLOCKS}."
+        ),
+    )
     parser.add_argument(
         "--weight-decay", type=float, default=DEFAULT_WEIGHT_DECAY
     )
@@ -172,6 +182,8 @@ def main(argv: list[str] | None = None) -> int:
         raise ValueError("early-stopping-patience must be > 0")
     if args.backbone_lr <= 0 or args.head_lr <= 0:
         raise ValueError("learning rates must be > 0")
+    if args.trainable_last_blocks <= 0:
+        raise ValueError("trainable-last-blocks must be > 0")
     if args.weight_decay < 0:
         raise ValueError("weight-decay must be >= 0")
     if args.asl_gamma_neg < 0 or args.asl_gamma_pos < 0:
@@ -263,6 +275,7 @@ def main(argv: list[str] | None = None) -> int:
 
     model = RadDinoStudyClassifier.from_pretrained(
         args.model_name,
+        trainable_last_blocks=args.trainable_last_blocks,
         pooling_mode=args.pooling_mode,
     )
     print(f"[Vision] freeze summary: {model.freeze_summary}")
@@ -299,6 +312,7 @@ def main(argv: list[str] | None = None) -> int:
                 "val_studies": len(val_records),
                 "test_studies": len(test_records),
                 "pooling_mode": args.pooling_mode,
+                "trainable_last_blocks": args.trainable_last_blocks,
                 "training_config": config.__dict__,
             },
             indent=2,
@@ -357,7 +371,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     print(
         f"[Vision] best_epoch={result['best_epoch']} "
-        f"best_val_macro_auroc={result['best_score']}"
+        f"best_val_{config.selection_metric}={result['best_score']}"
     )
     print(
         f"[Vision] test macro_auroc={test_metrics['macro_auroc']} "
