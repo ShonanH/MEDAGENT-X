@@ -42,17 +42,31 @@ class EvidenceSnippet:
 
 
 @dataclass(frozen=True)
+class LabeledEvidenceSnippet:
+    """One evidence snippet tied to the predicted label it supports or disputes."""
+
+    label: str
+    case_id: str
+    similarity: float | None
+    snippet: str
+
+
+@dataclass(frozen=True)
 class LabelVerificationResult:
     """Evidence verification output for one disease label."""
 
     label: str
     fused_status: LabelStatus
+    vision_status: LabelStatus
     evidence_score: int
     vision_support: EvidenceLevel
     retrieval_support: EvidenceLevel
     contradiction_level: EvidenceLevel
+    retrieval_positive_count: int
+    retrieval_negative_count: int
     in_gray_zone: bool
     fusion_changed: bool
+    fusion_reason: str
     evidence_summary: str
     supporting_evidence: tuple[EvidenceSnippet, ...]
     contradicting_evidence: tuple[EvidenceSnippet, ...]
@@ -69,6 +83,14 @@ class StudyEvidenceVerificationResult:
     """Evidence verification output for one study."""
 
     study_key: str
+    predicted_labels: tuple[str, ...]
+    overall_evidence_score: int
+    vision_evidence_summary: str
+    retrieval_evidence_summary: str
+    fusion_evidence_summary: str
+    evidence_narrative: str
+    supporting_evidence: tuple[LabeledEvidenceSnippet, ...]
+    contradicting_evidence: tuple[LabeledEvidenceSnippet, ...]
     labels: tuple[LabelVerificationResult, ...]
     verification_policy_version: str = "evidence_verification_policy_v1"
 
@@ -270,6 +292,202 @@ def _contradicting_snippets_for_label(
     return _evidence_snippets_for_label(label, retrieved_cases, negative=True)
 
 
+def _predicted_label_results(
+    results: Sequence[LabelVerificationResult],
+) -> tuple[LabelVerificationResult, ...]:
+    return tuple(
+        result for result in results if result.fused_status is not LabelStatus.ABSENT
+    )
+
+
+def _format_prediction(result: LabelVerificationResult) -> str:
+    if result.fused_status is LabelStatus.PRESENT:
+        return result.label
+    return f"{result.label} ({result.fused_status.value})"
+
+
+def _join_text(items: Sequence[str]) -> str:
+    cleaned = [item for item in items if item]
+    if not cleaned:
+        return ""
+    if len(cleaned) == 1:
+        return cleaned[0]
+    if len(cleaned) == 2:
+        return f"{cleaned[0]} and {cleaned[1]}"
+    return ", ".join(cleaned[:-1]) + f", and {cleaned[-1]}"
+
+
+def _labeled_snippets(
+    results: Sequence[LabelVerificationResult],
+    *,
+    supporting: bool,
+    max_snippets: int = 8,
+) -> tuple[LabeledEvidenceSnippet, ...]:
+    snippets: list[LabeledEvidenceSnippet] = []
+    seen: set[tuple[str, str, str]] = set()
+    for result in results:
+        source = result.supporting_evidence if supporting else result.contradicting_evidence
+        for snippet in source:
+            key = (result.label, snippet.case_id, snippet.snippet)
+            if key in seen:
+                continue
+            seen.add(key)
+            snippets.append(
+                LabeledEvidenceSnippet(
+                    label=result.label,
+                    case_id=snippet.case_id,
+                    similarity=snippet.similarity,
+                    snippet=snippet.snippet,
+                )
+            )
+            if len(snippets) >= max_snippets:
+                return tuple(snippets)
+    return tuple(snippets)
+
+
+def _overall_evidence_score(
+    predicted_results: Sequence[LabelVerificationResult],
+) -> int:
+    if not predicted_results:
+        return 1
+    average = sum(result.evidence_score for result in predicted_results) / len(
+        predicted_results
+    )
+    return max(1, min(5, round(average)))
+
+
+def _vision_evidence_summary(
+    predicted_results: Sequence[LabelVerificationResult],
+) -> str:
+    if not predicted_results:
+        return "The vision model did not flag any supervised disease label as a final positive prediction."
+    supported = [
+        result.label
+        for result in predicted_results
+        if result.vision_support
+        in (EvidenceLevel.MODERATE, EvidenceLevel.STRONG)
+    ]
+    if supported:
+        return (
+            "The vision model independently flagged "
+            f"{_join_text(supported)}."
+        )
+    return (
+        "The final predicted labels were not strongly supported by the vision "
+        "model alone."
+    )
+
+
+def _retrieval_evidence_summary(
+    predicted_results: Sequence[LabelVerificationResult],
+) -> str:
+    if not predicted_results:
+        return "No positive or uncertain predicted labels required retrieval support."
+    supported = [
+        (
+            f"{result.label} ({result.retrieval_positive_count} positive, "
+            f"{result.retrieval_negative_count} negated)"
+        )
+        for result in predicted_results
+        if result.retrieval_support
+        in (EvidenceLevel.WEAK, EvidenceLevel.MODERATE, EvidenceLevel.STRONG)
+    ]
+    contradicted = [
+        (
+            f"{result.label} ({result.retrieval_negative_count} negated vs "
+            f"{result.retrieval_positive_count} positive)"
+        )
+        for result in predicted_results
+        if result.retrieval_support is EvidenceLevel.CONTRADICTORY
+    ]
+    if supported and contradicted:
+        return (
+            "The top 5 visually similar retrieved studies supported "
+            f"{_join_text(supported)}, but contained contradictory report "
+            f"evidence for {_join_text(contradicted)}."
+        )
+    if supported:
+        return (
+            "The top 5 visually similar retrieved studies contained matching "
+            f"report evidence for {_join_text(supported)}."
+        )
+    if contradicted:
+        return (
+            "The top 5 visually similar retrieved studies contained "
+            f"contradictory report evidence for {_join_text(contradicted)}."
+        )
+    return (
+        "The top 5 visually similar retrieved studies did not contain clear "
+        "matching report evidence for the final predicted labels."
+    )
+
+
+def _fusion_evidence_summary(
+    predicted_results: Sequence[LabelVerificationResult],
+) -> str:
+    if not predicted_results:
+        return "Fusion produced no positive or uncertain supervised disease prediction."
+    changed = [result for result in predicted_results if result.fusion_changed]
+    if not changed:
+        return (
+            "Fusion kept the vision model's final positive or uncertain "
+            "predictions unchanged."
+        )
+    changed_labels = [
+        f"{result.label}: {result.fusion_reason}" for result in changed
+    ]
+    return "Fusion updated these labels using retrieval evidence: " + _join_text(
+        changed_labels
+    )
+
+
+def _evidence_narrative(
+    *,
+    predicted_results: Sequence[LabelVerificationResult],
+    vision_summary: str,
+    retrieval_summary: str,
+    fusion_summary: str,
+    overall_score: int,
+    supporting_evidence: Sequence[LabeledEvidenceSnippet],
+    contradicting_evidence: Sequence[LabeledEvidenceSnippet],
+) -> str:
+    if not predicted_results:
+        return (
+            "MEDAGENT-X did not produce any positive supervised disease label "
+            "for this study. "
+            f"{vision_summary} {retrieval_summary} Overall evidence score: "
+            f"{overall_score}/5."
+        )
+
+    prediction_text = _join_text(
+        [_format_prediction(result) for result in predicted_results]
+    )
+    parts = [
+        f"MEDAGENT-X predicted {prediction_text} for this study.",
+        vision_summary,
+        retrieval_summary,
+        fusion_summary,
+    ]
+    if supporting_evidence:
+        examples = _join_text(
+            [
+                f"{snippet.label}: \"{snippet.snippet}\""
+                for snippet in supporting_evidence[:3]
+            ]
+        )
+        parts.append(f"Supporting retrieved examples include {examples}.")
+    if contradicting_evidence:
+        examples = _join_text(
+            [
+                f"{snippet.label}: \"{snippet.snippet}\""
+                for snippet in contradicting_evidence[:3]
+            ]
+        )
+        parts.append(f"Contradictory retrieved examples include {examples}.")
+    parts.append(f"Overall evidence score: {overall_score}/5.")
+    return " ".join(parts)
+
+
 def _summary(
     *,
     fused_status: LabelStatus,
@@ -339,12 +557,16 @@ def verify_study_evidence(
             LabelVerificationResult(
                 label=label,
                 fused_status=fused_label.fused_status,
+                vision_status=fused_label.vision_status,
                 evidence_score=evidence_score,
                 vision_support=vision_support,
                 retrieval_support=retrieval_support,
                 contradiction_level=contradiction_level,
+                retrieval_positive_count=counts.positive_count,
+                retrieval_negative_count=counts.negative_count,
                 in_gray_zone=fused_label.in_gray_zone,
                 fusion_changed=fused_label.vision_status != fused_label.fused_status,
+                fusion_reason=fused_label.refinement_reason,
                 evidence_summary=_summary(
                     fused_status=fused_label.fused_status,
                     probability=vision_label.probability,
@@ -365,8 +587,34 @@ def verify_study_evidence(
             )
         )
 
+    predicted_results = _predicted_label_results(results)
+    supporting_evidence = _labeled_snippets(predicted_results, supporting=True)
+    contradicting_evidence = _labeled_snippets(predicted_results, supporting=False)
+    overall_score = _overall_evidence_score(predicted_results)
+    vision_summary = _vision_evidence_summary(predicted_results)
+    retrieval_summary = _retrieval_evidence_summary(predicted_results)
+    fusion_summary = _fusion_evidence_summary(predicted_results)
+
     return StudyEvidenceVerificationResult(
         study_key=vision_output.study_key,
+        predicted_labels=tuple(
+            _format_prediction(result) for result in predicted_results
+        ),
+        overall_evidence_score=overall_score,
+        vision_evidence_summary=vision_summary,
+        retrieval_evidence_summary=retrieval_summary,
+        fusion_evidence_summary=fusion_summary,
+        evidence_narrative=_evidence_narrative(
+            predicted_results=predicted_results,
+            vision_summary=vision_summary,
+            retrieval_summary=retrieval_summary,
+            fusion_summary=fusion_summary,
+            overall_score=overall_score,
+            supporting_evidence=supporting_evidence,
+            contradicting_evidence=contradicting_evidence,
+        ),
+        supporting_evidence=supporting_evidence,
+        contradicting_evidence=contradicting_evidence,
         labels=tuple(results),
     )
 

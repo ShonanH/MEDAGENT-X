@@ -138,7 +138,7 @@ def _verification_summary_payload(
     *,
     split: str,
     study_count: int,
-    label_count: int,
+    prediction_count: int,
     elapsed_seconds: float,
     threshold_policy_version: str | None,
     threshold_policy_json: Path | None,
@@ -156,7 +156,7 @@ def _verification_summary_payload(
         "gray_zone_margin": gray_zone_margin,
         "retrieved_top_k": FUSION_RETRIEVAL_TOP_K,
         "study_count": study_count,
-        "label_count": label_count,
+        "prediction_count": prediction_count,
         "elapsed_seconds": elapsed_seconds,
         "evidence_score_counts": {
             str(score): count for score, count in sorted(score_counts.items())
@@ -295,11 +295,16 @@ def main(argv: list[str] | None = None) -> int:
         study_verification_to_json_dict(result)
         for result in verification_results
     ]
-    score_counts: Counter[int] = Counter(int(row["evidence_score"]) for row in csv_rows)
+    score_counts: Counter[int] = Counter(
+        int(row["overall_evidence_score"]) for row in csv_rows
+    )
+    prediction_count = sum(
+        len(result.predicted_labels) for result in verification_results
+    )
     summary_payload = _verification_summary_payload(
         split=args.split,
         study_count=len(verification_results),
-        label_count=len(csv_rows),
+        prediction_count=prediction_count,
         elapsed_seconds=elapsed,
         threshold_policy_version=threshold_policy_version,
         threshold_policy_json=args.threshold_policy_json,
@@ -336,10 +341,14 @@ def main(argv: list[str] | None = None) -> int:
     print(f"[EvidenceVerification] wrote verification JSON -> {verification_json}")
     print(f"[EvidenceVerification] wrote summary -> {summary_json}")
     print(
-        "[EvidenceVerification] evidence score counts: "
+        "[EvidenceVerification] study evidence score counts: "
         + ", ".join(
             f"{score}={count}" for score, count in sorted(score_counts.items())
         )
+    )
+    print(
+        f"[EvidenceVerification] study rows={len(csv_rows)} "
+        f"predicted_labels={prediction_count}"
     )
     return 0
 

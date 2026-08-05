@@ -5,6 +5,7 @@ from medagentx.agents.evidence_verification import (
     EvidenceSnippet,
     EvidenceVerificationAgent,
     LabelVerificationResult,
+    LabeledEvidenceSnippet,
     StudyEvidenceVerificationResult,
     verify_study_evidence,
 )
@@ -14,6 +15,7 @@ __all__ = [
     "EvidenceSnippet",
     "EvidenceVerificationAgent",
     "LabelVerificationResult",
+    "LabeledEvidenceSnippet",
     "StudyEvidenceVerificationResult",
     "verify_study_evidence",
 ]
