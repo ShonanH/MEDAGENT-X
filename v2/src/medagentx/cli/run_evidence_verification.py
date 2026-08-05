@@ -143,7 +143,6 @@ def _verification_summary_payload(
     threshold_policy_version: str | None,
     threshold_policy_json: Path | None,
     gray_zone_margin: float,
-    status_counts: Counter[str],
     score_counts: Counter[int],
 ) -> dict[str, object]:
     return {
@@ -159,7 +158,6 @@ def _verification_summary_payload(
         "study_count": study_count,
         "label_count": label_count,
         "elapsed_seconds": elapsed_seconds,
-        "verification_status_counts": dict(sorted(status_counts.items())),
         "evidence_score_counts": {
             str(score): count for score, count in sorted(score_counts.items())
         },
@@ -297,9 +295,6 @@ def main(argv: list[str] | None = None) -> int:
         study_verification_to_json_dict(result)
         for result in verification_results
     ]
-    status_counts: Counter[str] = Counter(
-        row["verification_status"] for row in csv_rows
-    )
     score_counts: Counter[int] = Counter(int(row["evidence_score"]) for row in csv_rows)
     summary_payload = _verification_summary_payload(
         split=args.split,
@@ -309,7 +304,6 @@ def main(argv: list[str] | None = None) -> int:
         threshold_policy_version=threshold_policy_version,
         threshold_policy_json=args.threshold_policy_json,
         gray_zone_margin=args.gray_zone_margin,
-        status_counts=status_counts,
         score_counts=score_counts,
     )
 
@@ -342,9 +336,9 @@ def main(argv: list[str] | None = None) -> int:
     print(f"[EvidenceVerification] wrote verification JSON -> {verification_json}")
     print(f"[EvidenceVerification] wrote summary -> {summary_json}")
     print(
-        "[EvidenceVerification] status counts: "
+        "[EvidenceVerification] evidence score counts: "
         + ", ".join(
-            f"{status}={count}" for status, count in sorted(status_counts.items())
+            f"{score}={count}" for score, count in sorted(score_counts.items())
         )
     )
     return 0

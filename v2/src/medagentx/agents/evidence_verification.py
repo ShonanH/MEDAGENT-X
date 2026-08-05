@@ -21,16 +21,6 @@ from medagentx.reasoning.mentions import (
 from medagentx.vision.inference_output import VisionStudyOutput
 
 
-class VerificationStatus(str, Enum):
-    """Structured verification result for one label."""
-
-    SUPPORTED = "supported"
-    WEAK_SUPPORT = "weak_support"
-    CONTRADICTED = "contradicted"
-    INSUFFICIENT_EVIDENCE = "insufficient_evidence"
-    NOT_APPLICABLE = "not_applicable"
-
-
 class EvidenceLevel(str, Enum):
     """Human-readable evidence level for component evidence fields."""
 
@@ -57,7 +47,6 @@ class LabelVerificationResult:
 
     label: str
     fused_status: LabelStatus
-    verification_status: VerificationStatus
     evidence_score: int
     vision_support: EvidenceLevel
     retrieval_support: EvidenceLevel
@@ -230,15 +219,15 @@ def _contradiction_level(
     return EvidenceLevel.NONE
 
 
-def _verification_status_and_score(
+def _evidence_score(
     *,
-    fused_status: LabelStatus,
     vision_support: EvidenceLevel,
     retrieval_support: EvidenceLevel,
     contradiction_level: EvidenceLevel,
-) -> tuple[VerificationStatus, int]:
+) -> int:
+    """Score how strongly evidence supports the fused label on a 1-5 scale."""
     if contradiction_level is EvidenceLevel.STRONG:
-        return VerificationStatus.CONTRADICTED, 2
+        return 1
 
     strong_sources = sum(
         level is EvidenceLevel.STRONG for level in (vision_support, retrieval_support)
@@ -248,27 +237,37 @@ def _verification_status_and_score(
         for level in (vision_support, retrieval_support)
     )
 
-    if fused_status is LabelStatus.ABSENT:
-        if supporting_sources > 0:
-            return VerificationStatus.NOT_APPLICABLE, 1
-        return VerificationStatus.NOT_APPLICABLE, 1
-
-    if fused_status is LabelStatus.PRESENT:
-        if strong_sources == 2:
-            return VerificationStatus.SUPPORTED, 5
-        if strong_sources == 1 and supporting_sources == 2:
-            return VerificationStatus.SUPPORTED, 4
-        if supporting_sources == 2:
-            return VerificationStatus.WEAK_SUPPORT, 3
-        if supporting_sources == 1:
-            return VerificationStatus.WEAK_SUPPORT, 2
-        return VerificationStatus.INSUFFICIENT_EVIDENCE, 1
-
     if retrieval_support is EvidenceLevel.MIXED:
-        return VerificationStatus.WEAK_SUPPORT, 3
-    if supporting_sources > 0:
-        return VerificationStatus.WEAK_SUPPORT, 2
-    return VerificationStatus.INSUFFICIENT_EVIDENCE, 1
+        return 3
+    if strong_sources == 2:
+        return 5
+    if strong_sources == 1:
+        return 4 if supporting_sources == 2 else 3
+    if supporting_sources == 2:
+        return 3
+    if supporting_sources == 1:
+        return 2
+    return 1
+
+
+def _supporting_snippets_for_label(
+    label: str,
+    retrieved_cases: Sequence[RetrievedReportCase | Mapping[str, Any]],
+    fused_status: LabelStatus,
+) -> tuple[EvidenceSnippet, ...]:
+    if fused_status is LabelStatus.ABSENT:
+        return _evidence_snippets_for_label(label, retrieved_cases, negative=True)
+    return _evidence_snippets_for_label(label, retrieved_cases, negative=False)
+
+
+def _contradicting_snippets_for_label(
+    label: str,
+    retrieved_cases: Sequence[RetrievedReportCase | Mapping[str, Any]],
+    fused_status: LabelStatus,
+) -> tuple[EvidenceSnippet, ...]:
+    if fused_status is LabelStatus.ABSENT:
+        return _evidence_snippets_for_label(label, retrieved_cases, negative=False)
+    return _evidence_snippets_for_label(label, retrieved_cases, negative=True)
 
 
 def _summary(
@@ -277,14 +276,13 @@ def _summary(
     probability: float,
     threshold: float,
     counts: MentionCounts,
-    verification_status: VerificationStatus,
     evidence_score: int,
 ) -> str:
     return (
         f"fused={fused_status.value}; p={probability:.4f}; "
         f"threshold={threshold:.4f}; retrieval_pos={counts.positive_count}; "
         f"retrieval_neg={counts.negative_count}; "
-        f"verification={verification_status.value}; score={evidence_score}"
+        f"evidence_score={evidence_score}"
     )
 
 
@@ -332,8 +330,7 @@ def verify_study_evidence(
             vision_support=vision_support,
             retrieval_support=retrieval_support,
         )
-        verification_status, evidence_score = _verification_status_and_score(
-            fused_status=fused_label.fused_status,
+        evidence_score = _evidence_score(
             vision_support=vision_support,
             retrieval_support=retrieval_support,
             contradiction_level=contradiction_level,
@@ -342,7 +339,6 @@ def verify_study_evidence(
             LabelVerificationResult(
                 label=label,
                 fused_status=fused_label.fused_status,
-                verification_status=verification_status,
                 evidence_score=evidence_score,
                 vision_support=vision_support,
                 retrieval_support=retrieval_support,
@@ -354,18 +350,17 @@ def verify_study_evidence(
                     probability=vision_label.probability,
                     threshold=vision_label.threshold,
                     counts=counts,
-                    verification_status=verification_status,
                     evidence_score=evidence_score,
                 ),
-                supporting_evidence=_evidence_snippets_for_label(
+                supporting_evidence=_supporting_snippets_for_label(
                     label,
                     retrieved_cases,
-                    negative=False,
+                    fused_label.fused_status,
                 ),
-                contradicting_evidence=_evidence_snippets_for_label(
+                contradicting_evidence=_contradicting_snippets_for_label(
                     label,
                     retrieved_cases,
-                    negative=True,
+                    fused_label.fused_status,
                 ),
             )
         )

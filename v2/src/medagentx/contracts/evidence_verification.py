@@ -18,7 +18,6 @@ EVIDENCE_VERIFICATION_COLUMNS: tuple[str, ...] = (
     "verification_policy_version",
     "label",
     "fused_status",
-    "verification_status",
     "evidence_score",
     "vision_support",
     "retrieval_support",
@@ -39,7 +38,6 @@ class EvidenceVerificationRow:
     verification_policy_version: str
     label: str
     fused_status: str
-    verification_status: str
     evidence_score: int
     vision_support: str
     retrieval_support: str
@@ -57,7 +55,6 @@ class EvidenceVerificationRow:
             "verification_policy_version": self.verification_policy_version,
             "label": self.label,
             "fused_status": self.fused_status,
-            "verification_status": self.verification_status,
             "evidence_score": self.evidence_score,
             "vision_support": self.vision_support,
             "retrieval_support": self.retrieval_support,
@@ -106,7 +103,6 @@ def label_verification_to_row(
         verification_policy_version=verification_policy_version,
         label=result.label,
         fused_status=result.fused_status.value,
-        verification_status=result.verification_status.value,
         evidence_score=result.evidence_score,
         vision_support=result.vision_support.value,
         retrieval_support=result.retrieval_support.value,
