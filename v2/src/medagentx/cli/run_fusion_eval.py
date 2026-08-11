@@ -107,6 +107,15 @@ def build_parser() -> argparse.ArgumentParser:
         default=GRAY_ZONE_MARGIN,
     )
     parser.add_argument(
+        "--retrieval-top-k",
+        type=int,
+        default=FUSION_RETRIEVAL_TOP_K,
+        help=(
+            "Number of similar train studies retrieved per query. "
+            f"Default preserves the locked fusion setting: {FUSION_RETRIEVAL_TOP_K}."
+        ),
+    )
+    parser.add_argument(
         "--max-studies",
         type=int,
         default=None,
@@ -130,6 +139,8 @@ def main(argv: list[str] | None = None) -> int:
         raise ValueError("num-workers must be >= 0")
     if args.gray_zone_margin < 0:
         raise ValueError("gray-zone-margin must be >= 0")
+    if args.retrieval_top_k <= 0:
+        raise ValueError("retrieval-top-k must be > 0")
     if args.progress_every <= 0:
         raise ValueError("progress-every must be > 0")
     if args.max_studies is not None and args.max_studies <= 0:
@@ -182,7 +193,8 @@ def main(argv: list[str] | None = None) -> int:
 
     print(
         f"[FusionEval] split={args.split} policy={FUSION_POLICY_VERSION} "
-        f"device={device} gray_margin={args.gray_zone_margin}"
+        f"device={device} gray_margin={args.gray_zone_margin} "
+        f"retrieval_top_k={args.retrieval_top_k}"
     )
     if args.threshold_policy_json is not None:
         print(
@@ -235,7 +247,11 @@ def main(argv: list[str] | None = None) -> int:
     retrieval_start = time.perf_counter()
     total_studies = len(study_outputs)
     for index, study_output in enumerate(study_outputs, start=1):
-        retrieved = retrieve_similar_reports(collection, study_output)
+        retrieved = retrieve_similar_reports(
+            collection,
+            study_output,
+            top_k=args.retrieval_top_k,
+        )
         fusion_results.append(
             fuse_study_labels(
                 fusion_vision_inputs(study_output),
@@ -304,6 +320,7 @@ def main(argv: list[str] | None = None) -> int:
             else None
         ),
         "gray_zone_margin": args.gray_zone_margin,
+        "retrieval_top_k": args.retrieval_top_k,
         "study_count": len(study_outputs),
         "ground_truth_rows": len(ground_truth_records),
         "gray_zone_rows": len(gray_zone_records),
@@ -330,7 +347,7 @@ def main(argv: list[str] | None = None) -> int:
     fusion_changed_cells_frame(
         ground_truth_records=ground_truth_records,
         fusion_results=fusion_results,
-        retrieved_top_k=FUSION_RETRIEVAL_TOP_K,
+        retrieved_top_k=args.retrieval_top_k,
     ).to_csv(fusion_changed_cells_csv, index=False)
     uncertain_status_metrics_frame(judge_runs).to_csv(
         uncertain_status_metrics_csv,
