@@ -1,0 +1,336 @@
+run_name,label,eval_scope,gt_status,pred_status,cell_count
+vision_full,Atelectasis,full,present,absent,37
+vision_full,Atelectasis,full,present,present,55
+vision_full,Atelectasis,full,uncertain,absent,35
+vision_full,Atelectasis,full,uncertain,present,23
+vision_full,Atelectasis,full,unmentioned,absent,568
+vision_full,Atelectasis,full,unmentioned,present,188
+vision_full,Cardiomegaly,full,absent,absent,52
+vision_full,Cardiomegaly,full,absent,present,7
+vision_full,Cardiomegaly,full,present,absent,49
+vision_full,Cardiomegaly,full,present,present,51
+vision_full,Cardiomegaly,full,uncertain,absent,11
+vision_full,Cardiomegaly,full,uncertain,present,2
+vision_full,Cardiomegaly,full,unmentioned,absent,655
+vision_full,Cardiomegaly,full,unmentioned,present,79
+vision_full,Consolidation,full,absent,absent,14
+vision_full,Consolidation,full,absent,present,2
+vision_full,Consolidation,full,present,absent,58
+vision_full,Consolidation,full,present,present,29
+vision_full,Consolidation,full,uncertain,absent,32
+vision_full,Consolidation,full,uncertain,present,14
+vision_full,Consolidation,full,unmentioned,absent,644
+vision_full,Consolidation,full,unmentioned,present,113
+vision_full,Edema,full,absent,absent,14
+vision_full,Edema,full,absent,present,4
+vision_full,Edema,full,present,absent,64
+vision_full,Edema,full,present,present,57
+vision_full,Edema,full,uncertain,absent,5
+vision_full,Edema,full,uncertain,present,4
+vision_full,Edema,full,unmentioned,absent,627
+vision_full,Edema,full,unmentioned,present,131
+vision_full,Enlarged Cardiomediastinum,full,absent,absent,39
+vision_full,Enlarged Cardiomediastinum,full,absent,present,9
+vision_full,Enlarged Cardiomediastinum,full,present,absent,32
+vision_full,Enlarged Cardiomediastinum,full,present,present,31
+vision_full,Enlarged Cardiomediastinum,full,uncertain,absent,32
+vision_full,Enlarged Cardiomediastinum,full,uncertain,present,14
+vision_full,Enlarged Cardiomediastinum,full,unmentioned,absent,631
+vision_full,Enlarged Cardiomediastinum,full,unmentioned,present,118
+vision_full,Fracture,full,absent,absent,5
+vision_full,Fracture,full,absent,present,3
+vision_full,Fracture,full,present,absent,38
+vision_full,Fracture,full,present,present,33
+vision_full,Fracture,full,unmentioned,absent,686
+vision_full,Fracture,full,unmentioned,present,141
+vision_full,Lung Lesion,full,present,absent,24
+vision_full,Lung Lesion,full,present,present,43
+vision_full,Lung Lesion,full,uncertain,absent,2
+vision_full,Lung Lesion,full,uncertain,present,1
+vision_full,Lung Lesion,full,unmentioned,absent,698
+vision_full,Lung Lesion,full,unmentioned,present,138
+vision_full,Lung Opacity,full,absent,absent,1
+vision_full,Lung Opacity,full,present,absent,95
+vision_full,Lung Opacity,full,present,present,162
+vision_full,Lung Opacity,full,unmentioned,absent,458
+vision_full,Lung Opacity,full,unmentioned,present,190
+vision_full,Pleural Effusion,full,absent,absent,16
+vision_full,Pleural Effusion,full,absent,present,10
+vision_full,Pleural Effusion,full,present,absent,113
+vision_full,Pleural Effusion,full,present,present,128
+vision_full,Pleural Effusion,full,uncertain,absent,9
+vision_full,Pleural Effusion,full,uncertain,present,2
+vision_full,Pleural Effusion,full,unmentioned,absent,527
+vision_full,Pleural Effusion,full,unmentioned,present,101
+vision_full,Pleural Other,full,present,absent,33
+vision_full,Pleural Other,full,present,present,30
+vision_full,Pleural Other,full,uncertain,absent,1
+vision_full,Pleural Other,full,uncertain,present,1
+vision_full,Pleural Other,full,unmentioned,absent,741
+vision_full,Pleural Other,full,unmentioned,present,100
+vision_full,Pneumonia,full,present,absent,33
+vision_full,Pneumonia,full,present,present,30
+vision_full,Pneumonia,full,uncertain,absent,17
+vision_full,Pneumonia,full,uncertain,present,3
+vision_full,Pneumonia,full,unmentioned,absent,667
+vision_full,Pneumonia,full,unmentioned,present,156
+vision_full,Pneumothorax,full,absent,absent,118
+vision_full,Pneumothorax,full,absent,present,16
+vision_full,Pneumothorax,full,present,absent,56
+vision_full,Pneumothorax,full,present,present,33
+vision_full,Pneumothorax,full,uncertain,absent,1
+vision_full,Pneumothorax,full,uncertain,present,2
+vision_full,Pneumothorax,full,unmentioned,absent,654
+vision_full,Pneumothorax,full,unmentioned,present,26
+fusion_full,Atelectasis,full,present,absent,31
+fusion_full,Atelectasis,full,present,present,61
+fusion_full,Atelectasis,full,uncertain,absent,26
+fusion_full,Atelectasis,full,uncertain,present,32
+fusion_full,Atelectasis,full,unmentioned,absent,484
+fusion_full,Atelectasis,full,unmentioned,present,272
+fusion_full,Cardiomegaly,full,absent,absent,51
+fusion_full,Cardiomegaly,full,absent,present,8
+fusion_full,Cardiomegaly,full,present,absent,42
+fusion_full,Cardiomegaly,full,present,present,58
+fusion_full,Cardiomegaly,full,uncertain,absent,11
+fusion_full,Cardiomegaly,full,uncertain,present,2
+fusion_full,Cardiomegaly,full,unmentioned,absent,643
+fusion_full,Cardiomegaly,full,unmentioned,present,91
+fusion_full,Consolidation,full,absent,absent,14
+fusion_full,Consolidation,full,absent,present,2
+fusion_full,Consolidation,full,present,absent,46
+fusion_full,Consolidation,full,present,present,41
+fusion_full,Consolidation,full,uncertain,absent,30
+fusion_full,Consolidation,full,uncertain,present,16
+fusion_full,Consolidation,full,unmentioned,absent,620
+fusion_full,Consolidation,full,unmentioned,present,136
+fusion_full,Consolidation,full,unmentioned,uncertain,1
+fusion_full,Edema,full,absent,absent,14
+fusion_full,Edema,full,absent,present,4
+fusion_full,Edema,full,present,absent,58
+fusion_full,Edema,full,present,present,63
+fusion_full,Edema,full,uncertain,absent,4
+fusion_full,Edema,full,uncertain,present,5
+fusion_full,Edema,full,unmentioned,absent,570
+fusion_full,Edema,full,unmentioned,present,187
+fusion_full,Edema,full,unmentioned,uncertain,1
+fusion_full,Enlarged Cardiomediastinum,full,absent,absent,39
+fusion_full,Enlarged Cardiomediastinum,full,absent,present,9
+fusion_full,Enlarged Cardiomediastinum,full,present,absent,32
+fusion_full,Enlarged Cardiomediastinum,full,present,present,31
+fusion_full,Enlarged Cardiomediastinum,full,uncertain,absent,32
+fusion_full,Enlarged Cardiomediastinum,full,uncertain,present,14
+fusion_full,Enlarged Cardiomediastinum,full,unmentioned,absent,631
+fusion_full,Enlarged Cardiomediastinum,full,unmentioned,present,118
+fusion_full,Fracture,full,absent,absent,5
+fusion_full,Fracture,full,absent,present,3
+fusion_full,Fracture,full,present,absent,36
+fusion_full,Fracture,full,present,present,35
+fusion_full,Fracture,full,unmentioned,absent,675
+fusion_full,Fracture,full,unmentioned,present,152
+fusion_full,Lung Lesion,full,present,absent,23
+fusion_full,Lung Lesion,full,present,present,44
+fusion_full,Lung Lesion,full,uncertain,absent,2
+fusion_full,Lung Lesion,full,uncertain,present,1
+fusion_full,Lung Lesion,full,unmentioned,absent,695
+fusion_full,Lung Lesion,full,unmentioned,present,141
+fusion_full,Lung Opacity,full,absent,absent,1
+fusion_full,Lung Opacity,full,present,absent,83
+fusion_full,Lung Opacity,full,present,present,174
+fusion_full,Lung Opacity,full,unmentioned,absent,436
+fusion_full,Lung Opacity,full,unmentioned,present,212
+fusion_full,Pleural Effusion,full,absent,absent,14
+fusion_full,Pleural Effusion,full,absent,present,12
+fusion_full,Pleural Effusion,full,present,absent,91
+fusion_full,Pleural Effusion,full,present,present,150
+fusion_full,Pleural Effusion,full,uncertain,absent,7
+fusion_full,Pleural Effusion,full,uncertain,present,4
+fusion_full,Pleural Effusion,full,unmentioned,absent,483
+fusion_full,Pleural Effusion,full,unmentioned,present,145
+fusion_full,Pleural Other,full,present,absent,32
+fusion_full,Pleural Other,full,present,present,31
+fusion_full,Pleural Other,full,uncertain,absent,1
+fusion_full,Pleural Other,full,uncertain,present,1
+fusion_full,Pleural Other,full,unmentioned,absent,739
+fusion_full,Pleural Other,full,unmentioned,present,102
+fusion_full,Pneumonia,full,present,absent,33
+fusion_full,Pneumonia,full,present,present,30
+fusion_full,Pneumonia,full,uncertain,absent,16
+fusion_full,Pneumonia,full,uncertain,present,4
+fusion_full,Pneumonia,full,unmentioned,absent,658
+fusion_full,Pneumonia,full,unmentioned,present,164
+fusion_full,Pneumonia,full,unmentioned,uncertain,1
+fusion_full,Pneumothorax,full,absent,absent,117
+fusion_full,Pneumothorax,full,absent,present,15
+fusion_full,Pneumothorax,full,absent,uncertain,2
+fusion_full,Pneumothorax,full,present,absent,53
+fusion_full,Pneumothorax,full,present,present,34
+fusion_full,Pneumothorax,full,present,uncertain,2
+fusion_full,Pneumothorax,full,uncertain,absent,1
+fusion_full,Pneumothorax,full,uncertain,present,2
+fusion_full,Pneumothorax,full,unmentioned,absent,649
+fusion_full,Pneumothorax,full,unmentioned,present,29
+fusion_full,Pneumothorax,full,unmentioned,uncertain,2
+vision_gray_zone,Atelectasis,gray_zone,present,absent,15
+vision_gray_zone,Atelectasis,gray_zone,present,present,17
+vision_gray_zone,Atelectasis,gray_zone,uncertain,absent,12
+vision_gray_zone,Atelectasis,gray_zone,uncertain,present,8
+vision_gray_zone,Atelectasis,gray_zone,unmentioned,absent,162
+vision_gray_zone,Atelectasis,gray_zone,unmentioned,present,86
+vision_gray_zone,Cardiomegaly,gray_zone,absent,absent,8
+vision_gray_zone,Cardiomegaly,gray_zone,absent,present,2
+vision_gray_zone,Cardiomegaly,gray_zone,present,absent,19
+vision_gray_zone,Cardiomegaly,gray_zone,present,present,16
+vision_gray_zone,Cardiomegaly,gray_zone,uncertain,absent,4
+vision_gray_zone,Cardiomegaly,gray_zone,uncertain,present,1
+vision_gray_zone,Cardiomegaly,gray_zone,unmentioned,absent,59
+vision_gray_zone,Cardiomegaly,gray_zone,unmentioned,present,41
+vision_gray_zone,Consolidation,gray_zone,absent,absent,3
+vision_gray_zone,Consolidation,gray_zone,absent,present,2
+vision_gray_zone,Consolidation,gray_zone,present,absent,24
+vision_gray_zone,Consolidation,gray_zone,present,present,12
+vision_gray_zone,Consolidation,gray_zone,uncertain,absent,5
+vision_gray_zone,Consolidation,gray_zone,uncertain,present,8
+vision_gray_zone,Consolidation,gray_zone,unmentioned,absent,64
+vision_gray_zone,Consolidation,gray_zone,unmentioned,present,65
+vision_gray_zone,Edema,gray_zone,absent,present,1
+vision_gray_zone,Edema,gray_zone,present,absent,13
+vision_gray_zone,Edema,gray_zone,present,present,20
+vision_gray_zone,Edema,gray_zone,uncertain,absent,1
+vision_gray_zone,Edema,gray_zone,uncertain,present,2
+vision_gray_zone,Edema,gray_zone,unmentioned,absent,111
+vision_gray_zone,Edema,gray_zone,unmentioned,present,54
+vision_gray_zone,Enlarged Cardiomediastinum,gray_zone,absent,absent,4
+vision_gray_zone,Enlarged Cardiomediastinum,gray_zone,absent,present,5
+vision_gray_zone,Enlarged Cardiomediastinum,gray_zone,present,absent,9
+vision_gray_zone,Enlarged Cardiomediastinum,gray_zone,present,present,9
+vision_gray_zone,Enlarged Cardiomediastinum,gray_zone,uncertain,absent,11
+vision_gray_zone,Enlarged Cardiomediastinum,gray_zone,uncertain,present,3
+vision_gray_zone,Enlarged Cardiomediastinum,gray_zone,unmentioned,absent,133
+vision_gray_zone,Enlarged Cardiomediastinum,gray_zone,unmentioned,present,51
+vision_gray_zone,Fracture,gray_zone,absent,absent,3
+vision_gray_zone,Fracture,gray_zone,absent,present,2
+vision_gray_zone,Fracture,gray_zone,present,absent,12
+vision_gray_zone,Fracture,gray_zone,present,present,11
+vision_gray_zone,Fracture,gray_zone,unmentioned,absent,143
+vision_gray_zone,Fracture,gray_zone,unmentioned,present,78
+vision_gray_zone,Lung Lesion,gray_zone,present,absent,10
+vision_gray_zone,Lung Lesion,gray_zone,present,present,14
+vision_gray_zone,Lung Lesion,gray_zone,uncertain,present,1
+vision_gray_zone,Lung Lesion,gray_zone,unmentioned,absent,118
+vision_gray_zone,Lung Lesion,gray_zone,unmentioned,present,67
+vision_gray_zone,Lung Opacity,gray_zone,present,absent,30
+vision_gray_zone,Lung Opacity,gray_zone,present,present,39
+vision_gray_zone,Lung Opacity,gray_zone,unmentioned,absent,73
+vision_gray_zone,Lung Opacity,gray_zone,unmentioned,present,97
+vision_gray_zone,Pleural Effusion,gray_zone,absent,absent,4
+vision_gray_zone,Pleural Effusion,gray_zone,absent,present,5
+vision_gray_zone,Pleural Effusion,gray_zone,present,absent,31
+vision_gray_zone,Pleural Effusion,gray_zone,present,present,37
+vision_gray_zone,Pleural Effusion,gray_zone,uncertain,absent,3
+vision_gray_zone,Pleural Effusion,gray_zone,unmentioned,absent,78
+vision_gray_zone,Pleural Effusion,gray_zone,unmentioned,present,54
+vision_gray_zone,Pleural Other,gray_zone,present,absent,11
+vision_gray_zone,Pleural Other,gray_zone,present,present,9
+vision_gray_zone,Pleural Other,gray_zone,uncertain,absent,1
+vision_gray_zone,Pleural Other,gray_zone,uncertain,present,1
+vision_gray_zone,Pleural Other,gray_zone,unmentioned,absent,79
+vision_gray_zone,Pleural Other,gray_zone,unmentioned,present,52
+vision_gray_zone,Pneumonia,gray_zone,present,absent,10
+vision_gray_zone,Pneumonia,gray_zone,present,present,15
+vision_gray_zone,Pneumonia,gray_zone,uncertain,absent,6
+vision_gray_zone,Pneumonia,gray_zone,unmentioned,absent,154
+vision_gray_zone,Pneumonia,gray_zone,unmentioned,present,77
+vision_gray_zone,Pneumothorax,gray_zone,absent,absent,16
+vision_gray_zone,Pneumothorax,gray_zone,absent,present,11
+vision_gray_zone,Pneumothorax,gray_zone,present,absent,16
+vision_gray_zone,Pneumothorax,gray_zone,present,present,15
+vision_gray_zone,Pneumothorax,gray_zone,uncertain,absent,1
+vision_gray_zone,Pneumothorax,gray_zone,uncertain,present,1
+vision_gray_zone,Pneumothorax,gray_zone,unmentioned,absent,41
+vision_gray_zone,Pneumothorax,gray_zone,unmentioned,present,16
+fusion_gray_zone,Atelectasis,gray_zone,present,absent,9
+fusion_gray_zone,Atelectasis,gray_zone,present,present,23
+fusion_gray_zone,Atelectasis,gray_zone,uncertain,absent,3
+fusion_gray_zone,Atelectasis,gray_zone,uncertain,present,17
+fusion_gray_zone,Atelectasis,gray_zone,unmentioned,absent,78
+fusion_gray_zone,Atelectasis,gray_zone,unmentioned,present,170
+fusion_gray_zone,Cardiomegaly,gray_zone,absent,absent,7
+fusion_gray_zone,Cardiomegaly,gray_zone,absent,present,3
+fusion_gray_zone,Cardiomegaly,gray_zone,present,absent,12
+fusion_gray_zone,Cardiomegaly,gray_zone,present,present,23
+fusion_gray_zone,Cardiomegaly,gray_zone,uncertain,absent,4
+fusion_gray_zone,Cardiomegaly,gray_zone,uncertain,present,1
+fusion_gray_zone,Cardiomegaly,gray_zone,unmentioned,absent,47
+fusion_gray_zone,Cardiomegaly,gray_zone,unmentioned,present,53
+fusion_gray_zone,Consolidation,gray_zone,absent,absent,3
+fusion_gray_zone,Consolidation,gray_zone,absent,present,2
+fusion_gray_zone,Consolidation,gray_zone,present,absent,12
+fusion_gray_zone,Consolidation,gray_zone,present,present,24
+fusion_gray_zone,Consolidation,gray_zone,uncertain,absent,3
+fusion_gray_zone,Consolidation,gray_zone,uncertain,present,10
+fusion_gray_zone,Consolidation,gray_zone,unmentioned,absent,40
+fusion_gray_zone,Consolidation,gray_zone,unmentioned,present,88
+fusion_gray_zone,Consolidation,gray_zone,unmentioned,uncertain,1
+fusion_gray_zone,Edema,gray_zone,absent,present,1
+fusion_gray_zone,Edema,gray_zone,present,absent,7
+fusion_gray_zone,Edema,gray_zone,present,present,26
+fusion_gray_zone,Edema,gray_zone,uncertain,present,3
+fusion_gray_zone,Edema,gray_zone,unmentioned,absent,54
+fusion_gray_zone,Edema,gray_zone,unmentioned,present,110
+fusion_gray_zone,Edema,gray_zone,unmentioned,uncertain,1
+fusion_gray_zone,Enlarged Cardiomediastinum,gray_zone,absent,absent,4
+fusion_gray_zone,Enlarged Cardiomediastinum,gray_zone,absent,present,5
+fusion_gray_zone,Enlarged Cardiomediastinum,gray_zone,present,absent,9
+fusion_gray_zone,Enlarged Cardiomediastinum,gray_zone,present,present,9
+fusion_gray_zone,Enlarged Cardiomediastinum,gray_zone,uncertain,absent,11
+fusion_gray_zone,Enlarged Cardiomediastinum,gray_zone,uncertain,present,3
+fusion_gray_zone,Enlarged Cardiomediastinum,gray_zone,unmentioned,absent,133
+fusion_gray_zone,Enlarged Cardiomediastinum,gray_zone,unmentioned,present,51
+fusion_gray_zone,Fracture,gray_zone,absent,absent,3
+fusion_gray_zone,Fracture,gray_zone,absent,present,2
+fusion_gray_zone,Fracture,gray_zone,present,absent,10
+fusion_gray_zone,Fracture,gray_zone,present,present,13
+fusion_gray_zone,Fracture,gray_zone,unmentioned,absent,132
+fusion_gray_zone,Fracture,gray_zone,unmentioned,present,89
+fusion_gray_zone,Lung Lesion,gray_zone,present,absent,9
+fusion_gray_zone,Lung Lesion,gray_zone,present,present,15
+fusion_gray_zone,Lung Lesion,gray_zone,uncertain,present,1
+fusion_gray_zone,Lung Lesion,gray_zone,unmentioned,absent,115
+fusion_gray_zone,Lung Lesion,gray_zone,unmentioned,present,70
+fusion_gray_zone,Lung Opacity,gray_zone,present,absent,18
+fusion_gray_zone,Lung Opacity,gray_zone,present,present,51
+fusion_gray_zone,Lung Opacity,gray_zone,unmentioned,absent,51
+fusion_gray_zone,Lung Opacity,gray_zone,unmentioned,present,119
+fusion_gray_zone,Pleural Effusion,gray_zone,absent,absent,2
+fusion_gray_zone,Pleural Effusion,gray_zone,absent,present,7
+fusion_gray_zone,Pleural Effusion,gray_zone,present,absent,9
+fusion_gray_zone,Pleural Effusion,gray_zone,present,present,59
+fusion_gray_zone,Pleural Effusion,gray_zone,uncertain,absent,1
+fusion_gray_zone,Pleural Effusion,gray_zone,uncertain,present,2
+fusion_gray_zone,Pleural Effusion,gray_zone,unmentioned,absent,34
+fusion_gray_zone,Pleural Effusion,gray_zone,unmentioned,present,98
+fusion_gray_zone,Pleural Other,gray_zone,present,absent,10
+fusion_gray_zone,Pleural Other,gray_zone,present,present,10
+fusion_gray_zone,Pleural Other,gray_zone,uncertain,absent,1
+fusion_gray_zone,Pleural Other,gray_zone,uncertain,present,1
+fusion_gray_zone,Pleural Other,gray_zone,unmentioned,absent,77
+fusion_gray_zone,Pleural Other,gray_zone,unmentioned,present,54
+fusion_gray_zone,Pneumonia,gray_zone,present,absent,10
+fusion_gray_zone,Pneumonia,gray_zone,present,present,15
+fusion_gray_zone,Pneumonia,gray_zone,uncertain,absent,5
+fusion_gray_zone,Pneumonia,gray_zone,uncertain,present,1
+fusion_gray_zone,Pneumonia,gray_zone,unmentioned,absent,145
+fusion_gray_zone,Pneumonia,gray_zone,unmentioned,present,85
+fusion_gray_zone,Pneumonia,gray_zone,unmentioned,uncertain,1
+fusion_gray_zone,Pneumothorax,gray_zone,absent,absent,15
+fusion_gray_zone,Pneumothorax,gray_zone,absent,present,10
+fusion_gray_zone,Pneumothorax,gray_zone,absent,uncertain,2
+fusion_gray_zone,Pneumothorax,gray_zone,present,absent,13
+fusion_gray_zone,Pneumothorax,gray_zone,present,present,16
+fusion_gray_zone,Pneumothorax,gray_zone,present,uncertain,2
+fusion_gray_zone,Pneumothorax,gray_zone,uncertain,absent,1
+fusion_gray_zone,Pneumothorax,gray_zone,uncertain,present,1
+fusion_gray_zone,Pneumothorax,gray_zone,unmentioned,absent,36
+fusion_gray_zone,Pneumothorax,gray_zone,unmentioned,present,19
+fusion_gray_zone,Pneumothorax,gray_zone,unmentioned,uncertain,2

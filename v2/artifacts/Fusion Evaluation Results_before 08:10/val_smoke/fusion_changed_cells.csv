@@ -1,0 +1,4 @@
+study_key,label,gt_status,vision_status,fusion_status,vision_prob,vision_threshold,gray_zone,change_type,retrieved_pos_mentions,retrieved_neg_mentions,retrieved_top_k
+patient00237/study1,Atelectasis,uncertain,absent,present,0.275390625,0.31,True,promotion,5,0,5
+patient00237/study1,Pleural Effusion,uncertain,absent,present,0.426025390625,0.55,True,promotion,6,0,5
+patient00237/study17,Atelectasis,present,absent,present,0.2215576171875,0.31,True,promotion,4,0,5

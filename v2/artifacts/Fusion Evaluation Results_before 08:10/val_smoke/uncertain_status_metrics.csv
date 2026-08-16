@@ -1,0 +1,45 @@
+run_name,label,eval_scope,gt_uncertain,pred_uncertain,uncertain_matches,uncertain_match_rate,uncertain_overcalls,uncertain_undercalls
+vision_full,Atelectasis,full,2,0,0,0.0,0,2
+vision_full,Cardiomegaly,full,0,0,0,,0,0
+vision_full,Consolidation,full,2,0,0,0.0,0,2
+vision_full,Edema,full,0,0,0,,0,0
+vision_full,Enlarged Cardiomediastinum,full,0,0,0,,0,0
+vision_full,Fracture,full,0,0,0,,0,0
+vision_full,Lung Lesion,full,0,0,0,,0,0
+vision_full,Lung Opacity,full,0,0,0,,0,0
+vision_full,Pleural Effusion,full,2,0,0,0.0,0,2
+vision_full,Pleural Other,full,0,0,0,,0,0
+vision_full,Pneumonia,full,0,0,0,,0,0
+vision_full,Pneumothorax,full,0,0,0,,0,0
+fusion_full,Atelectasis,full,2,0,0,0.0,0,2
+fusion_full,Cardiomegaly,full,0,0,0,,0,0
+fusion_full,Consolidation,full,2,0,0,0.0,0,2
+fusion_full,Edema,full,0,0,0,,0,0
+fusion_full,Enlarged Cardiomediastinum,full,0,0,0,,0,0
+fusion_full,Fracture,full,0,0,0,,0,0
+fusion_full,Lung Lesion,full,0,0,0,,0,0
+fusion_full,Lung Opacity,full,0,0,0,,0,0
+fusion_full,Pleural Effusion,full,2,0,0,0.0,0,2
+fusion_full,Pleural Other,full,0,0,0,,0,0
+fusion_full,Pneumonia,full,0,0,0,,0,0
+fusion_full,Pneumothorax,full,0,0,0,,0,0
+vision_gray_zone,Atelectasis,gray_zone,1,0,0,0.0,0,1
+vision_gray_zone,Consolidation,gray_zone,0,0,0,,0,0
+vision_gray_zone,Edema,gray_zone,0,0,0,,0,0
+vision_gray_zone,Enlarged Cardiomediastinum,gray_zone,0,0,0,,0,0
+vision_gray_zone,Fracture,gray_zone,0,0,0,,0,0
+vision_gray_zone,Lung Lesion,gray_zone,0,0,0,,0,0
+vision_gray_zone,Lung Opacity,gray_zone,0,0,0,,0,0
+vision_gray_zone,Pleural Effusion,gray_zone,1,0,0,0.0,0,1
+vision_gray_zone,Pleural Other,gray_zone,0,0,0,,0,0
+vision_gray_zone,Pneumonia,gray_zone,0,0,0,,0,0
+fusion_gray_zone,Atelectasis,gray_zone,1,0,0,0.0,0,1
+fusion_gray_zone,Consolidation,gray_zone,0,0,0,,0,0
+fusion_gray_zone,Edema,gray_zone,0,0,0,,0,0
+fusion_gray_zone,Enlarged Cardiomediastinum,gray_zone,0,0,0,,0,0
+fusion_gray_zone,Fracture,gray_zone,0,0,0,,0,0
+fusion_gray_zone,Lung Lesion,gray_zone,0,0,0,,0,0
+fusion_gray_zone,Lung Opacity,gray_zone,0,0,0,,0,0
+fusion_gray_zone,Pleural Effusion,gray_zone,1,0,0,0.0,0,1
+fusion_gray_zone,Pleural Other,gray_zone,0,0,0,,0,0
+fusion_gray_zone,Pneumonia,gray_zone,0,0,0,,0,0

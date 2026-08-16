@@ -1,0 +1,43 @@
+{
+  "accepted_labels": [],
+  "constraints": {
+    "grid_steps": 197,
+    "max_positive_rate_multiplier": 1.25,
+    "max_threshold_drop": 0.1,
+    "min_label_f1_gain": 0.01,
+    "min_precision_drop": 0.02,
+    "strict_sanity_f1_drop_allowed": 0.0,
+    "threshold_max": 0.99,
+    "threshold_min": 0.01
+  },
+  "rejected_labels": {
+    "Atelectasis": "threshold_drop_too_large",
+    "Cardiomegaly": "threshold_drop_too_large",
+    "Consolidation": "threshold_drop_too_large",
+    "Edema": "threshold_drop_too_large",
+    "Enlarged Cardiomediastinum": "threshold_drop_too_large",
+    "Fracture": "threshold_drop_too_large",
+    "Lung Lesion": "threshold_drop_too_large",
+    "Lung Opacity": "threshold_drop_too_large",
+    "Pleural Effusion": "threshold_drop_too_large",
+    "Pleural Other": "threshold_drop_too_large",
+    "Pneumonia": "threshold_drop_too_large",
+    "Pneumothorax": "threshold_drop_too_large"
+  },
+  "selected_thresholds": {
+    "Atelectasis": 0.35,
+    "Cardiomegaly": 0.58,
+    "Consolidation": 0.42,
+    "Edema": 0.35,
+    "Enlarged Cardiomediastinum": 0.38,
+    "Fracture": 0.31,
+    "Lung Lesion": 0.43,
+    "Lung Opacity": 0.54,
+    "Pleural Effusion": 0.51,
+    "Pleural Other": 0.37,
+    "Pneumonia": 0.28,
+    "Pneumothorax": 0.29
+  },
+  "source_split": "val",
+  "threshold_policy_version": "vision_threshold_policy_v2"
+}
