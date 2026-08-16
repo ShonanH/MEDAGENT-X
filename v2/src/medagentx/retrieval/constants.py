@@ -15,8 +15,8 @@ INDEX_BUILD_SPLIT = TRAIN_SPLIT
 DEFAULT_COLLECTION_NAME = "medagentx_train_studies_v1"
 CHROMA_DISTANCE_SPACE = "cosine"
 
-# Query defaults for the Retrieval Agent.
-DEFAULT_TOP_K = 5
+# Query defaults for the Retrieval Agent. Override this from CLIs for ablations.
+DEFAULT_TOP_K = 10
 QUERY_CANDIDATE_MULTIPLIER = 8
 QUERY_CANDIDATE_MIN_EXTRA = 20
 

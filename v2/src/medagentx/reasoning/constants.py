@@ -43,8 +43,8 @@ FUSION_LABELS: tuple[str, ...] = DISEASE_LABELS
 FUSION_INCLUDES_NO_FINDING = False
 FUSION_INCLUDES_SUPPORT_DEVICES = False
 
-# Retrieval input contract at inference (locked to retrieval.constants.DEFAULT_TOP_K).
-FUSION_RETRIEVAL_TOP_K = 5
+# Retrieval input contract at inference. Override from CLIs for ablations.
+FUSION_RETRIEVAL_TOP_K = 10
 
 # Decision 9 — Judge compares vision-only vs fusion on both slices.
 EVALUATE_FULL_TEST = True

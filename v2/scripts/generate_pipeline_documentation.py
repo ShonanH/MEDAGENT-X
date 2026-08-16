@@ -322,7 +322,7 @@ def build_document() -> Document:
             "Study-level: one embedding and one index row per study_key",
             "Stored payload: section_findings + section_impression (no GT labels in index)",
             "Vector store: ChromaDB, cosine distance, collection medagentx_train_studies_v1",
-            "Query defaults: top_k=5; exclude same study and same patient",
+            "Query defaults: top_k=10; exclude same study and same patient; override for ablations",
             "Embeddings cache: study_embeddings.npz for faster rebuilds",
             "Progress logging on long embed loops",
         ],
@@ -386,7 +386,7 @@ def build_document() -> Document:
         doc,
         [
             "predict_study_outputs() on chosen split (val/test only)",
-            "Per study: retrieve top-5 train neighbors → fuse_study_labels()",
+            "Per study: retrieve top-10 train neighbors by default → fuse_study_labels()",
             "Write vision_study_predictions.csv and fusion_label_predictions.csv",
             "Load ground truth from study_label_table.csv",
             "Run Judge: vision_full, fusion_full, vision_gray_zone, fusion_gray_zone",

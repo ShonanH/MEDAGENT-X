@@ -98,6 +98,15 @@ def build_parser() -> argparse.ArgumentParser:
         default=GRAY_ZONE_MARGIN,
     )
     parser.add_argument(
+        "--retrieval-top-k",
+        type=int,
+        default=FUSION_RETRIEVAL_TOP_K,
+        help=(
+            "Number of similar train studies retrieved per query. "
+            f"Default: {FUSION_RETRIEVAL_TOP_K}; override for ablations."
+        ),
+    )
+    parser.add_argument(
         "--max-studies",
         type=int,
         default=None,
@@ -143,6 +152,7 @@ def _verification_summary_payload(
     threshold_policy_version: str | None,
     threshold_policy_json: Path | None,
     gray_zone_margin: float,
+    retrieval_top_k: int,
     score_counts: Counter[int],
 ) -> dict[str, object]:
     return {
@@ -154,7 +164,7 @@ def _verification_summary_payload(
         ),
         "verification_policy_version": "evidence_verification_policy_v1",
         "gray_zone_margin": gray_zone_margin,
-        "retrieved_top_k": FUSION_RETRIEVAL_TOP_K,
+        "retrieved_top_k": retrieval_top_k,
         "study_count": study_count,
         "prediction_count": prediction_count,
         "elapsed_seconds": elapsed_seconds,
@@ -184,6 +194,8 @@ def main(argv: list[str] | None = None) -> int:
         raise ValueError("num-workers must be >= 0")
     if args.gray_zone_margin < 0:
         raise ValueError("gray-zone-margin must be >= 0")
+    if args.retrieval_top_k <= 0:
+        raise ValueError("retrieval-top-k must be > 0")
     if args.progress_every <= 0:
         raise ValueError("progress-every must be > 0")
     if args.max_studies is not None and args.max_studies <= 0:
@@ -219,7 +231,8 @@ def main(argv: list[str] | None = None) -> int:
     print(
         f"[EvidenceVerification] split={args.split} "
         f"fusion_policy={FUSION_POLICY_VERSION} device={device} "
-        f"gray_margin={args.gray_zone_margin}"
+        f"gray_margin={args.gray_zone_margin} "
+        f"retrieval_top_k={args.retrieval_top_k}"
     )
     if args.threshold_policy_json is not None:
         print(
@@ -266,7 +279,11 @@ def main(argv: list[str] | None = None) -> int:
     fusion_results = []
     total_studies = len(study_outputs)
     for index, study_output in enumerate(study_outputs, start=1):
-        retrieved = retrieve_similar_reports(collection, study_output)
+        retrieved = retrieve_similar_reports(
+            collection,
+            study_output,
+            top_k=args.retrieval_top_k,
+        )
         fusion_result = fuse_study_labels(
             fusion_vision_inputs(study_output),
             retrieved,
@@ -309,6 +326,7 @@ def main(argv: list[str] | None = None) -> int:
         threshold_policy_version=threshold_policy_version,
         threshold_policy_json=args.threshold_policy_json,
         gray_zone_margin=args.gray_zone_margin,
+        retrieval_top_k=args.retrieval_top_k,
         score_counts=score_counts,
     )
 
