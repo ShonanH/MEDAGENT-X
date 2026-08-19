@@ -28,9 +28,9 @@ from medagentx.labels.constants import DISEASE_LABELS  # noqa: E402
 from medagentx.labels.statuses import LabelStatus  # noqa: E402
 
 
-SOURCE_DIR = Path("v2/artifactsLocal/val_last4_blocks_0818/val")
+SOURCE_DIR = Path("v2/artifacts/cohort_balanced_v1/reasoning/fusion_eval_v1/val_last4_blocks_0818/val")
 OUTPUT_DIR = Path(
-    "v2/artifactsLocal/fusion-rule-tuning-2026-08-18/"
+    "v2/artifacts/cohort_balanced_v1/reasoning/fusion_eval_v1/fusion-rule-tuning-2026-08-18/"
     "conservative-promotion-thresholds/val"
 )
 
