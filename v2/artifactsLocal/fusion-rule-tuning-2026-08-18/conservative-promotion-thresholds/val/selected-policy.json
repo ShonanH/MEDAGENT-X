@@ -1,0 +1,34 @@
+{
+  "demotion-policy": "unchanged-from-deterministic-gray-zone-fusion-v2",
+  "experiment": "conservative-promotion-thresholds",
+  "gray-zone-margin": 0.15,
+  "output-dir": "v2/artifacts/cohort_balanced_v1/reasoning/fusion_eval_v1/fusion-rule-tuning-2026-08-18/conservative-promotion-thresholds/val",
+  "promotion-thresholds-by-label": {
+    "Atelectasis": 3,
+    "Cardiomegaly": 3,
+    "Consolidation": 3,
+    "Edema": 3,
+    "Enlarged Cardiomediastinum": 3,
+    "Fracture": 3,
+    "Lung Lesion": 3,
+    "Lung Opacity": 3,
+    "Pleural Effusion": 3,
+    "Pleural Other": 3,
+    "Pneumonia": 3,
+    "Pneumothorax": 3
+  },
+  "retrieval-top-k": 10,
+  "selected-variant": "baseline",
+  "selection-criteria": {
+    "full-macro-f1-drop-tolerance": 0.005,
+    "full-macro-precision-drop-tolerance": 0.005,
+    "gray-zone-macro-f1-drop-tolerance": 0.005,
+    "sort-order": [
+      "fewest-kept-promotion-fp",
+      "highest-gray-zone-macro-f1",
+      "highest-full-macro-f1",
+      "fewest-promotions-reverted"
+    ]
+  },
+  "source-dir": "v2/artifacts/cohort_balanced_v1/reasoning/fusion_eval_v1/val_last4_blocks_0818/val"
+}

@@ -1,0 +1,53 @@
+variant,label,total-cells,gray-zone-cells,changed-cells,promotions-kept,promotions-reverted,variant-promotions,variant-demotions,kept-promotion-tp,kept-promotion-fp,kept-promotion-unscored,reverted-promotion-tp,reverted-promotion-fp,reverted-promotion-unscored
+baseline,all,10260,1725,311,288,0,288,23,41,5,242,0,0,0
+baseline,Atelectasis,855,124,46,46,0,46,0,4,0,42,0,0,0
+baseline,Cardiomegaly,855,115,20,20,0,20,0,3,0,17,0,0,0
+baseline,Consolidation,855,142,41,39,0,39,2,5,0,34,0,0,0
+baseline,Edema,855,114,41,40,0,40,1,3,1,36,0,0,0
+baseline,Pleural Effusion,855,143,42,42,0,42,0,9,3,30,0,0,0
+baseline,Pneumonia,855,214,21,17,0,17,4,0,0,17,0,0,0
+baseline,Pneumothorax,855,177,24,9,0,9,15,0,1,8,0,0,0
+baseline,Fracture,855,148,19,19,0,19,0,7,0,12,0,0,0
+baseline,Lung Lesion,855,133,13,13,0,13,0,2,0,11,0,0,0
+baseline,Lung Opacity,855,151,41,40,0,40,1,8,0,32,0,0,0
+baseline,Enlarged Cardiomediastinum,855,154,0,0,0,0,0,0,0,0,0,0,0
+baseline,Pleural Other,855,110,3,3,0,3,0,0,0,3,0,0,0
+global-positive-threshold-4,all,10260,1725,266,243,45,243,23,37,5,201,4,0,41
+global-positive-threshold-4,Atelectasis,855,124,42,42,4,42,0,4,0,38,0,0,4
+global-positive-threshold-4,Cardiomegaly,855,115,12,12,8,12,0,1,0,11,2,0,6
+global-positive-threshold-4,Consolidation,855,142,36,34,5,34,2,4,0,30,1,0,4
+global-positive-threshold-4,Edema,855,114,40,39,1,39,1,3,1,35,0,0,1
+global-positive-threshold-4,Pleural Effusion,855,143,42,42,0,42,0,9,3,30,0,0,0
+global-positive-threshold-4,Pneumonia,855,214,14,10,7,10,4,0,0,10,0,0,7
+global-positive-threshold-4,Pneumothorax,855,177,21,6,3,6,15,0,1,5,0,0,3
+global-positive-threshold-4,Fracture,855,148,12,12,7,12,0,6,0,6,1,0,6
+global-positive-threshold-4,Lung Lesion,855,133,9,9,4,9,0,2,0,7,0,0,4
+global-positive-threshold-4,Lung Opacity,855,151,37,36,4,36,1,8,0,28,0,0,4
+global-positive-threshold-4,Enlarged Cardiomediastinum,855,154,0,0,0,0,0,0,0,0,0,0,0
+global-positive-threshold-4,Pleural Other,855,110,1,1,2,1,0,0,0,1,0,0,2
+global-positive-threshold-5,all,10260,1725,217,194,94,194,23,27,5,162,14,0,80
+global-positive-threshold-5,Atelectasis,855,124,36,36,10,36,0,3,0,33,1,0,9
+global-positive-threshold-5,Cardiomegaly,855,115,8,8,12,8,0,1,0,7,2,0,10
+global-positive-threshold-5,Consolidation,855,142,25,23,16,23,2,2,0,21,3,0,13
+global-positive-threshold-5,Edema,855,114,39,38,2,38,1,3,1,34,0,0,2
+global-positive-threshold-5,Pleural Effusion,855,143,42,42,0,42,0,9,3,30,0,0,0
+global-positive-threshold-5,Pneumonia,855,214,11,7,10,7,4,0,0,7,0,0,10
+global-positive-threshold-5,Pneumothorax,855,177,19,4,5,4,15,0,1,3,0,0,5
+global-positive-threshold-5,Fracture,855,148,7,7,12,7,0,4,0,3,3,0,9
+global-positive-threshold-5,Lung Lesion,855,133,4,4,9,4,0,1,0,3,1,0,8
+global-positive-threshold-5,Lung Opacity,855,151,26,25,15,25,1,4,0,21,4,0,11
+global-positive-threshold-5,Enlarged Cardiomediastinum,855,154,0,0,0,0,0,0,0,0,0,0,0
+global-positive-threshold-5,Pleural Other,855,110,0,0,3,0,0,0,0,0,0,0,3
+label-specific-conservative,all,10260,1725,284,261,27,261,23,38,5,218,3,0,24
+label-specific-conservative,Atelectasis,855,124,42,42,4,42,0,4,0,38,0,0,4
+label-specific-conservative,Cardiomegaly,855,115,12,12,8,12,0,1,0,11,2,0,6
+label-specific-conservative,Consolidation,855,142,36,34,5,34,2,4,0,30,1,0,4
+label-specific-conservative,Edema,855,114,40,39,1,39,1,3,1,35,0,0,1
+label-specific-conservative,Pleural Effusion,855,143,42,42,0,42,0,9,3,30,0,0,0
+label-specific-conservative,Pneumonia,855,214,21,17,0,17,4,0,0,17,0,0,0
+label-specific-conservative,Pneumothorax,855,177,19,4,5,4,15,0,1,3,0,0,5
+label-specific-conservative,Fracture,855,148,19,19,0,19,0,7,0,12,0,0,0
+label-specific-conservative,Lung Lesion,855,133,13,13,0,13,0,2,0,11,0,0,0
+label-specific-conservative,Lung Opacity,855,151,37,36,4,36,1,8,0,28,0,0,4
+label-specific-conservative,Enlarged Cardiomediastinum,855,154,0,0,0,0,0,0,0,0,0,0,0
+label-specific-conservative,Pleural Other,855,110,3,3,0,3,0,0,0,3,0,0,0
