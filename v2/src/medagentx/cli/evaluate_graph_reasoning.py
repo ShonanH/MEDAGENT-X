@@ -28,6 +28,10 @@ from medagentx.reasoning.fuse import FusedLabelPrediction, FusionStudyResult
 
 
 DEFAULT_GRAPH_REASONING_DIR = Path(DEFAULT_BALANCED_COHORT_ROOT) / "graph_reasoning"
+REQUIRED_RUN_FILES = (
+    "vision_study_predictions.csv",
+    "fusion_label_predictions.csv",
+)
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -41,6 +45,27 @@ def _read_json(path: Path) -> dict[str, Any]:
 
 def _write_json(path: Path, payload: Any) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+
+
+def _is_graph_reasoning_run_dir(path: Path) -> bool:
+    return path.is_dir() and all((path / name).exists() for name in REQUIRED_RUN_FILES)
+
+
+def _resolve_graph_reasoning_run_dir(path: Path) -> Path:
+    if _is_graph_reasoning_run_dir(path):
+        return path
+    if not path.exists():
+        raise FileNotFoundError(f"Graph reasoning path does not exist: {path}")
+    candidates = sorted(
+        (child for child in path.iterdir() if _is_graph_reasoning_run_dir(child)),
+        key=lambda child: child.name,
+    )
+    if not candidates:
+        raise FileNotFoundError(
+            "No graph reasoning run folders found under "
+            f"{path}. Expected files: {', '.join(REQUIRED_RUN_FILES)}"
+        )
+    return candidates[-1]
 
 
 def _parse_status(value: Any) -> LabelStatus:
@@ -146,6 +171,10 @@ def build_parser() -> argparse.ArgumentParser:
         "--graph-reasoning-dir",
         type=Path,
         default=DEFAULT_GRAPH_REASONING_DIR,
+        help=(
+            "Graph reasoning run folder, or parent directory containing timestamped "
+            "run folders. Defaults to the latest run under cohort-root/graph_reasoning."
+        ),
     )
     parser.add_argument(
         "--cohort-root",
@@ -164,11 +193,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     args = build_parser().parse_args()
-    graph_reasoning_dir = args.graph_reasoning_dir
-    if not graph_reasoning_dir.exists():
-        raise FileNotFoundError(
-            f"Graph reasoning directory does not exist: {graph_reasoning_dir}"
-        )
+    graph_reasoning_dir = _resolve_graph_reasoning_run_dir(args.graph_reasoning_dir)
 
     output_dir = args.output_dir or (graph_reasoning_dir / "judge_evaluation")
     study_labels_csv = args.study_labels_csv or (

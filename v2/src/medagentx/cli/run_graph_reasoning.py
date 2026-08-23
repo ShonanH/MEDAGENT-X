@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -78,6 +79,10 @@ def _default_device() -> str:
 
 def _write_json(path: Path, payload: Any) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+
+
+def _timestamp_run_name() -> str:
+    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
 def _load_threshold_overrides(path: Path | None) -> dict[str, float] | None:
@@ -186,7 +191,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--output-dir",
         type=Path,
         default=DEFAULT_OUTPUT_DIR,
-        help="Defaults to cohort-root/graph_reasoning.",
+        help="Parent directory for timestamped graph-reasoning runs.",
+    )
+    parser.add_argument(
+        "--run-name",
+        default=None,
+        help="Optional run folder name. Defaults to a UTC timestamp.",
     )
     parser.add_argument(
         "--split",
@@ -224,6 +234,8 @@ def main() -> None:
         raise ValueError("--progress-every must be > 0")
 
     cohort_root = args.cohort_root
+    run_name = args.run_name or _timestamp_run_name()
+    run_dir = args.output_dir / run_name
     views_csv = args.views_csv or (cohort_root / "splits" / "view_splits.csv")
     dicom_root = args.dicom_root or (cohort_root / "dicom_train")
     _require_existing_paths(
@@ -236,12 +248,12 @@ def main() -> None:
     )
     if args.threshold_policy_json is not None:
         _require_existing_paths({"threshold_policy_json": args.threshold_policy_json})
-    _prepare_output_dir(args.output_dir, overwrite=args.overwrite)
+    _prepare_output_dir(run_dir, overwrite=args.overwrite)
 
     print(
         "[GraphReasoning] "
         f"split={args.split} checkpoint={args.checkpoint} "
-        f"output_dir={args.output_dir}"
+        f"output_dir={run_dir}"
     )
     views = pd.read_csv(views_csv, dtype=str)
     records = _select_records(
@@ -307,7 +319,7 @@ def main() -> None:
         verification_node=graph_verification_node,
     )
 
-    graph_jsonl = args.output_dir / "graph_reasoning_results.jsonl"
+    graph_jsonl = run_dir / "graph_reasoning_results.jsonl"
     study_outputs: list[VisionStudyOutput] = []
     fusion_results = []
     verification_results = []
@@ -400,7 +412,8 @@ def main() -> None:
         ),
         "vector_db_dir": str(args.vector_db_dir),
         "collection_name": args.collection_name,
-        "output_dir": str(args.output_dir),
+        "output_dir": str(run_dir),
+        "run_name": run_name,
         "split": args.split,
         "max_studies": args.max_studies,
         "num_workers": args.num_workers,
@@ -418,24 +431,24 @@ def main() -> None:
         "fallback_used": fallback_count,
         "elapsed_seconds": time.perf_counter() - start,
     }
-    _write_json(args.output_dir / "run_config.json", run_config)
+    _write_json(run_dir / "run_config.json", run_config)
     study_outputs_to_prediction_frame(study_outputs).to_csv(
-        args.output_dir / "vision_study_predictions.csv",
+        run_dir / "vision_study_predictions.csv",
         index=False,
     )
     fusion_results_to_frame(fusion_results).to_csv(
-        args.output_dir / "fusion_label_predictions.csv",
+        run_dir / "fusion_label_predictions.csv",
         index=False,
     )
     _write_json(
-        args.output_dir / "evidence_verification.json",
+        run_dir / "evidence_verification.json",
         [
             study_verification_to_json_dict(result)
             for result in verification_results
         ],
     )
     pd.DataFrame(study_verifications_to_csv_rows(verification_results)).to_csv(
-        args.output_dir / "evidence_verification.csv",
+        run_dir / "evidence_verification.csv",
         index=False,
     )
     print(
@@ -443,7 +456,7 @@ def main() -> None:
         f"studies={len(records)} llm_requested={llm_request_count} "
         f"llm_succeeded={llm_success_count} fallback_used={fallback_count}"
     )
-    print(f"[GraphReasoning] wrote outputs -> {args.output_dir}")
+    print(f"[GraphReasoning] wrote outputs -> {run_dir}")
 
     if fallback_count and not args.allow_llm_fallback:
         raise RuntimeError(
