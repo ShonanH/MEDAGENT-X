@@ -34,7 +34,6 @@ from medagentx.reasoning.constants import (
     GRAY_ZONE_MARGIN,
 )
 from medagentx.reasoning.retrieve import (
-    default_retrieval_chroma_dir,
     open_retrieval_collection,
 )
 from medagentx.reasoning.vision_adapter import fusion_vision_inputs
@@ -50,6 +49,12 @@ DEFAULT_LAST4_CHECKPOINT = (
     / "vision"
     / "raddino_finetuned_v1_last4_blocks"
     / "best_checkpoint.pt"
+)
+DEFAULT_LAST4_VECTOR_DB_DIR = (
+    Path(DEFAULT_BALANCED_COHORT_ROOT)
+    / "retrieval"
+    / "raddino_train_v1_last4_blocks"
+    / "chroma"
 )
 
 
@@ -79,6 +84,14 @@ def _require_existing_paths(paths: dict[str, Path]) -> None:
         )
 
 
+def _collection_embedding_dim(collection: Any) -> int:
+    payload = collection.get(limit=1, include=["embeddings"])
+    embeddings = payload.get("embeddings")
+    if embeddings is None or len(embeddings) == 0:
+        raise ValueError("Retrieval collection has no embeddings to inspect")
+    return len(embeddings[0])
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Run a small real-data smoke test through the v2 inference graph."
@@ -97,7 +110,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Defaults to the last-4-blocks RAD-DINO checkpoint.",
     )
     parser.add_argument("--threshold-policy-json", type=Path, default=None)
-    parser.add_argument("--vector-db-dir", type=Path, default=None)
+    parser.add_argument(
+        "--vector-db-dir",
+        type=Path,
+        default=DEFAULT_LAST4_VECTOR_DB_DIR,
+        help="Defaults to the retrieval index rebuilt from the last-4-blocks checkpoint.",
+    )
     parser.add_argument("--collection-name", default=DEFAULT_COLLECTION_NAME)
     parser.add_argument("--split", choices=("val", "test"), default="test")
     parser.add_argument("--max-studies", type=int, default=1)
@@ -135,7 +153,7 @@ def main() -> None:
     cohort_root = args.cohort_root
     views_csv = args.views_csv or (cohort_root / "splits" / "view_splits.csv")
     dicom_root = args.dicom_root or (cohort_root / "dicom_train")
-    vector_db_dir = args.vector_db_dir or default_retrieval_chroma_dir(cohort_root)
+    vector_db_dir = args.vector_db_dir
 
     _require_existing_paths(
         {
@@ -188,6 +206,16 @@ def main() -> None:
         vector_db_dir,
         collection_name=args.collection_name,
     )
+    query_embedding_dim = len(study_outputs[0].study_embedding)
+    index_embedding_dim = _collection_embedding_dim(collection)
+    if index_embedding_dim != query_embedding_dim:
+        raise RuntimeError(
+            "Retrieval embedding dimension mismatch: "
+            f"vision backbone produced dim={query_embedding_dim}, but Chroma "
+            f"collection expects dim={index_embedding_dim}. Rebuild the retrieval "
+            "index with the same checkpoint used by this smoke run: "
+            f"{args.checkpoint}"
+        )
     label_fusion_agent = LabelFusionAgent(
         llm_client=OllamaClient(
             OllamaConfig(
