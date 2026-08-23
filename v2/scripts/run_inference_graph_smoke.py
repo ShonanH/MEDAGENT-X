@@ -14,13 +14,20 @@ from typing import Any
 
 import pandas as pd
 
+from medagentx.agents.label_fusion import LabelFusionAgent
 from medagentx.data.balanced_constants import DEFAULT_BALANCED_COHORT_ROOT
 from medagentx.graphs import (
     build_inference_graph,
     evidence_verification_node,
-    fusion_node,
     make_retrieval_node,
     make_vision_node,
+)
+from medagentx.llm.ollama import (
+    DEFAULT_OLLAMA_BASE_URL,
+    DEFAULT_OLLAMA_MODEL,
+    DEFAULT_TIMEOUT_SECONDS,
+    OllamaClient,
+    OllamaConfig,
 )
 from medagentx.reasoning.constants import (
     FUSION_RETRIEVAL_TOP_K,
@@ -30,6 +37,7 @@ from medagentx.reasoning.retrieve import (
     default_retrieval_chroma_dir,
     open_retrieval_collection,
 )
+from medagentx.reasoning.vision_adapter import fusion_vision_inputs
 from medagentx.retrieval.constants import DEFAULT_COLLECTION_NAME
 from medagentx.vision.backend import FineTunedRadDinoBackend
 from medagentx.vision.constants import DEFAULT_BATCH_SIZE, DEFAULT_NUM_WORKERS
@@ -99,6 +107,23 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--no-mixed-precision", action="store_true")
     parser.add_argument("--retrieval-top-k", type=int, default=FUSION_RETRIEVAL_TOP_K)
     parser.add_argument("--gray-zone-margin", type=float, default=GRAY_ZONE_MARGIN)
+    parser.add_argument("--ollama-model", default=DEFAULT_OLLAMA_MODEL)
+    parser.add_argument("--ollama-base-url", default=DEFAULT_OLLAMA_BASE_URL)
+    parser.add_argument("--ollama-temperature", type=float, default=0.0)
+    parser.add_argument("--ollama-timeout-seconds", type=int, default=DEFAULT_TIMEOUT_SECONDS)
+    parser.add_argument(
+        "--allow-no-llm-review",
+        action="store_true",
+        help=(
+            "Allow the smoke run to pass when none of the sampled studies trigger "
+            "deterministic fusion changes for LLM review."
+        ),
+    )
+    parser.add_argument(
+        "--allow-llm-fallback",
+        action="store_true",
+        help="Allow the smoke run to pass when LLM review falls back to deterministic fusion.",
+    )
     return parser
 
 
@@ -163,9 +188,28 @@ def main() -> None:
         vector_db_dir,
         collection_name=args.collection_name,
     )
+    label_fusion_agent = LabelFusionAgent(
+        llm_client=OllamaClient(
+            OllamaConfig(
+                model=args.ollama_model,
+                base_url=args.ollama_base_url,
+                temperature=args.ollama_temperature,
+                timeout_seconds=args.ollama_timeout_seconds,
+            )
+        ),
+        margin=args.gray_zone_margin,
+    )
 
     def graph_fusion_node(state: dict[str, Any]) -> dict[str, Any]:
-        return fusion_node(state, margin=args.gray_zone_margin)
+        fusion_result = label_fusion_agent.fuse(
+            study_key=state["vision_output"].study_key,
+            vision_predictions=fusion_vision_inputs(state["vision_output"]),
+            retrieved_cases=state["retrieved_cases"],
+        )
+        return {
+            "label_fusion_result": fusion_result,
+            "fusion_result": fusion_result.final_result,
+        }
 
     def graph_verification_node(state: dict[str, Any]) -> dict[str, Any]:
         return evidence_verification_node(state, margin=args.gray_zone_margin)
@@ -177,6 +221,9 @@ def main() -> None:
         verification_node=graph_verification_node,
     )
 
+    llm_request_count = 0
+    llm_success_count = 0
+    fallback_count = 0
     for index, record in enumerate(records, start=1):
         final_state = graph.invoke(
             {
@@ -185,14 +232,39 @@ def main() -> None:
             }
         )
         verification = final_state["evidence_verification"]
+        label_fusion = final_state["label_fusion_result"]
+        llm_request_count += int(label_fusion.llm_requested)
+        llm_success_count += int(label_fusion.llm_succeeded)
+        fallback_count += int(label_fusion.fallback_used)
         print(
             "[GraphSmoke] "
             f"{index}/{len(records)} study_key={record.study_key} "
             f"retrieved={len(final_state['retrieved_cases'])} "
+            f"llm_requested={label_fusion.llm_requested} "
+            f"llm_succeeded={label_fusion.llm_succeeded} "
+            f"fallback_used={label_fusion.fallback_used} "
             f"predicted_labels={len(verification.predicted_labels)} "
             f"evidence_score={verification.overall_evidence_score} "
             f"report_status={final_state['report_writer_result']['status']}"
         )
+
+    if llm_request_count == 0 and not args.allow_no_llm_review:
+        raise RuntimeError(
+            "No sampled studies triggered deterministic fusion changes, so the LLM "
+            "review path was not exercised. Increase --max-studies or pass "
+            "--allow-no-llm-review for a deterministic-only smoke run."
+        )
+    if fallback_count and not args.allow_llm_fallback:
+        raise RuntimeError(
+            "At least one LLM review fell back to deterministic fusion. Ensure Ollama "
+            "is running with the requested model, or pass --allow-llm-fallback."
+        )
+
+    print(
+        "[GraphSmoke] summary "
+        f"studies={len(records)} llm_requested={llm_request_count} "
+        f"llm_succeeded={llm_success_count} fallback_used={fallback_count}"
+    )
 
 
 if __name__ == "__main__":
