@@ -2,16 +2,13 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, TypedDict
+from typing import Any, TypedDict
 
-if TYPE_CHECKING:
-    from medagentx.agents.evidence_verification import (
-        StudyEvidenceVerificationResult,
-    )
-    from medagentx.agents.label_fusion import LabelFusionAgentResult
-    from medagentx.reasoning.fuse import FusionStudyResult
-    from medagentx.retrieval.index import RetrievedStudy
-    from medagentx.vision.inference_output import VisionStudyOutput
+from medagentx.agents.evidence_verification import StudyEvidenceVerificationResult
+from medagentx.agents.label_fusion import LabelFusionAgentResult
+from medagentx.reasoning.fuse import FusionStudyResult
+from medagentx.retrieval.index import RetrievedStudy
+from medagentx.vision.inference_output import VisionStudyOutput
 
 
 class MedAgentXInferenceState(TypedDict, total=False):
@@ -19,11 +16,11 @@ class MedAgentXInferenceState(TypedDict, total=False):
 
     study_key: str
     dicom_paths: tuple[str, ...]
-    vision_output: "VisionStudyOutput"
-    retrieved_cases: list["RetrievedStudy" | dict[str, Any]]
-    label_fusion_result: "LabelFusionAgentResult"
-    fusion_result: "FusionStudyResult"
-    evidence_verification: "StudyEvidenceVerificationResult"
+    vision_output: VisionStudyOutput
+    retrieved_cases: list[RetrievedStudy | dict[str, Any]]
+    label_fusion_result: LabelFusionAgentResult
+    fusion_result: FusionStudyResult
+    evidence_verification: StudyEvidenceVerificationResult
     report_writer_result: dict[str, Any]
 
 
