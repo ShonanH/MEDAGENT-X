@@ -9,11 +9,17 @@ from medagentx.agents.evidence_verification import (
     StudyEvidenceVerificationResult,
     verify_study_evidence,
 )
+from medagentx.agents.label_fusion import (
+    LabelFusionAgent,
+    LabelFusionAgentResult,
+)
 
 __all__ = [
     "EvidenceLevel",
     "EvidenceSnippet",
     "EvidenceVerificationAgent",
+    "LabelFusionAgent",
+    "LabelFusionAgentResult",
     "LabelVerificationResult",
     "LabeledEvidenceSnippet",
     "StudyEvidenceVerificationResult",

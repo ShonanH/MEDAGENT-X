@@ -6,6 +6,7 @@ from collections.abc import Callable
 from typing import Any
 
 from medagentx.graphs.evidence_verification_node import evidence_verification_node
+from medagentx.graphs.report_writer_node import report_writer_node
 from medagentx.graphs.state import MedAgentXInferenceState
 
 
@@ -23,38 +24,27 @@ def _load_langgraph() -> tuple[Any, Any, Any]:
         ) from exc
     return StateGraph, START, END
 
-
 def build_inference_graph(
     *,
     vision_node: GraphNode,
     retrieval_node: GraphNode,
     fusion_node: GraphNode,
     verification_node: GraphNode = evidence_verification_node,
+    report_node: GraphNode = report_writer_node,
 ) -> Any:
-    """Build the live Vision -> Retrieval -> Fusion -> Verification graph."""
+    """Build the live Vision -> Retrieval -> Fusion -> Verification -> Report graph."""
     StateGraph, START, END = _load_langgraph()
     graph = StateGraph(MedAgentXInferenceState)
     graph.add_node("vision", vision_node)
     graph.add_node("retrieval", retrieval_node)
     graph.add_node("fusion", fusion_node)
     graph.add_node("evidence_verification", verification_node)
+    graph.add_node("report_writer", report_node)
 
     graph.add_edge(START, "vision")
     graph.add_edge("vision", "retrieval")
     graph.add_edge("retrieval", "fusion")
     graph.add_edge("fusion", "evidence_verification")
-    graph.add_edge("evidence_verification", END)
-    return graph.compile()
-
-
-def build_evidence_verification_graph(
-    *,
-    verification_node: GraphNode = evidence_verification_node,
-) -> Any:
-    """Build a focused graph for states that already contain fusion evidence."""
-    StateGraph, START, END = _load_langgraph()
-    graph = StateGraph(MedAgentXInferenceState)
-    graph.add_node("evidence_verification", verification_node)
-    graph.add_edge(START, "evidence_verification")
-    graph.add_edge("evidence_verification", END)
+    graph.add_edge("evidence_verification", "report_writer")
+    graph.add_edge("report_writer", END)
     return graph.compile()

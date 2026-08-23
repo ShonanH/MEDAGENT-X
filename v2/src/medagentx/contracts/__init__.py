@@ -10,14 +10,36 @@ from medagentx.contracts.evidence_verification import (
     study_verification_to_row,
     study_verifications_to_csv_rows,
 )
+from medagentx.contracts.label_fusion import (
+    FUSION_LLM_REVIEW_SCHEMA,
+    FusionChangedLabelContext,
+    FusionEvidenceAssessment,
+    FusionLabelReview,
+    FusionLLMReviewResult,
+    FusionReviewAction,
+    FusionReviewConfidence,
+    FusionReviewValidationError,
+    parse_fusion_llm_review_payload,
+    validate_fusion_review_guardrails,
+)
 
 __all__ = [
     "EVIDENCE_VERIFICATION_COLUMNS",
+    "FUSION_LLM_REVIEW_SCHEMA",
     "EvidenceVerificationRow",
+    "FusionChangedLabelContext",
+    "FusionEvidenceAssessment",
+    "FusionLabelReview",
+    "FusionLLMReviewResult",
+    "FusionReviewAction",
+    "FusionReviewConfidence",
+    "FusionReviewValidationError",
     "evidence_snippet_to_dict",
     "label_verification_to_detail",
     "labeled_evidence_snippet_to_dict",
+    "parse_fusion_llm_review_payload",
     "study_verification_to_json_dict",
     "study_verification_to_row",
     "study_verifications_to_csv_rows",
+    "validate_fusion_review_guardrails",
 ]

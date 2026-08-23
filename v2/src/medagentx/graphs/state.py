@@ -17,10 +17,12 @@ class MedAgentXInferenceState(TypedDict, total=False):
     """Shared state passed between live inference graph nodes."""
 
     study_key: str
+    dicom_paths: tuple[str, ...]
     vision_output: "VisionStudyOutput"
     retrieved_cases: list["RetrievedStudy" | dict[str, Any]]
     fusion_result: "FusionStudyResult"
     evidence_verification: "StudyEvidenceVerificationResult"
+    report_writer_result: dict[str, Any]
 
 
 def require_state_keys(
