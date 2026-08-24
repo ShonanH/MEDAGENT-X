@@ -11,7 +11,10 @@ from typing import Any
 
 import pandas as pd
 
-from medagentx.agents.label_fusion import LabelFusionAgent
+from medagentx.agents.label_fusion import (
+    LLM_REVIEW_POLICY_VERSION,
+    LabelFusionAgent,
+)
 from medagentx.contracts.evidence_verification import (
     study_verification_to_json_dict,
     study_verifications_to_csv_rows,
@@ -21,6 +24,7 @@ from medagentx.evaluation.fusion_eval import fusion_results_to_frame
 from medagentx.graphs import (
     build_inference_graph,
     evidence_verification_node,
+    make_label_fusion_node,
     make_retrieval_node,
     make_vision_node,
 )
@@ -36,7 +40,6 @@ from medagentx.reasoning.constants import (
     GRAY_ZONE_MARGIN,
 )
 from medagentx.reasoning.retrieve import open_retrieval_collection
-from medagentx.reasoning.vision_adapter import fusion_vision_inputs
 from medagentx.retrieval.constants import DEFAULT_COLLECTION_NAME
 from medagentx.vision.backend import FineTunedRadDinoBackend
 from medagentx.vision.data import StudyInferenceRecord, build_study_inference_records
@@ -298,24 +301,17 @@ def main() -> None:
             )
         return output
 
-    def graph_fusion_node(state: dict[str, Any]) -> dict[str, Any]:
-        fusion_result = label_fusion_agent.fuse(
-            study_key=state["vision_output"].study_key,
-            vision_predictions=fusion_vision_inputs(state["vision_output"]),
-            retrieved_cases=state["retrieved_cases"],
-        )
-        return {
-            "label_fusion_result": fusion_result,
-            "fusion_result": fusion_result.final_result,
-        }
-
     def graph_verification_node(state: dict[str, Any]) -> dict[str, Any]:
         return evidence_verification_node(state, margin=args.gray_zone_margin)
 
     graph = build_inference_graph(
         vision_node=make_vision_node(vision_backbone),
         retrieval_node=make_retrieval_node(collection, top_k=args.retrieval_top_k),
-        fusion_node=graph_fusion_node,
+        fusion_node=make_label_fusion_node(
+            use_llm=True,
+            llm_agent=label_fusion_agent,
+            margin=args.gray_zone_margin,
+        ),
         verification_node=graph_verification_node,
     )
 
@@ -421,6 +417,9 @@ def main() -> None:
         "mixed_precision": not args.no_mixed_precision,
         "retrieval_top_k": args.retrieval_top_k,
         "gray_zone_margin": args.gray_zone_margin,
+        "fusion_mode": "llm_guarded_review",
+        "fusion_llm_enabled": True,
+        "fusion_llm_policy_version": LLM_REVIEW_POLICY_VERSION,
         "ollama_model": args.ollama_model,
         "ollama_base_url": args.ollama_base_url,
         "ollama_temperature": args.ollama_temperature,

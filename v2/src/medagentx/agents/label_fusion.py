@@ -9,8 +9,10 @@ from typing import Any, Mapping, Sequence
 from medagentx.contracts.label_fusion import (
     FUSION_LLM_REVIEW_SCHEMA,
     FusionChangedLabelContext,
+    FusionEvidenceAssessment,
     FusionLLMReviewResult,
     FusionReviewAction,
+    FusionReviewConfidence,
     FusionReviewValidationError,
     parse_fusion_llm_review_payload,
     validate_fusion_review_guardrails,
@@ -25,6 +27,9 @@ from medagentx.reasoning.fuse import (
     fuse_study_labels,
 )
 from medagentx.reasoning.mentions import RetrievedReportCase
+
+
+LLM_REVIEW_POLICY_VERSION = "llm_guarded_review_v1"
 
 
 @dataclass(frozen=True)
@@ -43,6 +48,15 @@ class LabelFusionAgentResult:
     kept_labels: tuple[str, ...]
     vetoed_labels: tuple[str, ...]
     uncertain_labels: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class FusionReviewPolicyDecision:
+    """Decision from the local safety policy over one LLM label review."""
+
+    applied: bool
+    final_status: LabelStatus
+    reason: str
 
 
 class LabelFusionAgent:
@@ -325,44 +339,57 @@ def _apply_llm_review(
                 fallback_reasons.append(
                     f"{label_result.label}: deterministic-status-used"
                 )
-            final_labels.append(label_result)
+            final_labels.append(
+                _label_with_llm_metadata(
+                    label_result,
+                    deterministic_status=label_result.fused_status,
+                    final_status=label_result.fused_status,
+                    policy_reason=(
+                        "deterministic-status-used"
+                        if label_result.label in changed_labels
+                        else ""
+                    ),
+                )
+            )
             continue
 
         action_summary["reviewed"].add(label_result.label)
-        final_status = review.final_status
-        if review.action is FusionReviewAction.KEEP:
+        context = next(
+            item for item in changed_contexts if item.label == label_result.label
+        )
+        policy_decision = _llm_review_policy_decision(review, context=context)
+        final_status = policy_decision.final_status
+
+        if not policy_decision.applied:
+            fallback_reasons.append(
+                f"{label_result.label}: llm-action-rejected: "
+                f"{policy_decision.reason}"
+            )
+        elif review.action is FusionReviewAction.KEEP:
             action_summary["kept"].add(label_result.label)
         elif review.action is FusionReviewAction.VETO:
             action_summary["vetoed"].add(label_result.label)
         elif review.action is FusionReviewAction.UNCERTAIN:
             action_summary["uncertain"].add(label_result.label)
-        else:
-            fallback_reasons.append(
-                f"{label_result.label}: unsupported-action-{review.action}"
-            )
-            final_status = label_result.fused_status
 
         final_labels.append(
-            FusedLabelPrediction(
-                label=label_result.label,
-                vision_status=label_result.vision_status,
-                fused_status=final_status,
-                probability=label_result.probability,
-                threshold=label_result.threshold,
-                in_gray_zone=label_result.in_gray_zone,
-                positive_count=label_result.positive_count,
-                negative_count=label_result.negative_count,
-                refinement_reason=_reviewed_refinement_reason(
-                    label_result.refinement_reason,
-                    review,
-                ),
+            _label_with_llm_metadata(
+                label_result,
+                deterministic_status=label_result.fused_status,
+                final_status=final_status,
+                review=review,
+                llm_applied=policy_decision.applied,
+                policy_reason=policy_decision.reason,
             )
         )
 
     return (
         FusionStudyResult(
             study_key=deterministic_result.study_key,
-            fusion_policy_version=deterministic_result.fusion_policy_version,
+            fusion_policy_version=(
+                f"{deterministic_result.fusion_policy_version}"
+                f"+{LLM_REVIEW_POLICY_VERSION}"
+            ),
             labels=tuple(final_labels),
         ),
         action_summary,
@@ -370,16 +397,176 @@ def _apply_llm_review(
     )
 
 
+def _llm_review_policy_decision(
+    review,
+    *,
+    context: FusionChangedLabelContext,
+) -> FusionReviewPolicyDecision:
+    """Apply the local policy that makes LLM review conservative by default."""
+
+    if review.action is FusionReviewAction.KEEP:
+        return FusionReviewPolicyDecision(
+            applied=True,
+            final_status=context.deterministic_status,
+            reason="keep-preserves-deterministic-fusion",
+        )
+
+    if review.confidence is FusionReviewConfidence.LOW:
+        return FusionReviewPolicyDecision(
+            applied=False,
+            final_status=context.deterministic_status,
+            reason="low-confidence-non-keep-rejected",
+        )
+
+    if review.action is FusionReviewAction.VETO:
+        if review.evidence_assessment is not FusionEvidenceAssessment.CONTRADICTORY:
+            return FusionReviewPolicyDecision(
+                applied=False,
+                final_status=context.deterministic_status,
+                reason="veto-requires-contradictory-evidence-assessment",
+            )
+        if not review.contradicting_case_ids:
+            return FusionReviewPolicyDecision(
+                applied=False,
+                final_status=context.deterministic_status,
+                reason="veto-requires-contradicting-case-id",
+            )
+        if _is_deterministic_promotion(context):
+            if context.negative_count > 0:
+                return FusionReviewPolicyDecision(
+                    applied=True,
+                    final_status=review.final_status,
+                    reason="promotion-veto-applied-with-negative-retrieval-count",
+                )
+            if (
+                review.confidence is FusionReviewConfidence.HIGH
+                and len(review.contradicting_case_ids) >= 2
+            ):
+                return FusionReviewPolicyDecision(
+                    applied=True,
+                    final_status=review.final_status,
+                    reason=(
+                        "promotion-veto-applied-with-high-confidence-"
+                        "multi-case-contradiction"
+                    ),
+                )
+            return FusionReviewPolicyDecision(
+                applied=False,
+                final_status=context.deterministic_status,
+                reason=(
+                    "promotion-veto-requires-negative-retrieval-or-high-confidence-"
+                    "multi-case-contradiction"
+                ),
+            )
+
+        return FusionReviewPolicyDecision(
+            applied=True,
+            final_status=review.final_status,
+            reason="demotion-veto-applied-with-contradictory-evidence",
+        )
+
+    if review.action is FusionReviewAction.UNCERTAIN:
+        if review.evidence_assessment not in {
+            FusionEvidenceAssessment.MIXED,
+            FusionEvidenceAssessment.INSUFFICIENT,
+            FusionEvidenceAssessment.CONTRADICTORY,
+        }:
+            return FusionReviewPolicyDecision(
+                applied=False,
+                final_status=context.deterministic_status,
+                reason="uncertain-requires-mixed-insufficient-or-contradictory-evidence",
+            )
+        if _is_deterministic_promotion(context):
+            if (
+                review.confidence is FusionReviewConfidence.HIGH
+                and (
+                    context.negative_count > 0
+                    or len(review.contradicting_case_ids) >= 2
+                )
+            ):
+                return FusionReviewPolicyDecision(
+                    applied=True,
+                    final_status=review.final_status,
+                    reason="promotion-uncertain-applied-with-strong-conflict-signal",
+                )
+            return FusionReviewPolicyDecision(
+                applied=False,
+                final_status=context.deterministic_status,
+                reason="promotion-uncertain-requires-high-confidence-conflict-signal",
+            )
+
+        return FusionReviewPolicyDecision(
+            applied=True,
+            final_status=review.final_status,
+            reason="demotion-uncertain-applied",
+        )
+
+    return FusionReviewPolicyDecision(
+        applied=False,
+        final_status=context.deterministic_status,
+        reason=f"unsupported-action-{review.action}",
+    )
+
+
+def _is_deterministic_promotion(context: FusionChangedLabelContext) -> bool:
+    return (
+        context.vision_status is LabelStatus.ABSENT
+        and context.deterministic_status is LabelStatus.PRESENT
+    )
+
+
+def _label_with_llm_metadata(
+    label_result: FusedLabelPrediction,
+    *,
+    deterministic_status: LabelStatus,
+    final_status: LabelStatus,
+    review: Any | None = None,
+    llm_applied: bool | None = None,
+    policy_reason: str = "",
+) -> FusedLabelPrediction:
+    return FusedLabelPrediction(
+        label=label_result.label,
+        vision_status=label_result.vision_status,
+        fused_status=final_status,
+        probability=label_result.probability,
+        threshold=label_result.threshold,
+        in_gray_zone=label_result.in_gray_zone,
+        positive_count=label_result.positive_count,
+        negative_count=label_result.negative_count,
+        refinement_reason=_reviewed_refinement_reason(
+            label_result.refinement_reason,
+            review,
+            llm_applied=llm_applied,
+            policy_reason=policy_reason,
+        ),
+        deterministic_status=deterministic_status,
+        llm_action=review.action.value if review is not None else "",
+        llm_confidence=review.confidence.value if review is not None else "",
+        llm_evidence_assessment=(
+            review.evidence_assessment.value if review is not None else ""
+        ),
+        llm_applied=llm_applied,
+        llm_policy_reason=policy_reason,
+    )
+
+
 def _reviewed_refinement_reason(
     deterministic_reason: str,
     review: Any | None,
+    *,
+    llm_applied: bool | None = None,
+    policy_reason: str = "",
 ) -> str:
     if review is None:
-        return deterministic_reason
+        if not policy_reason:
+            return deterministic_reason
+        return f"{deterministic_reason}; llm_policy={policy_reason}"
+    applied_text = "applied" if llm_applied else "rejected"
     return (
         f"{deterministic_reason}; llm_review action={review.action.value} "
         f"confidence={review.confidence.value} "
-        f"evidence={review.evidence_assessment.value}: {review.rationale}"
+        f"evidence={review.evidence_assessment.value} "
+        f"policy={applied_text} reason={policy_reason}: {review.rationale}"
     )
 
 
@@ -389,6 +576,7 @@ def _fusion_review_system_prompt() -> str:
         "Your task is to review deterministic gray-zone label fusion changes. "
         "You MUST NOT diagnose new labels. "
         "You may only keep, veto, or mark uncertain the deterministic changes provided in the user message. "
+        "Default to keeping deterministic fusion unless there is strong label-specific contradiction. "
         "Return valid JSON only. Do not include prose outside JSON."
     )
 
@@ -408,10 +596,12 @@ def _fusion_review_user_prompt(
             "Review exactly the changed labels provided.",
             "DO NOT add labels.",
             "DO NOT modify labels outside this list.",
-            "Use the full retrieved reports as evidence.",
+            "The retrieved reports are visually similar neighbor cases, not the target study report.",
+            "Use retrieved reports as indirect weak evidence, not direct ground truth for the target study.",
+            "Default to action keep when retrieved evidence is merely mixed, historical, indirect, or missing direct proof.",
             "If evidence supports the deterministic change, use action keep.",
-            "If evidence contradicts the deterministic change, use action veto.",
-            "If evidence is mixed, ambiguous, historical, or insufficient, use action uncertain when clinically appropriate.",
+            "Use action veto only for strong label-specific contradiction, not for absence of mention.",
+            "Use action uncertain only when there is strong conflict that should soften the deterministic change.",
             "Referenced case IDs must come from retrieved_cases.",
         ],
         "changed_labels": [

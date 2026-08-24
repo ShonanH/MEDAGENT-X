@@ -63,6 +63,12 @@ class FusedLabelPrediction:
     positive_count: int
     negative_count: int
     refinement_reason: str
+    deterministic_status: LabelStatus | None = None
+    llm_action: str = ""
+    llm_confidence: str = ""
+    llm_evidence_assessment: str = ""
+    llm_applied: bool | None = None
+    llm_policy_reason: str = ""
 
 
 @dataclass(frozen=True)

@@ -462,6 +462,9 @@ def fusion_results_to_frame(
     rows: list[dict[str, Any]] = []
     for result in fusion_results:
         for label_result in result.labels:
+            deterministic_status = (
+                label_result.deterministic_status or label_result.fused_status
+            )
             rows.append(
                 {
                     "study_key": result.study_key,
@@ -470,10 +473,16 @@ def fusion_results_to_frame(
                     "probability": label_result.probability,
                     "threshold": label_result.threshold,
                     "vision_status": label_result.vision_status.value,
+                    "deterministic_status": deterministic_status.value,
                     "fused_status": label_result.fused_status.value,
                     "in_gray_zone": label_result.in_gray_zone,
                     "positive_count": label_result.positive_count,
                     "negative_count": label_result.negative_count,
+                    "llm_action": label_result.llm_action,
+                    "llm_confidence": label_result.llm_confidence,
+                    "llm_evidence_assessment": label_result.llm_evidence_assessment,
+                    "llm_applied": label_result.llm_applied,
+                    "llm_policy_reason": label_result.llm_policy_reason,
                     "refinement_reason": label_result.refinement_reason,
                 }
             )

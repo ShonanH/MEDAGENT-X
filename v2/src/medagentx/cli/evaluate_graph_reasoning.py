@@ -21,6 +21,7 @@ from medagentx.evaluation.fusion_eval import (
     uncertain_status_metrics_frame,
 )
 from medagentx.evaluation.ground_truth import GroundTruthRecord
+from medagentx.evaluation.matching import MatchOutcome, compare_statuses
 from medagentx.labels.constants import DISEASE_LABELS
 from medagentx.labels.schema import snake_label
 from medagentx.labels.statuses import LabelStatus
@@ -163,6 +164,193 @@ def _require_columns(
         )
 
 
+LLM_POLICY_AUDIT_COLUMNS = (
+    "study_key",
+    "label",
+    "gt_status",
+    "vision_status",
+    "deterministic_status",
+    "fused_status",
+    "llm_action",
+    "llm_confidence",
+    "llm_evidence_assessment",
+    "llm_applied",
+    "llm_policy_reason",
+    "deterministic_outcome",
+    "final_outcome",
+    "helped",
+    "impact",
+)
+
+
+LLM_POLICY_SUMMARY_COLUMNS = (
+    "label",
+    "llm_action",
+    "llm_confidence",
+    "llm_evidence_assessment",
+    "llm_applied",
+    "llm_policy_reason",
+    "reviewed_cells",
+    "helped",
+    "hurt",
+    "no_change",
+    "unscored",
+    "net_helped",
+)
+
+
+def _ground_truth_status_map(
+    ground_truth_records: list[GroundTruthRecord],
+) -> dict[tuple[str, str], LabelStatus]:
+    return {
+        (record.study_key, record.label): record.ground_truth_status
+        for record in ground_truth_records
+    }
+
+
+def _optional_row_value(row: Any, column: str, default: str = "") -> str:
+    value = getattr(row, column, default)
+    if value is None:
+        return default
+    text = str(value)
+    if text == "nan":
+        return default
+    return text
+
+
+def _outcome_score(outcome: MatchOutcome) -> int | None:
+    if outcome in (MatchOutcome.TP, MatchOutcome.TN):
+        return 1
+    if outcome in (MatchOutcome.FP, MatchOutcome.FN, MatchOutcome.MISS_UNCERTAIN):
+        return -1
+    return None
+
+
+def _llm_policy_impact(
+    deterministic_outcome: MatchOutcome,
+    final_outcome: MatchOutcome,
+) -> tuple[bool | None, str]:
+    before = _outcome_score(deterministic_outcome)
+    after = _outcome_score(final_outcome)
+    if before is None or after is None:
+        return None, "unscored"
+    if after > before:
+        return True, "helped"
+    if after < before:
+        return False, "hurt"
+    return False, "no_change"
+
+
+def _llm_policy_audit_frame(
+    *,
+    fusion_frame: pd.DataFrame,
+    ground_truth_records: list[GroundTruthRecord],
+) -> pd.DataFrame:
+    """Build one row per LLM-reviewed label with deterministic-vs-final impact."""
+
+    if "llm_action" not in fusion_frame.columns:
+        return pd.DataFrame(columns=LLM_POLICY_AUDIT_COLUMNS)
+
+    gt_by_key = _ground_truth_status_map(ground_truth_records)
+    rows: list[dict[str, Any]] = []
+    for row in fusion_frame.itertuples(index=False):
+        llm_action = _optional_row_value(row, "llm_action")
+        if not llm_action:
+            continue
+
+        study_key = str(row.study_key)
+        label = str(row.label)
+        gt_status = gt_by_key.get((study_key, label))
+        if gt_status is None:
+            continue
+
+        vision_status = _parse_status(row.vision_status)
+        deterministic_status = _parse_status(
+            _optional_row_value(row, "deterministic_status", str(row.fused_status))
+        )
+        final_status = _parse_status(row.fused_status)
+        deterministic_match = compare_statuses(
+            study_key=study_key,
+            label=label,
+            ground_truth_status=gt_status,
+            predicted_status=deterministic_status,
+        )
+        final_match = compare_statuses(
+            study_key=study_key,
+            label=label,
+            ground_truth_status=gt_status,
+            predicted_status=final_status,
+        )
+        helped, impact = _llm_policy_impact(
+            deterministic_match.outcome,
+            final_match.outcome,
+        )
+
+        rows.append(
+            {
+                "study_key": study_key,
+                "label": label,
+                "gt_status": gt_status.value,
+                "vision_status": vision_status.value,
+                "deterministic_status": deterministic_status.value,
+                "fused_status": final_status.value,
+                "llm_action": llm_action,
+                "llm_confidence": _optional_row_value(row, "llm_confidence"),
+                "llm_evidence_assessment": _optional_row_value(
+                    row,
+                    "llm_evidence_assessment",
+                ),
+                "llm_applied": _optional_row_value(row, "llm_applied"),
+                "llm_policy_reason": _optional_row_value(row, "llm_policy_reason"),
+                "deterministic_outcome": deterministic_match.outcome.value,
+                "final_outcome": final_match.outcome.value,
+                "helped": helped,
+                "impact": impact,
+            }
+        )
+
+    return pd.DataFrame(rows, columns=LLM_POLICY_AUDIT_COLUMNS)
+
+
+def _llm_policy_summary_frame(audit_frame: pd.DataFrame) -> pd.DataFrame:
+    """Summarize LLM policy impact by action, confidence, and policy reason."""
+
+    if audit_frame.empty:
+        return pd.DataFrame(columns=LLM_POLICY_SUMMARY_COLUMNS)
+
+    group_columns = [
+        "label",
+        "llm_action",
+        "llm_confidence",
+        "llm_evidence_assessment",
+        "llm_applied",
+        "llm_policy_reason",
+    ]
+    rows: list[dict[str, Any]] = []
+    for values, group in audit_frame.groupby(group_columns, dropna=False):
+        impact_counts = group["impact"].value_counts()
+        helped = int(impact_counts.get("helped", 0))
+        hurt = int(impact_counts.get("hurt", 0))
+        no_change = int(impact_counts.get("no_change", 0))
+        unscored = int(impact_counts.get("unscored", 0))
+        rows.append(
+            {
+                **dict(zip(group_columns, values)),
+                "reviewed_cells": int(len(group)),
+                "helped": helped,
+                "hurt": hurt,
+                "no_change": no_change,
+                "unscored": unscored,
+                "net_helped": helped - hurt,
+            }
+        )
+
+    return pd.DataFrame(rows, columns=LLM_POLICY_SUMMARY_COLUMNS).sort_values(
+        by=["net_helped", "reviewed_cells"],
+        ascending=[False, False],
+    )
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Evaluate saved graph reasoning outputs with Judge metrics."
@@ -303,6 +491,15 @@ def main() -> None:
     )
     status_confusion_by_label_frame(judge_runs).to_csv(
         output_dir / "status_confusion_by_label.csv",
+        index=False,
+    )
+    llm_policy_audit = _llm_policy_audit_frame(
+        fusion_frame=fusion_frame,
+        ground_truth_records=ground_truth_records,
+    )
+    llm_policy_audit.to_csv(output_dir / "llm_policy_audit.csv", index=False)
+    _llm_policy_summary_frame(llm_policy_audit).to_csv(
+        output_dir / "llm_policy_summary.csv",
         index=False,
     )
     print(f"[GraphReasoningEval] wrote Judge metrics -> {output_dir}")
