@@ -201,8 +201,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--split",
         choices=("train", "val", "test", "all"),
-        default="all",
-        help="Default is all cohort studies.",
+        default="test",
+        help="Dataset split to run. Default is test.",
     )
     parser.add_argument("--max-studies", type=int, default=None)
     parser.add_argument("--num-workers", type=int, default=0)
@@ -214,7 +214,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--ollama-base-url", default=DEFAULT_OLLAMA_BASE_URL)
     parser.add_argument("--ollama-temperature", type=float, default=0.0)
     parser.add_argument("--ollama-timeout-seconds", type=int, default=DEFAULT_TIMEOUT_SECONDS)
-    parser.add_argument("--progress-every", type=int, default=25)
+    parser.add_argument("--progress-every", type=int, default=1)
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument(
         "--allow-llm-fallback",
