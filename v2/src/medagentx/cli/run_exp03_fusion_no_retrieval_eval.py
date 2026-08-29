@@ -1,4 +1,4 @@
-"""Run Experiment 3: label fusion control with no retrieval evidence."""
+"""Run Experiment 3: gray-zone uncertainty fusion without retrieval evidence."""
 
 from __future__ import annotations
 
@@ -26,11 +26,13 @@ from medagentx.cli.experiment_eval_utils import (
 )
 from medagentx.labels.constants import DISEASE_LABELS
 from medagentx.labels.schema import snake_label
+from medagentx.labels.statuses import LabelStatus
 from medagentx.reasoning.constants import FUSION_POLICY_VERSION, GRAY_ZONE_MARGIN
 from medagentx.reasoning.fuse import (
+    FusedLabelPrediction,
     FusionStudyResult,
     VisionLabelPrediction,
-    fuse_study_labels,
+    is_gray_zone,
 )
 
 
@@ -46,8 +48,8 @@ DEFAULT_STUDY_LABELS_CSV = Path(
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
-            "Evaluate the no-retrieval label-fusion control. Fusion receives "
-            "retrieved_cases=[] for every study."
+            "Evaluate the no-retrieval gray-zone uncertainty fusion variant. "
+            "Labels inside the RAD-DINO gray zone are set to uncertain."
         )
     )
     parser.add_argument(
@@ -76,7 +78,7 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _run_no_retrieval_fusion(
+def _run_gray_zone_uncertainty_fusion(
     vision_frame: pd.DataFrame,
     *,
     margin: float,
@@ -85,21 +87,47 @@ def _run_no_retrieval_fusion(
     fusion_results: list[FusionStudyResult] = []
     for row in vision_frame.itertuples(index=False):
         study_key = str(row.study_key)
-        vision_inputs: dict[str, VisionLabelPrediction] = {}
+        fused_labels: list[FusedLabelPrediction] = []
         for label in DISEASE_LABELS:
             slug = snake_label(label)
-            vision_inputs[label] = VisionLabelPrediction(
+            vision_prediction = VisionLabelPrediction(
                 label=label,
                 probability=float(getattr(row, f"probability_{slug}")),
                 threshold=float(getattr(row, f"threshold_{slug}")),
                 status=parse_label_status(getattr(row, f"status_{slug}")),
             )
-        fusion_results.append(
-            fuse_study_labels(
-                vision_inputs,
-                [],
-                study_key=study_key,
+            gray_zone = is_gray_zone(
+                vision_prediction.probability,
+                vision_prediction.threshold,
                 margin=margin,
+            )
+            fused_status = (
+                LabelStatus.UNCERTAIN
+                if gray_zone
+                else vision_prediction.vision_status
+            )
+            fused_labels.append(
+                FusedLabelPrediction(
+                    label=label,
+                    vision_status=vision_prediction.vision_status,
+                    fused_status=fused_status,
+                    probability=vision_prediction.probability,
+                    threshold=vision_prediction.threshold,
+                    in_gray_zone=gray_zone,
+                    positive_count=0,
+                    negative_count=0,
+                    refinement_reason=(
+                        "gray-zone label marked uncertain without retrieval"
+                        if gray_zone
+                        else "vision kept (strong zone)"
+                    ),
+                )
+            )
+        fusion_results.append(
+            FusionStudyResult(
+                study_key=study_key,
+                fusion_policy_version="gray_zone_uncertainty_no_retrieval_v1",
+                labels=tuple(fused_labels),
             )
         )
     return fusion_results
@@ -120,7 +148,7 @@ def main(argv: list[str] | None = None) -> int:
     study_labels = pd.read_csv(args.study_labels_csv, dtype=str)
     study_keys = vision_frame["study_key"].astype(str).tolist()
 
-    fusion_results = _run_no_retrieval_fusion(
+    fusion_results = _run_gray_zone_uncertainty_fusion(
         vision_frame,
         margin=args.gray_zone_margin,
     )
@@ -172,10 +200,12 @@ def main(argv: list[str] | None = None) -> int:
         "experiment": "exp03_fusion_no_retrieval",
         "source_vision_csv": str(args.source_vision_csv),
         "study_labels_csv": str(args.study_labels_csv),
-        "fusion_policy_version": FUSION_POLICY_VERSION,
+        "fusion_policy_version": "gray_zone_uncertainty_no_retrieval_v1",
+        "base_fusion_policy_version": FUSION_POLICY_VERSION,
         "gray_zone_margin": args.gray_zone_margin,
         "retrieval_enabled": False,
         "retrieved_top_k": 0,
+        "gray_zone_action": "set_fused_status_to_uncertain",
         "study_count": len(study_keys),
         "ground_truth_rows": len(ground_truth_records),
         "gray_zone_rows": len(gray_zone_records),
@@ -202,10 +232,12 @@ def main(argv: list[str] | None = None) -> int:
             "source_vision_csv": str(args.source_vision_csv),
             "study_labels_csv": str(args.study_labels_csv),
             "output_dir": str(args.output_dir),
-            "fusion_policy_version": FUSION_POLICY_VERSION,
+            "fusion_policy_version": "gray_zone_uncertainty_no_retrieval_v1",
+            "base_fusion_policy_version": FUSION_POLICY_VERSION,
             "gray_zone_margin": args.gray_zone_margin,
             "retrieval_enabled": False,
             "retrieved_top_k": 0,
+            "gray_zone_action": "set_fused_status_to_uncertain",
         },
     )
     print(f"[Exp03FusionNoRetrievalEval] wrote artifacts -> {args.output_dir}")

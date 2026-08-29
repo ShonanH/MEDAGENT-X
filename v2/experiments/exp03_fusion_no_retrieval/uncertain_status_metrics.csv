@@ -1,0 +1,49 @@
+run_name,label,eval_scope,gt_uncertain,pred_uncertain,uncertain_matches,uncertain_match_rate,uncertain_overcalls,uncertain_undercalls
+vision_full,Atelectasis,full,58,0,0,0.0,0,58
+vision_full,Cardiomegaly,full,13,0,0,0.0,0,13
+vision_full,Consolidation,full,46,0,0,0.0,0,46
+vision_full,Edema,full,9,0,0,0.0,0,9
+vision_full,Enlarged Cardiomediastinum,full,46,0,0,0.0,0,46
+vision_full,Fracture,full,0,0,0,,0,0
+vision_full,Lung Lesion,full,3,0,0,0.0,0,3
+vision_full,Lung Opacity,full,0,0,0,,0,0
+vision_full,Pleural Effusion,full,11,0,0,0.0,0,11
+vision_full,Pleural Other,full,2,0,0,0.0,0,2
+vision_full,Pneumonia,full,20,0,0,0.0,0,20
+vision_full,Pneumothorax,full,3,0,0,0.0,0,3
+fusion_no_retrieval_full,Atelectasis,full,58,124,10,0.1724137931034483,17,48
+fusion_no_retrieval_full,Cardiomegaly,full,13,126,5,0.38461538461538464,35,8
+fusion_no_retrieval_full,Consolidation,full,46,157,6,0.13043478260869565,27,40
+fusion_no_retrieval_full,Edema,full,9,142,2,0.2222222222222222,24,7
+fusion_no_retrieval_full,Enlarged Cardiomediastinum,full,46,145,14,0.30434782608695654,19,32
+fusion_no_retrieval_full,Fracture,full,0,174,0,,17,0
+fusion_no_retrieval_full,Lung Lesion,full,3,136,1,0.3333333333333333,12,2
+fusion_no_retrieval_full,Lung Opacity,full,0,165,0,,45,0
+fusion_no_retrieval_full,Pleural Effusion,full,11,129,1,0.09090909090909091,49,10
+fusion_no_retrieval_full,Pleural Other,full,2,135,2,1.0,16,0
+fusion_no_retrieval_full,Pneumonia,full,20,220,4,0.2,17,16
+fusion_no_retrieval_full,Pneumothorax,full,3,159,0,0.0,57,3
+vision_gray_zone,Atelectasis,gray_zone,10,0,0,0.0,0,10
+vision_gray_zone,Cardiomegaly,gray_zone,5,0,0,0.0,0,5
+vision_gray_zone,Consolidation,gray_zone,6,0,0,0.0,0,6
+vision_gray_zone,Edema,gray_zone,2,0,0,0.0,0,2
+vision_gray_zone,Enlarged Cardiomediastinum,gray_zone,14,0,0,0.0,0,14
+vision_gray_zone,Fracture,gray_zone,0,0,0,,0,0
+vision_gray_zone,Lung Lesion,gray_zone,1,0,0,0.0,0,1
+vision_gray_zone,Lung Opacity,gray_zone,0,0,0,,0,0
+vision_gray_zone,Pleural Effusion,gray_zone,1,0,0,0.0,0,1
+vision_gray_zone,Pleural Other,gray_zone,2,0,0,0.0,0,2
+vision_gray_zone,Pneumonia,gray_zone,4,0,0,0.0,0,4
+vision_gray_zone,Pneumothorax,gray_zone,0,0,0,,0,0
+fusion_no_retrieval_gray_zone,Atelectasis,gray_zone,10,124,10,1.0,17,0
+fusion_no_retrieval_gray_zone,Cardiomegaly,gray_zone,5,126,5,1.0,35,0
+fusion_no_retrieval_gray_zone,Consolidation,gray_zone,6,157,6,1.0,27,0
+fusion_no_retrieval_gray_zone,Edema,gray_zone,2,142,2,1.0,24,0
+fusion_no_retrieval_gray_zone,Enlarged Cardiomediastinum,gray_zone,14,145,14,1.0,19,0
+fusion_no_retrieval_gray_zone,Fracture,gray_zone,0,174,0,,17,0
+fusion_no_retrieval_gray_zone,Lung Lesion,gray_zone,1,136,1,1.0,12,0
+fusion_no_retrieval_gray_zone,Lung Opacity,gray_zone,0,165,0,,45,0
+fusion_no_retrieval_gray_zone,Pleural Effusion,gray_zone,1,129,1,1.0,49,0
+fusion_no_retrieval_gray_zone,Pleural Other,gray_zone,2,135,2,1.0,16,0
+fusion_no_retrieval_gray_zone,Pneumonia,gray_zone,4,220,4,1.0,17,0
+fusion_no_retrieval_gray_zone,Pneumothorax,gray_zone,0,159,0,,57,0
