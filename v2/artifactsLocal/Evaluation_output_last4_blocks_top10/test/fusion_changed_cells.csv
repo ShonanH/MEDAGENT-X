@@ -1,0 +1,390 @@
+study_key,label,gt_status,vision_status,fusion_status,vision_prob,vision_threshold,gray_zone,change_type,retrieved_pos_mentions,retrieved_neg_mentions,retrieved_top_k
+patient00877/study1,Consolidation,unmentioned,absent,present,0.3994140625,0.45,True,promotion,4,0,10
+patient00877/study7,Atelectasis,present,absent,present,0.49951171875,0.56,True,promotion,8,0,10
+patient00877/study9,Lung Lesion,unmentioned,absent,present,0.269287109375,0.39,True,promotion,3,0,10
+patient00980/study7,Consolidation,present,absent,present,0.416015625,0.45,True,promotion,8,0,10
+patient00980/study7,Fracture,unmentioned,absent,present,0.407958984375,0.42,True,promotion,3,0,10
+patient01384/study1,Atelectasis,unmentioned,absent,present,0.54296875,0.56,True,promotion,8,0,10
+patient02001/study6,Pleural Effusion,present,absent,present,0.465087890625,0.6,True,promotion,10,0,10
+patient02261/study2,Consolidation,unmentioned,absent,present,0.351318359375,0.45,True,promotion,3,0,10
+patient02298/study2,Pneumothorax,absent,present,uncertain,0.4794921875,0.33,True,demotion,6,11,10
+patient02298/study2,Lung Opacity,present,absent,present,0.58935546875,0.62,True,promotion,5,0,10
+patient02378/study10,Lung Opacity,unmentioned,absent,present,0.481689453125,0.62,True,promotion,4,0,10
+patient02512/study1,Pleural Effusion,present,absent,present,0.56787109375,0.6,True,promotion,14,0,10
+patient02512/study1,Pleural Other,unmentioned,absent,present,0.392578125,0.45,True,promotion,4,0,10
+patient02999/study10,Cardiomegaly,unmentioned,absent,present,0.435302734375,0.5,True,promotion,5,0,10
+patient02999/study10,Edema,unmentioned,absent,present,0.307861328125,0.453857,True,promotion,8,0,10
+patient02999/study11,Cardiomegaly,unmentioned,absent,present,0.37060546875,0.5,True,promotion,6,0,10
+patient02999/study2,Cardiomegaly,unmentioned,absent,present,0.47509765625,0.5,True,promotion,3,0,10
+patient03138/study11,Atelectasis,unmentioned,absent,present,0.5263671875,0.56,True,promotion,10,0,10
+patient03387/study11,Edema,unmentioned,absent,present,0.33740234375,0.453857,True,promotion,8,0,10
+patient03443/study11,Edema,unmentioned,absent,present,0.36181640625,0.453857,True,promotion,9,0,10
+patient03478/study11,Edema,unmentioned,absent,present,0.346435546875,0.453857,True,promotion,3,0,10
+patient03478/study12,Atelectasis,unmentioned,absent,present,0.4404296875,0.56,True,promotion,8,0,10
+patient03532/study12,Lung Opacity,present,absent,present,0.477783203125,0.62,True,promotion,7,0,10
+patient03532/study18,Pneumothorax,unmentioned,present,uncertain,0.361572265625,0.33,True,demotion,2,4,10
+patient04335/study1,Consolidation,unmentioned,absent,present,0.328857421875,0.45,True,promotion,4,0,10
+patient04335/study1,Pneumothorax,unmentioned,absent,present,0.30322265625,0.33,True,promotion,6,0,10
+patient04335/study10,Consolidation,unmentioned,absent,present,0.394287109375,0.45,True,promotion,4,0,10
+patient04335/study10,Edema,unmentioned,absent,present,0.359130859375,0.453857,True,promotion,14,0,10
+patient04335/study11,Lung Opacity,unmentioned,absent,present,0.58203125,0.62,True,promotion,3,0,10
+patient05047/study1,Lung Opacity,unmentioned,absent,present,0.501953125,0.62,True,promotion,9,0,10
+patient05047/study2,Atelectasis,unmentioned,absent,present,0.43994140625,0.56,True,promotion,6,0,10
+patient05066/study10,Atelectasis,unmentioned,absent,present,0.497314453125,0.56,True,promotion,8,0,10
+patient05066/study10,Consolidation,unmentioned,absent,present,0.414794921875,0.45,True,promotion,7,0,10
+patient05066/study10,Fracture,unmentioned,absent,present,0.314697265625,0.42,True,promotion,3,0,10
+patient05066/study10,Pleural Other,unmentioned,absent,present,0.41015625,0.45,True,promotion,6,0,10
+patient05078/study1,Atelectasis,unmentioned,absent,present,0.47119140625,0.56,True,promotion,5,0,10
+patient05078/study1,Lung Lesion,unmentioned,absent,present,0.278076171875,0.39,True,promotion,4,0,10
+patient05115/study1,Atelectasis,unmentioned,absent,present,0.48291015625,0.56,True,promotion,4,0,10
+patient05115/study1,Fracture,unmentioned,absent,present,0.370849609375,0.42,True,promotion,3,0,10
+patient05115/study2,Lung Opacity,unmentioned,absent,present,0.52587890625,0.62,True,promotion,4,0,10
+patient05115/study2,Pleural Other,unmentioned,absent,present,0.41064453125,0.45,True,promotion,4,0,10
+patient05433/study1,Atelectasis,unmentioned,absent,present,0.48876953125,0.56,True,promotion,9,0,10
+patient05433/study1,Lung Opacity,unmentioned,absent,present,0.60498046875,0.62,True,promotion,3,0,10
+patient05433/study11,Edema,unmentioned,absent,present,0.349609375,0.453857,True,promotion,8,0,10
+patient05759/study2,Atelectasis,unmentioned,absent,present,0.5478515625,0.56,True,promotion,11,0,10
+patient05759/study2,Consolidation,unmentioned,absent,present,0.442138671875,0.45,True,promotion,10,0,10
+patient05759/study4,Atelectasis,unmentioned,absent,present,0.5439453125,0.56,True,promotion,7,0,10
+patient05804/study11,Edema,present,absent,present,0.326904296875,0.453857,True,promotion,11,0,10
+patient05804/study19,Edema,present,absent,present,0.38623046875,0.453857,True,promotion,6,0,10
+patient05804/study19,Pleural Effusion,present,absent,present,0.59228515625,0.6,True,promotion,13,0,10
+patient05804/study19,Lung Opacity,unmentioned,absent,present,0.60791015625,0.62,True,promotion,6,0,10
+patient06014/study1,Pneumonia,unmentioned,absent,present,0.23779296875,0.28,True,promotion,8,0,10
+patient06014/study1,Lung Lesion,unmentioned,absent,present,0.333740234375,0.39,True,promotion,4,0,10
+patient06014/study11,Lung Lesion,unmentioned,absent,present,0.26220703125,0.39,True,promotion,7,0,10
+patient06014/study11,Pleural Other,unmentioned,absent,present,0.415771484375,0.45,True,promotion,4,0,10
+patient06014/study2,Pneumonia,unmentioned,absent,present,0.2012939453125,0.28,True,promotion,3,0,10
+patient06014/study2,Lung Opacity,unmentioned,absent,present,0.51318359375,0.62,True,promotion,6,0,10
+patient07815/study9,Atelectasis,unmentioned,absent,present,0.424560546875,0.56,True,promotion,11,0,10
+patient07815/study9,Consolidation,unmentioned,absent,present,0.379638671875,0.45,True,promotion,4,0,10
+patient08463/study4,Cardiomegaly,present,absent,present,0.431640625,0.5,True,promotion,5,0,10
+patient08464/study1,Lung Lesion,unmentioned,absent,present,0.2509765625,0.39,True,promotion,3,0,10
+patient08668/study1,Edema,unmentioned,absent,present,0.354248046875,0.453857,True,promotion,7,0,10
+patient08668/study1,Lung Lesion,unmentioned,absent,present,0.363037109375,0.39,True,promotion,3,0,10
+patient08710/study1,Fracture,unmentioned,absent,present,0.35009765625,0.42,True,promotion,4,0,10
+patient09010/study5,Fracture,present,absent,present,0.3369140625,0.42,True,promotion,4,0,10
+patient09010/study6,Fracture,present,absent,present,0.390380859375,0.42,True,promotion,4,0,10
+patient09647/study6,Cardiomegaly,uncertain,absent,present,0.372802734375,0.5,True,promotion,4,0,10
+patient09647/study6,Edema,unmentioned,absent,present,0.3701171875,0.453857,True,promotion,5,0,10
+patient09647/study6,Fracture,unmentioned,absent,present,0.361083984375,0.42,True,promotion,4,0,10
+patient09760/study4,Atelectasis,unmentioned,absent,present,0.44384765625,0.56,True,promotion,6,0,10
+patient09760/study4,Consolidation,unmentioned,absent,present,0.4228515625,0.45,True,promotion,4,0,10
+patient10780/study10,Cardiomegaly,unmentioned,absent,present,0.375,0.5,True,promotion,4,0,10
+patient10780/study10,Edema,unmentioned,absent,present,0.318603515625,0.453857,True,promotion,6,0,10
+patient10780/study11,Atelectasis,unmentioned,absent,present,0.417724609375,0.56,True,promotion,5,0,10
+patient10780/study11,Pleural Effusion,unmentioned,absent,present,0.45166015625,0.6,True,promotion,8,0,10
+patient10780/study11,Lung Opacity,unmentioned,absent,present,0.53173828125,0.62,True,promotion,7,0,10
+patient10900/study26,Edema,unmentioned,absent,present,0.374267578125,0.453857,True,promotion,6,0,10
+patient10900/study26,Pleural Effusion,present,absent,present,0.5234375,0.6,True,promotion,6,0,10
+patient11332/study7,Atelectasis,unmentioned,absent,present,0.51513671875,0.56,True,promotion,7,0,10
+patient11332/study7,Edema,unmentioned,absent,present,0.44287109375,0.453857,True,promotion,9,0,10
+patient11332/study7,Pleural Effusion,present,absent,present,0.48486328125,0.6,True,promotion,12,0,10
+patient12131/study2,Edema,unmentioned,absent,present,0.4306640625,0.453857,True,promotion,7,0,10
+patient12131/study3,Cardiomegaly,present,absent,present,0.4912109375,0.5,True,promotion,5,0,10
+patient12175/study3,Atelectasis,unmentioned,absent,present,0.44287109375,0.56,True,promotion,7,0,10
+patient12237/study2,Atelectasis,unmentioned,absent,present,0.456787109375,0.56,True,promotion,6,0,10
+patient12237/study2,Fracture,unmentioned,absent,present,0.383544921875,0.42,True,promotion,3,0,10
+patient12556/study24,Lung Opacity,present,absent,present,0.4736328125,0.62,True,promotion,8,0,10
+patient12556/study29,Edema,unmentioned,absent,present,0.38671875,0.453857,True,promotion,6,0,10
+patient12556/study29,Lung Opacity,present,absent,present,0.59912109375,0.62,True,promotion,6,0,10
+patient12881/study10,Fracture,unmentioned,absent,present,0.33740234375,0.42,True,promotion,3,0,10
+patient12881/study10,Lung Opacity,unmentioned,absent,present,0.48681640625,0.62,True,promotion,6,0,10
+patient12881/study10,Pleural Other,unmentioned,absent,present,0.4013671875,0.45,True,promotion,3,0,10
+patient12881/study12,Pleural Other,unmentioned,absent,present,0.407470703125,0.45,True,promotion,4,0,10
+patient13211/study1,Edema,unmentioned,absent,present,0.339111328125,0.453857,True,promotion,15,0,10
+patient13211/study10,Cardiomegaly,unmentioned,absent,present,0.3857421875,0.5,True,promotion,3,0,10
+patient13211/study10,Pleural Effusion,unmentioned,absent,present,0.57763671875,0.6,True,promotion,16,0,10
+patient13211/study12,Consolidation,unmentioned,absent,present,0.427001953125,0.45,True,promotion,3,0,10
+patient14351/study2,Atelectasis,unmentioned,absent,present,0.54638671875,0.56,True,promotion,9,0,10
+patient14351/study26,Consolidation,unmentioned,absent,present,0.38427734375,0.45,True,promotion,8,0,10
+patient14638/study10,Lung Opacity,unmentioned,absent,present,0.58837890625,0.62,True,promotion,7,0,10
+patient14668/study10,Pleural Effusion,unmentioned,absent,present,0.52392578125,0.6,True,promotion,10,0,10
+patient14668/study11,Pleural Effusion,unmentioned,absent,present,0.533203125,0.6,True,promotion,9,0,10
+patient14668/study11,Pneumonia,unmentioned,absent,present,0.276123046875,0.28,True,promotion,4,0,10
+patient14668/study11,Lung Opacity,unmentioned,absent,present,0.5751953125,0.62,True,promotion,6,0,10
+patient14668/study12,Pleural Effusion,unmentioned,absent,present,0.55224609375,0.6,True,promotion,12,0,10
+patient14668/study12,Fracture,unmentioned,absent,present,0.300537109375,0.42,True,promotion,5,0,10
+patient14668/study12,Lung Opacity,unmentioned,absent,present,0.49755859375,0.62,True,promotion,7,0,10
+patient15697/study11,Atelectasis,unmentioned,absent,present,0.54150390625,0.56,True,promotion,4,0,10
+patient15697/study11,Consolidation,unmentioned,present,uncertain,0.5224609375,0.45,True,demotion,2,6,10
+patient15697/study11,Pneumothorax,unmentioned,present,uncertain,0.410400390625,0.33,True,demotion,0,1,10
+patient15842/study10,Edema,unmentioned,absent,present,0.31689453125,0.453857,True,promotion,3,0,10
+patient15842/study5,Atelectasis,unmentioned,absent,present,0.489013671875,0.56,True,promotion,8,0,10
+patient16477/study4,Atelectasis,unmentioned,absent,present,0.43701171875,0.56,True,promotion,9,0,10
+patient16477/study7,Cardiomegaly,unmentioned,absent,present,0.499755859375,0.5,True,promotion,3,0,10
+patient16523/study1,Lung Opacity,unmentioned,absent,present,0.47998046875,0.62,True,promotion,3,0,10
+patient16523/study11,Pleural Effusion,unmentioned,absent,present,0.4892578125,0.6,True,promotion,16,0,10
+patient17394/study1,Fracture,unmentioned,absent,present,0.404541015625,0.42,True,promotion,7,0,10
+patient17532/study1,Fracture,unmentioned,absent,present,0.375244140625,0.42,True,promotion,3,0,10
+patient17534/study1,Lung Lesion,unmentioned,absent,present,0.34423828125,0.39,True,promotion,5,0,10
+patient17534/study12,Lung Opacity,unmentioned,absent,present,0.49072265625,0.62,True,promotion,3,0,10
+patient17916/study1,Edema,present,absent,present,0.36572265625,0.453857,True,promotion,7,0,10
+patient17916/study3,Lung Opacity,unmentioned,absent,present,0.51806640625,0.62,True,promotion,3,0,10
+patient18892/study5,Cardiomegaly,unmentioned,absent,present,0.39013671875,0.5,True,promotion,4,0,10
+patient18892/study5,Edema,present,absent,present,0.43798828125,0.453857,True,promotion,8,0,10
+patient19389/study3,Pneumothorax,unmentioned,present,uncertain,0.452392578125,0.33,True,demotion,1,6,10
+patient19389/study3,Pleural Other,unmentioned,present,uncertain,0.50146484375,0.45,True,demotion,0,1,10
+patient19740/study11,Pleural Other,unmentioned,absent,present,0.33740234375,0.45,True,promotion,3,0,10
+patient20202/study8,Atelectasis,uncertain,absent,present,0.496826171875,0.56,True,promotion,6,0,10
+patient20202/study8,Fracture,unmentioned,absent,present,0.388427734375,0.42,True,promotion,4,0,10
+patient20917/study26,Edema,unmentioned,absent,present,0.36376953125,0.453857,True,promotion,7,0,10
+patient21102/study11,Atelectasis,unmentioned,absent,present,0.489013671875,0.56,True,promotion,4,0,10
+patient21102/study11,Consolidation,unmentioned,absent,present,0.322021484375,0.45,True,promotion,6,0,10
+patient21102/study11,Edema,unmentioned,absent,present,0.3935546875,0.453857,True,promotion,10,0,10
+patient21102/study11,Lung Opacity,unmentioned,absent,present,0.58642578125,0.62,True,promotion,8,0,10
+patient21125/study1,Pneumonia,uncertain,absent,present,0.1636962890625,0.28,True,promotion,4,0,10
+patient21240/study10,Edema,unmentioned,absent,present,0.390380859375,0.453857,True,promotion,6,0,10
+patient21240/study11,Atelectasis,unmentioned,absent,present,0.43310546875,0.56,True,promotion,9,0,10
+patient21240/study11,Edema,unmentioned,absent,present,0.442138671875,0.453857,True,promotion,10,0,10
+patient21240/study11,Pleural Effusion,unmentioned,absent,present,0.56787109375,0.6,True,promotion,4,0,10
+patient21240/study11,Lung Opacity,unmentioned,absent,present,0.491943359375,0.62,True,promotion,5,0,10
+patient21240/study12,Edema,unmentioned,absent,present,0.33935546875,0.453857,True,promotion,4,0,10
+patient21241/study19,Consolidation,unmentioned,absent,present,0.321044921875,0.45,True,promotion,9,0,10
+patient21241/study19,Pneumonia,unmentioned,absent,present,0.23681640625,0.28,True,promotion,3,0,10
+patient21351/study5,Pneumonia,unmentioned,absent,present,0.145263671875,0.28,True,promotion,3,0,10
+patient21414/study10,Consolidation,unmentioned,absent,present,0.42333984375,0.45,True,promotion,7,0,10
+patient21414/study11,Cardiomegaly,unmentioned,absent,present,0.36962890625,0.5,True,promotion,3,0,10
+patient21899/study10,Edema,unmentioned,absent,present,0.325439453125,0.453857,True,promotion,6,0,10
+patient21899/study3,Pneumothorax,unmentioned,present,uncertain,0.3525390625,0.33,True,demotion,4,5,10
+patient21899/study5,Consolidation,unmentioned,present,uncertain,0.50439453125,0.45,True,demotion,2,5,10
+patient22216/study1,Fracture,unmentioned,absent,present,0.29931640625,0.42,True,promotion,9,0,10
+patient22216/study11,Consolidation,unmentioned,absent,present,0.33203125,0.45,True,promotion,9,0,10
+patient22216/study11,Edema,unmentioned,absent,present,0.449462890625,0.453857,True,promotion,15,0,10
+patient22231/study2,Atelectasis,unmentioned,absent,present,0.485595703125,0.56,True,promotion,14,0,10
+patient22231/study5,Consolidation,unmentioned,absent,present,0.397705078125,0.45,True,promotion,4,0,10
+patient22231/study5,Edema,unmentioned,absent,present,0.434814453125,0.453857,True,promotion,4,0,10
+patient22231/study5,Pleural Effusion,unmentioned,absent,present,0.4638671875,0.6,True,promotion,10,0,10
+patient22231/study7,Fracture,absent,absent,present,0.320068359375,0.42,True,promotion,4,0,10
+patient22231/study7,Lung Lesion,unmentioned,absent,present,0.338623046875,0.39,True,promotion,3,0,10
+patient22231/study7,Lung Opacity,present,absent,present,0.54638671875,0.62,True,promotion,7,0,10
+patient22289/study2,Lung Opacity,present,absent,present,0.619140625,0.62,True,promotion,4,0,10
+patient22289/study25,Pleural Effusion,present,absent,present,0.5361328125,0.6,True,promotion,8,0,10
+patient22787/study2,Lung Lesion,present,absent,present,0.363037109375,0.39,True,promotion,3,0,10
+patient22787/study2,Lung Opacity,unmentioned,absent,present,0.50634765625,0.62,True,promotion,3,0,10
+patient23117/study1,Edema,unmentioned,absent,present,0.400146484375,0.453857,True,promotion,7,0,10
+patient23117/study2,Atelectasis,present,absent,present,0.410888671875,0.56,True,promotion,8,0,10
+patient23384/study1,Consolidation,unmentioned,present,uncertain,0.56201171875,0.45,True,demotion,6,8,10
+patient23684/study6,Cardiomegaly,unmentioned,absent,present,0.355712890625,0.5,True,promotion,3,0,10
+patient23971/study2,Pleural Effusion,absent,absent,present,0.54931640625,0.6,True,promotion,15,0,10
+patient24662/study4,Fracture,unmentioned,absent,present,0.30712890625,0.42,True,promotion,3,0,10
+patient24984/study1,Atelectasis,unmentioned,absent,present,0.472412109375,0.56,True,promotion,3,0,10
+patient25112/study3,Consolidation,unmentioned,absent,present,0.441650390625,0.45,True,promotion,8,0,10
+patient25112/study6,Atelectasis,uncertain,absent,present,0.423828125,0.56,True,promotion,3,0,10
+patient25112/study6,Lung Lesion,present,absent,present,0.303466796875,0.39,True,promotion,4,0,10
+patient25241/study11,Consolidation,unmentioned,present,uncertain,0.56787109375,0.45,True,demotion,1,3,10
+patient25241/study11,Edema,unmentioned,absent,present,0.326904296875,0.453857,True,promotion,3,0,10
+patient25350/study1,Pneumothorax,absent,present,uncertain,0.365234375,0.33,True,demotion,1,6,10
+patient26519/study3,Pleural Effusion,unmentioned,absent,present,0.51708984375,0.6,True,promotion,6,0,10
+patient26519/study4,Edema,unmentioned,absent,present,0.437744140625,0.453857,True,promotion,3,0,10
+patient26519/study4,Pleural Effusion,unmentioned,absent,present,0.58349609375,0.6,True,promotion,10,0,10
+patient26576/study1,Atelectasis,unmentioned,absent,present,0.430908203125,0.56,True,promotion,5,0,10
+patient26813/study1,Cardiomegaly,unmentioned,absent,present,0.491455078125,0.5,True,promotion,4,0,10
+patient26813/study1,Consolidation,unmentioned,absent,present,0.35205078125,0.45,True,promotion,4,0,10
+patient26813/study1,Lung Opacity,unmentioned,absent,present,0.474365234375,0.62,True,promotion,4,0,10
+patient26813/study11,Cardiomegaly,unmentioned,absent,present,0.379638671875,0.5,True,promotion,4,0,10
+patient26813/study2,Edema,unmentioned,absent,present,0.417236328125,0.453857,True,promotion,8,0,10
+patient27168/study4,Fracture,unmentioned,absent,present,0.329345703125,0.42,True,promotion,3,0,10
+patient27520/study10,Lung Opacity,unmentioned,absent,present,0.4775390625,0.62,True,promotion,5,0,10
+patient27673/study2,Lung Opacity,unmentioned,absent,present,0.489013671875,0.62,True,promotion,3,0,10
+patient28806/study9,Cardiomegaly,present,absent,present,0.376708984375,0.5,True,promotion,4,0,10
+patient28913/study12,Cardiomegaly,unmentioned,absent,present,0.44580078125,0.5,True,promotion,3,0,10
+patient29069/study1,Atelectasis,uncertain,absent,present,0.440185546875,0.56,True,promotion,4,0,10
+patient29069/study1,Lung Opacity,present,absent,present,0.529296875,0.62,True,promotion,3,0,10
+patient29069/study2,Lung Opacity,present,absent,present,0.544921875,0.62,True,promotion,3,0,10
+patient29154/study11,Pleural Effusion,unmentioned,absent,present,0.4580078125,0.6,True,promotion,11,0,10
+patient29154/study11,Lung Opacity,unmentioned,absent,present,0.54052734375,0.62,True,promotion,8,0,10
+patient29162/study1,Consolidation,unmentioned,absent,present,0.443115234375,0.45,True,promotion,7,0,10
+patient29162/study1,Edema,unmentioned,absent,present,0.33349609375,0.453857,True,promotion,10,0,10
+patient29162/study1,Fracture,unmentioned,absent,present,0.358642578125,0.42,True,promotion,4,0,10
+patient29162/study10,Pneumonia,unmentioned,absent,present,0.2587890625,0.28,True,promotion,4,0,10
+patient29162/study12,Consolidation,unmentioned,absent,present,0.317626953125,0.45,True,promotion,5,0,10
+patient29162/study12,Pneumothorax,unmentioned,absent,present,0.2216796875,0.33,True,promotion,3,0,10
+patient29599/study1,Lung Opacity,unmentioned,absent,present,0.52197265625,0.62,True,promotion,8,0,10
+patient29676/study10,Pleural Other,unmentioned,absent,present,0.300048828125,0.45,True,promotion,3,0,10
+patient29880/study10,Edema,unmentioned,absent,present,0.3662109375,0.453857,True,promotion,8,0,10
+patient29880/study10,Lung Opacity,unmentioned,absent,present,0.480224609375,0.62,True,promotion,6,0,10
+patient29880/study11,Edema,unmentioned,absent,present,0.338134765625,0.453857,True,promotion,9,0,10
+patient29961/study1,Fracture,unmentioned,absent,present,0.341552734375,0.42,True,promotion,4,0,10
+patient30568/study1,Cardiomegaly,unmentioned,absent,present,0.485107421875,0.5,True,promotion,5,0,10
+patient30568/study1,Lung Lesion,unmentioned,absent,present,0.2452392578125,0.39,True,promotion,4,0,10
+patient30568/study1,Lung Opacity,unmentioned,absent,present,0.481689453125,0.62,True,promotion,10,0,10
+patient30568/study3,Lung Opacity,unmentioned,absent,present,0.578125,0.62,True,promotion,8,0,10
+patient30606/study3,Atelectasis,unmentioned,absent,present,0.419189453125,0.56,True,promotion,7,0,10
+patient30606/study3,Consolidation,unmentioned,absent,present,0.441650390625,0.45,True,promotion,10,0,10
+patient30606/study3,Pleural Effusion,present,absent,present,0.580078125,0.6,True,promotion,18,0,10
+patient30606/study3,Lung Opacity,present,absent,present,0.5556640625,0.62,True,promotion,7,0,10
+patient30644/study14,Consolidation,unmentioned,absent,present,0.33935546875,0.45,True,promotion,4,0,10
+patient30644/study14,Pleural Effusion,present,absent,present,0.580078125,0.6,True,promotion,10,0,10
+patient30644/study14,Lung Lesion,unmentioned,absent,present,0.343017578125,0.39,True,promotion,4,0,10
+patient30665/study10,Pleural Other,unmentioned,absent,present,0.39111328125,0.45,True,promotion,3,0,10
+patient30665/study4,Edema,unmentioned,absent,present,0.41650390625,0.453857,True,promotion,8,0,10
+patient31054/study3,Edema,unmentioned,absent,present,0.320068359375,0.453857,True,promotion,3,0,10
+patient31054/study3,Lung Opacity,unmentioned,absent,present,0.59912109375,0.62,True,promotion,6,0,10
+patient31054/study7,Atelectasis,uncertain,absent,present,0.444580078125,0.56,True,promotion,8,0,10
+patient31054/study7,Consolidation,uncertain,absent,present,0.38232421875,0.45,True,promotion,4,0,10
+patient31054/study7,Pleural Effusion,present,absent,present,0.489501953125,0.6,True,promotion,12,0,10
+patient31313/study12,Edema,unmentioned,absent,present,0.3251953125,0.453857,True,promotion,4,0,10
+patient31313/study12,Fracture,unmentioned,absent,present,0.373046875,0.42,True,promotion,6,0,10
+patient31370/study4,Fracture,unmentioned,absent,present,0.32177734375,0.42,True,promotion,4,0,10
+patient32435/study2,Atelectasis,unmentioned,absent,present,0.537109375,0.56,True,promotion,4,0,10
+patient32622/study1,Pneumonia,unmentioned,absent,present,0.1334228515625,0.28,True,promotion,3,0,10
+patient32622/study1,Lung Lesion,present,absent,present,0.32763671875,0.39,True,promotion,4,0,10
+patient32622/study1,Lung Opacity,present,absent,present,0.61328125,0.62,True,promotion,8,0,10
+patient32751/study10,Consolidation,unmentioned,absent,present,0.433349609375,0.45,True,promotion,5,0,10
+patient32862/study5,Consolidation,unmentioned,absent,present,0.342529296875,0.45,True,promotion,4,0,10
+patient32862/study5,Pleural Effusion,present,absent,present,0.5732421875,0.6,True,promotion,10,0,10
+patient33252/study2,Atelectasis,unmentioned,absent,present,0.43798828125,0.56,True,promotion,7,0,10
+patient33278/study10,Edema,unmentioned,absent,present,0.389404296875,0.453857,True,promotion,8,0,10
+patient33642/study10,Consolidation,unmentioned,absent,present,0.304931640625,0.45,True,promotion,10,0,10
+patient33642/study10,Pneumonia,unmentioned,absent,present,0.248046875,0.28,True,promotion,3,0,10
+patient33879/study1,Consolidation,present,absent,present,0.3935546875,0.45,True,promotion,4,0,10
+patient33879/study1,Lung Lesion,unmentioned,absent,present,0.26513671875,0.39,True,promotion,5,0,10
+patient34037/study12,Consolidation,unmentioned,absent,present,0.38037109375,0.45,True,promotion,6,0,10
+patient34037/study12,Edema,unmentioned,absent,present,0.444091796875,0.453857,True,promotion,8,0,10
+patient34475/study12,Lung Lesion,unmentioned,absent,present,0.2900390625,0.39,True,promotion,4,0,10
+patient34654/study3,Pleural Effusion,unmentioned,absent,present,0.45849609375,0.6,True,promotion,8,0,10
+patient34677/study11,Edema,unmentioned,absent,present,0.34814453125,0.453857,True,promotion,8,0,10
+patient34954/study1,Pneumothorax,present,present,uncertain,0.381591796875,0.33,True,demotion,4,9,10
+patient35009/study1,Edema,unmentioned,absent,present,0.381591796875,0.453857,True,promotion,13,0,10
+patient35009/study1,Lung Opacity,unmentioned,absent,present,0.59375,0.62,True,promotion,3,0,10
+patient35009/study10,Pleural Effusion,unmentioned,absent,present,0.463623046875,0.6,True,promotion,12,0,10
+patient35009/study11,Lung Opacity,unmentioned,absent,present,0.52587890625,0.62,True,promotion,3,0,10
+patient35009/study12,Lung Opacity,unmentioned,absent,present,0.53125,0.62,True,promotion,7,0,10
+patient35167/study29,Edema,present,absent,present,0.3935546875,0.453857,True,promotion,3,0,10
+patient35167/study29,Pleural Effusion,present,absent,present,0.5703125,0.6,True,promotion,8,0,10
+patient35167/study29,Lung Opacity,present,absent,present,0.548828125,0.62,True,promotion,3,0,10
+patient35240/study1,Fracture,unmentioned,absent,present,0.2919921875,0.42,True,promotion,5,0,10
+patient35240/study10,Pneumothorax,unmentioned,absent,present,0.236328125,0.33,True,promotion,8,0,10
+patient35240/study11,Atelectasis,unmentioned,absent,present,0.449462890625,0.56,True,promotion,3,0,10
+patient35561/study6,Edema,present,absent,present,0.368896484375,0.453857,True,promotion,9,0,10
+patient35753/study11,Pneumothorax,unmentioned,absent,present,0.25341796875,0.33,True,promotion,6,0,10
+patient35753/study11,Lung Opacity,unmentioned,absent,present,0.6123046875,0.62,True,promotion,5,0,10
+patient35753/study12,Edema,unmentioned,absent,present,0.419921875,0.453857,True,promotion,7,0,10
+patient35753/study12,Lung Opacity,unmentioned,absent,present,0.55224609375,0.62,True,promotion,5,0,10
+patient35776/study1,Cardiomegaly,unmentioned,absent,present,0.354736328125,0.5,True,promotion,3,0,10
+patient35776/study1,Pleural Effusion,unmentioned,absent,present,0.56689453125,0.6,True,promotion,10,0,10
+patient35776/study10,Consolidation,unmentioned,absent,present,0.37451171875,0.45,True,promotion,8,0,10
+patient35776/study11,Consolidation,unmentioned,absent,present,0.3359375,0.45,True,promotion,7,0,10
+patient35776/study12,Cardiomegaly,unmentioned,absent,present,0.450927734375,0.5,True,promotion,5,0,10
+patient35805/study11,Pleural Effusion,unmentioned,absent,present,0.484375,0.6,True,promotion,14,0,10
+patient35805/study12,Lung Opacity,unmentioned,absent,present,0.59619140625,0.62,True,promotion,4,0,10
+patient35805/study12,Pleural Other,unmentioned,absent,present,0.43408203125,0.45,True,promotion,4,0,10
+patient35889/study12,Atelectasis,unmentioned,absent,present,0.47900390625,0.56,True,promotion,6,0,10
+patient35889/study12,Pleural Effusion,unmentioned,absent,present,0.4609375,0.6,True,promotion,6,0,10
+patient36022/study10,Edema,unmentioned,absent,present,0.412353515625,0.453857,True,promotion,3,0,10
+patient36022/study2,Edema,unmentioned,absent,present,0.31298828125,0.453857,True,promotion,3,0,10
+patient36183/study1,Atelectasis,unmentioned,absent,present,0.494873046875,0.56,True,promotion,10,0,10
+patient36183/study1,Consolidation,unmentioned,absent,present,0.357421875,0.45,True,promotion,11,0,10
+patient36183/study1,Lung Opacity,unmentioned,absent,present,0.60009765625,0.62,True,promotion,8,0,10
+patient36488/study5,Atelectasis,unmentioned,absent,present,0.441162109375,0.56,True,promotion,4,0,10
+patient36488/study5,Consolidation,unmentioned,absent,present,0.363525390625,0.45,True,promotion,4,0,10
+patient36573/study11,Consolidation,unmentioned,absent,present,0.366943359375,0.45,True,promotion,5,0,10
+patient36573/study11,Pneumonia,unmentioned,absent,present,0.2470703125,0.28,True,promotion,3,0,10
+patient36573/study12,Lung Opacity,unmentioned,absent,present,0.5810546875,0.62,True,promotion,8,0,10
+patient36708/study1,Pleural Effusion,unmentioned,absent,present,0.5947265625,0.6,True,promotion,15,0,10
+patient36708/study10,Pneumothorax,unmentioned,absent,present,0.23779296875,0.33,True,promotion,3,0,10
+patient36708/study11,Atelectasis,unmentioned,absent,present,0.5576171875,0.56,True,promotion,4,0,10
+patient36708/study12,Cardiomegaly,unmentioned,absent,present,0.40673828125,0.5,True,promotion,5,0,10
+patient36800/study11,Pleural Effusion,unmentioned,absent,present,0.458740234375,0.6,True,promotion,10,0,10
+patient36856/study1,Consolidation,unmentioned,absent,present,0.349853515625,0.45,True,promotion,7,0,10
+patient36856/study1,Lung Lesion,unmentioned,absent,present,0.3046875,0.39,True,promotion,3,0,10
+patient36856/study10,Consolidation,unmentioned,absent,present,0.36083984375,0.45,True,promotion,8,0,10
+patient36856/study10,Pleural Effusion,unmentioned,absent,present,0.5400390625,0.6,True,promotion,6,0,10
+patient36856/study11,Consolidation,unmentioned,absent,present,0.394287109375,0.45,True,promotion,7,0,10
+patient36856/study11,Fracture,unmentioned,absent,present,0.419677734375,0.42,True,promotion,5,0,10
+patient36856/study2,Atelectasis,unmentioned,absent,present,0.55517578125,0.56,True,promotion,6,0,10
+patient36883/study2,Lung Opacity,unmentioned,absent,present,0.60498046875,0.62,True,promotion,8,0,10
+patient37086/study10,Edema,unmentioned,absent,present,0.339111328125,0.453857,True,promotion,4,0,10
+patient37086/study10,Pleural Effusion,unmentioned,absent,present,0.457275390625,0.6,True,promotion,7,0,10
+patient37190/study1,Atelectasis,present,absent,present,0.467041015625,0.56,True,promotion,4,0,10
+patient37190/study1,Edema,present,absent,present,0.427734375,0.453857,True,promotion,4,0,10
+patient37190/study1,Pleural Effusion,present,absent,present,0.45556640625,0.6,True,promotion,12,0,10
+patient37190/study2,Edema,present,absent,present,0.417236328125,0.453857,True,promotion,4,0,10
+patient37298/study3,Pneumonia,unmentioned,absent,present,0.234619140625,0.28,True,promotion,3,0,10
+patient37522/study10,Pleural Effusion,unmentioned,absent,present,0.55078125,0.6,True,promotion,18,0,10
+patient37522/study10,Pneumonia,unmentioned,absent,present,0.2447509765625,0.28,True,promotion,5,0,10
+patient37522/study10,Lung Opacity,unmentioned,absent,present,0.52001953125,0.62,True,promotion,5,0,10
+patient37522/study2,Edema,unmentioned,absent,present,0.378173828125,0.453857,True,promotion,7,0,10
+patient37522/study2,Pleural Effusion,unmentioned,absent,present,0.468505859375,0.6,True,promotion,7,0,10
+patient37527/study7,Edema,present,absent,present,0.39013671875,0.453857,True,promotion,5,0,10
+patient37722/study3,Atelectasis,unmentioned,absent,present,0.5107421875,0.56,True,promotion,4,0,10
+patient37722/study3,Lung Opacity,unmentioned,absent,present,0.56884765625,0.62,True,promotion,12,0,10
+patient37897/study3,Pneumonia,unmentioned,absent,present,0.1431884765625,0.28,True,promotion,3,0,10
+patient37977/study10,Pleural Effusion,unmentioned,absent,present,0.483642578125,0.6,True,promotion,12,0,10
+patient37977/study11,Atelectasis,unmentioned,absent,present,0.474853515625,0.56,True,promotion,4,0,10
+patient38122/study1,Fracture,unmentioned,absent,present,0.28125,0.42,True,promotion,8,0,10
+patient38122/study11,Pneumonia,unmentioned,absent,present,0.1451416015625,0.28,True,promotion,3,0,10
+patient38122/study11,Lung Opacity,unmentioned,absent,present,0.53857421875,0.62,True,promotion,6,0,10
+patient38122/study2,Consolidation,unmentioned,absent,present,0.427001953125,0.45,True,promotion,6,0,10
+patient38293/study10,Pleural Effusion,present,absent,present,0.5068359375,0.6,True,promotion,7,0,10
+patient38293/study4,Consolidation,unmentioned,absent,present,0.44677734375,0.45,True,promotion,3,0,10
+patient38293/study4,Lung Lesion,present,absent,present,0.3076171875,0.39,True,promotion,3,0,10
+patient38293/study7,Pneumonia,unmentioned,absent,present,0.1683349609375,0.28,True,promotion,4,0,10
+patient38509/study1,Consolidation,unmentioned,absent,present,0.380615234375,0.45,True,promotion,10,0,10
+patient38509/study10,Lung Opacity,unmentioned,absent,present,0.496826171875,0.62,True,promotion,5,0,10
+patient38509/study11,Lung Opacity,unmentioned,absent,present,0.483154296875,0.62,True,promotion,5,0,10
+patient38509/study12,Atelectasis,unmentioned,absent,present,0.4130859375,0.56,True,promotion,12,0,10
+patient38999/study2,Cardiomegaly,present,absent,present,0.355712890625,0.5,True,promotion,6,0,10
+patient38999/study2,Consolidation,unmentioned,absent,present,0.346435546875,0.45,True,promotion,5,0,10
+patient38999/study2,Lung Opacity,present,absent,present,0.546875,0.62,True,promotion,5,0,10
+patient39096/study1,Consolidation,unmentioned,absent,present,0.38330078125,0.45,True,promotion,8,0,10
+patient39096/study1,Pleural Effusion,unmentioned,absent,present,0.455078125,0.6,True,promotion,8,0,10
+patient39096/study1,Lung Opacity,unmentioned,absent,present,0.51806640625,0.62,True,promotion,6,0,10
+patient39096/study10,Cardiomegaly,unmentioned,absent,present,0.461669921875,0.5,True,promotion,4,0,10
+patient39096/study12,Pneumothorax,unmentioned,present,uncertain,0.343017578125,0.33,True,demotion,2,4,10
+patient39658/study1,Lung Opacity,unmentioned,absent,present,0.51708984375,0.62,True,promotion,6,0,10
+patient39809/study1,Fracture,unmentioned,absent,present,0.285400390625,0.42,True,promotion,8,0,10
+patient39809/study1,Lung Opacity,unmentioned,absent,present,0.513671875,0.62,True,promotion,11,0,10
+patient39809/study10,Pleural Effusion,unmentioned,absent,present,0.50634765625,0.6,True,promotion,15,0,10
+patient39850/study1,Consolidation,unmentioned,absent,present,0.376953125,0.45,True,promotion,10,0,10
+patient39850/study11,Edema,unmentioned,absent,present,0.45263671875,0.453857,True,promotion,9,0,10
+patient39850/study11,Pneumonia,unmentioned,absent,present,0.1588134765625,0.28,True,promotion,3,0,10
+patient39850/study12,Cardiomegaly,unmentioned,absent,present,0.399658203125,0.5,True,promotion,6,0,10
+patient39917/study10,Cardiomegaly,unmentioned,absent,present,0.42626953125,0.5,True,promotion,5,0,10
+patient39917/study10,Consolidation,unmentioned,absent,present,0.408203125,0.45,True,promotion,11,0,10
+patient39917/study10,Pneumonia,unmentioned,absent,present,0.1971435546875,0.28,True,promotion,3,0,10
+patient39917/study10,Lung Opacity,unmentioned,absent,present,0.55517578125,0.62,True,promotion,6,0,10
+patient39917/study11,Pleural Effusion,unmentioned,absent,present,0.4970703125,0.6,True,promotion,6,0,10
+patient39917/study11,Pneumothorax,unmentioned,present,uncertain,0.379638671875,0.33,True,demotion,1,4,10
+patient40442/study1,Edema,unmentioned,absent,present,0.43017578125,0.453857,True,promotion,10,0,10
+patient40723/study2,Atelectasis,unmentioned,absent,present,0.4453125,0.56,True,promotion,3,0,10
+patient40723/study3,Atelectasis,unmentioned,absent,present,0.470947265625,0.56,True,promotion,6,0,10
+patient40801/study10,Lung Opacity,unmentioned,absent,present,0.5859375,0.62,True,promotion,5,0,10
+patient40985/study1,Edema,unmentioned,absent,present,0.403076171875,0.453857,True,promotion,8,0,10
+patient41292/study12,Edema,unmentioned,absent,present,0.336669921875,0.453857,True,promotion,10,0,10
+patient41396/study1,Pneumothorax,unmentioned,present,uncertain,0.4716796875,0.33,True,demotion,2,4,10
+patient42260/study1,Edema,unmentioned,absent,present,0.36181640625,0.453857,True,promotion,10,0,10
+patient42260/study1,Lung Opacity,unmentioned,absent,present,0.51513671875,0.62,True,promotion,6,0,10
+patient42454/study6,Pleural Effusion,present,absent,present,0.501953125,0.6,True,promotion,8,0,10
+patient42676/study1,Edema,unmentioned,absent,present,0.40966796875,0.453857,True,promotion,7,0,10
+patient42676/study10,Atelectasis,unmentioned,absent,present,0.481201171875,0.56,True,promotion,4,0,10
+patient42676/study10,Edema,unmentioned,absent,present,0.447509765625,0.453857,True,promotion,5,0,10
+patient42676/study2,Lung Opacity,unmentioned,absent,present,0.525390625,0.62,True,promotion,9,0,10
+patient42676/study3,Consolidation,unmentioned,absent,present,0.3271484375,0.45,True,promotion,3,0,10
+patient42676/study3,Edema,unmentioned,absent,present,0.305908203125,0.453857,True,promotion,13,0,10
+patient42772/study1,Atelectasis,unmentioned,absent,present,0.438720703125,0.56,True,promotion,7,0,10
+patient42772/study3,Consolidation,unmentioned,absent,present,0.3154296875,0.45,True,promotion,3,0,10
+patient43226/study1,Edema,unmentioned,absent,present,0.39990234375,0.453857,True,promotion,3,0,10
+patient43226/study9,Atelectasis,present,absent,present,0.53564453125,0.56,True,promotion,7,0,10
+patient43372/study1,Atelectasis,present,absent,present,0.416015625,0.56,True,promotion,7,0,10
+patient43372/study2,Pleural Effusion,present,absent,present,0.5546875,0.6,True,promotion,7,0,10
+patient43372/study5,Consolidation,unmentioned,absent,present,0.316162109375,0.45,True,promotion,6,0,10
+patient43844/study3,Lung Lesion,unmentioned,absent,present,0.29443359375,0.39,True,promotion,3,0,10
+patient44421/study10,Lung Opacity,unmentioned,absent,present,0.54248046875,0.62,True,promotion,5,0,10
+patient44421/study12,Lung Opacity,unmentioned,absent,present,0.61865234375,0.62,True,promotion,3,0,10
+patient44981/study4,Atelectasis,present,absent,present,0.4619140625,0.56,True,promotion,3,0,10
+patient44981/study4,Lung Opacity,present,absent,present,0.58544921875,0.62,True,promotion,6,0,10
+patient45046/study3,Atelectasis,unmentioned,absent,present,0.53564453125,0.56,True,promotion,6,0,10
+patient45046/study6,Atelectasis,present,absent,present,0.478271484375,0.56,True,promotion,9,0,10
+patient45046/study6,Fracture,unmentioned,absent,present,0.37548828125,0.42,True,promotion,5,0,10
+patient45114/study12,Edema,unmentioned,absent,present,0.39794921875,0.453857,True,promotion,14,0,10
+patient48558/study1,Edema,present,absent,present,0.375,0.453857,True,promotion,9,0,10
+patient48712/study11,Pleural Effusion,unmentioned,absent,present,0.58984375,0.6,True,promotion,10,0,10
+patient48712/study11,Pneumonia,unmentioned,absent,present,0.2352294921875,0.28,True,promotion,5,0,10
+patient50245/study2,Cardiomegaly,absent,absent,present,0.36376953125,0.5,True,promotion,5,0,10
+patient51453/study3,Atelectasis,unmentioned,absent,present,0.47021484375,0.56,True,promotion,4,0,10
+patient51453/study3,Pleural Effusion,present,absent,present,0.53076171875,0.6,True,promotion,15,0,10
+patient51453/study5,Atelectasis,uncertain,absent,present,0.424072265625,0.56,True,promotion,6,0,10
+patient51453/study5,Consolidation,present,absent,present,0.36279296875,0.45,True,promotion,6,0,10
+patient62874/study1,Pleural Effusion,unmentioned,absent,present,0.46337890625,0.6,True,promotion,9,0,10

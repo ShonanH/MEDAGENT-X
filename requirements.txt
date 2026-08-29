@@ -6,6 +6,7 @@ torch
 torchvision
 torchaudio
 timm
+transformers
 monai
 pydicom
 nibabel

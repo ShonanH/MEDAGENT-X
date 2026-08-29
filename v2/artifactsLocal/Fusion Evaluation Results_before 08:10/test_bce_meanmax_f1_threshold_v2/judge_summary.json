@@ -1,0 +1,68 @@
+{
+  "fusion_policy_version": "deterministic_gray_zone_fusion_v2",
+  "gray_zone_margin": 0.15,
+  "gray_zone_rows": 2340,
+  "ground_truth_rows": 10872,
+  "runs": [
+    {
+      "coverage": 0.14937454010301693,
+      "eval_scope": "full",
+      "judge_metric_version": "judge_metric_policy_v1",
+      "label_count": 12,
+      "macro_f1": 0.6754199695020194,
+      "macro_precision": 0.9127304405987813,
+      "macro_recall": 0.5415300281834118,
+      "match_count": 10872,
+      "micro_f1": 0.6988742964352721,
+      "micro_precision": 0.910757946210269,
+      "micro_recall": 0.5669710806697108,
+      "name": "vision_full"
+    },
+    {
+      "coverage": 0.1491905813097866,
+      "eval_scope": "full",
+      "judge_metric_version": "judge_metric_policy_v1",
+      "label_count": 12,
+      "macro_f1": 0.6993753834441995,
+      "macro_precision": 0.9136635955613653,
+      "macro_recall": 0.5723906302239233,
+      "match_count": 10872,
+      "micro_f1": 0.7251032583754016,
+      "micro_precision": 0.9132947976878613,
+      "micro_recall": 0.6012176560121766,
+      "name": "fusion_full"
+    },
+    {
+      "coverage": 0.18803418803418803,
+      "eval_scope": "gray_zone",
+      "judge_metric_version": "judge_metric_policy_v1",
+      "label_count": 12,
+      "macro_f1": 0.6730144804942002,
+      "macro_precision": 0.892232475127212,
+      "macro_recall": 0.5473354713011909,
+      "match_count": 2340,
+      "micro_f1": 0.6842105263157895,
+      "micro_precision": 0.8666666666666667,
+      "micro_recall": 0.5652173913043478,
+      "name": "vision_gray_zone"
+    },
+    {
+      "coverage": 0.18717948717948718,
+      "eval_scope": "gray_zone",
+      "judge_metric_version": "judge_metric_policy_v1",
+      "label_count": 12,
+      "macro_f1": 0.7474121475365402,
+      "macro_precision": 0.894996041319823,
+      "macro_recall": 0.6565011654882323,
+      "match_count": 2340,
+      "micro_f1": 0.7725190839694656,
+      "micro_precision": 0.8815331010452961,
+      "micro_recall": 0.6875,
+      "name": "fusion_gray_zone"
+    }
+  ],
+  "split": "test",
+  "study_count": 906,
+  "threshold_policy_json": "v2/artifacts/cohort_balanced_v1/reasoning/fusion_eval_v1/val_bce_meanmax_f1/threshold_tuning/threshold_policy_v2.json",
+  "threshold_policy_version": "vision_threshold_policy_v2"
+}
