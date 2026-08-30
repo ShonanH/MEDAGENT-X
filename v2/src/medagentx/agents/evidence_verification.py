@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Mapping, Sequence
+import json
 
 from medagentx.labels.constants import DISEASE_LABELS
 from medagentx.labels.statuses import LabelStatus
@@ -638,3 +639,328 @@ class EvidenceVerificationAgent:
             retrieved_cases=retrieved_cases,
             margin=self.margin,
         )
+
+LLM_EVIDENCE_VERIFICATION_POLICY_VERSION = "llm_evidence_verification_review_v1"
+
+
+@dataclass(frozen=True)
+class LLMEvidenceVerificationAgentResult:
+    """Complete output from one LLM-assisted Evidence Verification Agent run."""
+
+    study_key: str
+    deterministic_result: StudyEvidenceVerificationResult
+    final_result: StudyEvidenceVerificationResult
+    llm_review: Any | None
+    llm_requested: bool
+    llm_succeeded: bool
+    fallback_used: bool
+    fallback_reasons: tuple[str, ...]
+    reviewed_labels: tuple[str, ...]
+
+
+class LLMEvidenceVerificationAgent:
+    """Run deterministic evidence verification, then LLM-review evidence fields."""
+
+    def __init__(
+        self,
+        *,
+        llm_client: Any | None = None,
+        margin: float = GRAY_ZONE_MARGIN,
+    ) -> None:
+        from medagentx.llm.ollama import OllamaClient
+
+        self.llm_client = llm_client or OllamaClient()
+        self.margin = float(margin)
+
+    def verify(
+        self,
+        *,
+        vision_output: VisionStudyOutput,
+        fusion_result: FusionStudyResult,
+        retrieved_cases: Sequence[RetrievedReportCase | Mapping[str, Any]],
+    ) -> LLMEvidenceVerificationAgentResult:
+        deterministic_result = verify_study_evidence(
+            vision_output=vision_output,
+            fusion_result=fusion_result,
+            retrieved_cases=retrieved_cases,
+            margin=self.margin,
+        )
+        label_contexts = _llm_evidence_contexts(deterministic_result)
+
+        if not label_contexts:
+            return LLMEvidenceVerificationAgentResult(
+                study_key=deterministic_result.study_key,
+                deterministic_result=deterministic_result,
+                final_result=deterministic_result,
+                llm_review=None,
+                llm_requested=False,
+                llm_succeeded=False,
+                fallback_used=False,
+                fallback_reasons=(),
+                reviewed_labels=(),
+            )
+
+        fallback_reasons: list[str] = []
+        llm_review = self._review_with_llm(
+            deterministic_result=deterministic_result,
+            label_contexts=label_contexts,
+            retrieved_cases=retrieved_cases,
+            fallback_reasons=fallback_reasons,
+        )
+
+        if llm_review is None:
+            return LLMEvidenceVerificationAgentResult(
+                study_key=deterministic_result.study_key,
+                deterministic_result=deterministic_result,
+                final_result=deterministic_result,
+                llm_review=None,
+                llm_requested=True,
+                llm_succeeded=False,
+                fallback_used=True,
+                fallback_reasons=tuple(fallback_reasons),
+                reviewed_labels=(),
+            )
+
+        final_result = _apply_llm_evidence_review(
+            deterministic_result,
+            llm_review,
+        )
+
+        return LLMEvidenceVerificationAgentResult(
+            study_key=deterministic_result.study_key,
+            deterministic_result=deterministic_result,
+            final_result=final_result,
+            llm_review=llm_review,
+            llm_requested=True,
+            llm_succeeded=True,
+            fallback_used=bool(fallback_reasons),
+            fallback_reasons=tuple(fallback_reasons),
+            reviewed_labels=tuple(sorted(item.label for item in llm_review.reviewed_labels)),
+        )
+
+    def _review_with_llm(
+        self,
+        *,
+        deterministic_result: StudyEvidenceVerificationResult,
+        label_contexts: Sequence[Any],
+        retrieved_cases: Sequence[RetrievedReportCase | Mapping[str, Any]],
+        fallback_reasons: list[str],
+    ) -> Any | None:
+        from medagentx.contracts.evidence_verification_llm import (
+            EVIDENCE_VERIFICATION_LLM_REVIEW_SCHEMA,
+            EvidenceVerificationReviewValidationError,
+            parse_evidence_verification_llm_review_payload,
+            validate_evidence_verification_review_guardrails,
+        )
+        from medagentx.llm.ollama import OllamaClientError
+
+        retrieved_case_ids = {
+            _case_id(case) for case in retrieved_cases if _case_id(case)
+        }
+        system_prompt = _evidence_verification_llm_system_prompt()
+        user_prompt = _evidence_verification_llm_user_prompt(
+            deterministic_result=deterministic_result,
+            label_contexts=label_contexts,
+            retrieved_cases=retrieved_cases,
+        )
+
+        try:
+            payload = self.llm_client.chat_json(
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                schema=EVIDENCE_VERIFICATION_LLM_REVIEW_SCHEMA,
+            )
+            review = parse_evidence_verification_llm_review_payload(payload)
+            validate_evidence_verification_review_guardrails(
+                review,
+                label_contexts=label_contexts,
+                retrieved_case_ids=retrieved_case_ids,
+            )
+            _validate_evidence_review_for_application(review)
+            return review
+        except (OllamaClientError, EvidenceVerificationReviewValidationError) as exc:
+            fallback_reasons.append(f"llm-evidence-review-failed: {exc}")
+            return None
+
+
+def _llm_evidence_contexts(
+    deterministic_result: StudyEvidenceVerificationResult,
+) -> tuple[Any, ...]:
+    from medagentx.contracts.evidence_verification_llm import (
+        EvidenceVerificationLabelContext,
+    )
+
+    contexts = []
+    for label_result in deterministic_result.labels:
+        if label_result.fused_status is LabelStatus.ABSENT:
+            continue
+        contexts.append(
+            EvidenceVerificationLabelContext(
+                label=label_result.label,
+                fused_status=label_result.fused_status,
+                vision_status=label_result.vision_status,
+                deterministic_evidence_score=label_result.evidence_score,
+                deterministic_vision_support=label_result.vision_support.value,
+                deterministic_retrieval_support=label_result.retrieval_support.value,
+                deterministic_contradiction_level=label_result.contradiction_level.value,
+                retrieval_positive_count=label_result.retrieval_positive_count,
+                retrieval_negative_count=label_result.retrieval_negative_count,
+                in_gray_zone=label_result.in_gray_zone,
+                fusion_changed=label_result.fusion_changed,
+                fusion_reason=label_result.fusion_reason,
+                deterministic_evidence_summary=label_result.evidence_summary,
+            )
+        )
+    return tuple(contexts)
+
+
+def _validate_evidence_review_for_application(review: Any) -> None:
+    from medagentx.contracts.evidence_verification_llm import (
+        EvidenceVerificationReviewValidationError,
+    )
+
+    allowed_contradiction_levels = {"none", "weak", "strong"}
+    if review.contradiction_level if hasattr(review, "contradiction_level") else False:
+        raise EvidenceVerificationReviewValidationError(
+            "Unexpected top-level contradiction_level"
+        )
+
+    for label_review in review.reviewed_labels:
+        if label_review.contradiction_level.value not in allowed_contradiction_levels:
+            raise EvidenceVerificationReviewValidationError(
+                f"{label_review.label} contradiction_level must be one of "
+                f"{sorted(allowed_contradiction_levels)}"
+            )
+
+
+def _apply_llm_evidence_review(
+    deterministic_result: StudyEvidenceVerificationResult,
+    llm_review: Any,
+) -> StudyEvidenceVerificationResult:
+    review_by_label = llm_review.review_map()
+    labels: list[LabelVerificationResult] = []
+
+    for label_result in deterministic_result.labels:
+        label_review = review_by_label.get(label_result.label)
+        if label_review is None:
+            labels.append(label_result)
+            continue
+
+        labels.append(
+            LabelVerificationResult(
+                label=label_result.label,
+                fused_status=label_result.fused_status,
+                vision_status=label_result.vision_status,
+                evidence_score=label_review.evidence_score,
+                vision_support=EvidenceLevel(label_review.vision_support.value),
+                retrieval_support=EvidenceLevel(label_review.retrieval_support.value),
+                contradiction_level=EvidenceLevel(
+                    label_review.contradiction_level.value
+                ),
+                retrieval_positive_count=label_result.retrieval_positive_count,
+                retrieval_negative_count=label_result.retrieval_negative_count,
+                in_gray_zone=label_result.in_gray_zone,
+                fusion_changed=label_result.fusion_changed,
+                fusion_reason=label_result.fusion_reason,
+                evidence_summary=label_review.rationale,
+                supporting_evidence=label_result.supporting_evidence,
+                contradicting_evidence=label_result.contradicting_evidence,
+            )
+        )
+
+    predicted_results = _predicted_label_results(labels)
+    supporting_evidence = _labeled_snippets(predicted_results, supporting=True)
+    contradicting_evidence = _labeled_snippets(predicted_results, supporting=False)
+
+    return StudyEvidenceVerificationResult(
+        study_key=deterministic_result.study_key,
+        predicted_labels=tuple(
+            _format_prediction(result) for result in predicted_results
+        ),
+        overall_evidence_score=llm_review.overall_evidence_score,
+        vision_evidence_summary=llm_review.vision_evidence_summary,
+        retrieval_evidence_summary=llm_review.retrieval_evidence_summary,
+        fusion_evidence_summary=llm_review.fusion_evidence_summary,
+        evidence_narrative=llm_review.evidence_narrative,
+        supporting_evidence=supporting_evidence,
+        contradicting_evidence=contradicting_evidence,
+        labels=tuple(labels),
+        verification_policy_version=LLM_EVIDENCE_VERIFICATION_POLICY_VERSION,
+    )
+
+
+def _evidence_verification_llm_system_prompt() -> str:
+    return (
+        "You are the MEDAGENT-X Evidence Verification Agent. "
+        "Review only the provided fused disease labels and retrieved case evidence. "
+        "Do not add labels. Do not remove labels. Do not change fused label statuses. "
+        "Use only provided retrieved case IDs. Return strict JSON matching the schema."
+    )
+
+
+def _evidence_verification_llm_user_prompt(
+    *,
+    deterministic_result: StudyEvidenceVerificationResult,
+    label_contexts: Sequence[Any],
+    retrieved_cases: Sequence[RetrievedReportCase | Mapping[str, Any]],
+) -> str:
+    payload = {
+        "study_key": deterministic_result.study_key,
+        "task": (
+            "Review the deterministic evidence verification result. "
+            "You may refine evidence scores, support levels, summaries, and narrative. "
+            "You must not change labels or fused statuses."
+        ),
+        "scoring_rules": {
+            "1": "Evidence contradicts or does not support the fused label.",
+            "2": "Weak single-source support.",
+            "3": "Mixed or moderate support.",
+            "4": "Strong support from one source plus compatible secondary evidence.",
+            "5": "Strong support from both vision and retrieval evidence.",
+        },
+        "deterministic_study_summary": {
+            "predicted_labels": list(deterministic_result.predicted_labels),
+            "overall_evidence_score": deterministic_result.overall_evidence_score,
+            "vision_evidence_summary": deterministic_result.vision_evidence_summary,
+            "retrieval_evidence_summary": deterministic_result.retrieval_evidence_summary,
+            "fusion_evidence_summary": deterministic_result.fusion_evidence_summary,
+            "evidence_narrative": deterministic_result.evidence_narrative,
+        },
+        "label_contexts": [
+            _evidence_context_to_prompt_dict(context)
+            for context in label_contexts
+        ],
+        "retrieved_cases": [
+            _retrieved_case_to_prompt_dict(case)
+            for case in retrieved_cases
+        ],
+    }
+    return json.dumps(payload, ensure_ascii=True, indent=2)
+
+
+def _evidence_context_to_prompt_dict(context: Any) -> dict[str, Any]:
+    return {
+        "label": context.label,
+        "fused_status": context.fused_status.value,
+        "vision_status": context.vision_status.value,
+        "deterministic_evidence_score": context.deterministic_evidence_score,
+        "deterministic_vision_support": context.deterministic_vision_support,
+        "deterministic_retrieval_support": context.deterministic_retrieval_support,
+        "deterministic_contradiction_level": context.deterministic_contradiction_level,
+        "retrieval_positive_count": context.retrieval_positive_count,
+        "retrieval_negative_count": context.retrieval_negative_count,
+        "in_gray_zone": context.in_gray_zone,
+        "fusion_changed": context.fusion_changed,
+        "fusion_reason": context.fusion_reason,
+        "deterministic_evidence_summary": context.deterministic_evidence_summary,
+    }
+
+
+def _retrieved_case_to_prompt_dict(
+    case: RetrievedReportCase | Mapping[str, Any],
+) -> dict[str, Any]:
+    return {
+        "case_id": _case_id(case),
+        "similarity": _case_similarity(case),
+        "document": _case_document(case)[:1400],
+    }

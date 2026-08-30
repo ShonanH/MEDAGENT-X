@@ -244,6 +244,90 @@ The strongest useful changes came from retrieval-supported promotions. Pleural E
 
 Pneumothorax is the main caution case: fusion reduced false positives, but also lost one true positive and slightly reduced recall/F1 for that label.
 
+## Experiment 5: LLM Fusion With Retrieval Graph
+
+Folder:
+
+```text
+v2/experiments/exp05_llm_fusion_with_retrieval_graph/
+```
+
+Latest qwen run folder:
+
+```text
+v2/experiments/exp05_llm_fusion_with_retrieval_graph/qwen3_14b/
+```
+
+Policy:
+
+```text
+fusion_llm_policy_version: llm_guarded_review_v1
+```
+
+Description:
+
+```text
+Run RAD-DINO vision inference.
+Retrieve top-10 similar train studies.
+Apply label fusion with the LangGraph LLM fusion path.
+Stop after label fusion.
+Do not run evidence verification.
+```
+
+This experiment uses an LLM for label fusion only. Evidence verification is disabled.
+
+### Run Summary
+
+| Model       | Runtime | LLM Requested | LLM Succeeded | Fallback Used | Deterministic Changed Labels | Final Changed Labels | Final Differs From Deterministic |
+| ----------- | ------: | ------------: | ------------: | ------------: | ---------------------------: | -------------------: | -------------------------------: |
+| llama3.1:8b | 129.1 m |           264 |           261 |            29 |                          392 |                  392 |                                0 |
+| qwen3:14b   | 115.2 m |           261 |           261 |            67 |                          388 |                  387 |                                1 |
+
+### Full Test Set Results
+
+| Run                              | Macro F1 | Macro Precision | Macro Recall | Micro F1 | Micro Precision | Micro Recall | Coverage |
+| -------------------------------- | -------: | --------------: | -----------: | -------: | --------------: | -----------: | -------: |
+| Vision baseline, llama run       |   0.6971 |          0.9108 |       0.5695 |   0.7042 |          0.9076 |       0.5753 |   0.1494 |
+| LLM fusion, llama3.1:8b          |   0.7257 |          0.9117 |       0.6064 |   0.7389 |          0.9137 |       0.6202 |   0.1491 |
+| Vision baseline, qwen run        |   0.6974 |          0.9114 |       0.5695 |   0.7046 |          0.9087 |       0.5753 |   0.1494 |
+| LLM fusion, qwen3:14b            |   0.7246 |          0.9117 |       0.6051 |   0.7383 |          0.9136 |       0.6195 |   0.1492 |
+| Deterministic fusion, Experiment 4 | 0.7246 |          0.9117 |       0.6051 |   0.7383 |          0.9136 |       0.6195 |   0.1491 |
+
+### Gray-Zone Results
+
+| Run                              | Macro F1 | Macro Precision | Macro Recall | Micro F1 | Micro Precision | Micro Recall | Coverage |
+| -------------------------------- | -------: | --------------: | -----------: | -------: | --------------: | -----------: | -------: |
+| Vision baseline, llama run       |   0.6288 |          0.8748 |       0.5066 |   0.6402 |          0.8405 |       0.5170 |   0.1853 |
+| LLM fusion, llama3.1:8b          |   0.7634 |          0.8773 |       0.6975 |   0.8049 |          0.8829 |       0.7396 |   0.1837 |
+| Vision baseline, qwen run        |   0.6318 |          0.8763 |       0.5090 |   0.6432 |          0.8457 |       0.5189 |   0.1848 |
+| LLM fusion, qwen3:14b            |   0.7613 |          0.8773 |       0.6950 |   0.8041 |          0.8824 |       0.7386 |   0.1837 |
+| Deterministic fusion, Experiment 4 | 0.7613 |          0.8773 |       0.6950 |   0.8041 |          0.8824 |       0.7386 |   0.1832 |
+
+### LLM Policy Behavior
+
+| Model       | Reviewed Cells | Keep | Veto | Uncertain | Applied | Rejected | No LLM Review | Helped | Hurt | No Change | Unscored |
+| ----------- | -------------: | ---: | ---: | --------: | ------: | -------: | ------------: | -----: | ---: | --------: | -------: |
+| llama3.1:8b |            372 |  366 |    4 |         2 |     367 |        5 |        10,500 |      0 |    0 |        61 |      311 |
+| qwen3:14b   |            388 |  311 |   14 |        63 |     312 |       76 |        10,484 |      0 |    0 |        63 |      325 |
+
+Qwen produced one final label that differed from deterministic fusion:
+
+| Study | Label | Ground Truth | Vision | Deterministic | Final | LLM Action | Applied | Policy Reason |
+| ----- | ----- | ------------ | ------ | ------------- | ----- | ---------- | ------- | ------------- |
+| patient39917/study11 | Pneumothorax | unmentioned | present | uncertain | present | veto | true | demotion-veto-applied-with-contradictory-evidence |
+
+That row is unscored by the Judge because the ground truth label is `unmentioned`.
+
+### Interpretation
+
+The LLM label-fusion path is running, but it is not yet producing measurable label-level gains over deterministic retrieval fusion.
+
+The latest qwen run exactly matches Experiment 4's headline fusion metrics. It made one final change relative to deterministic fusion, but that change was on an unscored `unmentioned` ground-truth cell.
+
+The earlier llama run shows a tiny metric increase over Experiment 4, but its final labels did not differ from its deterministic fusion labels. That difference is best treated as run-to-run variation from rerunning vision/retrieval, not as an LLM improvement.
+
+Qwen generated more non-keep actions than llama, but most were rejected by the guardrail policy. This is expected behavior for the current `llm_guarded_review_v1` setup: the LLM can review fusion changes, but final label edits are constrained unless the response satisfies strict confidence and evidence rules.
+
 ## Experiment 6: Deterministic Fusion and Evidence Verification
 
 Folder:
@@ -412,5 +496,6 @@ Because the evidence verification stage does not modify fused labels, it does no
 1. RAD-DINO alone is the current F1 baseline: macro F1 0.6971.
 2. No-retrieval gray-zone uncertainty fusion improves precision slightly but substantially lowers recall.
 3. Retrieval-backed deterministic fusion is a clear improvement over vision-only: macro F1 0.7246.
-4. Deterministic evidence verification does not change labels, but adds study-level and label-level evidence scoring plus retrieved evidence snippets.
-5. The next experiment should add LLM capability to both Label Fusion and Evidence Verification, then compare against this deterministic full-agent baseline.
+4. LLM label fusion with retrieval did not produce a reliable improvement over deterministic retrieval fusion. The latest qwen run matched Experiment 4's fusion metrics.
+5. Deterministic evidence verification does not change labels, but adds study-level and label-level evidence scoring plus retrieved evidence snippets.
+6. The next experiment should add LLM capability to Evidence Verification, then compare against the deterministic full-agent baseline.

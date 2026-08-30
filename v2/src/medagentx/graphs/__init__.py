@@ -3,7 +3,10 @@
 from medagentx.graphs.vision_node import VisionBackbone, make_vision_node
 from medagentx.graphs.retrieval_node import make_retrieval_node
 from medagentx.graphs.fusion_node import fusion_node, make_label_fusion_node
-from medagentx.graphs.evidence_verification_node import evidence_verification_node
+from medagentx.graphs.evidence_verification_node import (
+    evidence_verification_node,
+    make_evidence_verification_node,
+)
 from medagentx.graphs.report_writer_node import report_writer_node
 from medagentx.graphs.inference_graph import (
     GraphNode,
@@ -21,6 +24,7 @@ __all__ = [
     "fusion_node",
     "make_label_fusion_node",
     "evidence_verification_node",
+    "make_evidence_verification_node",
     "report_writer_node",
     "require_state_keys",
 ]
