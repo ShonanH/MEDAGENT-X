@@ -36,7 +36,7 @@ from medagentx.reasoning.fuse import (
 )
 
 
-DEFAULT_EXPERIMENT_DIR = Path("v2/experiments/exp03_fusion_no_retrieval")
+DEFAULT_EXPERIMENT_DIR = Path("v2/experiments/exp02_fusion_no_retrieval")
 DEFAULT_SOURCE_VISION_CSV = Path(
     "v2/experiments/exp01_vision_only/vision_study_predictions.csv"
 )
@@ -197,7 +197,7 @@ def main(argv: list[str] | None = None) -> int:
     ]
 
     summary = {
-        "experiment": "exp03_fusion_no_retrieval",
+        "experiment": "exp02_fusion_no_retrieval",
         "source_vision_csv": str(args.source_vision_csv),
         "study_labels_csv": str(args.study_labels_csv),
         "fusion_policy_version": "gray_zone_uncertainty_no_retrieval_v1",
@@ -228,7 +228,7 @@ def main(argv: list[str] | None = None) -> int:
     write_json(
         args.output_dir / "run_config.json",
         {
-            "experiment": "exp03_fusion_no_retrieval",
+            "experiment": "exp02_fusion_no_retrieval",
             "source_vision_csv": str(args.source_vision_csv),
             "study_labels_csv": str(args.study_labels_csv),
             "output_dir": str(args.output_dir),
