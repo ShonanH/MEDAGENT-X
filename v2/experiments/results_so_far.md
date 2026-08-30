@@ -156,9 +156,97 @@ The precision improvement comes from avoiding some false positives. The recall a
 
 This experiment shows that gray-zone abstention without retrieval is too conservative under the current Judge scoring policy. It may still be useful as a clinical uncertainty signal, but it is worse than vision-only on binary F1.
 
+## Experiment 4: Fusion With Retrieval
+
+Folder:
+
+```text
+v2/experiments/exp04_fusion_with_retrieval/
+```
+
+Policy:
+
+```text
+deterministic_gray_zone_fusion_v2
+```
+
+Description:
+
+```text
+Run RAD-DINO vision inference.
+Retrieve top-10 similar train studies using the RAD-DINO image embedding.
+Apply deterministic gray-zone label fusion using retrieved report mentions.
+Evaluate vision-only and fused labels with Judge.
+```
+
+This experiment does not use an LLM.
+
+### Change Summary
+
+| Quantity | Count |
+|---|---:|
+| Total label cells | 10,872 |
+| Gray-zone cells | 1,812 |
+| Changed cells | 390 |
+| Promotions | 374 |
+| Demotions | 16 |
+| Retrieval positive mentions | 33,965 |
+| Retrieval negative mentions | 3,849 |
+
+Final fused status counts:
+
+| Fused Status | Count |
+|---|---:|
+| absent | 7,881 |
+| present | 2,975 |
+| uncertain | 16 |
+
+### Results
+
+| Scope | Run | Macro F1 | Macro Precision | Macro Recall | Micro F1 | Micro Precision | Micro Recall | Coverage |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| Full test set | Vision baseline | 0.6971 | 0.9108 | 0.5695 | 0.7042 | 0.9076 | 0.5753 | 0.1494 |
+| Full test set | Fusion with retrieval | 0.7246 | 0.9117 | 0.6051 | 0.7383 | 0.9136 | 0.6195 | 0.1491 |
+| Gray-zone slice | Vision baseline | 0.6310 | 0.8748 | 0.5090 | 0.6417 | 0.8405 | 0.5189 | 0.1849 |
+| Gray-zone slice | Fusion with retrieval | 0.7613 | 0.8773 | 0.6950 | 0.8041 | 0.8824 | 0.7386 | 0.1832 |
+
+### Deltas Versus Vision Baseline
+
+| Scope | Macro F1 Delta | Macro Precision Delta | Macro Recall Delta | Micro F1 Delta | Micro Precision Delta | Micro Recall Delta |
+|---|---:|---:|---:|---:|---:|---:|
+| Full test set | +0.0275 | +0.0009 | +0.0356 | +0.0341 | +0.0060 | +0.0441 |
+| Gray-zone slice | +0.1303 | +0.0025 | +0.1860 | +0.1624 | +0.0419 | +0.2197 |
+
+### Per-Label Fusion Changes
+
+| Label | Gray-Zone Cells | Changed Cells | Promotions | Demotions | Net TP Change | Net FP Change | Net FN Change |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Atelectasis | 124 | 55 | 55 | 0 | 7 | 0 | -7 |
+| Cardiomegaly | 126 | 25 | 25 | 0 | 4 | 1 | -4 |
+| Consolidation | 157 | 51 | 47 | 4 | 3 | 0 | -3 |
+| Edema | 142 | 62 | 62 | 0 | 10 | 0 | -10 |
+| Enlarged Cardiomediastinum | 145 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Fracture | 174 | 26 | 26 | 0 | 2 | 1 | -2 |
+| Lung Lesion | 136 | 18 | 18 | 0 | 4 | 0 | -4 |
+| Lung Opacity | 165 | 63 | 63 | 0 | 13 | 0 | -13 |
+| Pleural Effusion | 129 | 45 | 45 | 0 | 16 | 1 | -16 |
+| Pleural Other | 135 | 11 | 10 | 1 | 0 | 0 | 0 |
+| Pneumonia | 220 | 18 | 18 | 0 | 0 | 0 | 0 |
+| Pneumothorax | 159 | 16 | 5 | 11 | -1 | -3 | 1 |
+
+### Interpretation
+
+Retrieval-backed fusion improves the vision baseline on both full-test and gray-zone metrics. The gain is concentrated in the gray-zone slice, which is exactly where the fusion policy is allowed to intervene.
+
+The full-test macro F1 improved from 0.6971 to 0.7246. Macro recall improved from 0.5695 to 0.6051 while macro precision stayed nearly unchanged.
+
+The strongest useful changes came from retrieval-supported promotions. Pleural Effusion, Lung Opacity, Edema, and Atelectasis gained true positives with little or no false-positive cost.
+
+Pneumothorax is the main caution case: fusion reduced false positives, but also lost one true positive and slightly reduced recall/F1 for that label.
+
 ## Current Takeaways
 
 1. RAD-DINO alone is the current F1 baseline: macro F1 0.6971.
 2. No-retrieval gray-zone uncertainty fusion improves precision slightly but substantially lowers recall.
-3. The main opportunity is still Experiment 4: retrieval-backed fusion, where gray-zone decisions can be changed using report evidence instead of blanket uncertainty.
-
+3. Retrieval-backed deterministic fusion is a clear improvement over vision-only: macro F1 0.7246.
+4. The next non-LLM baseline should be deterministic fusion plus deterministic evidence verification, so we can compare it against the later LLM-enhanced full agentic pipeline.
