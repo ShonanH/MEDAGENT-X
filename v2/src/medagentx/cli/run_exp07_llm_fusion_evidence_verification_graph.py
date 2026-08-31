@@ -1,4 +1,4 @@
-"""Run Experiment 7: LLM fusion plus LLM evidence verification graph."""
+"""Run Experiment 7: graph inference with LLM-only evidence verification."""
 
 from __future__ import annotations
 
@@ -10,6 +10,14 @@ from typing import Any, Iterable
 
 import pandas as pd
 
+from medagentx.agents.llm_evidence_verification import (
+    LLM_ONLY_EVIDENCE_VERIFICATION_POLICY_VERSION,
+    LLMOnlyEvidenceVerificationAgent,
+)
+from medagentx.contracts.evidence_verification import (
+    study_verification_to_json_dict,
+    study_verifications_to_csv_rows,
+)
 from medagentx.data.balanced_constants import DEFAULT_BALANCED_COHORT_ROOT
 from medagentx.llm.ollama import (
     DEFAULT_OLLAMA_BASE_URL,
@@ -40,6 +48,7 @@ OUTPUT_FILENAMES = (
     "graph_reasoning_results.jsonl",
     "vision_study_predictions.csv",
     "fusion_label_predictions.csv",
+    "retrieved_cases.csv",
     "evidence_verification.json",
     "evidence_verification.csv",
     "llm_evidence_policy_audit.csv",
@@ -120,9 +129,9 @@ def _build_exp07_graph(
     vision_node,
     retrieval_node,
     fusion_node,
-    verification_node,
+    evidence_verification_node,
 ):
-    """Build START -> vision -> retrieval -> fusion -> evidence -> END."""
+    """Build START -> vision -> retrieval -> fusion -> LLM evidence -> END."""
     from medagentx.graphs.state import MedAgentXInferenceState
 
     StateGraph, START, END = _load_langgraph()
@@ -130,7 +139,7 @@ def _build_exp07_graph(
     graph.add_node("vision", vision_node)
     graph.add_node("retrieval", retrieval_node)
     graph.add_node("fusion", fusion_node)
-    graph.add_node("evidence_verification", verification_node)
+    graph.add_node("evidence_verification", evidence_verification_node)
     graph.add_edge(START, "vision")
     graph.add_edge("vision", "retrieval")
     graph.add_edge("retrieval", "fusion")
@@ -139,7 +148,31 @@ def _build_exp07_graph(
     return graph.compile()
 
 
-def _changed_labels(result) -> list[str]:
+def _make_llm_only_evidence_node(agent: LLMOnlyEvidenceVerificationAgent):
+    from medagentx.graphs.state import MedAgentXInferenceState, require_state_keys
+
+    def evidence_verification_node(
+        state: MedAgentXInferenceState,
+    ) -> MedAgentXInferenceState:
+        require_state_keys(
+            state,
+            ("vision_output", "retrieved_cases", "fusion_result"),
+            node_name="llm_only_evidence_verification_node",
+        )
+        result = agent.verify(
+            vision_output=state["vision_output"],
+            fusion_result=state["fusion_result"],
+            retrieved_cases=state["retrieved_cases"],
+        )
+        return {
+            "evidence_verification_agent_result": result,
+            "evidence_verification": result.final_result,
+        }
+
+    return evidence_verification_node
+
+
+def _changed_labels(result: Any) -> list[str]:
     return [
         item.label
         for item in result.labels
@@ -147,32 +180,69 @@ def _changed_labels(result) -> list[str]:
     ]
 
 
-def _score_changed_count(agent_result: Any) -> int:
-    deterministic_by_label = agent_result.deterministic_result.label_map()
-    final_by_label = agent_result.final_result.label_map()
-    changed = 0
-    for label, deterministic_label in deterministic_by_label.items():
-        if deterministic_label.fused_status.value == "absent":
-            continue
-        final_label = final_by_label[label]
-        changed += int(deterministic_label.evidence_score != final_label.evidence_score)
-    return changed
+def _case_value(case: Any, key: str) -> Any:
+    value = getattr(case, key, None)
+    if value is not None:
+        return value
+    if isinstance(case, dict):
+        return case.get(key)
+    return None
 
 
-def _support_changed_count(agent_result: Any) -> int:
-    deterministic_by_label = agent_result.deterministic_result.label_map()
-    final_by_label = agent_result.final_result.label_map()
-    changed = 0
-    for label, deterministic_label in deterministic_by_label.items():
-        if deterministic_label.fused_status.value == "absent":
-            continue
-        final_label = final_by_label[label]
-        changed += int(
-            deterministic_label.vision_support is not final_label.vision_support
-            or deterministic_label.retrieval_support is not final_label.retrieval_support
-            or deterministic_label.contradiction_level is not final_label.contradiction_level
-        )
-    return changed
+def _case_document(case: Any) -> str:
+    return str(_case_value(case, "document") or "")
+
+
+def _case_similarity(case: Any) -> float | None:
+    value = _case_value(case, "similarity")
+    if value is None:
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _case_distance(case: Any) -> float | None:
+    value = _case_value(case, "distance")
+    if value is None:
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _retrieved_case_rows(
+    *,
+    final_state: dict[str, Any],
+    query_split: str,
+    query_dicom_paths: Iterable[str],
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    query_paths = tuple(query_dicom_paths)
+    for view_index, dicom_path in enumerate(query_paths, start=1):
+        for rank, case in enumerate(final_state["retrieved_cases"], start=1):
+            rows.append(
+                {
+                    "query_study_key": final_state["study_key"],
+                    "query_deid_patient_id": _case_value(
+                        final_state["vision_output"],
+                        "deid_patient_id",
+                    ),
+                    "query_split": query_split,
+                    "query_view_index": view_index,
+                    "query_view_count": len(query_paths),
+                    "query_dicom_path": dicom_path,
+                    "retrieved_rank": rank,
+                    "retrieved_study_key": _case_value(case, "study_key"),
+                    "retrieved_deid_patient_id": _case_value(case, "deid_patient_id"),
+                    "similarity": _case_similarity(case),
+                    "distance": _case_distance(case),
+                    "retrieved_document": _case_document(case),
+                }
+            )
+    return rows
 
 
 def _graph_result_row(
@@ -183,38 +253,37 @@ def _graph_result_row(
     final_state: dict[str, Any],
 ) -> dict[str, Any]:
     label_fusion = final_state["label_fusion_result"]
-    verification_agent = final_state["evidence_verification_agent_result"]
+    evidence_agent = final_state["evidence_verification_agent_result"]
     verification = final_state["evidence_verification"]
-    deterministic_changed = _changed_labels(label_fusion.deterministic_result)
-    final_changed = _changed_labels(label_fusion.final_result)
     return {
         "index": index,
         "total": total,
         "elapsed_seconds": elapsed_seconds,
         "study_key": final_state["study_key"],
         "retrieved_count": len(final_state["retrieved_cases"]),
-        "deterministic_changed_labels": deterministic_changed,
-        "final_changed_labels": final_changed,
         "final_predicted_labels": list(verification.predicted_labels),
         "overall_evidence_score": verification.overall_evidence_score,
-        "evidence_score_changed_labels": _score_changed_count(verification_agent),
-        "evidence_support_changed_labels": _support_changed_count(verification_agent),
-        "fusion_llm": {
-            "requested": label_fusion.llm_requested,
-            "succeeded": label_fusion.llm_succeeded,
+        "fusion": {
+            "llm_requested": label_fusion.llm_requested,
+            "llm_succeeded": label_fusion.llm_succeeded,
             "fallback_used": label_fusion.fallback_used,
             "fallback_reasons": list(label_fusion.fallback_reasons),
+            "deterministic_changed_labels": _changed_labels(
+                label_fusion.deterministic_result
+            ),
+            "final_changed_labels": _changed_labels(label_fusion.final_result),
             "reviewed_labels": list(label_fusion.reviewed_labels),
             "kept_labels": list(label_fusion.kept_labels),
             "vetoed_labels": list(label_fusion.vetoed_labels),
             "uncertain_labels": list(label_fusion.uncertain_labels),
         },
-        "evidence_llm": {
-            "requested": verification_agent.llm_requested,
-            "succeeded": verification_agent.llm_succeeded,
-            "fallback_used": verification_agent.fallback_used,
-            "fallback_reasons": list(verification_agent.fallback_reasons),
-            "reviewed_labels": list(verification_agent.reviewed_labels),
+        "evidence": {
+            "mode": "llm_only",
+            "llm_requested": evidence_agent.llm_requested,
+            "llm_succeeded": evidence_agent.llm_succeeded,
+            "fallback_used": evidence_agent.fallback_used,
+            "fallback_reasons": list(evidence_agent.fallback_reasons),
+            "reviewed_labels": list(evidence_agent.reviewed_labels),
         },
     }
 
@@ -222,65 +291,29 @@ def _graph_result_row(
 def _evidence_audit_rows(agent_results: Iterable[Any]) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for agent_result in agent_results:
-        deterministic_by_label = agent_result.deterministic_result.label_map()
-        final_by_label = agent_result.final_result.label_map()
+        verification = agent_result.final_result
         review_by_label = (
             agent_result.llm_review.review_map()
             if agent_result.llm_review is not None
             else {}
         )
-        for label, deterministic_label in deterministic_by_label.items():
-            if deterministic_label.fused_status.value == "absent":
+        for label_result in verification.labels:
+            if label_result.fused_status.value == "absent":
                 continue
 
-            final_label = final_by_label[label]
-            review = review_by_label.get(label)
+            review = review_by_label.get(label_result.label)
             rows.append(
                 {
                     "study_key": agent_result.study_key,
-                    "label": label,
-                    "fused_status": deterministic_label.fused_status.value,
-                    "vision_status": deterministic_label.vision_status.value,
-                    "deterministic_evidence_score": deterministic_label.evidence_score,
-                    "final_evidence_score": final_label.evidence_score,
-                    "evidence_score_delta": (
-                        final_label.evidence_score
-                        - deterministic_label.evidence_score
-                    ),
-                    "score_changed": (
-                        deterministic_label.evidence_score
-                        != final_label.evidence_score
-                    ),
-                    "deterministic_vision_support": (
-                        deterministic_label.vision_support.value
-                    ),
-                    "final_vision_support": final_label.vision_support.value,
-                    "deterministic_retrieval_support": (
-                        deterministic_label.retrieval_support.value
-                    ),
-                    "final_retrieval_support": final_label.retrieval_support.value,
-                    "deterministic_contradiction_level": (
-                        deterministic_label.contradiction_level.value
-                    ),
-                    "final_contradiction_level": (
-                        final_label.contradiction_level.value
-                    ),
-                    "support_changed": (
-                        deterministic_label.vision_support
-                        is not final_label.vision_support
-                        or deterministic_label.retrieval_support
-                        is not final_label.retrieval_support
-                        or deterministic_label.contradiction_level
-                        is not final_label.contradiction_level
-                    ),
-                    "retrieval_positive_count": (
-                        deterministic_label.retrieval_positive_count
-                    ),
-                    "retrieval_negative_count": (
-                        deterministic_label.retrieval_negative_count
-                    ),
-                    "in_gray_zone": deterministic_label.in_gray_zone,
-                    "fusion_changed": deterministic_label.fusion_changed,
+                    "label": label_result.label,
+                    "fused_status": label_result.fused_status.value,
+                    "vision_status": label_result.vision_status.value,
+                    "evidence_score": label_result.evidence_score,
+                    "vision_support": label_result.vision_support.value,
+                    "retrieval_support": label_result.retrieval_support.value,
+                    "contradiction_level": label_result.contradiction_level.value,
+                    "in_gray_zone": label_result.in_gray_zone,
+                    "fusion_changed": label_result.fusion_changed,
                     "llm_requested": agent_result.llm_requested,
                     "llm_succeeded": agent_result.llm_succeeded,
                     "fallback_used": agent_result.fallback_used,
@@ -298,10 +331,7 @@ def _evidence_audit_rows(agent_results: Iterable[Any]) -> list[dict[str, Any]]:
                     "llm_contradicting_case_ids": _json_cell(
                         list(review.contradicting_case_ids) if review else []
                     ),
-                    "deterministic_evidence_summary": (
-                        deterministic_label.evidence_summary
-                    ),
-                    "final_evidence_summary": final_label.evidence_summary,
+                    "evidence_summary": label_result.evidence_summary,
                 }
             )
     return rows
@@ -322,18 +352,17 @@ def _evidence_policy_summary_frame(audit_frame: pd.DataFrame) -> pd.DataFrame:
     )
     return grouped.agg(
         reviewed_cells=("study_key", "count"),
-        score_changed=("score_changed", "sum"),
-        support_changed=("support_changed", "sum"),
-        mean_score_delta=("evidence_score_delta", "mean"),
         fallback_used=("fallback_used", "sum"),
+        mean_evidence_score=("evidence_score", "mean"),
     ).reset_index()
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
-            "Run Experiment 7: LangGraph vision -> retrieval -> LLM label fusion "
-            "-> LLM evidence verification. Report writing is intentionally excluded."
+            "Run Experiment 7: full graph inference with LLM label fusion and "
+            "LLM-only evidence verification. No deterministic evidence "
+            "verification is run."
         )
     )
     parser.add_argument(
@@ -373,8 +402,8 @@ def build_parser() -> argparse.ArgumentParser:
         "--allow-llm-fallback",
         action="store_true",
         help=(
-            "Continue when either LLM fusion or LLM evidence verification falls "
-            "back to deterministic output."
+            "Continue if label fusion or LLM-only evidence verification has an "
+            "LLM failure. No deterministic evidence-verification fallback is used."
         ),
     )
     return parser
@@ -383,22 +412,11 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
 
-    from medagentx.agents.evidence_verification import (
-        LLM_EVIDENCE_VERIFICATION_POLICY_VERSION,
-        LLMEvidenceVerificationAgent,
-    )
     from medagentx.agents.label_fusion import (
         LLM_REVIEW_POLICY_VERSION,
         LabelFusionAgent,
     )
-    from medagentx.contracts.evidence_verification import (
-        study_verification_to_json_dict,
-        study_verifications_to_csv_rows,
-    )
     from medagentx.evaluation.fusion_eval import fusion_results_to_frame
-    from medagentx.graphs.evidence_verification_node import (
-        make_evidence_verification_node,
-    )
     from medagentx.graphs.fusion_node import make_label_fusion_node
     from medagentx.graphs.retrieval_node import make_retrieval_node
     from medagentx.graphs.vision_node import make_vision_node
@@ -437,7 +455,7 @@ def main(argv: list[str] | None = None) -> int:
     _prepare_output_dir(args.output_dir, overwrite=args.overwrite)
 
     print(
-        "[Exp07LLMFusionEvidenceGraph] "
+        "[Exp07LLMFusionLLMOnlyEvidenceGraph] "
         f"split={args.split} checkpoint={args.checkpoint} "
         f"output_dir={args.output_dir}"
     )
@@ -471,9 +489,8 @@ def main(argv: list[str] | None = None) -> int:
         llm_client=OllamaClient(ollama_config),
         margin=args.gray_zone_margin,
     )
-    evidence_agent = LLMEvidenceVerificationAgent(
+    evidence_agent = LLMOnlyEvidenceVerificationAgent(
         llm_client=OllamaClient(ollama_config),
-        margin=args.gray_zone_margin,
     )
 
     current_vision_output: dict[str, VisionStudyOutput] = {}
@@ -498,11 +515,7 @@ def main(argv: list[str] | None = None) -> int:
             llm_agent=label_fusion_agent,
             margin=args.gray_zone_margin,
         ),
-        verification_node=make_evidence_verification_node(
-            use_llm=True,
-            llm_agent=evidence_agent,
-            margin=args.gray_zone_margin,
-        ),
+        evidence_verification_node=_make_llm_only_evidence_node(evidence_agent),
     )
 
     graph_jsonl = args.output_dir / "graph_reasoning_results.jsonl"
@@ -510,6 +523,7 @@ def main(argv: list[str] | None = None) -> int:
     fusion_results = []
     verification_results = []
     evidence_agent_results = []
+    retrieved_case_rows = []
     fusion_llm_request_count = 0
     fusion_llm_success_count = 0
     fusion_fallback_count = 0
@@ -518,8 +532,6 @@ def main(argv: list[str] | None = None) -> int:
     evidence_fallback_count = 0
     deterministic_changed_count = 0
     final_changed_count = 0
-    evidence_score_changed_count = 0
-    evidence_support_changed_count = 0
     start = time.perf_counter()
 
     with graph_jsonl.open("w") as handle:
@@ -567,6 +579,13 @@ def main(argv: list[str] | None = None) -> int:
             fusion_results.append(fusion_result)
             verification_results.append(verification)
             evidence_agent_results.append(verification_agent)
+            retrieved_case_rows.extend(
+                _retrieved_case_rows(
+                    final_state=final_state,
+                    query_split=vision_output.split,
+                    query_dicom_paths=vision_output.dicom_paths,
+                )
+            )
             fusion_llm_request_count += int(label_fusion.llm_requested)
             fusion_llm_success_count += int(label_fusion.llm_succeeded)
             fusion_fallback_count += int(label_fusion.fallback_used)
@@ -577,16 +596,19 @@ def main(argv: list[str] | None = None) -> int:
                 _changed_labels(label_fusion.deterministic_result)
             )
             final_changed_count += len(_changed_labels(label_fusion.final_result))
-            evidence_score_changed_count += _score_changed_count(verification_agent)
-            evidence_support_changed_count += _support_changed_count(verification_agent)
 
-            row = _graph_result_row(
-                index=index,
-                total=len(records),
-                elapsed_seconds=time.perf_counter() - study_start,
-                final_state=final_state,
+            handle.write(
+                json.dumps(
+                    _graph_result_row(
+                        index=index,
+                        total=len(records),
+                        elapsed_seconds=time.perf_counter() - study_start,
+                        final_state=final_state,
+                    ),
+                    sort_keys=True,
+                )
+                + "\n"
             )
-            handle.write(json.dumps(row, sort_keys=True) + "\n")
             handle.flush()
 
             if (
@@ -596,7 +618,7 @@ def main(argv: list[str] | None = None) -> int:
             ):
                 elapsed = time.perf_counter() - start
                 print(
-                    "[Exp07LLMFusionEvidenceGraph] "
+                    "[Exp07LLMFusionLLMOnlyEvidenceGraph] "
                     f"{index}/{len(records)} study_key={record.study_key} "
                     f"retrieved={len(final_state['retrieved_cases'])} "
                     f"fusion_llm_requested={label_fusion.llm_requested} "
@@ -612,7 +634,7 @@ def main(argv: list[str] | None = None) -> int:
 
     elapsed = time.perf_counter() - start
     run_config = {
-        "experiment": "exp07_llm_fusion_evidence_verification_graph",
+        "experiment": "exp07_llm_fusion_llm_only_evidence_verification_graph",
         "cohort_root": str(cohort_root),
         "views_csv": str(views_csv),
         "dicom_root": str(dicom_root),
@@ -636,18 +658,20 @@ def main(argv: list[str] | None = None) -> int:
             "vision",
             "retrieval",
             "fusion",
-            "evidence_verification",
+            "llm_only_evidence_verification",
         ],
         "report_writer_enabled": False,
         "fusion_mode": "llm_guarded_review",
         "fusion_llm_enabled": True,
         "fusion_llm_policy_version": LLM_REVIEW_POLICY_VERSION,
         "evidence_verification_enabled": True,
-        "evidence_verification_mode": "llm_guarded_review",
+        "evidence_verification_mode": "llm_only",
         "evidence_verification_llm_enabled": True,
-        "evidence_verification_llm_policy_version": (
-            LLM_EVIDENCE_VERIFICATION_POLICY_VERSION
+        "evidence_verification_policy_version": (
+            LLM_ONLY_EVIDENCE_VERIFICATION_POLICY_VERSION
         ),
+        "deterministic_evidence_verification_used": False,
+        "deterministic_evidence_verification_fallback_used": False,
         "ollama_model": args.ollama_model,
         "ollama_base_url": args.ollama_base_url,
         "ollama_temperature": args.ollama_temperature,
@@ -661,8 +685,7 @@ def main(argv: list[str] | None = None) -> int:
         "evidence_fallback_used": evidence_fallback_count,
         "deterministic_changed_labels": deterministic_changed_count,
         "final_changed_labels": final_changed_count,
-        "evidence_score_changed_labels": evidence_score_changed_count,
-        "evidence_support_changed_labels": evidence_support_changed_count,
+        "retrieved_case_rows": len(retrieved_case_rows),
         "elapsed_seconds": elapsed,
     }
     _write_json(args.output_dir / "run_config.json", run_config)
@@ -672,6 +695,10 @@ def main(argv: list[str] | None = None) -> int:
     )
     fusion_results_to_frame(fusion_results).to_csv(
         args.output_dir / "fusion_label_predictions.csv",
+        index=False,
+    )
+    pd.DataFrame(retrieved_case_rows).to_csv(
+        args.output_dir / "retrieved_cases.csv",
         index=False,
     )
     _write_json(
@@ -694,7 +721,7 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     print(
-        "[Exp07LLMFusionEvidenceGraph] summary "
+        "[Exp07LLMFusionLLMOnlyEvidenceGraph] summary "
         f"studies={len(records)} "
         f"fusion_llm_requested={fusion_llm_request_count} "
         f"fusion_llm_succeeded={fusion_llm_success_count} "
@@ -702,18 +729,20 @@ def main(argv: list[str] | None = None) -> int:
         f"evidence_llm_requested={evidence_llm_request_count} "
         f"evidence_llm_succeeded={evidence_llm_success_count} "
         f"evidence_fallback_used={evidence_fallback_count} "
-        f"evidence_score_changed_labels={evidence_score_changed_count} "
-        f"evidence_support_changed_labels={evidence_support_changed_count}"
+        f"retrieved_case_rows={len(retrieved_case_rows)}"
     )
-    print(f"[Exp07LLMFusionEvidenceGraph] wrote outputs -> {args.output_dir}")
+    print(
+        "[Exp07LLMFusionLLMOnlyEvidenceGraph] "
+        f"wrote outputs -> {args.output_dir}"
+    )
 
     if (
         fusion_fallback_count or evidence_fallback_count
     ) and not args.allow_llm_fallback:
         raise RuntimeError(
-            "At least one LLM stage fell back to deterministic output. Outputs were "
-            "saved; inspect graph_reasoning_results.jsonl or pass "
-            "--allow-llm-fallback."
+            "At least one LLM stage failed. Outputs were saved; inspect "
+            "graph_reasoning_results.jsonl or pass --allow-llm-fallback. "
+            "No deterministic evidence-verification fallback was used."
         )
     return 0
 
