@@ -1,0 +1,39 @@
+{
+  "experiment": "exp01_vision_only",
+  "gray_zone_margin": 0.15,
+  "gray_zone_rows": 1812,
+  "ground_truth_rows": 10872,
+  "prediction_csv": "v2/experiments/exp01_vision_only/vision_study_predictions.csv",
+  "runs": [
+    {
+      "coverage": 0.14937454010301693,
+      "eval_scope": "full",
+      "judge_metric_version": "judge_metric_policy_v1",
+      "label_count": 12,
+      "macro_f1": 0.6971008440775308,
+      "macro_precision": 0.9108140965514337,
+      "macro_recall": 0.5695295118129292,
+      "match_count": 10872,
+      "micro_f1": 0.7042384722869119,
+      "micro_precision": 0.907563025210084,
+      "micro_recall": 0.5753424657534246,
+      "name": "vision_full"
+    },
+    {
+      "coverage": 0.184878587196468,
+      "eval_scope": "gray_zone",
+      "judge_metric_version": "judge_metric_policy_v1",
+      "label_count": 12,
+      "macro_f1": 0.631042361893439,
+      "macro_precision": 0.874770955165692,
+      "macro_recall": 0.509020268314044,
+      "match_count": 1812,
+      "micro_f1": 0.6416861826697892,
+      "micro_precision": 0.8404907975460123,
+      "micro_recall": 0.5189393939393939,
+      "name": "vision_gray_zone"
+    }
+  ],
+  "study_count": 906,
+  "study_labels_csv": "v2/artifactsLocal/val_last4_blocks_0818/val/study_label_table.csv"
+}

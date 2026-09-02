@@ -4,7 +4,10 @@ from __future__ import annotations
 
 from typing import Any, TypedDict
 
-from medagentx.agents.evidence_verification import StudyEvidenceVerificationResult
+from medagentx.agents.evidence_verification import (
+    LLMEvidenceVerificationAgentResult,
+    StudyEvidenceVerificationResult,
+)
 from medagentx.agents.label_fusion import LabelFusionAgentResult
 from medagentx.reasoning.fuse import FusionStudyResult
 from medagentx.retrieval.index import RetrievedStudy
@@ -21,6 +24,7 @@ class MedAgentXInferenceState(TypedDict, total=False):
     label_fusion_result: LabelFusionAgentResult
     fusion_result: FusionStudyResult
     evidence_verification: StudyEvidenceVerificationResult
+    evidence_verification_agent_result: LLMEvidenceVerificationAgentResult
     report_writer_result: dict[str, Any]
 
 
