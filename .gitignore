@@ -11,6 +11,7 @@ __pycache__/
 venv/
 env/
 .env
+.vscode
 
 *.html
 *.log
@@ -27,3 +28,4 @@ env/
 src/outputs/
 src/data/raw/
 src/data/processed/
+v2/artifactsLocal/
