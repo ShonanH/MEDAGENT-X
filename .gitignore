@@ -12,6 +12,7 @@ venv/
 env/
 .env
 .vscode
+.tmp.driveupload
 
 *.html
 *.log
@@ -29,3 +30,5 @@ src/outputs/
 src/data/raw/
 src/data/processed/
 v2/artifactsLocal/
+v2/experiments/exp*
+v2/experiments/

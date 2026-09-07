@@ -1,11 +1,11 @@
-"""Run the default retrieval-prior fusion experiment.
+"""Run retrieval-prior fusion with the Exp05-matched vision setup.
 
 This runner evaluates:
 
-    default checkpoint vision thresholds + default prior-fusion rules
+    last4-block vision checkpoint + tuned thresholds + default prior-fusion rules
 
-Pass --threshold-policy-json later to compare against validation-tuned vision
-thresholds without changing the default experiment.
+The defaults intentionally match the Exp05 vision/retrieval inputs so the
+remaining difference is the prior-fusion rule itself.
 """
 
 from __future__ import annotations
@@ -70,10 +70,9 @@ from retrieval_prior import (
 )
 
 
-DEFAULT_OUTPUT_DIR = V2_ROOT / "experiments" / "exp08_prior_fusion_default"
+DEFAULT_OUTPUT_DIR = V2_ROOT / "experiments" / "exp08_prior_fusion_last4_tuned"
 DEFAULT_VIEWS_CSV = EXPERIMENT_DIR / "splits" / "view_splits.csv"
 DEFAULT_STUDY_LABELS_CSV = EXPERIMENT_DIR / "splits" / "study_label_table.csv"
-DEFAULT_RETRIEVAL_SUBDIR = "retrieval/raddino_train_v1/chroma"
 DEFAULT_COLLECTION_NAME = "medagentx_train_studies_v1"
 OUTPUT_FILENAMES = (
     "run_config.json",
@@ -141,7 +140,12 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def _default_checkpoint(cohort_root: Path) -> Path:
-    return cohort_root / "vision" / "raddino_finetuned_v1" / "best_checkpoint.pt"
+    return (
+        cohort_root
+        / "vision"
+        / "raddino_finetuned_v1_last4_blocks"
+        / "best_checkpoint.pt"
+    )
 
 
 def _default_dicom_root(cohort_root: Path) -> Path:
@@ -149,7 +153,19 @@ def _default_dicom_root(cohort_root: Path) -> Path:
 
 
 def _default_retrieval_chroma_dir(cohort_root: Path) -> Path:
-    return cohort_root / DEFAULT_RETRIEVAL_SUBDIR
+    return cohort_root / "retrieval" / "raddino_train_v1_last4_blocks" / "chroma"
+
+
+def _default_threshold_policy_json(cohort_root: Path) -> Path:
+    return (
+        cohort_root
+        / "reasoning"
+        / "fusion_eval_v1"
+        / "val_last4_blocks"
+        / "val"
+        / "threshold_tuning"
+        / "threshold_policy_v2.json"
+    )
 
 
 def _load_threshold_overrides(
@@ -497,8 +513,11 @@ def main(argv: list[str] | None = None) -> int:
     dicom_root = args.dicom_root or _default_dicom_root(cohort_root)
     checkpoint = args.checkpoint or _default_checkpoint(cohort_root)
     vector_db_dir = args.vector_db_dir or _default_retrieval_chroma_dir(cohort_root)
+    threshold_policy_json = (
+        args.threshold_policy_json or _default_threshold_policy_json(cohort_root)
+    )
     threshold_overrides, threshold_policy_version = _load_threshold_overrides(
-        args.threshold_policy_json
+        threshold_policy_json
     )
 
     required_paths = {
@@ -508,8 +527,8 @@ def main(argv: list[str] | None = None) -> int:
         "checkpoint": checkpoint,
         "vector_db_dir": vector_db_dir,
     }
-    if args.threshold_policy_json is not None:
-        required_paths["threshold_policy_json"] = args.threshold_policy_json
+    if threshold_policy_json is not None:
+        required_paths["threshold_policy_json"] = threshold_policy_json
     _require_existing_paths(required_paths)
     _prepare_output_dir(args.output_dir, overwrite=args.overwrite)
 
@@ -523,13 +542,13 @@ def main(argv: list[str] | None = None) -> int:
         f"device={device} gray_margin={args.gray_zone_margin} "
         f"retrieval_top_k={args.retrieval_top_k}"
     )
-    if args.threshold_policy_json is None:
+    if threshold_policy_json is None:
         print("[PriorFusionEval] using checkpoint/default vision thresholds")
     else:
         print(
             "[PriorFusionEval] using threshold policy "
             f"{threshold_policy_version or 'unknown'} -> "
-            f"{args.threshold_policy_json}"
+            f"{threshold_policy_json}"
         )
 
     views = pd.read_csv(args.views_csv, dtype=str)
@@ -649,14 +668,12 @@ def main(argv: list[str] | None = None) -> int:
         "fusion_policy_version": PRIOR_FUSION_POLICY_VERSION,
         "threshold_mode": (
             "threshold_policy_json"
-            if args.threshold_policy_json is not None
+            if threshold_policy_json is not None
             else "checkpoint_default"
         ),
         "threshold_policy_version": threshold_policy_version,
         "threshold_policy_json": (
-            str(args.threshold_policy_json)
-            if args.threshold_policy_json is not None
-            else None
+            str(threshold_policy_json) if threshold_policy_json is not None else None
         ),
         "split": args.split,
         "cohort_root": str(cohort_root),
