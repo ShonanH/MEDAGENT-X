@@ -6,7 +6,7 @@ import os
 import shutil
 import sys
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from pathlib import Path
 from typing import Any
 
@@ -28,6 +28,7 @@ REQUIRED_ELIGIBLE_COLUMNS = (
 
 DEFAULT_DOWNLOAD_WORKERS = 1
 DEFAULT_PROGRESS_EVERY = 250
+DEFAULT_PENDING_DOWNLOAD_FACTOR = 2
 
 
 def _require_columns(df: pd.DataFrame, columns: tuple[str, ...]) -> None:
@@ -192,20 +193,41 @@ def download_eligible_dicoms(
                 ),
             )
     else:
+        # Keep only a small bounded window of futures alive. Enqueuing the full
+        # CheXpert train set at once consumes substantial memory before any
+        # image has finished downloading.
+        pending_limit = max_workers * DEFAULT_PENDING_DOWNLOAD_FACTOR
+        next_index = 0
         with ThreadPoolExecutor(max_workers=max_workers) as pool:
-            futures = {
-                pool.submit(
-                    _download_one_row,
-                    client,
-                    row,
-                    output_root,
-                    overwrite=overwrite,
-                    resume=resume,
-                ): index
-                for index, row in enumerate(rows)
-            }
-            for future in as_completed(futures):
-                record(futures[future], future.result())
+            pending: dict[Future[dict[str, Any]], int] = {}
+
+            def submit_next() -> bool:
+                nonlocal next_index
+                if next_index >= total:
+                    return False
+                index = next_index
+                next_index += 1
+                pending[
+                    pool.submit(
+                        _download_one_row,
+                        client,
+                        rows[index],
+                        output_root,
+                        overwrite=overwrite,
+                        resume=resume,
+                    )
+                ] = index
+                return True
+
+            while len(pending) < pending_limit and submit_next():
+                pass
+
+            while pending:
+                done, _ = wait(pending, return_when=FIRST_COMPLETED)
+                for future in done:
+                    index = pending.pop(future)
+                    record(index, future.result())
+                    submit_next()
 
     return pd.DataFrame([status for status in results if status is not None])
 
