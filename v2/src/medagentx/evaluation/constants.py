@@ -11,3 +11,4 @@ if str(_V2_SRC) not in sys.path:
 
 GROUND_TRUTH_POLICY_VERSION = "chexpert_weak_gt_policy_v1"
 JUDGE_METRIC_VERSION = "judge_metric_policy_v1"
+RANKING_METRIC_VERSION = "ranking_metric_policy_v1"

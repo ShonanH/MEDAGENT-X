@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Mapping, Sequence
+from typing import Callable, Mapping, Sequence
 
 import pandas as pd
 import torch
+from PIL import Image
 from torch.utils.data import DataLoader
 from transformers import AutoImageProcessor
 
@@ -15,6 +16,7 @@ from medagentx.vision.data import (
     InferenceStudyDataset,
     StudyBatchCollator,
     StudyInferenceRecord,
+    dicom_to_pil_rgb,
 )
 from medagentx.vision.inference_output import (
     VisionStudyOutput,
@@ -80,8 +82,13 @@ class FineTunedRadDinoBackend:
         dicom_root: str | Path,
         batch_size: int,
         num_workers: int,
+        image_loader: Callable[[str | Path], Image.Image] | None = None,
     ) -> DataLoader:
-        dataset = InferenceStudyDataset(records, dicom_root=dicom_root)
+        dataset = InferenceStudyDataset(
+            records,
+            dicom_root=dicom_root,
+            image_loader=image_loader or dicom_to_pil_rgb,
+        )
         return DataLoader(
             dataset,
             batch_size=batch_size,
@@ -99,12 +106,14 @@ class FineTunedRadDinoBackend:
         dicom_root: str | Path,
         batch_size: int,
         num_workers: int,
+        image_loader: Callable[[str | Path], Image.Image] | None = None,
     ) -> dict[str, object]:
         loader = self._build_loader(
             records,
             dicom_root=dicom_root,
             batch_size=batch_size,
             num_workers=num_workers,
+            image_loader=image_loader,
         )
         return collect_inference_predictions(
             self.model,
@@ -121,13 +130,15 @@ class FineTunedRadDinoBackend:
         batch_size: int,
         num_workers: int,
         threshold_overrides: Mapping[str, float] | None = None,
+        image_loader: Callable[[str | Path], Image.Image] | None = None,
     ) -> list[VisionStudyOutput]:
-        """Run one DICOM pass and return probabilities plus study embeddings."""
+        """Run one image pass and return probabilities plus study embeddings."""
         predictions = self._collect_predictions(
             records,
             dicom_root=dicom_root,
             batch_size=batch_size,
             num_workers=num_workers,
+            image_loader=image_loader,
         )
         return build_study_outputs(
             predictions,
@@ -144,6 +155,7 @@ class FineTunedRadDinoBackend:
         batch_size: int,
         num_workers: int,
         threshold_overrides: Mapping[str, float] | None = None,
+        image_loader: Callable[[str | Path], Image.Image] | None = None,
     ) -> pd.DataFrame:
         """Return the permanent vision prediction table without embeddings."""
         outputs = self.predict_study_outputs(
@@ -152,6 +164,7 @@ class FineTunedRadDinoBackend:
             batch_size=batch_size,
             num_workers=num_workers,
             threshold_overrides=threshold_overrides,
+            image_loader=image_loader,
         )
         return study_outputs_to_prediction_frame(outputs)
 
@@ -163,6 +176,7 @@ class FineTunedRadDinoBackend:
         batch_size: int,
         num_workers: int,
         threshold_overrides: Mapping[str, float] | None = None,
+        image_loader: Callable[[str | Path], Image.Image] | None = None,
     ) -> tuple[pd.DataFrame, list[VisionStudyOutput]]:
         """Return both the CSV contract and embedding-bearing study outputs."""
         predictions = self._collect_predictions(
@@ -170,6 +184,7 @@ class FineTunedRadDinoBackend:
             dicom_root=dicom_root,
             batch_size=batch_size,
             num_workers=num_workers,
+            image_loader=image_loader,
         )
         outputs = build_study_outputs(
             predictions,

@@ -223,6 +223,12 @@ def dicom_to_pil_rgb(path: str | Path) -> Image.Image:
     return Image.fromarray(uint8, mode="L").convert("RGB")
 
 
+def raster_to_pil_rgb(path: str | Path) -> Image.Image:
+    """Load a standard raster image as a detached RGB PIL image."""
+    with Image.open(path) as image:
+        return image.convert("RGB").copy()
+
+
 class LightCxrAugment:
     """Light geometry/intensity augmentation for disease classification."""
 

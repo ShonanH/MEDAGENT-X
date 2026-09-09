@@ -15,6 +15,9 @@ from medagentx.evaluation.fusion_eval import (
     fusion_changed_cells_frame,
     named_judge_summary_payload,
     per_label_metrics_frame,
+    ranking_cells_frame,
+    ranking_metrics_frame,
+    ranking_summary_payload,
     run_named_judge_result,
     status_confusion_by_label_frame,
     study_labels_to_ground_truth,
@@ -22,7 +25,10 @@ from medagentx.evaluation.fusion_eval import (
 )
 from medagentx.evaluation.ground_truth import GroundTruthRecord
 from medagentx.evaluation.matching import MatchOutcome, compare_statuses
-from medagentx.labels.constants import DISEASE_LABELS
+from medagentx.labels.constants import (
+    CHEXPERT_COMPETITION_LABELS,
+    DISEASE_LABELS,
+)
 from medagentx.labels.schema import snake_label
 from medagentx.labels.statuses import LabelStatus
 from medagentx.reasoning.fuse import FusedLabelPrediction, FusionStudyResult
@@ -90,6 +96,24 @@ def _vision_status_map(
         for label in DISEASE_LABELS:
             status = getattr(row, f"status_{snake_label(label)}")
             predictions[(study_key, label)] = _parse_status(status)
+    return predictions
+
+
+def _vision_score_map(
+    vision_frame: pd.DataFrame,
+) -> dict[tuple[str, str], float]:
+    """Flatten continuous vision probabilities into ranking keys."""
+    predictions: dict[tuple[str, str], float] = {}
+    for row in vision_frame.itertuples(index=False):
+        study_key = str(getattr(row, "study_key"))
+        for label in DISEASE_LABELS:
+            slug = snake_label(label)
+            column = f"probability_{slug}"
+            if not hasattr(row, column):
+                raise ValueError(
+                    f"vision_study_predictions missing required column {column!r}"
+                )
+            predictions[(study_key, label)] = float(getattr(row, column))
     return predictions
 
 
@@ -371,6 +395,14 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--study-labels-csv", type=Path, default=None)
     parser.add_argument(
+        "--require-all-ranking-labels",
+        action="store_true",
+        help=(
+            "Fail if any competition label lacks both positive and negative "
+            "binary ground truth. Use this for official competition evaluation."
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=None,
@@ -429,6 +461,7 @@ def main() -> None:
         fusion_frame,
     )
     vision_predictions = _vision_status_map(vision_frame)
+    vision_scores = _vision_score_map(vision_frame)
     fusion_predictions = _fusion_status_map(fusion_frame)
     fusion_results = _fusion_results_from_frame(fusion_frame)
 
@@ -438,6 +471,9 @@ def main() -> None:
             eval_scope="full",
             ground_truth_records=ground_truth_records,
             predicted_statuses=vision_predictions,
+            predicted_scores=vision_scores,
+            ranking_labels=CHEXPERT_COMPETITION_LABELS,
+            require_two_classes_per_ranking_label=args.require_all_ranking_labels,
         ),
         run_named_judge_result(
             name="fusion_full",
@@ -474,6 +510,32 @@ def main() -> None:
     _write_json(output_dir / "judge_summary.json", judge_payload)
     per_label_metrics_frame(judge_runs).to_csv(
         output_dir / "per_label_metrics.csv",
+        index=False,
+    )
+    ranking_payload = ranking_summary_payload(judge_runs)
+    ranking_payload.update(
+        {
+            "labels": list(CHEXPERT_COMPETITION_LABELS),
+            "ground_truth_policy": (
+                "present=1; absent=0; uncertain/unmentioned excluded"
+            ),
+            "vision_score_source": "vision_study_predictions probability columns",
+            "fusion_score_status": (
+                "not_available: fusion_label_predictions has no fused_score"
+            ),
+            "macro_policy": (
+                "mean over labels with both positive and negative ground truth; "
+                "inspect scored_label_count and complete"
+            ),
+        }
+    )
+    _write_json(output_dir / "ranking_summary.json", ranking_payload)
+    ranking_metrics_frame(judge_runs).to_csv(
+        output_dir / "ranking_metrics.csv",
+        index=False,
+    )
+    ranking_cells_frame(judge_runs).to_csv(
+        output_dir / "ranking_cells.csv",
         index=False,
     )
     fusion_change_analysis_frame(
