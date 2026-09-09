@@ -2,18 +2,15 @@
 
 The tuner consumes saved validation features; it never reruns vision or
 retrieval. Promotion and demotion are selected independently for each label.
-Candidates must improve over vision-only while satisfying intervention-risk,
-support, and patient-bootstrap stability constraints. If no candidate is
-defensible, that label/action is explicitly disabled.
+Sparse estimates are partially pooled across labels, then candidates must pass
+local risk, patient-fold, and patient-bootstrap stability checks. If no
+candidate is defensible, that label/action is explicitly disabled.
 """
-
-# ruff: noqa: E402 -- local experiment imports require the v2/src path bootstrap.
 
 from __future__ import annotations
 
 import argparse
 import json
-import sys
 import time
 import zlib
 from dataclasses import asdict, dataclass
@@ -24,29 +21,22 @@ from typing import Any, Iterable, Sequence
 import numpy as np
 import pandas as pd
 
+from prior_fusion import PRIOR_FUSION_POLICY_VERSION
+from retrieval_prior import DISEASE_LABELS, snake_label
+
 
 EXPERIMENT_DIR = Path(__file__).resolve().parent
 V2_ROOT = Path(__file__).resolve().parents[2]
-V2_SRC = V2_ROOT / "src"
-if str(V2_SRC) not in sys.path:
-    sys.path.insert(0, str(V2_SRC))
-if str(EXPERIMENT_DIR) not in sys.path:
-    sys.path.insert(0, str(EXPERIMENT_DIR))
-
-from medagentx.data.balanced_constants import DEFAULT_BALANCED_COHORT_ROOT
-from medagentx.labels.constants import DISEASE_LABELS
-from medagentx.labels.statuses import LabelStatus
-from prior_fusion import PRIOR_FUSION_POLICY_VERSION
-from retrieval_prior import snake_label
 
 
-PRESENT = LabelStatus.PRESENT.value
-ABSENT = LabelStatus.ABSENT.value
-UNCERTAIN = LabelStatus.UNCERTAIN.value
-UNMENTIONED = LabelStatus.UNMENTIONED.value
+PRESENT = "present"
+ABSENT = "absent"
+UNCERTAIN = "uncertain"
+UNMENTIONED = "unmentioned"
 PROMOTION = "promotion"
 DEMOTION = "demotion"
-TUNING_POLICY_VERSION = "retrieval_prior_per_label_gate_tuning_v1"
+TUNING_POLICY_VERSION = "retrieval_prior_per_label_gate_tuning_v2"
+DEFAULT_BALANCED_COHORT_ROOT = "v2/artifacts/cohort_balanced_v1"
 
 DEFAULT_FEATURES_CSV = (
     V2_ROOT
@@ -83,11 +73,16 @@ class TuningConstraints:
     gray_zone_margin: float = 0.15
     max_opposing_prior: float = 0.20
     absent_demotion_prior_threshold: float = 0.90
-    min_opportunities_per_outcome: int = 10
+    min_scoreable_opportunities: int = 10
     min_scoreable_changes: int = 5
     min_intervention_precision: float = 0.70
+    partial_pooling_strength: float = 10.0
     min_label_f1_gain: float = 0.001
     max_label_precision_drop: float = 0.02
+    cross_validation_folds: int = 5
+    min_cv_folds_with_changes: int = 3
+    min_cv_improvement_rate: float = 0.60
+    max_cv_harm_rate: float = 0.20
     bootstrap_iterations: int = 500
     min_bootstrap_improvement_rate: float = 0.80
     random_seed: int = 17
@@ -110,12 +105,16 @@ class DirectionSelection:
     harmful_changes: int
     unscored_changes: int
     intervention_precision: float | None
+    pooled_intervention_precision: float | None
     intervention_coverage: float
     baseline_f1: float
     selected_f1: float
     f1_gain: float
     baseline_precision: float | None
     selected_precision: float | None
+    cv_folds_with_changes: int
+    cv_improvement_rate: float | None
+    cv_harm_rate: float | None
     bootstrap_improvement_rate: float | None
 
 
@@ -159,11 +158,16 @@ def build_parser() -> argparse.ArgumentParser:
         type=float,
         default=0.90,
     )
-    parser.add_argument("--min-opportunities-per-outcome", type=int, default=10)
+    parser.add_argument("--min-scoreable-opportunities", type=int, default=10)
     parser.add_argument("--min-scoreable-changes", type=int, default=5)
     parser.add_argument("--min-intervention-precision", type=float, default=0.70)
+    parser.add_argument("--partial-pooling-strength", type=float, default=10.0)
     parser.add_argument("--min-label-f1-gain", type=float, default=0.001)
     parser.add_argument("--max-label-precision-drop", type=float, default=0.02)
+    parser.add_argument("--cross-validation-folds", type=int, default=5)
+    parser.add_argument("--min-cv-folds-with-changes", type=int, default=3)
+    parser.add_argument("--min-cv-improvement-rate", type=float, default=0.60)
+    parser.add_argument("--max-cv-harm-rate", type=float, default=0.20)
     parser.add_argument("--bootstrap-iterations", type=int, default=500)
     parser.add_argument(
         "--min-bootstrap-improvement-rate",
@@ -195,6 +199,8 @@ def _validate_constraints(constraints: TuningConstraints) -> None:
         "absent_demotion_prior_threshold",
         "min_intervention_precision",
         "max_label_precision_drop",
+        "min_cv_improvement_rate",
+        "max_cv_harm_rate",
         "min_bootstrap_improvement_rate",
     )
     for field in unit_interval_fields:
@@ -203,10 +209,22 @@ def _validate_constraints(constraints: TuningConstraints) -> None:
             raise ValueError(f"{field} must be in [0, 1]")
     if constraints.min_label_f1_gain < 0.0:
         raise ValueError("min_label_f1_gain must be >= 0")
-    if constraints.min_opportunities_per_outcome < 1:
-        raise ValueError("min_opportunities_per_outcome must be >= 1")
+    if constraints.min_scoreable_opportunities < 1:
+        raise ValueError("min_scoreable_opportunities must be >= 1")
     if constraints.min_scoreable_changes < 1:
         raise ValueError("min_scoreable_changes must be >= 1")
+    if constraints.partial_pooling_strength <= 0.0:
+        raise ValueError("partial_pooling_strength must be > 0")
+    if constraints.cross_validation_folds < 2:
+        raise ValueError("cross_validation_folds must be >= 2")
+    if (
+        not 1
+        <= constraints.min_cv_folds_with_changes
+        <= constraints.cross_validation_folds
+    ):
+        raise ValueError(
+            "min_cv_folds_with_changes must be between 1 and cross_validation_folds"
+        )
     if constraints.bootstrap_iterations < 1:
         raise ValueError("bootstrap_iterations must be >= 1")
 
@@ -558,9 +576,76 @@ def _bootstrap_improvement_rate(
     return improved / comparable if comparable else 0.0
 
 
+def _intervention_counts(
+    frame: pd.DataFrame,
+    *,
+    candidate: DirectionalGateCandidate,
+    constraints: TuningConstraints,
+) -> tuple[int, int]:
+    gt = frame["gt_status"].to_numpy()
+    changed = _candidate_change_mask(frame, candidate, constraints)
+    benefit_status = PRESENT if candidate.direction == PROMOTION else ABSENT
+    harm_status = ABSENT if candidate.direction == PROMOTION else PRESENT
+    return (
+        int(np.sum(changed & (gt == benefit_status))),
+        int(np.sum(changed & (gt == harm_status))),
+    )
+
+
+def _partially_pooled_precision(
+    *,
+    beneficial: int,
+    harmful: int,
+    pool_beneficial: int,
+    pool_harmful: int,
+    strength: float,
+) -> tuple[float, float]:
+    pool_total = pool_beneficial + pool_harmful
+    pool_rate = pool_beneficial / pool_total if pool_total else 0.5
+    local_total = beneficial + harmful
+    pooled = (beneficial + strength * pool_rate) / (local_total + strength)
+    return pool_rate, pooled
+
+
+def _patient_fold_rates(
+    label_frame: pd.DataFrame,
+    selected_predictions: np.ndarray,
+    changed: np.ndarray,
+    *,
+    folds: int,
+    seed: int,
+) -> tuple[int, float | None, float | None]:
+    patient_values = label_frame["patient_key"].to_numpy()
+    unique_patients = np.unique(patient_values)
+    rng = np.random.default_rng(seed)
+    shuffled = rng.permutation(unique_patients)
+    patient_folds = np.array_split(shuffled, folds)
+    gt = label_frame["gt_status"].to_numpy()
+    baseline = label_frame["vision_status"].to_numpy()
+    scoreable = np.isin(gt, [PRESENT, ABSENT])
+    improved = harmed = comparable = 0
+
+    for patient_fold in patient_folds:
+        fold_mask = np.isin(patient_values, patient_fold)
+        if not np.any(fold_mask & changed & scoreable):
+            continue
+        baseline_f1 = float(_binary_metrics(gt[fold_mask], baseline[fold_mask])["f1"])
+        selected_f1 = float(
+            _binary_metrics(gt[fold_mask], selected_predictions[fold_mask])["f1"]
+        )
+        comparable += 1
+        improved += int(selected_f1 > baseline_f1)
+        harmed += int(selected_f1 < baseline_f1)
+
+    if not comparable:
+        return 0, None, None
+    return comparable, improved / comparable, harmed / comparable
+
+
 def _candidate_row(
     label_frame: pd.DataFrame,
     *,
+    pool_frame: pd.DataFrame,
     label: str,
     candidate: DirectionalGateCandidate,
     constraints: TuningConstraints,
@@ -590,6 +675,18 @@ def _candidate_row(
         constraints=constraints,
     )
     intervention_precision = _safe_div(beneficial, scoreable_changes)
+    pool_beneficial, pool_harmful = _intervention_counts(
+        pool_frame,
+        candidate=candidate,
+        constraints=constraints,
+    )
+    pool_precision, pooled_intervention_precision = _partially_pooled_precision(
+        beneficial=beneficial,
+        harmful=harmful,
+        pool_beneficial=pool_beneficial,
+        pool_harmful=pool_harmful,
+        strength=constraints.partial_pooling_strength,
+    )
     intervention_coverage = (
         scoreable_changes / scoreable_opportunities if scoreable_opportunities else 0.0
     )
@@ -598,23 +695,43 @@ def _candidate_row(
     f1_gain = selected_f1 - baseline_f1
     baseline_precision = baseline_metrics["precision"]
     selected_precision = selected_metrics["precision"]
+    direction_seed = constraints.random_seed + zlib.crc32(
+        f"{label}:{candidate.direction}".encode("utf-8")
+    )
+    cv_folds_with_changes, cv_improvement_rate, cv_harm_rate = _patient_fold_rates(
+        label_frame,
+        selected_predictions,
+        changed,
+        folds=constraints.cross_validation_folds,
+        seed=direction_seed,
+    )
 
     bootstrap_rate: float | None = None
     rejection_reasons: list[str] = []
-    if benefit_opportunities < constraints.min_opportunities_per_outcome:
-        rejection_reasons.append("insufficient_benefit_opportunities")
-    if harm_opportunities < constraints.min_opportunities_per_outcome:
-        rejection_reasons.append("insufficient_harm_opportunities")
+    if scoreable_opportunities < constraints.min_scoreable_opportunities:
+        rejection_reasons.append("insufficient_scoreable_opportunities")
     if scoreable_changes < constraints.min_scoreable_changes:
         rejection_reasons.append("insufficient_scoreable_changes")
-    if intervention_precision is None or (
-        intervention_precision < constraints.min_intervention_precision
+    if (
+        intervention_precision is None
+        or intervention_precision < constraints.min_intervention_precision
     ):
-        rejection_reasons.append("intervention_precision_below_min")
+        rejection_reasons.append("raw_intervention_precision_below_min")
+    if pooled_intervention_precision < constraints.min_intervention_precision:
+        rejection_reasons.append("pooled_intervention_precision_below_min")
     if beneficial <= harmful:
         rejection_reasons.append("nonpositive_net_benefit")
     if f1_gain < constraints.min_label_f1_gain:
         rejection_reasons.append("f1_gain_below_min")
+    if cv_folds_with_changes < constraints.min_cv_folds_with_changes:
+        rejection_reasons.append("insufficient_cv_folds_with_changes")
+    if (
+        cv_improvement_rate is None
+        or cv_improvement_rate < constraints.min_cv_improvement_rate
+    ):
+        rejection_reasons.append("cv_improvement_rate_below_min")
+    if cv_harm_rate is None or cv_harm_rate > constraints.max_cv_harm_rate:
+        rejection_reasons.append("cv_harm_rate_above_max")
     if baseline_precision is not None:
         selected_precision_value = (
             selected_precision if selected_precision is not None else 0.0
@@ -627,8 +744,7 @@ def _candidate_row(
 
     if not rejection_reasons:
         candidate_seed = (
-            constraints.random_seed
-            + zlib.crc32(f"{label}:{candidate.direction}".encode("utf-8"))
+            direction_seed
             + int(round(candidate.prior_threshold * 1000))
             + int(round(candidate.min_retrieval_confidence * 10000))
         )
@@ -654,6 +770,10 @@ def _candidate_row(
         "unscored_changes": unscored,
         "net_benefit": beneficial - harmful,
         "intervention_precision": intervention_precision,
+        "pool_beneficial_changes": pool_beneficial,
+        "pool_harmful_changes": pool_harmful,
+        "pool_intervention_precision": pool_precision,
+        "pooled_intervention_precision": pooled_intervention_precision,
         "intervention_coverage": intervention_coverage,
         "baseline_precision": baseline_precision,
         "selected_precision": selected_precision,
@@ -662,6 +782,9 @@ def _candidate_row(
         "baseline_f1": baseline_f1,
         "selected_f1": selected_f1,
         "f1_gain": f1_gain,
+        "cv_folds_with_changes": cv_folds_with_changes,
+        "cv_improvement_rate": cv_improvement_rate,
+        "cv_harm_rate": cv_harm_rate,
         "bootstrap_improvement_rate": bootstrap_rate,
         "accepted": not rejection_reasons,
         "rejection_reasons": "|".join(rejection_reasons),
@@ -676,7 +799,7 @@ def _best_candidate_row(candidate_rows: pd.DataFrame) -> pd.Series | None:
         [
             "intervention_coverage",
             "f1_gain",
-            "intervention_precision",
+            "pooled_intervention_precision",
             "prior_threshold",
             "min_retrieval_confidence",
         ],
@@ -724,6 +847,7 @@ def _selection_from_rows(
             harmful_changes=0,
             unscored_changes=0,
             intervention_precision=None,
+            pooled_intervention_precision=None,
             intervention_coverage=0.0,
             baseline_f1=baseline_f1,
             selected_f1=baseline_f1,
@@ -734,6 +858,9 @@ def _selection_from_rows(
             selected_precision=(
                 None if pd.isna(baseline_precision) else float(baseline_precision)
             ),
+            cv_folds_with_changes=0,
+            cv_improvement_rate=None,
+            cv_harm_rate=None,
             bootstrap_improvement_rate=None,
         )
 
@@ -755,12 +882,16 @@ def _selection_from_rows(
         harmful_changes=int(best["harmful_changes"]),
         unscored_changes=int(best["unscored_changes"]),
         intervention_precision=optional_float("intervention_precision"),
+        pooled_intervention_precision=optional_float("pooled_intervention_precision"),
         intervention_coverage=float(best["intervention_coverage"]),
         baseline_f1=float(best["baseline_f1"]),
         selected_f1=float(best["selected_f1"]),
         f1_gain=float(best["f1_gain"]),
         baseline_precision=optional_float("baseline_precision"),
         selected_precision=optional_float("selected_precision"),
+        cv_folds_with_changes=int(best["cv_folds_with_changes"]),
+        cv_improvement_rate=optional_float("cv_improvement_rate"),
+        cv_harm_rate=optional_float("cv_harm_rate"),
         bootstrap_improvement_rate=optional_float("bootstrap_improvement_rate"),
     )
 
@@ -781,6 +912,7 @@ def tune_per_label_gates(
 
     for label in labels:
         label_frame = frame[frame["label"] == label].reset_index(drop=True)
+        pool_frame = frame[frame["label"] != label].reset_index(drop=True)
         if label_frame.empty:
             raise ValueError(f"No validation feature rows found for label={label!r}")
         for direction, prior_thresholds in (
@@ -790,6 +922,7 @@ def tune_per_label_gates(
             rows = [
                 _candidate_row(
                     label_frame,
+                    pool_frame=pool_frame,
                     label=label,
                     candidate=candidate,
                     constraints=constraints,
@@ -919,11 +1052,16 @@ def main(argv: list[str] | None = None) -> int:
         gray_zone_margin=args.gray_zone_margin,
         max_opposing_prior=args.max_opposing_prior,
         absent_demotion_prior_threshold=args.absent_demotion_prior_threshold,
-        min_opportunities_per_outcome=args.min_opportunities_per_outcome,
+        min_scoreable_opportunities=args.min_scoreable_opportunities,
         min_scoreable_changes=args.min_scoreable_changes,
         min_intervention_precision=args.min_intervention_precision,
+        partial_pooling_strength=args.partial_pooling_strength,
         min_label_f1_gain=args.min_label_f1_gain,
         max_label_precision_drop=args.max_label_precision_drop,
+        cross_validation_folds=args.cross_validation_folds,
+        min_cv_folds_with_changes=args.min_cv_folds_with_changes,
+        min_cv_improvement_rate=args.min_cv_improvement_rate,
+        max_cv_harm_rate=args.max_cv_harm_rate,
         bootstrap_iterations=args.bootstrap_iterations,
         min_bootstrap_improvement_rate=args.min_bootstrap_improvement_rate,
         random_seed=args.random_seed,
