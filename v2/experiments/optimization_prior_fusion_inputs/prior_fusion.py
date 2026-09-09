@@ -8,6 +8,7 @@ thresholds here are initial auditable defaults, not validation-tuned constants.
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -64,11 +65,34 @@ class PriorVisionLabelPrediction:
 class PriorFusionRule:
     """Per-label retrieval-prior fusion thresholds."""
 
+    promotion_enabled: bool = True
+    demotion_enabled: bool = True
     promotion_prior_threshold: float = DEFAULT_PROMOTION_PRIOR_THRESHOLD
     demotion_prior_threshold: float = DEFAULT_DEMOTION_PRIOR_THRESHOLD
     absent_demotion_prior_threshold: float = DEFAULT_ABSENT_DEMOTION_PRIOR_THRESHOLD
     min_retrieval_confidence: float = DEFAULT_MIN_RETRIEVAL_CONFIDENCE
+    promotion_min_retrieval_confidence: float | None = None
+    demotion_min_retrieval_confidence: float | None = None
     max_opposing_prior: float = DEFAULT_MAX_OPPOSING_PRIOR
+
+    @property
+    def promotion_confidence_threshold(self) -> float:
+        value = self.promotion_min_retrieval_confidence
+        return self.min_retrieval_confidence if value is None else value
+
+    @property
+    def demotion_confidence_threshold(self) -> float:
+        value = self.demotion_min_retrieval_confidence
+        return self.min_retrieval_confidence if value is None else value
+
+
+@dataclass(frozen=True)
+class PriorFusionPolicy:
+    """Validated frozen per-label policy loaded from a tuning artifact."""
+
+    policy_version: str
+    gray_zone_margin: float
+    rule_overrides: Mapping[str, Mapping[str, Any]]
 
 
 @dataclass(frozen=True)
@@ -132,10 +156,113 @@ def is_gray_zone(
     return abs(float(probability) - float(threshold)) <= float(margin)
 
 
+def _probability_value(value: Any, *, name: str) -> float:
+    if isinstance(value, bool):
+        raise ValueError(f"{name} must be numeric, got {value!r}")
+    try:
+        number = float(value)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"{name} must be numeric, got {value!r}") from exc
+    if not 0.0 <= number <= 1.0:
+        raise ValueError(f"{name} must be in [0, 1], got {number}")
+    return number
+
+
+def _enabled_value(value: Any, *, name: str) -> bool:
+    if not isinstance(value, bool):
+        raise ValueError(f"{name} must be true or false, got {value!r}")
+    return value
+
+
+def load_prior_fusion_policy(path: Path) -> PriorFusionPolicy:
+    """Load and validate a frozen per-label tuning policy."""
+    payload = json.loads(path.read_text())
+    if not isinstance(payload, dict):
+        raise ValueError(f"{path} must contain a JSON object")
+    if payload.get("scope") != "per_label_directional":
+        raise ValueError(f"{path} is not a per-label directional policy")
+    if payload.get("tuned_on") != "validation":
+        raise ValueError(f"{path} must declare tuned_on='validation'")
+
+    policy_version = payload.get("policy_version")
+    if not isinstance(policy_version, str) or not policy_version.strip():
+        raise ValueError(f"{path} must contain a non-empty policy_version")
+    constraints = payload.get("global_constraints")
+    if not isinstance(constraints, dict):
+        raise ValueError(f"{path} must contain global_constraints")
+    margin = _probability_value(
+        constraints.get("gray_zone_margin"),
+        name="global_constraints.gray_zone_margin",
+    )
+    absent_threshold = _probability_value(
+        constraints.get("absent_demotion_prior_threshold"),
+        name="global_constraints.absent_demotion_prior_threshold",
+    )
+    max_opposing = _probability_value(
+        constraints.get("max_opposing_prior"),
+        name="global_constraints.max_opposing_prior",
+    )
+
+    label_rules = payload.get("label_rules")
+    if not isinstance(label_rules, dict):
+        raise ValueError(f"{path} must contain label_rules")
+    missing = sorted(set(DISEASE_LABELS) - set(label_rules))
+    unexpected = sorted(set(label_rules) - set(DISEASE_LABELS))
+    if missing or unexpected:
+        raise ValueError(
+            f"{path} label_rules mismatch; missing={missing}, unexpected={unexpected}"
+        )
+
+    overrides: dict[str, dict[str, Any]] = {}
+    for label in DISEASE_LABELS:
+        raw_rule = label_rules[label]
+        if not isinstance(raw_rule, dict):
+            raise ValueError(f"label_rules.{label} must be an object")
+        promotion_enabled = _enabled_value(
+            raw_rule.get("promotion_enabled"),
+            name=f"label_rules.{label}.promotion_enabled",
+        )
+        demotion_enabled = _enabled_value(
+            raw_rule.get("demotion_enabled"),
+            name=f"label_rules.{label}.demotion_enabled",
+        )
+        rule: dict[str, Any] = {
+            "promotion_enabled": promotion_enabled,
+            "demotion_enabled": demotion_enabled,
+            "absent_demotion_prior_threshold": absent_threshold,
+            "max_opposing_prior": max_opposing,
+        }
+        if promotion_enabled:
+            rule["promotion_prior_threshold"] = _probability_value(
+                raw_rule.get("promotion_prior_threshold"),
+                name=f"label_rules.{label}.promotion_prior_threshold",
+            )
+            rule["promotion_min_retrieval_confidence"] = _probability_value(
+                raw_rule.get("promotion_min_retrieval_confidence"),
+                name=f"label_rules.{label}.promotion_min_retrieval_confidence",
+            )
+        if demotion_enabled:
+            rule["demotion_prior_threshold"] = _probability_value(
+                raw_rule.get("demotion_prior_threshold"),
+                name=f"label_rules.{label}.demotion_prior_threshold",
+            )
+            rule["demotion_min_retrieval_confidence"] = _probability_value(
+                raw_rule.get("demotion_min_retrieval_confidence"),
+                name=f"label_rules.{label}.demotion_min_retrieval_confidence",
+            )
+        overrides[label] = rule
+
+    return PriorFusionPolicy(
+        policy_version=policy_version.strip(),
+        gray_zone_margin=margin,
+        rule_overrides=overrides,
+    )
+
+
 def prior_rule_for_label(
     label: str,
     *,
-    overrides: Mapping[str, Mapping[str, float]] | None = None,
+    overrides: Mapping[str, Mapping[str, Any]] | None = None,
 ) -> PriorFusionRule:
     """Return the default prior-fusion rule plus optional label overrides."""
     if label not in DISEASE_LABELS:
@@ -146,7 +273,25 @@ def prior_rule_for_label(
     unexpected = sorted(set(label_overrides) - allowed)
     if unexpected:
         raise ValueError(f"Unexpected prior-fusion rule keys for {label}: {unexpected}")
-    return PriorFusionRule(**label_overrides)
+    rule = PriorFusionRule(**label_overrides)
+    for name in ("promotion_enabled", "demotion_enabled"):
+        _enabled_value(getattr(rule, name), name=f"{label}.{name}")
+    for name in (
+        "promotion_prior_threshold",
+        "demotion_prior_threshold",
+        "absent_demotion_prior_threshold",
+        "min_retrieval_confidence",
+        "max_opposing_prior",
+    ):
+        _probability_value(getattr(rule, name), name=f"{label}.{name}")
+    for name in (
+        "promotion_min_retrieval_confidence",
+        "demotion_min_retrieval_confidence",
+    ):
+        value = getattr(rule, name)
+        if value is not None:
+            _probability_value(value, name=f"{label}.{name}")
+    return rule
 
 
 def retrieval_contradiction_signal(
@@ -179,8 +324,9 @@ def retrieval_supports_promotion(
 ) -> bool:
     """Return True when retrieval prior supports absent -> present."""
     return (
-        prior.present_prior >= rule.promotion_prior_threshold
-        and prior.retrieval_confidence >= rule.min_retrieval_confidence
+        rule.promotion_enabled
+        and prior.present_prior >= rule.promotion_prior_threshold
+        and prior.retrieval_confidence >= rule.promotion_confidence_threshold
         and prior.absent_prior <= rule.max_opposing_prior
     )
 
@@ -191,8 +337,9 @@ def retrieval_supports_demotion(
 ) -> bool:
     """Return True when retrieval prior supports present -> uncertain/absent."""
     return (
-        prior.absent_prior >= rule.demotion_prior_threshold
-        and prior.retrieval_confidence >= rule.min_retrieval_confidence
+        rule.demotion_enabled
+        and prior.absent_prior >= rule.demotion_prior_threshold
+        and prior.retrieval_confidence >= rule.demotion_confidence_threshold
         and prior.present_prior <= rule.max_opposing_prior
     )
 
@@ -339,7 +486,8 @@ def fuse_study_labels_with_priors(
     *,
     study_key: str = "",
     margin: float = GRAY_ZONE_MARGIN,
-    rule_overrides: Mapping[str, Mapping[str, float]] | None = None,
+    rule_overrides: Mapping[str, Mapping[str, Any]] | None = None,
+    policy_version: str = PRIOR_FUSION_POLICY_VERSION,
 ) -> PriorFusionStudyResult:
     """Fuse all disease labels for one study using retrieval priors."""
     missing_predictions = [
@@ -371,6 +519,6 @@ def fuse_study_labels_with_priors(
 
     return PriorFusionStudyResult(
         study_key=study_key,
-        fusion_policy_version=PRIOR_FUSION_POLICY_VERSION,
+        fusion_policy_version=policy_version,
         labels=tuple(fused_labels),
     )

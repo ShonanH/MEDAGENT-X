@@ -2,7 +2,7 @@
 
 This runner evaluates:
 
-    last4-block vision checkpoint + tuned thresholds + default prior-fusion rules
+    last4-block vision checkpoint + tuned thresholds + frozen per-label rules
 
 The defaults intentionally match the Exp05 vision/retrieval inputs so the
 remaining difference is the prior-fusion rule itself.
@@ -57,11 +57,10 @@ from medagentx.vision.inference_output import (
 )
 from prior_fusion import (
     DISEASE_LABELS,
-    GRAY_ZONE_MARGIN,
-    PRIOR_FUSION_POLICY_VERSION,
     PriorFusionStudyResult,
     PriorVisionLabelPrediction,
     fuse_study_labels_with_priors,
+    load_prior_fusion_policy,
 )
 from retrieval_prior import (
     RetrievalLabelPrior,
@@ -70,7 +69,13 @@ from retrieval_prior import (
 )
 
 
-DEFAULT_OUTPUT_DIR = V2_ROOT / "experiments" / "exp08_prior_fusion_last4_tuned"
+DEFAULT_OUTPUT_DIR = V2_ROOT / "experiments" / "exp12_prior_fusion_test"
+DEFAULT_PRIOR_FUSION_POLICY_JSON = (
+    V2_ROOT
+    / "experiments"
+    / "exp11_prior_fusion_per_label_tuning"
+    / "best_prior_fusion_policy.json"
+)
 DEFAULT_VIEWS_CSV = EXPERIMENT_DIR / "splits" / "view_splits.csv"
 DEFAULT_STUDY_LABELS_CSV = EXPERIMENT_DIR / "splits" / "study_label_table.csv"
 DEFAULT_COLLECTION_NAME = "medagentx_train_studies_v1"
@@ -114,6 +119,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--dicom-root", type=Path, default=None)
     parser.add_argument("--checkpoint", type=Path, default=None)
     parser.add_argument("--threshold-policy-json", type=Path, default=None)
+    parser.add_argument(
+        "--prior-fusion-policy-json",
+        type=Path,
+        default=DEFAULT_PRIOR_FUSION_POLICY_JSON,
+    )
     parser.add_argument("--vector-db-dir", type=Path, default=None)
     parser.add_argument("--collection-name", default=DEFAULT_COLLECTION_NAME)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
@@ -127,7 +137,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--num-workers", type=int, default=DEFAULT_NUM_WORKERS)
     parser.add_argument("--device", default=_default_device())
     parser.add_argument("--no-mixed-precision", action="store_true")
-    parser.add_argument("--gray-zone-margin", type=float, default=GRAY_ZONE_MARGIN)
+    parser.add_argument(
+        "--gray-zone-margin",
+        type=float,
+        default=None,
+        help="Optional assertion of the frozen policy margin; it may not differ.",
+    )
     parser.add_argument("--retrieval-top-k", type=int, default=FUSION_RETRIEVAL_TOP_K)
     parser.add_argument("--max-studies", type=int, default=None)
     parser.add_argument("--progress-every", type=int, default=25)
@@ -500,7 +515,7 @@ def main(argv: list[str] | None = None) -> int:
         raise ValueError("--batch-size must be > 0")
     if args.num_workers < 0:
         raise ValueError("--num-workers must be >= 0")
-    if args.gray_zone_margin < 0:
+    if args.gray_zone_margin is not None and args.gray_zone_margin < 0:
         raise ValueError("--gray-zone-margin must be >= 0")
     if args.retrieval_top_k <= 0:
         raise ValueError("--retrieval-top-k must be > 0")
@@ -519,6 +534,16 @@ def main(argv: list[str] | None = None) -> int:
     threshold_overrides, threshold_policy_version = _load_threshold_overrides(
         threshold_policy_json
     )
+    prior_fusion_policy = load_prior_fusion_policy(args.prior_fusion_policy_json)
+    gray_zone_margin = prior_fusion_policy.gray_zone_margin
+    if (
+        args.gray_zone_margin is not None
+        and not abs(args.gray_zone_margin - gray_zone_margin) < 1e-12
+    ):
+        raise ValueError(
+            "--gray-zone-margin may not override the frozen prior-fusion policy; "
+            f"expected {gray_zone_margin}, got {args.gray_zone_margin}"
+        )
 
     required_paths = {
         "views_csv": args.views_csv,
@@ -526,6 +551,7 @@ def main(argv: list[str] | None = None) -> int:
         "dicom_root": dicom_root,
         "checkpoint": checkpoint,
         "vector_db_dir": vector_db_dir,
+        "prior_fusion_policy_json": args.prior_fusion_policy_json,
     }
     if threshold_policy_json is not None:
         required_paths["threshold_policy_json"] = threshold_policy_json
@@ -538,9 +564,13 @@ def main(argv: list[str] | None = None) -> int:
 
     print(
         "[PriorFusionEval] "
-        f"split={args.split} policy={PRIOR_FUSION_POLICY_VERSION} "
-        f"device={device} gray_margin={args.gray_zone_margin} "
+        f"split={args.split} policy={prior_fusion_policy.policy_version} "
+        f"device={device} gray_margin={gray_zone_margin} "
         f"retrieval_top_k={args.retrieval_top_k}"
+    )
+    print(
+        "[PriorFusionEval] using prior-fusion policy -> "
+        f"{args.prior_fusion_policy_json}"
     )
     if threshold_policy_json is None:
         print("[PriorFusionEval] using checkpoint/default vision thresholds")
@@ -610,7 +640,9 @@ def main(argv: list[str] | None = None) -> int:
                 _vision_predictions_for_prior_fusion(study_output),
                 retrieval_priors,
                 study_key=study_output.study_key,
-                margin=args.gray_zone_margin,
+                margin=gray_zone_margin,
+                rule_overrides=prior_fusion_policy.rule_overrides,
+                policy_version=prior_fusion_policy.policy_version,
             )
         )
         if index == 1 or index % args.progress_every == 0 or index == total_studies:
@@ -631,7 +663,7 @@ def main(argv: list[str] | None = None) -> int:
     gray_zone_records = filter_gray_zone_ground_truth(
         ground_truth_records,
         outputs_by_key,
-        margin=args.gray_zone_margin,
+        margin=gray_zone_margin,
     )
 
     vision_predictions = vision_status_map(study_outputs)
@@ -665,7 +697,8 @@ def main(argv: list[str] | None = None) -> int:
 
     run_config = {
         "experiment": args.output_dir.name,
-        "fusion_policy_version": PRIOR_FUSION_POLICY_VERSION,
+        "fusion_policy_version": prior_fusion_policy.policy_version,
+        "prior_fusion_policy_json": str(args.prior_fusion_policy_json),
         "threshold_mode": (
             "threshold_policy_json"
             if threshold_policy_json is not None
@@ -683,7 +716,7 @@ def main(argv: list[str] | None = None) -> int:
         "checkpoint": str(checkpoint),
         "vector_db_dir": str(vector_db_dir),
         "collection_name": args.collection_name,
-        "gray_zone_margin": args.gray_zone_margin,
+        "gray_zone_margin": gray_zone_margin,
         "retrieval_top_k": args.retrieval_top_k,
         "study_count": len(study_outputs),
         "ground_truth_rows": len(ground_truth_records),

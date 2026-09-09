@@ -28,7 +28,14 @@ def _load_prior_fusion_modules():
     return retrieval_prior, prior_fusion
 
 
-def _prior(retrieval_prior, *, label: str, present: float, absent: float):
+def _prior(
+    retrieval_prior,
+    *,
+    label: str,
+    present: float,
+    absent: float,
+    confidence: float = 1.0,
+):
     return retrieval_prior.RetrievalLabelPrior(
         label=label,
         present_prior=present,
@@ -37,7 +44,7 @@ def _prior(retrieval_prior, *, label: str, present: float, absent: float):
         unmentioned_rate=0.0,
         scoreable_weight=1.0,
         total_weight=1.0,
-        retrieval_confidence=1.0,
+        retrieval_confidence=confidence,
         mean_similarity=0.8,
         retrieved_count=3,
         scoreable_count=3,
@@ -137,3 +144,111 @@ def test_prior_fusion_demotes_gray_zone_present_prediction_to_absent() -> None:
     assert result.vision_status == "present"
     assert result.fused_status == "absent"
 
+
+def test_exp11_policy_loads_only_selected_promotion_gates() -> None:
+    _, prior_fusion = _load_prior_fusion_modules()
+    policy_path = (
+        Path(__file__).resolve().parents[2]
+        / "experiments"
+        / "exp11_prior_fusion_per_label_tuning"
+        / "best_prior_fusion_policy.json"
+    )
+
+    policy = prior_fusion.load_prior_fusion_policy(policy_path)
+    fracture = prior_fusion.prior_rule_for_label(
+        "Fracture",
+        overrides=policy.rule_overrides,
+    )
+    cardiomegaly = prior_fusion.prior_rule_for_label(
+        "Cardiomegaly",
+        overrides=policy.rule_overrides,
+    )
+
+    assert policy.policy_version == "retrieval_prior_per_label_gate_tuning_v2"
+    assert policy.gray_zone_margin == 0.15
+    assert fracture.promotion_enabled is True
+    assert fracture.promotion_prior_threshold == 0.90
+    assert fracture.promotion_confidence_threshold == 0.10
+    assert fracture.demotion_enabled is False
+    assert cardiomegaly.promotion_enabled is False
+    assert cardiomegaly.demotion_enabled is False
+
+
+def test_disabled_exp11_gate_cannot_change_prediction() -> None:
+    retrieval_prior, prior_fusion = _load_prior_fusion_modules()
+    policy_path = (
+        Path(__file__).resolve().parents[2]
+        / "experiments"
+        / "exp11_prior_fusion_per_label_tuning"
+        / "best_prior_fusion_policy.json"
+    )
+    policy = prior_fusion.load_prior_fusion_policy(policy_path)
+
+    result = prior_fusion.fuse_label_with_prior(
+        {
+            "label": "Cardiomegaly",
+            "probability": 0.48,
+            "threshold": 0.50,
+            "status": "absent",
+        },
+        _prior(
+            retrieval_prior,
+            label="Cardiomegaly",
+            present=1.0,
+            absent=0.0,
+        ),
+        rule=prior_fusion.prior_rule_for_label(
+            "Cardiomegaly",
+            overrides=policy.rule_overrides,
+        ),
+    )
+
+    assert result.in_gray_zone is True
+    assert result.fused_status == "absent"
+
+
+def test_enabled_exp11_gate_uses_directional_confidence() -> None:
+    retrieval_prior, prior_fusion = _load_prior_fusion_modules()
+    policy_path = (
+        Path(__file__).resolve().parents[2]
+        / "experiments"
+        / "exp11_prior_fusion_per_label_tuning"
+        / "best_prior_fusion_policy.json"
+    )
+    policy = prior_fusion.load_prior_fusion_policy(policy_path)
+    rule = prior_fusion.prior_rule_for_label(
+        "Fracture",
+        overrides=policy.rule_overrides,
+    )
+    prediction = {
+        "label": "Fracture",
+        "probability": 0.48,
+        "threshold": 0.50,
+        "status": "absent",
+    }
+
+    promoted = prior_fusion.fuse_label_with_prior(
+        prediction,
+        _prior(
+            retrieval_prior,
+            label="Fracture",
+            present=0.90,
+            absent=0.10,
+            confidence=0.10,
+        ),
+        rule=rule,
+    )
+    kept = prior_fusion.fuse_label_with_prior(
+        prediction,
+        _prior(
+            retrieval_prior,
+            label="Fracture",
+            present=0.90,
+            absent=0.10,
+            confidence=0.09,
+        ),
+        rule=rule,
+    )
+
+    assert promoted.fused_status == "present"
+    assert kept.fused_status == "absent"
