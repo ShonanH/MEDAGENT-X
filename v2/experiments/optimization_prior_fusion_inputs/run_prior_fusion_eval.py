@@ -48,6 +48,7 @@ from medagentx.reasoning.retrieve import (
     open_retrieval_collection,
     retrieve_similar_reports,
 )
+from medagentx.retrieval.index import RetrievedStudy
 from medagentx.vision.backend import FineTunedRadDinoBackend
 from medagentx.vision.constants import DEFAULT_BATCH_SIZE, DEFAULT_NUM_WORKERS
 from medagentx.vision.data import build_study_inference_records
@@ -79,6 +80,8 @@ DEFAULT_PRIOR_FUSION_POLICY_JSON = (
 DEFAULT_VIEWS_CSV = EXPERIMENT_DIR / "splits" / "view_splits.csv"
 DEFAULT_STUDY_LABELS_CSV = EXPERIMENT_DIR / "splits" / "study_label_table.csv"
 DEFAULT_COLLECTION_NAME = "medagentx_train_studies_v1"
+RETRIEVAL_EVIDENCE_SCHEMA_VERSION = "prior_fusion_retrieval_evidence_v1"
+RETRIEVAL_EVIDENCE_FILENAME = "retrieval_evidence.jsonl"
 OUTPUT_FILENAMES = (
     "run_config.json",
     "vision_study_predictions.csv",
@@ -90,6 +93,7 @@ OUTPUT_FILENAMES = (
     "uncertain_status_metrics.csv",
     "status_confusion_by_label.csv",
     "judge_summary.json",
+    RETRIEVAL_EVIDENCE_FILENAME,
 )
 
 
@@ -508,6 +512,49 @@ def _write_json(path: Path, payload: Any) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
 
 
+def retrieval_evidence_record(
+    *,
+    target_study_key: str,
+    retrieved_cases: Sequence[RetrievedStudy],
+    study_label_statuses: Mapping[str, Mapping[str, str]],
+) -> dict[str, Any]:
+    """Serialize the exact retrieval evidence used for one target study."""
+    cases: list[dict[str, Any]] = []
+    for rank, case in enumerate(retrieved_cases, start=1):
+        study_key = str(case.study_key).strip()
+        statuses = study_label_statuses.get(study_key.lower())
+        if statuses is None:
+            raise KeyError(
+                f"Retrieved study {study_key!r} is missing from label table"
+            )
+        cases.append(
+            {
+                "rank": rank,
+                "study_key": study_key,
+                "similarity": float(case.similarity),
+                "distance": float(case.distance),
+                "document": str(case.document),
+                "label_statuses": {
+                    label: str(statuses[label]) for label in DISEASE_LABELS
+                },
+            }
+        )
+
+    return {
+        "schema_version": RETRIEVAL_EVIDENCE_SCHEMA_VERSION,
+        "target_study_key": str(target_study_key).strip(),
+        "retrieved_cases": cases,
+    }
+
+
+def _write_jsonl(path: Path, records: Sequence[Mapping[str, Any]]) -> None:
+    with path.open("w") as handle:
+        for record in records:
+            handle.write(
+                json.dumps(record, ensure_ascii=True, sort_keys=True) + "\n"
+            )
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run prior-fusion evaluation and write experiment artifacts."""
     args = build_parser().parse_args(argv)
@@ -622,6 +669,7 @@ def main(argv: list[str] | None = None) -> int:
 
     fusion_results: list[PriorFusionStudyResult] = []
     priors_by_study: dict[str, dict[str, RetrievalLabelPrior]] = {}
+    retrieval_evidence: list[dict[str, Any]] = []
     retrieval_start = time.perf_counter()
     total_studies = len(study_outputs)
     for index, study_output in enumerate(study_outputs, start=1):
@@ -629,6 +677,13 @@ def main(argv: list[str] | None = None) -> int:
             collection,
             study_output,
             top_k=args.retrieval_top_k,
+        )
+        retrieval_evidence.append(
+            retrieval_evidence_record(
+                target_study_key=study_output.study_key,
+                retrieved_cases=retrieved,
+                study_label_statuses=study_label_statuses,
+            )
         )
         retrieval_priors = compute_retrieval_priors(
             retrieved_cases=retrieved,
@@ -721,6 +776,8 @@ def main(argv: list[str] | None = None) -> int:
         "study_count": len(study_outputs),
         "ground_truth_rows": len(ground_truth_records),
         "gray_zone_rows": len(gray_zone_records),
+        "retrieval_evidence_schema_version": RETRIEVAL_EVIDENCE_SCHEMA_VERSION,
+        "retrieval_evidence_file": RETRIEVAL_EVIDENCE_FILENAME,
     }
     judge_payload = {
         **run_config,
@@ -763,6 +820,10 @@ def main(argv: list[str] | None = None) -> int:
         index=False,
     )
     _write_json(output_dir / "judge_summary.json", judge_payload)
+    _write_jsonl(
+        output_dir / RETRIEVAL_EVIDENCE_FILENAME,
+        retrieval_evidence,
+    )
 
     print(f"[PriorFusionEval] wrote outputs -> {output_dir}")
     for run in judge_payload["judge_runs"]:
