@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path, PurePosixPath
-from typing import Sequence
+from typing import Mapping, Sequence
 
 import pandas as pd
 
@@ -15,6 +15,34 @@ from medagentx.labels.statuses import LabelStatus
 COMPETITION_SPLIT = "competition_test"
 EXPECTED_STUDIES = 500
 EXPECTED_VIEWS = 668
+
+
+def competition_binary_status_map(
+    statuses: Mapping[tuple[str, str], LabelStatus],
+) -> tuple[dict[tuple[str, str], LabelStatus], pd.DataFrame]:
+    """Map competition predictions to present-vs-not-present statuses."""
+    labels = set(CHEXPERT_COMPETITION_LABELS)
+    binary: dict[tuple[str, str], LabelStatus] = {}
+    audit_rows: list[dict[str, str]] = []
+    for (study_key, label), status in statuses.items():
+        if label not in labels:
+            continue
+        mapped = (
+            LabelStatus.PRESENT
+            if status is LabelStatus.PRESENT
+            else LabelStatus.ABSENT
+        )
+        binary[(study_key, label)] = mapped
+        audit_rows.append(
+            {
+                "study_key": study_key,
+                "label": label,
+                "raw_status": status.value,
+                "binary_status": mapped.value,
+                "was_mapped": str(status is LabelStatus.UNCERTAIN).lower(),
+            }
+        )
+    return binary, pd.DataFrame(audit_rows)
 
 
 def _clean_path(value: object, *, field_name: str) -> PurePosixPath:

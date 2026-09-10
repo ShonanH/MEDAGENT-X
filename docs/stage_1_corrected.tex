@@ -1,0 +1,322 @@
+\subsection{Stage 1: Study-Level Dataset Construction and Quality-Controlled Supervision}
+
+Stage 1 is designed to transform the raw CheXpert Plus data into a quality-controlled study-level cohort for multi-label training and evaluation. This stage consists of six main operations: resource-aware data acquisition from Redivis \cite{redivischexpertplus}, label-validity filtering, multi-view label aggregation, deterministic patient-level partitioning, label-aware cohort selection, and DICOM quality control. All cohort decisions are recorded at the patient, study, and image levels to preserve traceability.
+
+\subsubsection{Resource-Aware Data Acquisition}
+
+The CheXpert Plus dataset contains more than 223,000 chest radiographs from 187,711 studies and 64,725 patients \cite{chambon2024chexpertplus}. One patient may have multiple studies, and one study may contain multiple radiographic views; therefore, we define the structure of the dataset as patient $\rightarrow$ study $\rightarrow$ image view. Let $\mathcal{P}$ denote the set of patients. Patient $i \in \mathcal{P}$ is associated with a set of studies $\mathcal{S}_i$, and study $s \in \mathcal{S}_i$ contains $n_s$ DICOM images, $X_s=\{x_{s,1},\ldots,x_{s,n_s}\}$.
+
+We did not download the complete CheXpert Plus training-image collection from Redivis because doing so would substantially increase the resources required for DICOM transfer, image decoding, embedding generation, and model training. Moreover, CheXpert Plus has a strongly imbalanced label distribution: labels such as lung opacity and pleural effusion are comparatively common, whereas fracture, lung lesion, pneumonia, and pleural other occur much less frequently \cite{chambon2024chexpertplus}. Long-tailed label distributions are a recognized challenge in chest radiograph classification \cite{holste2022longtailed}. A uniformly sampled, resource-constrained subset could therefore contain insufficient positive examples for rare labels.
+
+We consequently separated sampling-frame construction from data materialization. The complete downloadable training metadata and DICOM file index were initially queried to construct the candidate pool, but report text and DICOM pixel data were fetched only after studies were selected into the cohort. Metadata and DICOM-index queries were paginated over a stable DICOM-path ordering, while the larger report-text fields were retrieved only for selected paths. Thus, cohort membership was determined from the complete accessible training sampling frame rather than from an arbitrary prefix of downloaded files. The resulting candidate pool was restricted to the CheXpert Plus source training split and to records with a non-null DICOM path that could be matched to a valid Redivis file identifier.
+
+\subsubsection{Label Validation and Study-Level Eligibility}
+
+CheXpert Plus provides 14 report-derived labels generated using CheXbert \cite{smit2020chexbert,chambon2024chexpertplus}. During preprocessing, we retain the complete 14-label representation:
+
+\[
+\mathcal{Y}_{\mathrm{all}}
+=
+\mathcal{Y}_{\mathrm{disease}}
+\cup
+\{\text{No Finding},\text{Support Devices}\},
+\]
+
+where the 12 prediction targets are
+
+\[
+\begin{aligned}
+\mathcal{Y}_{\mathrm{disease}}=\{&
+\text{Atelectasis},\text{Cardiomegaly},\text{Consolidation},\text{Edema},\\
+&\text{Pleural Effusion},\text{Pneumonia},\text{Pneumothorax},\text{Fracture},\\
+&\text{Lung Lesion},\text{Lung Opacity},\text{Enlarged Cardiomediastinum},
+\text{Pleural Other}\}.
+\end{aligned}
+\]
+
+No Finding and Support Devices are excluded from the 12 model outputs. No Finding is nevertheless retained because it affects the construction of supervised-negative disease targets, whereas Support Devices is retained only for source-label completeness.
+
+CheXpert represents each report-derived observation as present ($1$), absent ($0$), uncertain ($-1$), or unmentioned (missing/null) \cite{irvin2019chexpert}. Let $r_{s,v,y}$ denote the source label value for label $y$ associated with view record $v$ from study $s$. This raw encoding is mapped to a canonical status $z_{s,v,y}$ using
+
+\[
+z_{s,v,y}=g(r_{s,v,y})=
+\begin{cases}
+\mathrm{present}, & r_{s,v,y}=1,\\
+\mathrm{absent}, & r_{s,v,y}=0,\\
+\mathrm{uncertain}, & r_{s,v,y}=-1,\\
+\mathrm{unmentioned}, & r_{s,v,y}\in\{\varnothing,\mathrm{NaN},\text{blank}\}.
+\end{cases}
+\]
+
+Any value outside this set is treated as invalid. This preserves the distinction between an explicit negative label, an uncertain label, and the absence of a label. The canonicalization and strict rejection of malformed values are MEDAGENT-X data-integrity decisions built on the source encoding defined by CheXpert.
+
+A complete study is removed if any of its views:
+
+\begin{enumerate}
+    \item cannot be matched to a label record;
+    \item contains a label value outside $\{1,0,-1,\varnothing\}$; or
+    \item maps to conflicting duplicate source records.
+\end{enumerate}
+
+This prevents partial-view inclusion from producing supervision that no longer corresponds to the original case's radiology report. In contrast, disagreements between valid label maps associated with different views of the same study are retained and recorded as aggregation conflicts. Therefore, a malformed source record causes study exclusion, whereas a valid cross-view disagreement remains auditable.
+
+\subsubsection{Multi-View Label Aggregation and Masked Supervision}
+
+Many CheXpert Plus radiology reports summarize multiple views from the same study. Therefore, all eligible views are aggregated into one study-level label representation. For label $y$, let
+
+\[
+Z_{s,y}=\{z_{s,1,y},z_{s,2,y},\ldots,z_{s,n_s,y}\}
+\]
+
+denote the set of canonical view-associated statuses for study $s$. We define the ordered status relation
+
+\[
+\mathrm{present}\succ\mathrm{uncertain}\succ
+\mathrm{absent}\succ\mathrm{unmentioned}
+\]
+
+and compute
+
+\[
+z_{s,y}=\max_{\succ}Z_{s,y}.
+\]
+
+This policy prevents a present or uncertain status associated with one view from being erased by an absent or unmentioned status associated with another view. A conflict indicator is retained separately to record that the study-level result was obtained from non-identical statuses:
+
+\[
+c_{s,y}
+=
+\mathbb{I}\!\left(
+\left|\operatorname{unique}(Z_{s,y})\right|>1
+\right).
+\]
+
+The aggregated canonical status is then converted into a binary training target $t_{s,y}$ and supervision mask $m_{s,y}$:
+
+\[
+(t_{s,y},m_{s,y})=
+\begin{cases}
+(1,1), & z_{s,y}=\mathrm{present},\\
+(0,1), & z_{s,y}=\mathrm{absent},\\
+(\varnothing,0), & z_{s,y}\in\{\mathrm{uncertain},\mathrm{unmentioned}\}.
+\end{cases}
+\]
+
+This implements a masked uncertainty policy related to the U-Ignore strategy evaluated in the original CheXpert work \cite{irvin2019chexpert}, while extending masking to unmentioned labels. Uncertain and unmentioned statuses are preserved in the data representation but do not contribute to supervised model training and are not automatically treated as negative examples.
+
+When No Finding is present and disease label $y$ is unmentioned, the disease label is assigned
+
+\[
+(t_{s,y},m_{s,y})=(0,1).
+\]
+
+Thus, the label is supervised as absent under the No Finding rule. No Finding never overwrites an explicitly present or uncertain disease status. If No Finding and at least one disease label are simultaneously present, a contradiction flag is recorded for the study. Support Devices is not included among the 12 model outputs. The resulting target vector $\mathbf{t}_s$ and supervision mask $\mathbf{m}_s$ are consumed by the masked RAD-DINO training objective described in Stage 2.
+
+\subsubsection{Deterministic Patient-Level Splits}
+
+Although CheXpert Plus supplies a source training split, MEDAGENT-X constructs its own training, validation, and held-out test partitions from the accessible source training set. This is not solely a resource decision. The complete workflow uses:
+
+\begin{itemize}
+    \item the training partition for RAD-DINO fine-tuning and construction of the training-only retrieval index;
+    \item the validation partition for checkpoint selection, per-label threshold calibration, and label-fusion policy development; and
+    \item the held-out test partition for final downstream evaluation.
+\end{itemize}
+
+Creating these partitions also provides label-sufficient validation and test cohorts across all 12 target labels while ensuring that the test data are not used for model or policy selection. Splitting is performed at the patient level rather than the image or study level. Different studies from the same patient can contain persistent anatomy, recurring disease patterns, implanted devices, or closely related longitudinal information. Placing such studies in different partitions could inflate performance and could allow the retrieval system to retrieve evidence from the query patient's other studies. Patient-level splitting is therefore used to prevent both classifier leakage and cross-partition retrieval leakage \cite{holste2022longtailed}.
+
+For de-identified patient identifier $u_i$, MEDAGENT-X concatenates the fixed seed $42$ with the identifier and computes
+
+\[
+h_i
+=
+\operatorname{MD5}\!\left(\texttt{"42:"}\Vert u_i\right),
+\]
+
+where $\Vert$ denotes string concatenation. MD5 is used only as a stable bucketing function, not for cryptographic security or patient de-identification. The first eight hexadecimal characters of $h_i$ are mapped to a number $b_i\in[0,1]$:
+
+\[
+b_i
+=
+\frac{\operatorname{int}(h_i[0{:}8],16)}{2^{32}-1}.
+\]
+
+The normalized hash value determines the patient partition:
+
+\[
+q_i=
+\begin{cases}
+\mathrm{train}, & 0\le b_i<0.70,\\
+\mathrm{validation}, & 0.70\le b_i<0.85,\\
+\mathrm{test}, & 0.85\le b_i\le1.
+\end{cases}
+\]
+
+This produces an approximately $70/15/15$ patient-level partition. Every selected study and view belonging to patient $i$ inherits the same assignment $q_i$. The assignment is deterministic, independent of metadata row ordering, and reproducible from the de-identified patient identifier and seed. Patient assignment is completed before label-enriched cohort selection, and patients are never moved between partitions to satisfy label-count targets.
+
+\subsubsection{Label-Enriched Cohort Selection}
+
+MEDAGENT-X uses a deterministic label-enrichment policy within each patient partition. For cohort selection, positivity and negativity are defined separately for every study-label pair:
+
+\[
+I^{+}_{s,y}=\mathbb{I}(t_{s,y}=1\land m_{s,y}=1),
+\qquad
+I^{-}_{s,y}=\mathbb{I}(t_{s,y}=0\land m_{s,y}=1).
+\]
+
+A supervised-positive study therefore has a present target for label $y$, while a supervised-negative study is supervised as absent, either explicitly or through the No Finding rule. Uncertain and unmentioned cells with $m_{s,y}=0$ contribute to neither count.
+
+For patient $i$, the positive and negative study counts for label $y$ are
+
+\[
+P_{i,y}=\sum_{s\in\mathcal{S}_i}I^{+}_{s,y},
+\qquad
+N_{i,y}=\sum_{s\in\mathcal{S}_i}I^{-}_{s,y}.
+\]
+
+For partition $q$, the total number of available supervised-positive studies for label $y$ is
+
+\[
+A_{q,y}=\sum_{i:q_i=q}P_{i,y},
+\]
+
+and $T_q$ denotes the pre-quality positive target. Patients are prioritized using the scarcity-weighted score
+
+\[
+R_i
+=
+\sum_{y\in\mathcal{Y}_{\mathrm{disease}}}
+\frac{\min(P_{i,y},T_q)T_q}{\max(A_{q,y},1)}.
+\]
+
+This gives greater priority to patients containing labels that are rare within partition $q_i$. Ties are resolved by the number of distinct positive labels covered, the total number of positive studies, and finally the patient identifier. To limit domination by patients with many repeated examinations and reduce redundant downloads, at most four studies are admitted per patient. Within each selected patient, studies are greedily chosen according to the number of currently deficient labels they cover and the total amount by which they reduce the remaining deficits.
+
+Before DICOM quality control, MEDAGENT-X targets $250$, $63$, and $63$ supervised-positive studies per label in the training, validation, and test partitions, respectively:
+
+\[
+T_{\mathrm{train}}=250,
+\qquad
+T_{\mathrm{validation}}=63,
+\qquad
+T_{\mathrm{test}}=63.
+\]
+
+The corresponding post-quality targets are $200$, $50$, and $50$. The approximately $25\%$ pre-quality surplus protects against positive-count reductions caused by unreadable DICOMs, failed image views, complete study removal, or reconstruction of study-level labels from the surviving views.
+
+After positive enrichment, the selected studies may already provide negative supervision for other labels because the task is multi-label. For each partition-label pair, the desired negative count is
+
+\[
+N^{-}_{q,y,\mathrm{target}}=2N^{+}_{q,y},
+\]
+
+corresponding to a project-defined negative-to-positive target ratio of $2{:}1$. The remaining negative deficit is
+
+\[
+d^{-}_{q,y}
+=
+\max\!\left(0,2N^{+}_{q,y}-N^{-}_{q,y}\right).
+\]
+
+If a deficit remains, MEDAGENT-X considers background patients with no supervised-positive studies across any of the 12 target labels. These patients are prioritized by the number of unresolved negative-label deficits covered by their studies and their total contribution toward closing those deficits. Up to four studies per background patient are then greedily selected. The complete cohort is subject to a soft cap of $5{,}000$ patients. Any target that cannot be satisfied because of insufficient available cases or the patient and study caps is explicitly recorded.
+
+The target counts, $2{:}1$ negative ratio, four-study limit, and scarcity-weighted score are MEDAGENT-X design choices motivated by the resource constraint and the long-tailed CheXpert Plus label distribution; they are not estimates of natural disease prevalence. Consequently, metrics computed on this enriched cohort should not be interpreted as estimates of population prevalence or unadjusted clinical calibration.
+
+\subsubsection{DICOM Pixel Quality Control}
+
+Quality control is performed separately for every downloaded DICOM view. Pixel values are decoded using the rescale transformation
+
+\[
+I^{\mathrm{rescaled}}=aI^{\mathrm{stored}}+b,
+\]
+
+where $a$ and $b$ are the DICOM \texttt{RescaleSlope} and \texttt{RescaleIntercept} values. For \texttt{MONOCHROME1} images, polarity is reversed before metric computation in accordance with DICOM image semantics \cite{dicomstandard2026}. Finite DICOM pixels are then min--max normalized:
+
+\[
+\widetilde{I}
+=
+\frac{I^{\mathrm{rescaled}}-\min(I^{\mathrm{rescaled}})}
+{\max(I^{\mathrm{rescaled}})-\min(I^{\mathrm{rescaled}})}.
+\]
+
+If the maximum and minimum are equal, the constant image is mapped to zero rather than dividing by zero. Six technical metrics are computed: mean intensity, intensity standard deviation, a percentile-based contrast proxy, intensity entropy, a Laplacian-variance sharpness proxy, and a high-frequency residual-noise proxy:
+
+\[
+\mu_I=\operatorname{mean}(\widetilde{I}),
+\qquad
+\sigma_I=\operatorname{std}(\widetilde{I}),
+\]
+
+\[
+C_I=Q_{0.95}(\widetilde{I})-Q_{0.05}(\widetilde{I}),
+\]
+
+\[
+H_I=-\sum_{k=1}^{256}p_k\log_2p_k,
+\]
+
+\[
+S_I=\operatorname{Var}(\nabla^2\widetilde{I}),
+\]
+
+\[
+N_I
+=
+\frac{
+\operatorname{median}_{i,j}
+\left|
+\widetilde{I}_{i,j}-\widetilde{I}_{i,j+2}
+-\widetilde{I}_{i+2,j}+\widetilde{I}_{i+2,j+2}
+\right|
+}{0.6745}.
+\]
+
+The sharpness proxy uses the variance of a four-neighbor discrete Laplacian \cite{pechpacheco2000diatom}. Each quality metric $k$ is evaluated relative to the downloaded cohort using the robust center and scale
+
+\[
+\widetilde{\mu}_k=\operatorname{median}(v_k),
+\qquad
+\widetilde{\sigma}_k
+=
+1.4826\operatorname{median}\left|v_k-\widetilde{\mu}_k\right|.
+\]
+
+If the median absolute deviation produces a zero scale, the implementation falls back successively to $\mathrm{IQR}/1.349$, the standard deviation, and finally $1$. For observation $v_{j,k}$, the directional evidence score is
+
+\[
+e_{j,k}=
+\begin{cases}
+\left|\dfrac{v_{j,k}-\widetilde{\mu}_k}{\widetilde{\sigma}_k}\right|,
+& k=\text{mean intensity},\\[8pt]
+\max\!\left(0,\dfrac{\widetilde{\mu}_k-v_{j,k}}{\widetilde{\sigma}_k}\right),
+& k\in\{\text{standard deviation, contrast, entropy, sharpness}\},\\[8pt]
+\max\!\left(0,\dfrac{v_{j,k}-\widetilde{\mu}_k}{\widetilde{\sigma}_k}\right),
+& k=\text{noise}.
+\end{cases}
+\]
+
+Mean intensity is therefore tested in both tails; standard deviation, contrast, entropy, and sharpness are tested in the lower tail; and noise is tested in the upper tail. A view receives a technical warning if any evidence score is at least $3$, and it fails if any evidence score is at least $6$. Unreadable DICOMs, empty or non-finite pixel arrays, and views with missing quality metrics fail automatically. Warning views are retained because an unusual technical profile alone is insufficient evidence that an image is unusable. Failed views are removed, but a multi-view study is retained if at least one view remains usable. A study is discarded only if all of its views fail.
+
+After filtering, the study labels and split tables are reconstructed from the surviving views. The pipeline then audits whether the surviving cohort satisfies the post-quality targets of $200$, $50$, and $50$ supervised-positive studies per label in the training, validation, and test partitions. Any unmet target is recorded without reassigning patients or silently modifying the selection policy.
+
+\subsubsection{Stage 1 Outputs}
+
+Stage 1 produces three auditable split representations:
+
+\[
+\mathcal{D}_{\mathrm{view}}
+=
+\{(x_{s,v},s,u_s,q_s)\},
+\]
+
+\[
+\mathcal{D}_{\mathrm{study}}
+=
+\{(X_s,\mathbf{t}_s,\mathbf{m}_s,\mathbf{c}_s,q_s)\},
+\]
+
+\[
+\mathcal{D}_{\mathrm{patient}}
+=
+\{(u_i,q_i)\}.
+\]
+
+These representations preserve quality-eligible DICOM views, study-level targets and masks, aggregation-conflict indicators, and canonical patient partitions. A frontal DICOM path is selected as the representative study path when available; otherwise, the first retained view is used. This representative path is an auditable study identifier and does not discard the remaining views: all retained views remain associated with the study for downstream multi-view prediction and study-embedding aggregation.
