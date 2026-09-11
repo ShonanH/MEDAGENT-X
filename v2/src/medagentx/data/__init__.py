@@ -94,6 +94,11 @@ from medagentx.data.paths import (
     patient_id_from_study_key,
     study_key_from_path,
 )
+from medagentx.data.png_download import (
+    DEFAULT_PNG_DOWNLOAD_WORKERS,
+    DEFAULT_PNG_PROGRESS_EVERY,
+    download_png_train,
+)
 from medagentx.data.redivis_client import (
     RedivisClient,
     RedivisDownloadResult,
@@ -114,6 +119,8 @@ __all__ = [
     "BALANCED_EVAL_MODE",
     "DEFAULT_DOWNLOAD_WORKERS",
     "DEFAULT_PROGRESS_EVERY",
+    "DEFAULT_PNG_DOWNLOAD_WORKERS",
+    "DEFAULT_PNG_PROGRESS_EVERY",
     "DEFAULT_SPLIT",
     "MAX_STUDIES_PER_PATIENT",
     "METADATA_IDENTITY_COLUMNS",
@@ -156,6 +163,7 @@ __all__ = [
     "build_png_train_index_sql",
     "clean_dicom_path",
     "download_eligible_dicoms",
+    "download_png_train",
     "EnrichedCohortSelection",
     "ensure_findings_fixed_json",
     "fetch_dicom_train_index",

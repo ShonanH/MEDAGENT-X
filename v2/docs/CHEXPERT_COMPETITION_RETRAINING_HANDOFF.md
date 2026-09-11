@@ -374,6 +374,19 @@ The implemented audit entry point is:
 v2/src/medagentx/cli/audit_chexpert_competition_manifest.py
 ```
 
+Before running the audit, download the local PNG root with the implemented
+Redivis downloader. It reads `REDIVIS_API_TOKEN` from the environment and
+defaults to `v2/artifacts/chexpert_competition_v1/PNG_train`:
+
+```text
+PYTHONPATH=v2/src python -m medagentx.cli.download_chexpert_png_train
+```
+
+The downloader preserves the canonical `patient/study/view.png` layout and
+writes `png_download_status.csv` beside the image root. Existing files with
+the expected byte size are retained on reruns; use `--overwrite` only when a
+replacement is intended.
+
 Example invocation (run only after the local PNG root and expert test
 groundtruth path are confirmed):
 
