@@ -7,8 +7,10 @@ import pytest
 
 from medagentx.evaluation.chexpert_competition import (
     build_competition_ground_truth,
+    build_competition_validation_ground_truth,
     build_competition_view_manifest,
     competition_study_key,
+    select_competition_f1_threshold,
 )
 from medagentx.labels.constants import CHEXPERT_COMPETITION_LABELS
 from medagentx.labels.statuses import LabelStatus
@@ -26,6 +28,11 @@ def test_competition_study_key_normalizes_study_and_view_paths() -> None:
         "CheXpert-v1.0/test/patient64741/study1",
         field_name="Study",
     ) == "patient64741/study1"
+    assert competition_study_key(
+        "CheXpert-v1.0/val/patient64541/study1/view1_frontal.jpg",
+        field_name="Path",
+        source_split="val",
+    ) == "patient64541/study1"
     assert competition_study_key(
         "CheXpert-v1.0/test/patient64741/study1/view1_frontal.jpg",
         field_name="Path",
@@ -106,3 +113,40 @@ def test_ground_truth_rejects_nonbinary_expert_labels() -> None:
             pd.DataFrame([row]),
             study_keys=["patient64741/study1"],
         )
+
+
+def test_validation_ground_truth_collapses_consistent_views() -> None:
+    paths = [
+        "CheXpert-v1.0/val/patient64541/study1/view1_frontal.jpg",
+        "CheXpert-v1.0/val/patient64541/study1/view2_lateral.jpg",
+    ]
+    rows = []
+    for path in paths:
+        row = {"Path": path}
+        row.update({label: 0 for label in CHEXPERT_COMPETITION_LABELS})
+        row["Edema"] = 1
+        rows.append(row)
+
+    records = build_competition_validation_ground_truth(
+        pd.DataFrame(rows),
+        study_keys=["patient64541/study1"],
+    )
+
+    assert len(records) == 5
+    statuses = {record.label: record.ground_truth_status for record in records}
+    assert statuses["Edema"] is LabelStatus.PRESENT
+    assert statuses["Atelectasis"] is LabelStatus.ABSENT
+
+
+def test_select_competition_f1_threshold_uses_validation_scores() -> None:
+    selection = select_competition_f1_threshold(
+        probabilities=[0.10, 0.20, 0.30, 0.80],
+        targets=[0, 1, 1, 0],
+        current_threshold=0.50,
+    )
+
+    assert selection.current.f1 == 0.0
+    assert selection.selected.threshold == pytest.approx(0.20)
+    assert selection.selected.tp == 2
+    assert selection.selected.fp == 1
+    assert selection.selected.f1 == pytest.approx(0.8)

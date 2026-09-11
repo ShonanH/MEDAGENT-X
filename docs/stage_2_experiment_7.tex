@@ -1,0 +1,208 @@
+\subsection{Stage 2: Retrieval-Grounded Agentic Inference and Evidence Auditing}
+\label{sec:stage2}
+
+Stage 2 converts the quality-controlled study representation produced by Stage 1 into a structured and auditable set of chest-radiograph predictions. The stage is deliberately decomposed into modules with different authority. A fine-tuned RAD-DINO encoder is the only component that directly predicts findings from the target study's images. A training-only retrieval module supplies reports from visually similar historical studies; a deterministic fusion policy may use those reports to revise only threshold-adjacent predictions; a first large language model (LLM) reviews only the changes proposed by deterministic fusion; and a second, non-mutating LLM audits the evidential support for the resulting non-absent labels. LangGraph executes these components as a typed state graph. This separation follows the broader motivation of retrieval-grounded and stateful language-model systems while retaining explicit decision boundaries suitable for clinical audit \cite{lewis2020retrieval,guu2020realm,karpukhin2020dense,yao2023react,wu2024autogen,stateflow2024}.
+
+The complete Experiment 7 execution path is
+\[
+\mathrm{START}\rightarrow
+\mathrm{Vision}\rightarrow
+\mathrm{Retrieval}\rightarrow
+\mathrm{Deterministic\ Fusion+LLM\ Review}\rightarrow
+\mathrm{LLM\ Evidence\ Verification}\rightarrow
+\mathrm{END}.
+\]
+The report-writing component discussed in the project design is not included because it had not been implemented or evaluated by Experiment 7. Likewise, no retrieval-prior or label-neighbor method developed after Experiment 7 is part of the method described here.
+
+\subsubsection{RAD-DINO Study Encoder and Multi-Label Classifier}
+
+RAD-DINO is an image-only biomedical foundation encoder derived from the DINOv2 self-supervised representation-learning family \cite{perez-garcia_exploring_2025,oquab2024dinov2}. Its use avoids making the target study's primary prediction dependent on report text. This differs from image--report pretraining methods such as ConVIRT, GLoRIA, BioViL, and REFERS, which demonstrate the usefulness of paired radiographs and reports but learn representations using linguistic supervision \cite{zhang2022convirt,huang2021gloria,boecking2022biovil,liu2022refers}. The separation is methodologically important in MEDAGENT-X: image evidence generates the initial prediction, whereas report text enters only as retrieved, attributable downstream context.
+
+For each quality-passed DICOM view $x_{s,v}$, stored pixel values are first transformed using the DICOM rescale parameters,
+\[
+I^{\mathrm{rescaled}}_{s,v}=a_{s,v}I^{\mathrm{stored}}_{s,v}+b_{s,v},
+\]
+where $a_{s,v}$ and $b_{s,v}$ are \texttt{RescaleSlope} and \texttt{RescaleIntercept}. The intensity polarity is reversed for \texttt{MONOCHROME1} images. Let $Q_{0.005}$ and $Q_{0.995}$ be the $0.5$th and $99.5$th pixel percentiles. The model input intensity is
+\[
+\widehat I_{s,v}
+=\operatorname{clip}\!\left(
+\frac{I^{\mathrm{rescaled}}_{s,v}-Q_{0.005}(I^{\mathrm{rescaled}}_{s,v})}
+{Q_{0.995}(I^{\mathrm{rescaled}}_{s,v})-Q_{0.005}(I^{\mathrm{rescaled}}_{s,v})},0,1
+\right).
+\]
+If the two percentiles coincide, the view is mapped to a zero-valued image. The normalized grayscale array is quantized to eight bits, replicated into three RGB channels, and passed through the RAD-DINO image processor. During training only, light augmentation applies a horizontal flip with probability $0.5$, a rotation sampled uniformly from $[-5^{\circ},5^{\circ}]$, and independent brightness and contrast factors sampled from $[0.9,1.1]$. These deliberately small transformations preserve radiographic structure while reducing sensitivity to minor acquisition and positioning variation.
+
+RAD-DINO is a Vision Transformer, so a processed view is represented by the final-layer class token rather than by an independently trained convolutional feature extractor \cite{dosovitskiy2021image}. Denoting the encoder by $f_{\theta}$ and its hidden dimension by $d$, the representation of view $v$ is
+\[
+\mathbf z_{s,v}=f_{\theta}(x_{s,v})_{\mathrm{[CLS]}}\in\mathbb{R}^{d}.
+\]
+Because a CheXpert Plus study may include multiple frontal and lateral radiographs \cite{chambon2024chexpertplus,irvin2019chexpert}, MEDAGENT-X makes one prediction per study rather than treating views as independent cases. Multi-view modeling is also supported by prior chest-radiograph work showing that complementary views and study-level aggregation can improve representation of radiographic findings \cite{liu2022refers,kim2023chexfusion}. The selected model concatenates element-wise mean and maximum pooling:
+\[
+\overline{\mathbf z}_{s}=\frac{1}{n_s}\sum_{v=1}^{n_s}\mathbf z_{s,v},
+\qquad
+\mathbf z^{\max}_{s,j}=\max_{1\leq v\leq n_s}z_{s,v,j},
+\qquad
+\mathbf h_s=[\overline{\mathbf z}_s;\mathbf z_s^{\max}]\in\mathbb{R}^{2d}.
+\]
+Mean pooling captures evidence shared across views, whereas maximum pooling preserves a strong feature that may appear in only one projection. Every study must contain at least one surviving view. A dropout layer with rate $0.1$ and a linear classifier produce 12 independent logits,
+\[
+\mathbf a_s=W\operatorname{Dropout}(\mathbf h_s)+\mathbf b,
+\qquad
+p_{s,y}=\sigma(a_{s,y}),
+\]
+where $y\in\mathcal{Y}_{\mathrm{disease}}$ and $\sigma(u)=(1+e^{-u})^{-1}$. Independent sigmoid heads are required because several findings can coexist in the same study, as is typical in large chest-radiograph datasets \cite{wang2017chestxray8,irvin2019chexpert}.
+
+The selected checkpoint fine-tunes the final four RAD-DINO transformer blocks while freezing all earlier blocks. This retains the pretrained image representation while permitting task-specific adaptation under the resource-constrained cohort. Training uses the masked binary cross-entropy objective defined in Stage 1, AdamW with a backbone learning rate of $10^{-5}$, classifier-head learning rate of $10^{-3}$, and weight decay $10^{-4}$ \cite{loshchilov2019decoupled}. The physical batch size is two studies, gradients are accumulated for four batches, and the maximum gradient norm is $1.0$. The learning rate is linearly warmed up for the first $5\%$ of optimizer steps and then follows cosine decay \cite{loshchilov2017sgdr}. Mixed-precision training is enabled on CUDA devices \cite{micikevicius2018mixed}. Training runs for at most 15 epochs with random seed 42 and stops after five validation epochs without improvement. Checkpoint selection maximizes masked validation macro-F1; therefore, no held-out test labels influence optimization or model selection.
+
+\subsubsection{Label-Specific Operating Points and Gray-Zone Routing}
+
+A universal threshold of $0.5$ is inappropriate when labels differ in prevalence, score distribution, and error trade-offs. MEDAGENT-X therefore selects one operating threshold per label using only supervised validation cells. For
+\[
+\mathcal{G}=\{0.05,0.06,\ldots,0.95\},
+\]
+the selected threshold is
+\[
+\tau_y=\operatorname*{arg\,max}_{\tau\in\mathcal{G}}
+F_1\!\left(
+\{t_{s,y}:m_{s,y}=1\},
+\{\mathbb I[p_{s,y}\geq\tau]:m_{s,y}=1\}
+\right).
+\]
+The grid is traversed in ascending order and the stored threshold is updated only for a strict F1 improvement; consequently, ties select the smallest threshold achieving the maximum. Label-specific F1 thresholding is motivated by the behavior of decision thresholds in imbalanced and multi-label tasks \cite{lipton2014optimal}. The resulting initial vision decision is
+\[
+\widehat z^{\mathrm{vis}}_{s,y}=
+\begin{cases}
+\mathrm{present},&p_{s,y}\geq\tau_y,\\
+\mathrm{absent},&p_{s,y}<\tau_y.
+\end{cases}
+\]
+This procedure selects a validation operating point; it does not perform temperature scaling, isotonic regression, or any other post-hoc probability calibration. Accordingly, $p_{s,y}$ should be interpreted as a sigmoid model score rather than a guaranteed calibrated clinical probability \cite{guo2017calibration}.
+
+Downstream intervention is restricted to a symmetric gray zone around the learned threshold:
+\[
+g_{s,y}=\mathbb I\!\left[\left|p_{s,y}-\tau_y\right|\leq\delta\right],
+\qquad \delta=0.15.
+\]
+The fixed margin is a project-defined routing rule. It operationalizes the general selective-prediction principle that low-confidence cases should receive different processing from high-confidence cases \cite{geifman2017selective,geifman2019selectivenet}, but it is not itself a learned reject option. If $g_{s,y}=0$, retrieval and LLM outputs are prohibited from changing the vision status for label $y$. This preserves the image model's authority outside the explicitly defined uncertainty region and bounds the number of predictions exposed to indirect retrieved evidence.
+
+\subsubsection{Training-Only Image-to-Report Retrieval}
+
+Retrieval is implemented as image-to-report case retrieval, not as ordinary text-query RAG. General RAG systems retrieve non-parametric context to ground language-model processing \cite{lewis2020retrieval,guu2020realm,karpukhin2020dense,khandelwal2020generalization,borgeaud2022improving}; in MEDAGENT-X, however, the query is the target study's image embedding and the returned textual context is attached to visually similar training studies. This design is related to retrieval-based chest-radiograph reporting systems such as CXR-RePaiR, retrieval-augmented CXR reporting, and X-REM \cite{endo2021retrieval,ranjit2023retrieval,jeong2024multimodal}, but MEDAGENT-X does not copy or generate a target report. Retrieved text is used only for constrained label review and evidence attribution.
+
+The retrieval corpus contains training studies only. For each training study $r$, the same fine-tuned RAD-DINO checkpoint used for target inference produces the mean--maximum pooled embedding $\mathbf h_r$. Using the identical checkpoint and pooling mode is enforced by an embedding-dimensionality check at inference. Each index record stores
+\[
+(\mathrm{study\_key}_r,\mathrm{patient\_id}_r,\mathbf h_r,D_r),
+\]
+where the document payload is
+\[
+D_r=\texttt{"Findings: "}\Vert F_r\Vert
+\texttt{"Impression: "}\Vert M_r.
+\]
+$F_r$ and $M_r$ are the first non-empty Findings and Impression values observed across the study's eligible view rows. Empty sections are omitted, index construction rejects a study whose resulting document is empty, and the payload is truncated to 12,000 characters. Canonical ground-truth labels are not stored in the Chroma record. This is intentional: the downstream reasoning stages receive attributable report language rather than privileged training labels.
+
+Embeddings are stored in a persistent Chroma collection configured for cosine distance \cite{chroma2024collections}. For query study $s$ and candidate $r$,
+\[
+d_{\cos}(s,r)=1-
+\frac{\mathbf h_s^{\top}\mathbf h_r}
+{\lVert\mathbf h_s\rVert_2\lVert\mathbf h_r\rVert_2},
+\qquad
+\operatorname{sim}(s,r)=1-d_{\cos}(s,r).
+\]
+The requested neighborhood size is $K=10$. Because exclusions are applied after vector search, the system initially requests
+\[
+K'=\max(8K,K+20)=80
+\]
+candidates. Candidates are sorted by increasing distance, after which the query study itself and every study sharing its de-identified patient identifier are removed. The first ten remaining candidates form $\mathcal R_s$. Training-only indexing prevents validation/test report leakage, while same-patient filtering prevents longitudinal studies from the query patient from serving as apparently independent evidence.
+
+\subsubsection{Label-Specific Report Evidence Extraction}
+
+Radiology reports contain positive, negated, uncertain, historical, and context-dependent mentions, so a string occurrence cannot automatically be treated as support. Prior radiology information-extraction systems such as NegBio, the CheXpert labeler, CheXbert, and RadGraph demonstrate the importance of explicitly representing negation, uncertainty, entities, and relations \cite{peng2018negbio,irvin2019chexpert,smit2020chexbert,jain2021radgraph}. MEDAGENT-X uses a deliberately transparent rule-based extractor because its counts are decision inputs that must be reproducible and inspectable.
+
+Each retrieved document is lowercased and divided on newlines, periods, semicolons, and colons into sentence-like fragments. For every label $y$, a fixed dictionary $\mathcal K_y$ contains label-specific terms and synonyms. Examples include \emph{atelectasis} and \emph{volume loss} for Atelectasis; \emph{pulmonary edema}, \emph{interstitial edema}, and \emph{vascular congestion} for Edema; and \emph{nodule} and \emph{mass} for Lung Lesion. A fragment contributes at most one mention to a particular label even if it contains several terms from $\mathcal K_y$.
+
+For a matched term beginning at character position $j$, the preceding 70-character window is searched for one of the cues \emph{no}, \emph{without}, \emph{no evidence of}, \emph{negative for}, \emph{absent}, \emph{clear of}, or \emph{free of}. A match with a preceding cue is counted as negative; otherwise it is counted as positive. Let $c^+_{s,y}$ and $c^-_{s,y}$ be the counts accumulated across all $D_r$, $r\in\mathcal R_s$. The first positive and first negative fragments are retained as example snippets and truncated to 260 characters. This fixed-window method is less linguistically expressive than dependency-based or learned report labelers \cite{peng2018negbio,smit2020chexbert}; its role is instead to expose a deterministic and auditable signal. The LLM review stages subsequently inspect the complete retrieved reports and can identify contextual limitations that keyword counting misses.
+
+\subsubsection{Constrained Deterministic Gray-Zone Fusion}
+
+Deterministic fusion is applied independently to all 12 labels. Let $a_y$ be the minimum positive count required for promotion, $b_y$ the maximum allowable negative count for promotion, and $d_y$ the minimum negative count required for demotion. The default parameters are
+\[
+a_y=3,\qquad b_y=0,\qquad d_y=1.
+\]
+Pleural Effusion uses $a_y=4$. Consolidation, Lung Lesion, and Lung Opacity use $d_y=3$ because their broad or overlapping terminology produces noisier negative matches. These values are MEDAGENT-X policy choices rather than parameters taken from the cited report-labeling literature.
+
+For a gray-zone vision-negative label, promotion support is
+\[
+P_{s,y}=\mathbb I[c^+_{s,y}\geq a_y\land c^-_{s,y}\leq b_y].
+\]
+For a gray-zone vision-positive label, demotion support is
+\[
+D_{s,y}=\mathbb I[c^-_{s,y}\geq d_y\land c^-_{s,y}>c^+_{s,y}],
+\]
+and strong negative-only support is
+\[
+S^-_{s,y}=\mathbb I[c^+_{s,y}=0\land c^-_{s,y}\geq a_y].
+\]
+The deterministic fused status is therefore
+\[
+\widehat z^{\mathrm{det}}_{s,y}=
+\begin{cases}
+\widehat z^{\mathrm{vis}}_{s,y}, & g_{s,y}=0,\\
+\mathrm{present}, & g_{s,y}=1,\ \widehat z^{\mathrm{vis}}_{s,y}=\mathrm{absent},\ P_{s,y}=1,\\
+\mathrm{absent}, & g_{s,y}=1,\ \widehat z^{\mathrm{vis}}_{s,y}=\mathrm{present},\ D_{s,y}=1,\ S^-_{s,y}=1,\\
+\mathrm{uncertain}, & g_{s,y}=1,\ \widehat z^{\mathrm{vis}}_{s,y}=\mathrm{present},\ D_{s,y}=1,\ S^-_{s,y}=0,\\
+\widehat z^{\mathrm{vis}}_{s,y}, & \text{otherwise}.
+\end{cases}
+\]
+Thus, weak or mixed evidence cannot promote a negative prediction; negative evidence must outnumber positive evidence before a positive prediction is softened; and a complete demotion to absent requires negative-only evidence meeting the same count bar used for promotion. For every label, the system records $p_{s,y}$, $\tau_y$, $g_{s,y}$, both mention counts, the vision status, deterministic status, and a human-readable rule trace.
+
+\subsubsection{First LLM: Guarded Review of Deterministic Changes}
+
+The first LLM does not perform unrestricted reclassification. It is invoked only if
+\[
+\mathcal C_s=\{y:\widehat z^{\mathrm{det}}_{s,y}\neq
+\widehat z^{\mathrm{vis}}_{s,y}\}
+\]
+is non-empty, and it must review exactly the labels in $\mathcal C_s$. This post-hoc evidence-review design is related to research on retrieval-grounded attribution, revision, and verification \cite{gao2023rarr,dhuliawala2024chain,min2023factscore}, while the restriction to an existing candidate decision distinguishes it from free-form diagnostic generation.
+
+For each $y\in\mathcal C_s$, the prompt contains the label, vision status, deterministic status, $p_{s,y}$, $\tau_y$, $c^+_{s,y}$, $c^-_{s,y}$, and the deterministic rule trace. It also contains all top-10 retrieved reports together with rank, study key, de-identified patient identifier, cosine distance, and similarity. The system prompt explicitly states that retrieved reports describe similar neighbors rather than the target patient; that they are indirect weak evidence; that the model must not diagnose new labels; and that it should keep the deterministic result unless strong label-specific contradiction exists.
+
+Inference is performed through a locally hosted Ollama endpoint with temperature zero and a 300-second request timeout. The model identifier is a run-time parameter, allowing the same policy to be evaluated with different local LLMs. Ollama receives a JSON Schema through its structured-output interface \cite{ollama2024structured}. Schema-constrained generation is consistent with the broader principle of limiting an autoregressive model's output language before programmatic execution \cite{scholak2021picard}. Each response must provide, for every changed label, an action in
+\[
+\mathcal A=\{\mathrm{keep},\mathrm{veto},\mathrm{uncertain}\},
+\]
+a corresponding final status, confidence in $\{\mathrm{low},\mathrm{moderate},\mathrm{high}\}$, an evidence assessment in $\{\mathrm{supporting},\mathrm{contradictory},\mathrm{mixed},\mathrm{insufficient}\}$, a non-empty rationale, and lists of supporting and contradicting retrieved-case identifiers. No additional JSON properties are allowed.
+
+Syntactic validity is not sufficient. The local guardrail validates that the returned label set contains no duplicate, missing, or unrequested labels; every case identifier belongs to $\mathcal R_s$; and the action agrees with the returned status. Specifically, \emph{keep} must preserve $\widehat z^{\mathrm{det}}_{s,y}$, \emph{veto} must restore $\widehat z^{\mathrm{vis}}_{s,y}$, and \emph{uncertain} must return the uncertain status. A keep action is always admissible. Any low-confidence non-keep action is rejected.
+
+Additional conservative gates apply to vetoes and uncertainty actions. A veto requires a contradictory evidence assessment and at least one contradicting case identifier. For a deterministic promotion from absent to present, a veto is applied only if $c^-_{s,y}>0$, or if the review is high-confidence and references at least two contradicting cases. For a deterministic demotion, a valid contradictory veto may restore the original present status. An uncertainty action must assess the evidence as mixed, insufficient, or contradictory. For a deterministic promotion, it is applied only under high confidence together with either $c^-_{s,y}>0$ or at least two contradicting cases; for a deterministic demotion, a valid uncertainty action is applied directly. Rejected actions fall back to the deterministic status and are logged with the exact policy reason.
+
+If parsing, schema validation, or guardrail validation fails, the system makes one repair request containing the original structured request and the validation error. A repaired response is evaluated label by label: valid reviews are retained, whereas invalid, duplicate, or missing reviews fall back only for the affected labels. If the repair call also fails, the complete deterministic fusion result is preserved. Consequently, LLM availability or malformed output cannot erase the deterministic result. The final post-review status is denoted $\widehat z^{\mathrm{fus}}_{s,y}$, and the output records the deterministic status, final status, action, confidence, evidence assessment, whether the action was applied, fallback reasons, cited case identifiers, and rationale.
+
+\subsubsection{Second LLM: Non-Mutating Evidence Verification}
+
+Experiment 7 then invokes a separate LLM evidence-verification agent. LLM-based evaluation can provide useful structured judgments but is also subject to model and prompt biases \cite{zheng2023judging}; for this reason, MEDAGENT-X limits the verifier to evidence characterization and does not grant it label-editing authority. Related work has used language models to identify factual or clinically significant errors and to compare generated statements against external evidence \cite{ostmeier2024green,gao2023rarr,min2023factscore,dhuliawala2024chain}. Retrieval-grounded clinical systems similarly motivate providing attributable context instead of relying exclusively on parametric medical knowledge \cite{zakka2024almanac}.
+
+The verifier reviews the exact set
+\[
+\mathcal V_s=\{y:\widehat z^{\mathrm{fus}}_{s,y}\in
+\{\mathrm{present},\mathrm{uncertain}\}\}.
+\]
+It therefore covers every final non-absent label, including unchanged strong-zone positives and gray-zone labels, rather than only the labels modified by fusion. Final absent labels are not sent for LLM verification. For each $y\in\mathcal V_s$, the verifier receives $\widehat z^{\mathrm{fus}}_{s,y}$, $\widehat z^{\mathrm{vis}}_{s,y}$, $p_{s,y}$, $\tau_y$, $g_{s,y}$, whether fusion changed the label, and the complete fusion reason. The same retrieved case records and full report documents are provided.
+
+The response schema requires a per-label integer evidence score from 1 to 5; confidence; vision-support, retrieval-support, and contradiction levels; one of the four evidence assessments; a rationale; and supporting and contradicting case identifiers. It additionally requires a study-level evidence score and separate summaries of vision, retrieval, and fusion evidence, followed by an overall evidence narrative. Validation requires the returned labels to match $\mathcal V_s$ exactly, rejects duplicate labels and unknown case identifiers, and requires a contradictory assessment to specify a weak or strong contradiction level and at least one contradicting case.
+
+The verifier never changes $\widehat z^{\mathrm{fus}}_{s,y}$. It converts cited identifiers into attributable report snippets and emits a parallel evidence record containing the final and original statuses, score, support levels, contradiction level, gray-zone and fusion-change indicators, rationale, and cited cases. If $\mathcal V_s=\varnothing$, no LLM request is made and the study receives the explicit no-predicted-label evidence result. If the LLM call or validation fails, Experiment 7 records a failed-verification result with evidence score 1 and the failure reason; it does not substitute the deterministic verifier from Experiment 6. Unless the run is explicitly configured to allow LLM fallback, any such failure causes the command to terminate after saving the generated audit artifacts.
+
+This second call is intentionally separated from the first. The fusion-review LLM asks whether a deterministic intervention should be kept, vetoed, or softened, whereas the evidence-verification LLM asks how well the already finalized non-absent predictions are supported. Separating decision review from evidence reporting prevents a favorable evidence narrative from silently becoming a new diagnostic action.
+
+\subsubsection{LangGraph Orchestration, State Validation, and Provenance}
+
+The Experiment 7 workflow is implemented with LangGraph's \texttt{StateGraph}, which represents computation as nodes that read and update a shared typed state \cite{langgraph2024}. This state-driven organization is related to graph-based message-passing systems and recent state-machine formulations of LLM workflows \cite{malewicz2010pregel,stateflow2024}. LangGraph is used as an orchestration and provenance mechanism; it is not itself the source of the vision, retrieval, fusion, or verification algorithms.
+
+The shared \texttt{MedAgentXInferenceState} contains the study key and DICOM paths, structured vision output, retrieved cases, complete label-fusion-agent result, final fusion result, evidence-verification-agent result, and final evidence record. Before execution, the graph is compiled with fixed edges
+\[
+\mathrm{START}\rightarrow V\rightarrow R\rightarrow F\rightarrow E\rightarrow\mathrm{END}.
+\]
+Each node checks that its required state fields are present. The vision node additionally verifies that the returned study key matches the requested study; the retrieval node consumes only the structured vision output; the fusion node requires both vision and retrieval outputs; and the evidence node requires the vision output, retrieved cases, and final fusion result. At the first study, the runner verifies that the query embedding dimension equals the stored Chroma dimension, preventing accidental use of an index built from a different checkpoint or pooling configuration.
+
+Execution occurs once per study. The runner writes a JSON Lines trajectory record after every graph invocation and flushes it immediately, limiting loss of audit data during long runs. It also exports study-level vision predictions, label-level fusion predictions, retrieved-case rows, evidence-verification JSON and CSV files, and policy-audit summaries. Run configuration records the checkpoint, threshold file, vector index, collection name, split, device, mixed-precision setting, $K$, $\delta$, graph-node sequence, LLM model, endpoint, temperature, timeout, policy versions, request and success counts, fallback counts, and elapsed time. Together, the typed state, immutable source identifiers, explicit rule traces, schema-validated LLM outputs, and versioned policy metadata make every final study--label decision reconstructable from the saved artifacts.
