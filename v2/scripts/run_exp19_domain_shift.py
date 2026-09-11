@@ -39,22 +39,23 @@ class DatasetSpec:
 
 
 DEFAULT_PATH_CANDIDATES: dict[str, tuple[Path, ...]] = {
-    "internal_val_predictions": (
-        Path(
-            "v2/artifacts/cohort_balanced_v1/vision/"
-            "raddino_finetuned_v1_last4_blocks/val_study_predictions.csv"
-        ),
-        Path("v2/artifactsLocal/results/val_study_predictions.csv"),
-    ),
     "internal_test_predictions": (
         Path(
             "v2/artifacts/cohort_balanced_v1/vision/"
             "raddino_finetuned_v1_last4_blocks/test_study_predictions.csv"
         ),
+        Path(
+            "v2/experiments/exp05_llm_fusion_with_retrieval_graph/"
+            "vision_study_predictions.csv"
+        ),
         Path("v2/artifactsLocal/results/test_study_predictions.csv"),
     ),
     "internal_ground_truth": (
         Path("v2/artifacts/cohort_balanced_v1/study_label_table.csv"),
+        Path(
+            "v2/experiments/optimization_prior_fusion_inputs/splits/"
+            "study_label_table.csv"
+        ),
         Path("v2/artifactsLocal/val_last4_blocks_0818/val/study_label_table.csv"),
     ),
     "competition_val_predictions": (
@@ -542,7 +543,6 @@ def build_parser() -> argparse.ArgumentParser:
             "expert-labeled CheXpert competition validation/test datasets."
         )
     )
-    parser.add_argument("--internal-val-predictions", type=Path)
     parser.add_argument("--internal-test-predictions", type=Path)
     parser.add_argument("--internal-ground-truth", type=Path)
     parser.add_argument("--competition-val-predictions", type=Path)
@@ -561,12 +561,6 @@ def main(argv: list[str] | None = None) -> int:
         for name in DEFAULT_PATH_CANDIDATES
     }
     specs = (
-        DatasetSpec(
-            "internal_val",
-            paths["internal_val_predictions"],
-            paths["internal_ground_truth"],
-            "internal_wide",
-        ),
         DatasetSpec(
             "internal_test",
             paths["internal_test_predictions"],
