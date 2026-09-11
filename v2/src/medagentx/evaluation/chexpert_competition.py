@@ -88,12 +88,19 @@ def _path_after_split(
 ) -> PurePosixPath:
     path = _clean_path(value, field_name=field_name)
     parts = path.parts
-    try:
-        split_index = parts.index(source_split)
-    except ValueError as exc:
+    split_components = (
+        ("val", "valid") if source_split in {"val", "valid"} else (source_split,)
+    )
+    matching_indices = [
+        parts.index(component)
+        for component in split_components
+        if component in parts
+    ]
+    if not matching_indices:
         raise ValueError(
             f"{field_name} has no {source_split} path component: {value!r}"
-        ) from exc
+        )
+    split_index = min(matching_indices)
     relative = PurePosixPath(*parts[split_index + 1 :])
     if len(relative.parts) < 2:
         raise ValueError(f"Invalid CheXpert test path in {field_name}: {value!r}")

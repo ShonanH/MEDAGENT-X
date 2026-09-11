@@ -29,7 +29,7 @@ def test_competition_study_key_normalizes_study_and_view_paths() -> None:
         field_name="Study",
     ) == "patient64741/study1"
     assert competition_study_key(
-        "CheXpert-v1.0/val/patient64541/study1/view1_frontal.jpg",
+        "CheXpert-v1.0/valid/patient64541/study1/view1_frontal.jpg",
         field_name="Path",
         source_split="val",
     ) == "patient64541/study1"
@@ -117,8 +117,8 @@ def test_ground_truth_rejects_nonbinary_expert_labels() -> None:
 
 def test_validation_ground_truth_collapses_consistent_views() -> None:
     paths = [
-        "CheXpert-v1.0/val/patient64541/study1/view1_frontal.jpg",
-        "CheXpert-v1.0/val/patient64541/study1/view2_lateral.jpg",
+        "CheXpert-v1.0/valid/patient64541/study1/view1_frontal.jpg",
+        "CheXpert-v1.0/valid/patient64541/study1/view2_lateral.jpg",
     ]
     rows = []
     for path in paths:
