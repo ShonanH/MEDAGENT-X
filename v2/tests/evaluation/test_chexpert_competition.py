@@ -150,3 +150,15 @@ def test_select_competition_f1_threshold_uses_validation_scores() -> None:
     assert selection.selected.tp == 2
     assert selection.selected.fp == 1
     assert selection.selected.f1 == pytest.approx(0.8)
+
+
+def test_select_competition_f1_threshold_enforces_specificity_floor() -> None:
+    selection = select_competition_f1_threshold(
+        probabilities=[0.10, 0.20, 0.30, 0.80],
+        targets=[0, 1, 1, 0],
+        current_threshold=0.50,
+        min_specificity=1.0,
+    )
+
+    assert selection.selected.threshold == pytest.approx(1.0)
+    assert selection.selected.specificity == 1.0

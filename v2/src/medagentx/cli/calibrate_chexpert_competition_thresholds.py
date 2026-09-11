@@ -25,6 +25,7 @@ from medagentx.evaluation.chexpert_competition import (
 )
 from medagentx.evaluation.ground_truth import ground_truth_record_to_row
 from medagentx.labels.constants import CHEXPERT_COMPETITION_LABELS
+from medagentx.labels.schema import snake_label
 from medagentx.vision.backend import FineTunedRadDinoBackend
 from medagentx.vision.constants import DEFAULT_BATCH_SIZE, DEFAULT_NUM_WORKERS
 from medagentx.vision.data import build_study_inference_records, raster_to_pil_rgb
@@ -41,7 +42,7 @@ DEFAULT_CURRENT_THRESHOLD_POLICY = Path(
 DEFAULT_OUTPUT_DIR = Path(
     "v2/experiments/exp16_chexpert_competition_val_thresholds"
 )
-POLICY_VERSION = "chexpert_competition_validation_f1_v1"
+POLICY_VERSION = "chexpert_competition_validation_f1_v2"
 OUTPUT_FILENAMES = (
     "run_config.json",
     "competition_val_manifest.csv",
@@ -87,6 +88,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--dataset-root", type=Path, default=DEFAULT_DATASET_ROOT)
     parser.add_argument("--val-labels-csv", type=Path, default=None)
+    parser.add_argument(
+        "--vision-predictions-csv",
+        type=Path,
+        default=None,
+        help="Reuse saved validation probabilities instead of running RAD-DINO.",
+    )
     parser.add_argument("--checkpoint", type=Path, default=DEFAULT_LAST4_CHECKPOINT)
     parser.add_argument(
         "--current-threshold-policy-json",
@@ -96,6 +103,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--batch-size", type=int, default=DEFAULT_BATCH_SIZE)
     parser.add_argument("--num-workers", type=int, default=DEFAULT_NUM_WORKERS)
+    parser.add_argument(
+        "--min-specificity",
+        type=float,
+        default=0.60,
+        help="Minimum validation specificity required for every selected threshold.",
+    )
     parser.add_argument(
         "--device",
         default="cuda" if torch.cuda.is_available() else "cpu",
@@ -111,6 +124,8 @@ def main(argv: list[str] | None = None) -> int:
         raise ValueError("--batch-size must be > 0")
     if args.num_workers < 0:
         raise ValueError("--num-workers must be >= 0")
+    if not 0.0 <= args.min_specificity <= 1.0:
+        raise ValueError("--min-specificity must be in [0, 1]")
 
     image_root = args.dataset_root / "val"
     val_labels_csv = args.val_labels_csv or (args.dataset_root / "val_labels.csv")
@@ -121,6 +136,15 @@ def main(argv: list[str] | None = None) -> int:
     _require_file(val_labels_csv, "validation labels CSV")
     _require_file(args.checkpoint, "RAD-DINO checkpoint")
     _require_file(args.current_threshold_policy_json, "current threshold policy")
+    if args.vision_predictions_csv is not None:
+        _require_file(args.vision_predictions_csv, "validation predictions CSV")
+        if (
+            args.vision_predictions_csv.resolve()
+            == (args.output_dir / "vision_study_predictions.csv").resolve()
+        ):
+            raise ValueError(
+                "Reused predictions must not be inside the overwritten output path"
+            )
     _prepare_output_dir(args.output_dir, overwrite=args.overwrite)
 
     val_labels = pd.read_csv(val_labels_csv, dtype=str)
@@ -159,46 +183,81 @@ def main(argv: list[str] | None = None) -> int:
     current_thresholds = _load_threshold_overrides(
         args.current_threshold_policy_json
     )
-    backend = FineTunedRadDinoBackend.from_checkpoint(
-        args.checkpoint,
-        device=device,
-        mixed_precision=not args.no_mixed_precision,
-    )
+    if args.vision_predictions_csv is not None:
+        prediction_frame = pd.read_csv(args.vision_predictions_csv)
+        elapsed = 0.0
+        print(
+            "[CompetitionThresholds] reusing predictions from "
+            f"{args.vision_predictions_csv}",
+            flush=True,
+        )
+    else:
+        backend = FineTunedRadDinoBackend.from_checkpoint(
+            args.checkpoint,
+            device=device,
+            mixed_precision=not args.no_mixed_precision,
+        )
+        print(
+            "[CompetitionThresholds] "
+            f"running vision on {len(records)} studies/{len(manifest)} views "
+            f"(batch_size={args.batch_size}, num_workers={args.num_workers})",
+            flush=True,
+        )
+        started = time.perf_counter()
+        study_outputs = backend.predict_study_outputs(
+            records,
+            dicom_root=image_root,
+            batch_size=args.batch_size,
+            num_workers=args.num_workers,
+            threshold_overrides=current_thresholds,
+            image_loader=raster_to_pil_rgb,
+        )
+        elapsed = time.perf_counter() - started
+        prediction_frame = study_outputs_to_prediction_frame(study_outputs)
+        print(
+            f"[CompetitionThresholds] vision complete elapsed={elapsed:.1f}s",
+            flush=True,
+        )
 
-    print(
-        "[CompetitionThresholds] "
-        f"running vision on {len(records)} studies/{len(manifest)} views "
-        f"(batch_size={args.batch_size}, num_workers={args.num_workers})",
-        flush=True,
-    )
-    started = time.perf_counter()
-    study_outputs = backend.predict_study_outputs(
-        records,
-        dicom_root=image_root,
-        batch_size=args.batch_size,
-        num_workers=args.num_workers,
-        threshold_overrides=current_thresholds,
-        image_loader=raster_to_pil_rgb,
-    )
-    elapsed = time.perf_counter() - started
-    print(
-        f"[CompetitionThresholds] vision complete elapsed={elapsed:.1f}s",
-        flush=True,
-    )
+    if "study_key" not in prediction_frame:
+        raise ValueError("Vision predictions missing study_key")
+    if prediction_frame["study_key"].duplicated().any():
+        raise ValueError("Vision predictions contain duplicate study_key values")
+    prediction_frame["study_key"] = prediction_frame["study_key"].astype(str)
+    prediction_keys = set(prediction_frame["study_key"])
+    if prediction_keys != set(study_keys):
+        raise ValueError(
+            "Vision prediction studies do not exactly match competition validation"
+        )
+    predictions_by_key = prediction_frame.set_index("study_key")
 
-    output_by_key = {output.study_key: output for output in study_outputs}
     report_rows: list[dict[str, Any]] = []
     selected_thresholds: dict[str, float] = {}
     for label in CHEXPERT_COMPETITION_LABELS:
+        slug = snake_label(label)
+        probability_column = f"probability_{slug}"
+        threshold_column = f"threshold_{slug}"
+        for column in (probability_column, threshold_column):
+            if column not in predictions_by_key:
+                raise ValueError(f"Vision predictions missing {column}")
         probabilities = [
-            output_by_key[key].label_map()[label].probability for key in study_keys
+            float(predictions_by_key.loc[key, probability_column])
+            for key in study_keys
         ]
         targets = [ground_truth_map[(key, label)] for key in study_keys]
-        current_threshold = output_by_key[study_keys[0]].label_map()[label].threshold
+        thresholds = {
+            float(value) for value in predictions_by_key[threshold_column].dropna()
+        }
+        if len(thresholds) != 1:
+            raise ValueError(
+                f"Expected one current threshold for {label}, got {sorted(thresholds)}"
+            )
+        current_threshold = thresholds.pop()
         selection = select_competition_f1_threshold(
             probabilities,
             targets,
             current_threshold=current_threshold,
+            min_specificity=args.min_specificity,
         )
         selected_thresholds[label] = selection.selected.threshold
         row: dict[str, Any] = {
@@ -235,7 +294,8 @@ def main(argv: list[str] | None = None) -> int:
     policy = {
         "threshold_policy_version": POLICY_VERSION,
         "source_split": "competition_val",
-        "objective": "maximize_per_label_positive_class_f1",
+        "objective": "maximize_per_label_positive_class_f1_with_specificity_floor",
+        "min_specificity": args.min_specificity,
         "labels": list(CHEXPERT_COMPETITION_LABELS),
         "study_count": len(study_keys),
         "view_count": len(manifest),
@@ -252,7 +312,7 @@ def main(argv: list[str] | None = None) -> int:
     pd.DataFrame(
         [ground_truth_record_to_row(record) for record in ground_truth]
     ).to_csv(args.output_dir / "competition_val_ground_truth.csv", index=False)
-    study_outputs_to_prediction_frame(study_outputs).to_csv(
+    prediction_frame.to_csv(
         args.output_dir / "vision_study_predictions.csv",
         index=False,
     )
@@ -266,11 +326,17 @@ def main(argv: list[str] | None = None) -> int:
             "val_labels_csv": str(val_labels_csv),
             "checkpoint": str(args.checkpoint),
             "current_threshold_policy_json": str(args.current_threshold_policy_json),
+            "vision_predictions_csv": (
+                str(args.vision_predictions_csv)
+                if args.vision_predictions_csv is not None
+                else None
+            ),
             "output_dir": str(args.output_dir),
             "device": str(device),
             "mixed_precision": not args.no_mixed_precision,
             "batch_size": args.batch_size,
             "num_workers": args.num_workers,
+            "min_specificity": args.min_specificity,
             "study_count": len(study_keys),
             "view_count": len(manifest),
             "elapsed_seconds": elapsed,

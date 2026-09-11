@@ -79,12 +79,18 @@ def _format_metric(value: object) -> str:
 def _require_paths(paths: Mapping[str, Path]) -> None:
     missing = [f"{name}: {path}" for name, path in paths.items() if not path.exists()]
     if missing:
-        raise FileNotFoundError("Required artifacts are missing:\n" + "\n".join(missing))
+        raise FileNotFoundError(
+            "Required artifacts are missing:\n" + "\n".join(missing)
+        )
 
 
 def _prepare_output_dir(output_dir: Path, *, overwrite: bool) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
-    existing = [output_dir / name for name in OUTPUT_FILENAMES if (output_dir / name).exists()]
+    existing = [
+        output_dir / name
+        for name in OUTPUT_FILENAMES
+        if (output_dir / name).exists()
+    ]
     if existing and not overwrite:
         raise FileExistsError(
             "Competition fusion outputs already exist; pass --overwrite:\n"
@@ -138,6 +144,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--progress-every", type=int, default=1)
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--allow-llm-fallback", action="store_true")
+    parser.add_argument(
+        "--no-llm",
+        action="store_true",
+        help="Run deterministic vision-retrieval fusion without Ollama review.",
+    )
     return parser
 
 
@@ -217,16 +228,21 @@ def main(argv: list[str] | None = None) -> int:
         args.vector_db_dir,
         collection_name=args.collection_name,
     )
-    label_fusion_agent = LabelFusionAgent(
-        llm_client=OllamaClient(
-            OllamaConfig(
-                model=args.ollama_model,
-                base_url=args.ollama_base_url,
-                temperature=args.ollama_temperature,
-                timeout_seconds=args.ollama_timeout_seconds,
-            )
-        ),
-        margin=args.gray_zone_margin,
+    use_llm = not args.no_llm
+    label_fusion_agent = (
+        LabelFusionAgent(
+            llm_client=OllamaClient(
+                OllamaConfig(
+                    model=args.ollama_model,
+                    base_url=args.ollama_base_url,
+                    temperature=args.ollama_temperature,
+                    timeout_seconds=args.ollama_timeout_seconds,
+                )
+            ),
+            margin=args.gray_zone_margin,
+        )
+        if use_llm
+        else None
     )
 
     current_vision_output: dict[str, VisionStudyOutput] = {}
@@ -246,7 +262,7 @@ def main(argv: list[str] | None = None) -> int:
             collection, top_k=args.retrieval_top_k
         ),
         fusion_node=make_label_fusion_node(
-            use_llm=True,
+            use_llm=use_llm,
             llm_agent=label_fusion_agent,
             margin=args.gray_zone_margin,
         ),
@@ -399,7 +415,11 @@ def main(argv: list[str] | None = None) -> int:
             "ollama_base_url": args.ollama_base_url,
             "ollama_temperature": args.ollama_temperature,
             "ollama_timeout_seconds": args.ollama_timeout_seconds,
-            "fusion_llm_policy_version": LLM_REVIEW_POLICY_VERSION,
+            "fusion_llm_policy_version": (
+                LLM_REVIEW_POLICY_VERSION if use_llm else None
+            ),
+            "fusion_mode": "llm_guarded_review" if use_llm else "deterministic",
+            "llm_enabled": use_llm,
             "study_count": len(records),
             "view_count": len(selected_manifest),
             "max_studies": args.max_studies,

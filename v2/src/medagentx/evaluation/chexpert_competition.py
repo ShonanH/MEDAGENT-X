@@ -277,8 +277,9 @@ def select_competition_f1_threshold(
     targets: Sequence[int],
     *,
     current_threshold: float,
+    min_specificity: float = 0.0,
 ) -> CompetitionThresholdSelection:
-    """Select the validation threshold with maximum positive-class F1."""
+    """Select maximum validation F1 subject to a specificity floor."""
     scores = [float(value) for value in probabilities]
     binary_targets = [int(value) for value in targets]
     if not scores or len(scores) != len(binary_targets):
@@ -291,6 +292,8 @@ def select_competition_f1_threshold(
         raise ValueError("threshold calibration requires both target classes")
     if not 0.0 <= current_threshold <= 1.0:
         raise ValueError("current_threshold must be in [0, 1]")
+    if not 0.0 <= min_specificity <= 1.0:
+        raise ValueError("min_specificity must be in [0, 1]")
 
     current = _threshold_metrics(
         scores,
@@ -299,10 +302,20 @@ def select_competition_f1_threshold(
     )
     candidates = [
         _threshold_metrics(scores, binary_targets, threshold=threshold)
-        for threshold in sorted(set(scores))
+        for threshold in sorted(set(scores) | {1.0})
     ]
+    eligible = [
+        candidate
+        for candidate in candidates
+        if candidate.specificity >= min_specificity
+    ]
+    if not eligible:
+        raise ValueError(
+            "No observed-score threshold satisfies "
+            f"min_specificity={min_specificity}"
+        )
     selected = max(
-        candidates,
+        eligible,
         key=lambda item: (
             item.f1,
             item.precision,
