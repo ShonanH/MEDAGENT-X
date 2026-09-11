@@ -367,3 +367,25 @@ Every full run must save:
 The next file to implement is the PNG/label schema inspection and manifest audit.
 Do not modify the trainer until the exact Redivis join keys, label values, image
 counts, and patient exclusions are known.
+
+The implemented audit entry point is:
+
+```text
+v2/src/medagentx/cli/audit_chexpert_competition_manifest.py
+```
+
+Example invocation (run only after the local PNG root and expert test
+groundtruth path are confirmed):
+
+```text
+PYTHONPATH=v2/src python -m medagentx.cli.audit_chexpert_competition_manifest \
+  --png-root /path/to/PNG_train \
+  --expert-test-groundtruth v2/data/groundtruth.csv \
+  --uncertainty-policy ignore_uncertain
+```
+
+It requires a local `PNG_train` root and the released expert test groundtruth
+CSV. The explicit uncertainty policy is selected at invocation time; the
+default is `ignore_uncertain`. It writes only to the fresh
+`v2/artifacts/chexpert_competition_v1/` root and does not create a development
+split. Development splitting remains a separate, immutable patient-level step.
