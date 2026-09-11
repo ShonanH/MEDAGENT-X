@@ -188,35 +188,28 @@ class RedivisClient:
 
         output = Path(output_path)
         output.parent.mkdir(parents=True, exist_ok=True)
-        partial = output.with_name(f"{output.name}.part")
+
+        mode = "wb"
+        extra_headers: dict[str, str] = {}
 
         if output.exists() and not overwrite:
             size = output.stat().st_size
-            if size > 0:
+            if size > 0 and not resume:
                 return RedivisDownloadResult(
                     file_id=file_id,
                     output_path=str(output),
                     status="already_exists",
                     bytes_written=size,
                 )
-
-        if overwrite:
-            output.unlink(missing_ok=True)
-            partial.unlink(missing_ok=True)
-        elif not resume:
-            partial.unlink(missing_ok=True)
+            if size > 0 and resume:
+                mode = "ab"
+                extra_headers["Range"] = f"bytes={size}-"
 
         url = f"{self.base_url}/rawFiles/{file_id.strip()}"
         last_error = ""
 
         for _ in range(self.max_retries):
             try:
-                partial_size = partial.stat().st_size if partial.exists() else 0
-                extra_headers = (
-                    {"Range": f"bytes={partial_size}-"}
-                    if resume and partial_size > 0
-                    else {}
-                )
                 with requests.get(
                     url,
                     headers=self._headers(extra_headers),
@@ -224,43 +217,20 @@ class RedivisClient:
                     stream=True,
                 ) as response:
                     if response.status_code == 416:
-                        match = re.search(
-                            r"\*/(\d+)", response.headers.get("Content-Range", "")
-                        )
-                        expected_size = int(match.group(1)) if match else None
-                        if (
-                            expected_size is not None
-                            and partial_size == expected_size
-                        ):
-                            os.replace(partial, output)
-                            return RedivisDownloadResult(
-                                file_id=file_id,
-                                output_path=str(output),
-                                status="downloaded",
-                                bytes_written=output.stat().st_size,
-                            )
-                        partial.unlink(missing_ok=True)
-                        raise RuntimeError(
-                            "Redivis rejected the resume offset; partial file reset"
+                        return RedivisDownloadResult(
+                            file_id=file_id,
+                            output_path=str(output),
+                            status="already_exists",
+                            bytes_written=output.stat().st_size,
                         )
                     response.raise_for_status()
 
-                    # A compliant range response is 206. If the server returns
-                    # 200, restart the partial file instead of appending a full
-                    # response to it.
-                    mode = (
-                        "ab"
-                        if partial_size > 0 and response.status_code == 206
-                        else "wb"
-                    )
-                    with partial.open(mode) as handle:
+                    with output.open(mode) as handle:
                         for chunk in response.iter_content(
                             chunk_size=self.chunk_size
                         ):
                             if chunk:
                                 handle.write(chunk)
-
-                os.replace(partial, output)
 
                 return RedivisDownloadResult(
                     file_id=file_id,
@@ -276,10 +246,6 @@ class RedivisClient:
             file_id=file_id,
             output_path=str(output),
             status="failed",
-            bytes_written=(
-                partial.stat().st_size
-                if partial.exists()
-                else (output.stat().st_size if output.exists() else 0)
-            ),
+            bytes_written=output.stat().st_size if output.exists() else 0,
             error=last_error,
         )

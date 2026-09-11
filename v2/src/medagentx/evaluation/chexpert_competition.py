@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-import math
 from pathlib import Path, PurePosixPath
-from typing import Mapping, Sequence
+from typing import Sequence
 
 import pandas as pd
 
@@ -20,54 +18,6 @@ EXPECTED_VIEWS = 668
 COMPETITION_VALIDATION_SPLIT = "competition_val"
 EXPECTED_VALIDATION_STUDIES = 200
 EXPECTED_VALIDATION_VIEWS = 234
-
-
-@dataclass(frozen=True)
-class CompetitionThresholdMetrics:
-    threshold: float
-    tp: int
-    tn: int
-    fp: int
-    fn: int
-    precision: float
-    recall: float
-    f1: float
-    specificity: float
-    positive_rate: float
-
-
-@dataclass(frozen=True)
-class CompetitionThresholdSelection:
-    current: CompetitionThresholdMetrics
-    selected: CompetitionThresholdMetrics
-
-
-def competition_binary_status_map(
-    statuses: Mapping[tuple[str, str], LabelStatus],
-) -> tuple[dict[tuple[str, str], LabelStatus], pd.DataFrame]:
-    """Map competition predictions to present-vs-not-present statuses."""
-    labels = set(CHEXPERT_COMPETITION_LABELS)
-    binary: dict[tuple[str, str], LabelStatus] = {}
-    audit_rows: list[dict[str, str]] = []
-    for (study_key, label), status in statuses.items():
-        if label not in labels:
-            continue
-        mapped = (
-            LabelStatus.PRESENT
-            if status is LabelStatus.PRESENT
-            else LabelStatus.ABSENT
-        )
-        binary[(study_key, label)] = mapped
-        audit_rows.append(
-            {
-                "study_key": study_key,
-                "label": label,
-                "raw_status": status.value,
-                "binary_status": mapped.value,
-                "was_mapped": str(status is LabelStatus.UNCERTAIN).lower(),
-            }
-        )
-    return binary, pd.DataFrame(audit_rows)
 
 
 def _clean_path(value: object, *, field_name: str) -> PurePosixPath:
@@ -240,90 +190,6 @@ def build_competition_validation_ground_truth(
                 )
             )
     return records
-
-
-def _threshold_metrics(
-    probabilities: Sequence[float],
-    targets: Sequence[int],
-    *,
-    threshold: float,
-) -> CompetitionThresholdMetrics:
-    predicted = [probability >= threshold for probability in probabilities]
-    pairs = tuple(zip(predicted, targets))
-    tp = sum(prediction and target == 1 for prediction, target in pairs)
-    tn = sum(not prediction and target == 0 for prediction, target in pairs)
-    fp = sum(prediction and target == 0 for prediction, target in pairs)
-    fn = sum(not prediction and target == 1 for prediction, target in pairs)
-    precision = tp / (tp + fp) if tp + fp else 0.0
-    recall = tp / (tp + fn) if tp + fn else 0.0
-    f1 = 2.0 * precision * recall / (precision + recall) if precision + recall else 0.0
-    specificity = tn / (tn + fp) if tn + fp else 0.0
-    return CompetitionThresholdMetrics(
-        threshold=float(threshold),
-        tp=int(tp),
-        tn=int(tn),
-        fp=int(fp),
-        fn=int(fn),
-        precision=float(precision),
-        recall=float(recall),
-        f1=float(f1),
-        specificity=float(specificity),
-        positive_rate=float((tp + fp) / len(targets)),
-    )
-
-
-def select_competition_f1_threshold(
-    probabilities: Sequence[float],
-    targets: Sequence[int],
-    *,
-    current_threshold: float,
-    min_specificity: float = 0.0,
-) -> CompetitionThresholdSelection:
-    """Select maximum validation F1 subject to a specificity floor."""
-    scores = [float(value) for value in probabilities]
-    binary_targets = [int(value) for value in targets]
-    if not scores or len(scores) != len(binary_targets):
-        raise ValueError("probabilities and targets must be non-empty and equal length")
-    if any(not math.isfinite(value) or not 0.0 <= value <= 1.0 for value in scores):
-        raise ValueError("probabilities must be finite values in [0, 1]")
-    if set(binary_targets) - {0, 1}:
-        raise ValueError("targets must contain only 0 and 1")
-    if set(binary_targets) != {0, 1}:
-        raise ValueError("threshold calibration requires both target classes")
-    if not 0.0 <= current_threshold <= 1.0:
-        raise ValueError("current_threshold must be in [0, 1]")
-    if not 0.0 <= min_specificity <= 1.0:
-        raise ValueError("min_specificity must be in [0, 1]")
-
-    current = _threshold_metrics(
-        scores,
-        binary_targets,
-        threshold=float(current_threshold),
-    )
-    candidates = [
-        _threshold_metrics(scores, binary_targets, threshold=threshold)
-        for threshold in sorted(set(scores) | {1.0})
-    ]
-    eligible = [
-        candidate
-        for candidate in candidates
-        if candidate.specificity >= min_specificity
-    ]
-    if not eligible:
-        raise ValueError(
-            "No observed-score threshold satisfies "
-            f"min_specificity={min_specificity}"
-        )
-    selected = max(
-        eligible,
-        key=lambda item: (
-            item.f1,
-            item.precision,
-            -abs(item.threshold - current_threshold),
-            item.threshold,
-        ),
-    )
-    return CompetitionThresholdSelection(current=current, selected=selected)
 
 
 def build_competition_ground_truth(

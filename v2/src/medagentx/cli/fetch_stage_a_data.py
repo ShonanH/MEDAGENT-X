@@ -17,7 +17,6 @@ from medagentx.data.cohort import (
     write_label_gated_cohort_artifacts,
 )
 from medagentx.data.dicoms import (
-    DEFAULT_PROGRESS_EVERY,
     download_eligible_dicoms,
     summarize_download_status,
 )
@@ -91,18 +90,6 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--overwrite-dicoms", action="store_true")
     parser.add_argument("--overwrite-findings", action="store_true")
     parser.add_argument(
-        "--download-workers",
-        type=int,
-        default=8,
-        help="Concurrent DICOM downloads. Use a lower value if Redivis throttles.",
-    )
-    parser.add_argument(
-        "--progress-every",
-        type=int,
-        default=DEFAULT_PROGRESS_EVERY,
-        help="Print DICOM progress every N completed files (0 disables).",
-    )
-    parser.add_argument(
         "--skip-dicom-download",
         action="store_true",
         help="Fetch label-gated cohort rows without downloading DICOM files.",
@@ -113,10 +100,6 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     """Run Stage A retrieval and persist auditable output tables."""
     args = build_parser().parse_args(argv)
-    if args.download_workers <= 0:
-        raise ValueError("download-workers must be > 0")
-    if args.progress_every < 0:
-        raise ValueError("progress-every must be >= 0")
     output_root: Path = args.output_root
     output_root.mkdir(parents=True, exist_ok=True)
 
@@ -182,8 +165,6 @@ def main(argv: list[str] | None = None) -> int:
         dicom_root,
         overwrite=args.overwrite_dicoms,
         resume=True,
-        max_workers=args.download_workers,
-        progress_every=args.progress_every,
     )
     status_csv = output_root / "dicom_download_status.csv"
     status.to_csv(status_csv, index=False)

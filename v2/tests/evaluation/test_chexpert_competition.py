@@ -10,7 +10,6 @@ from medagentx.evaluation.chexpert_competition import (
     build_competition_validation_ground_truth,
     build_competition_view_manifest,
     competition_study_key,
-    select_competition_f1_threshold,
 )
 from medagentx.labels.constants import CHEXPERT_COMPETITION_LABELS
 from medagentx.labels.statuses import LabelStatus
@@ -136,29 +135,3 @@ def test_validation_ground_truth_collapses_consistent_views() -> None:
     statuses = {record.label: record.ground_truth_status for record in records}
     assert statuses["Edema"] is LabelStatus.PRESENT
     assert statuses["Atelectasis"] is LabelStatus.ABSENT
-
-
-def test_select_competition_f1_threshold_uses_validation_scores() -> None:
-    selection = select_competition_f1_threshold(
-        probabilities=[0.10, 0.20, 0.30, 0.80],
-        targets=[0, 1, 1, 0],
-        current_threshold=0.50,
-    )
-
-    assert selection.current.f1 == 0.0
-    assert selection.selected.threshold == pytest.approx(0.20)
-    assert selection.selected.tp == 2
-    assert selection.selected.fp == 1
-    assert selection.selected.f1 == pytest.approx(0.8)
-
-
-def test_select_competition_f1_threshold_enforces_specificity_floor() -> None:
-    selection = select_competition_f1_threshold(
-        probabilities=[0.10, 0.20, 0.30, 0.80],
-        targets=[0, 1, 1, 0],
-        current_threshold=0.50,
-        min_specificity=1.0,
-    )
-
-    assert selection.selected.threshold == pytest.approx(1.0)
-    assert selection.selected.specificity == 1.0
