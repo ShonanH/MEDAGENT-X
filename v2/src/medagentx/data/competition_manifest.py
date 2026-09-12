@@ -455,7 +455,7 @@ def _build_study_labels(
         for label in CHEXPERT_COMPETITION_LABELS:
             view_values: list[Any] = []
             view_statuses: list[LabelStatus] = []
-            for path in study_rows["canonical_image_path"]:
+            for path in study_rows["image_path_relative"]:
                 record = label_records.get((TRAIN_SPLIT, path))
                 if record is None:
                     raise CompetitionManifestError(
@@ -651,12 +651,12 @@ def build_competition_manifest(
     train_views = pd.DataFrame(metadata_records)
     if train_views.empty:
         raise CompetitionManifestError("No training view rows were produced")
-    if train_views["canonical_image_path"].duplicated().any():
+    if train_views["image_path_relative"].duplicated().any():
         raise CompetitionManifestError("Duplicate canonical training image paths")
     if train_views["image_id"].duplicated().any():
         raise CompetitionManifestError("Duplicate PNG file_ids in training manifest")
 
-    train_metadata_paths = set(train_views["canonical_image_path"])
+    train_metadata_paths = set(train_views["image_path_relative"])
     png_paths = set(png_lookup)
     if train_metadata_paths != png_paths:
         raise CompetitionManifestError(
