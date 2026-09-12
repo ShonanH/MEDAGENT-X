@@ -566,12 +566,24 @@ def build_competition_manifest(
             raise CompetitionManifestError(
                 f"Unsupported metadata split: {split!r}"
             )
-        for field in ("path_to_image", "deid_patient_id", "frontal_lateral", "ap_pa"):
+        for field in ("path_to_image", "deid_patient_id", "frontal_lateral"):
             value = raw.get(field)
             if value is None or pd.isna(value) or not str(value).strip():
                 raise CompetitionManifestError(
                     f"Metadata has a missing {field}: {raw!r}"
                 )
+
+        # AP/PA is a frontal-view projection attribute. CheXpert metadata
+        # correctly leaves it null for lateral views, so only require it when
+        # the image is marked as frontal (or has an unknown view type).
+        view_type = str(raw["frontal_lateral"]).strip().lower()
+        ap_pa = raw.get("ap_pa")
+        if view_type != "lateral" and (
+            ap_pa is None or pd.isna(ap_pa) or not str(ap_pa).strip()
+        ):
+            raise CompetitionManifestError(
+                f"Metadata has a missing ap_pa for non-lateral view: {raw!r}"
+            )
 
         _, canonical = normalize_image_path(
             raw["path_to_image"],
