@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import time
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Callable
@@ -378,20 +379,42 @@ def _build_png_lookup(
 def _audit_local_pngs(
     view_frame: pd.DataFrame,
     image_root: Path,
+    *,
+    progress_every: int = 1_000,
 ) -> dict[str, Any]:
     """Verify existence and readability of every training PNG."""
+    if progress_every < 0:
+        raise ValueError("progress_every must be >= 0")
+
     missing: list[str] = []
     unreadable: list[dict[str, str]] = []
-    for relative in view_frame["image_path_relative"].astype(str):
+    total = len(view_frame)
+    started = time.perf_counter()
+    for completed, relative in enumerate(
+        view_frame["image_path_relative"].astype(str),
+        start=1,
+    ):
         local_path = image_root / relative
         if not local_path.is_file():
             missing.append(str(local_path))
-            continue
-        try:
-            with Image.open(local_path) as image:
-                image.verify()
-        except Exception as exc:
-            unreadable.append({"path": str(local_path), "error": str(exc)})
+        else:
+            try:
+                with Image.open(local_path) as image:
+                    image.verify()
+            except Exception as exc:
+                unreadable.append({"path": str(local_path), "error": str(exc)})
+
+        if progress_every and (
+            completed % progress_every == 0 or completed == total
+        ):
+            elapsed = max(time.perf_counter() - started, 1e-6)
+            rate = completed / elapsed
+            remaining = (total - completed) / rate if rate else 0.0
+            print(
+                f"[local_png_audit] {completed}/{total} files "
+                f"({rate:.1f} files/s, eta {remaining / 60:.1f} min)",
+                flush=True,
+            )
 
     if missing or unreadable:
         raise CompetitionManifestError(
@@ -532,6 +555,7 @@ def build_competition_manifest(
     uncertainty_policy: str = "ignore_uncertain",
     metadata_page_size: int = 50_000,
     png_page_size: int = 100_000,
+    image_progress_every: int = 1_000,
 ) -> dict[str, Path]:
     """Fetch, validate, and write the competition manifest artifacts."""
     if not isinstance(client, RedivisClient):
@@ -703,7 +727,11 @@ def build_competition_manifest(
             f"expected={EXPECTED_VALID_STUDIES}, observed={len(valid_studies)}"
         )
 
-    local_image_audit = _audit_local_pngs(train_views, image_root)
+    local_image_audit = _audit_local_pngs(
+        train_views,
+        image_root,
+        progress_every=image_progress_every,
+    )
     study_labels = _build_study_labels(
         train_views,
         findings["records"],

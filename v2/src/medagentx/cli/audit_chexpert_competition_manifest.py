@@ -65,6 +65,15 @@ def build_parser() -> argparse.ArgumentParser:
         type=int,
         default=100_000,
     )
+    parser.add_argument(
+        "--image-progress-every",
+        type=int,
+        default=1_000,
+        help=(
+            "Print local PNG verification progress every N files; "
+            "0 disables progress output."
+        ),
+    )
     return parser
 
 
@@ -80,6 +89,7 @@ def main(argv: list[str] | None = None) -> int:
         uncertainty_policy=args.uncertainty_policy,
         metadata_page_size=args.metadata_page_size,
         png_page_size=args.png_page_size,
+        image_progress_every=args.image_progress_every,
     )
     for name, path in outputs.items():
         print(f"[CompetitionManifest] {name}: {path}")
@@ -88,4 +98,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
