@@ -402,3 +402,8 @@ CSV. The explicit uncertainty policy is selected at invocation time; the
 default is `ignore_uncertain`. It writes only to the fresh
 `v2/artifacts/chexpert_competition_v1/` root and does not create a development
 split. Development splitting remains a separate, immutable patient-level step.
+
+If the full local PNG readability pass is impractical on persistent Ceph
+storage, pass `--skip-local-image-audit`. The manifest records this as an
+explicitly skipped check rather than a successful readability audit; all
+Redivis joins, labels, counts, and leakage checks still run.

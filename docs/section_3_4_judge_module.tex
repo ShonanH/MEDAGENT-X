@@ -1,0 +1,47 @@
+\subsection{Judge Module: Offline Prediction Evaluation}
+\label{sec:judge}
+
+The MEDAGENT-X Judge is a deterministic offline evaluator, not an LLM. It compares saved image-only and finalized fusion predictions against the frozen study-level CheXpert-style labels constructed in Stage 1. It neither reads retrieved reports nor modifies predictions, and it runs only after inference is complete. Ground truth and predictions are matched by $(\mathrm{study\_key},y)$ for each disease label $y$; duplicate ground-truth rows, missing predictions, and invalid statuses cause evaluation to fail. This separation prevents evaluation labels from entering retrieval, fusion, or either LLM prompt.
+
+For ground-truth status $z^{\mathrm{gt}}_{s,y}$ and prediction $\widehat z_{s,y}$, the Judge applies the following fixed policy:
+\[
+J(z^{\mathrm{gt}}_{s,y},\widehat z_{s,y})=
+\begin{cases}
+\mathrm{TP}, & z^{\mathrm{gt}}_{s,y}=\mathrm{present},\ \widehat z_{s,y}=\mathrm{present},\\
+\mathrm{FN}, & z^{\mathrm{gt}}_{s,y}=\mathrm{present},\ \widehat z_{s,y}=\mathrm{absent},\\
+\mathrm{MU}, & z^{\mathrm{gt}}_{s,y}=\mathrm{present},\ \widehat z_{s,y}=\mathrm{uncertain},\\
+\mathrm{FP}, & z^{\mathrm{gt}}_{s,y}=\mathrm{absent},\ \widehat z_{s,y}=\mathrm{present},\\
+\mathrm{TN}, & z^{\mathrm{gt}}_{s,y}=\mathrm{absent},\ \widehat z_{s,y}=\mathrm{absent},\\
+\mathrm{UR}, & \text{otherwise},
+\end{cases}
+\]
+where $\mathrm{MU}$ denotes a missed positive expressed as an uncertain prediction and $\mathrm{UR}$ denotes an unresolved cell. Ground-truth uncertain and unmentioned cells are unresolved and excluded from binary metrics, preserving the uncertainty-aware CheXpert semantics \cite{irvin2019chexpert}. A predicted uncertain status is not a free abstention: it penalizes recall when ground truth is present, but is unresolved when ground truth is absent. Coverage is therefore reported alongside predictive performance, consistent with the broader principle that selective predictions should be assessed together with the fraction of scoreable decisions \cite{geifman2017selective}.
+
+For each label $y$, the Judge computes
+\[
+\operatorname{Precision}_y=
+\frac{\mathrm{TP}_y}{\mathrm{TP}_y+\mathrm{FP}_y},
+\qquad
+\operatorname{Recall}_y=
+\frac{\mathrm{TP}_y}
+{\mathrm{TP}_y+\mathrm{FN}_y+\mathrm{MU}_y},
+\]
+\[
+F_{1,y}=
+\frac{2\operatorname{Precision}_y\operatorname{Recall}_y}
+{\operatorname{Precision}_y+\operatorname{Recall}_y},
+\qquad
+\operatorname{Coverage}_y=
+\frac{\mathrm{TP}_y+\mathrm{TN}_y+\mathrm{FP}_y+\mathrm{FN}_y+\mathrm{MU}_y}
+{N_y},
+\]
+where $N_y$ is the total number of evaluated cells for label $y$. Undefined ratios remain undefined rather than being replaced by zero. Macro metrics average defined per-label values equally, while micro metrics pool counts across labels before computing precision, recall, and F1. Reporting both is important for the imbalanced multi-label setting: macro scores retain the influence of rarer findings, whereas micro scores are weighted toward labels with more scoreable cells \cite{davis2006relationship,zhang2020convex}. Per-label uncertainty counts and complete ground-truth-versus-prediction status tables are also retained.
+
+The Judge evaluates the image-only status $\widehat z^{\mathrm{vis}}_{s,y}$ and finalized status $\widehat z^{\mathrm{fus}}_{s,y}$ on the same two scopes: the complete evaluation set $\mathcal G$ and the gray-zone subset
+\[
+\mathcal G_{\mathrm{gray}}=
+\{(s,y)\in\mathcal G:g_{s,y}=1\}.
+\]
+This yields four paired evaluations: vision and fusion on $\mathcal G$, and vision and fusion on $\mathcal G_{\mathrm{gray}}$. The full-set comparison measures end-to-end impact, while the gray-zone comparison isolates cells for which fusion was permitted to intervene.
+
+Finally, the Judge audits changed labels individually. It records absent-to-present promotions, present-to-absent or present-to-uncertain demotions, and their effects on true positives, false positives, and false-negative-equivalent outcomes. For labels reviewed by the first LLM, the deterministic status $\widehat z^{\mathrm{det}}_{s,y}$ is compared with $\widehat z^{\mathrm{fus}}_{s,y}$ and classified as helped, hurt, unchanged, or unscored. The second LLM's evidence scores do not enter precision, recall, or F1 because they characterize evidential support rather than diagnostic correctness. Versioned summaries, per-label metrics, status confusions, changed-cell records, and LLM-policy audits preserve the link between aggregate results and individual study--label decisions.
