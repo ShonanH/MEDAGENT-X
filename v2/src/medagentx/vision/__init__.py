@@ -10,6 +10,7 @@ from medagentx.vision.data import (
     StudyTrainingRecord,
     build_study_inference_records,
     build_study_training_records,
+    raster_to_pil_rgb,
 )
 from medagentx.vision.interface import VisionBackend
 
@@ -22,4 +23,5 @@ __all__ = [
     "VisionBackend",
     "build_study_inference_records",
     "build_study_training_records",
+    "raster_to_pil_rgb",
 ]

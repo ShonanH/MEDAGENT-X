@@ -59,6 +59,10 @@ class TrainingConfig:
     selection_metric: str = "macro_f1"
     warmup_ratio: float = 0.05
     max_grad_norm: float = 1.0
+    label_names: tuple[str, ...] = DISEASE_LABELS
+    label_policy_version: str = CHEXPERT_TRAINING_POLICY_VERSION
+    split_policy_version: str = SPLIT_POLICY_VERSION
+    image_source: str = "dicom"
 
 
 def set_reproducible_seed(seed: int) -> None:
@@ -352,6 +356,7 @@ def prediction_table(
     thresholds: dict[str, float],
     *,
     split: str,
+    label_names: tuple[str, ...] = DISEASE_LABELS,
 ) -> pd.DataFrame:
     """Flatten study predictions into the permanent vision output contract."""
     rows: list[dict[str, Any]] = []
@@ -365,7 +370,7 @@ def prediction_table(
             "dicom_paths": "|".join(predictions["dicom_paths"][index]),
             "vision_backend_id": VISION_BACKEND_ID,
         }
-        for label_index, label in enumerate(DISEASE_LABELS):
+        for label_index, label in enumerate(label_names):
             slug = snake_label(label)
             probability = float(probabilities[index, label_index])
             threshold = float(thresholds[label])
@@ -381,6 +386,8 @@ def prediction_table(
 def inference_prediction_table(
     predictions: dict[str, Any],
     thresholds: dict[str, float],
+    *,
+    label_names: tuple[str, ...] = DISEASE_LABELS,
 ) -> pd.DataFrame:
     """Flatten image-only backend predictions into the permanent contract."""
     rows: list[dict[str, Any]] = []
@@ -394,7 +401,7 @@ def inference_prediction_table(
             "dicom_paths": "|".join(predictions["dicom_paths"][index]),
             "vision_backend_id": VISION_BACKEND_ID,
         }
-        for label_index, label in enumerate(DISEASE_LABELS):
+        for label_index, label in enumerate(label_names):
             slug = snake_label(label)
             probability = float(probabilities[index, label_index])
             threshold = float(thresholds[label])
@@ -466,12 +473,14 @@ def train_with_validation(
             val_predictions["targets"],
             val_predictions["probabilities"],
             val_predictions["masks"],
+            label_names=config.label_names,
         )
         val_metrics = compute_masked_metrics(
             val_predictions["targets"],
             val_predictions["probabilities"],
             val_predictions["masks"],
             thresholds,
+            label_names=config.label_names,
         )
         val_metrics["masked_loss"] = val_predictions["masked_loss"]
         val_metrics["loss_name"] = config.loss_name
@@ -500,7 +509,8 @@ def train_with_validation(
                 "model_state_dict": model.state_dict(),
                 "model_name": config.model_name,
                 "vision_backend_id": VISION_BACKEND_ID,
-                "disease_labels": list(DISEASE_LABELS),
+                "disease_labels": list(config.label_names),
+                "label_names": list(config.label_names),
                 "trainable_last_blocks": model.trainable_last_blocks,
                 "hidden_size": model.hidden_size,
                 "pooling_mode": getattr(model, "pooling_mode", "mean"),
@@ -510,8 +520,9 @@ def train_with_validation(
                 "selection_score": score,
                 "val_metrics": val_metrics,
                 "training_config": asdict(config),
-                "label_policy_version": CHEXPERT_TRAINING_POLICY_VERSION,
-                "split_policy_version": SPLIT_POLICY_VERSION,
+                "label_policy_version": config.label_policy_version,
+                "split_policy_version": config.split_policy_version,
+                "image_source": config.image_source,
             }
             temporary = checkpoint_path.with_suffix(".tmp")
             torch.save(checkpoint, temporary)
@@ -558,13 +569,17 @@ def load_finetuned_checkpoint(
         checkpoint_path,
         map_location="cpu",
     )
-    if checkpoint.get("disease_labels") != list(DISEASE_LABELS):
-        raise ValueError("Checkpoint disease label order is incompatible")
+    label_names = tuple(
+        checkpoint.get("label_names", checkpoint.get("disease_labels", DISEASE_LABELS))
+    )
+    if not label_names:
+        raise ValueError("Checkpoint label inventory is empty")
 
     model = RadDinoStudyClassifier.from_pretrained(
         checkpoint["model_name"],
         trainable_last_blocks=int(checkpoint["trainable_last_blocks"]),
         pooling_mode=str(checkpoint.get("pooling_mode", "mean")),
+        label_names=label_names,
     )
     model.load_state_dict(checkpoint["model_state_dict"], strict=True)
     model.to(device)

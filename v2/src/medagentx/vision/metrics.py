@@ -27,6 +27,7 @@ def tune_validation_thresholds(
     probabilities: np.ndarray,
     masks: np.ndarray,
     *,
+    label_names: Sequence[str] = DISEASE_LABELS,
     threshold_min: float = THRESHOLD_MIN,
     threshold_max: float = THRESHOLD_MAX,
     threshold_step: float = THRESHOLD_STEP,
@@ -38,9 +39,12 @@ def tune_validation_thresholds(
         threshold_max + threshold_step / 2.0,
         threshold_step,
     )
+    label_names = tuple(label_names)
+    if len(label_names) != targets.shape[1]:
+        raise ValueError("label_names length must match metric array columns")
     output: dict[str, float] = {}
 
-    for index, label in enumerate(DISEASE_LABELS):
+    for index, label in enumerate(label_names):
         valid = masks[:, index] == 1
         if not np.any(valid):
             output[label] = 0.5
@@ -66,19 +70,24 @@ def compute_masked_metrics(
     probabilities: np.ndarray,
     masks: np.ndarray,
     thresholds: dict[str, float] | None = None,
+    *,
+    label_names: Sequence[str] = DISEASE_LABELS,
 ) -> dict[str, float | int | None]:
     """Compute per-label and macro AUROC/AP/F1 on supervised cells."""
     from sklearn.metrics import average_precision_score, roc_auc_score
 
     _validate_shapes(targets, probabilities, masks)
-    thresholds = thresholds or {label: 0.5 for label in DISEASE_LABELS}
+    label_names = tuple(label_names)
+    if len(label_names) != targets.shape[1]:
+        raise ValueError("label_names length must match metric array columns")
+    thresholds = thresholds or {label: 0.5 for label in label_names}
 
     output: dict[str, float | int | None] = {}
     aurocs: list[float] = []
     average_precisions: list[float] = []
     f1s: list[float] = []
 
-    for index, label in enumerate(DISEASE_LABELS):
+    for index, label in enumerate(label_names):
         valid = masks[:, index] == 1
         y_true = targets[valid, index].astype(int)
         y_prob = probabilities[valid, index]
@@ -126,13 +135,11 @@ def _validate_shapes(
     probabilities: np.ndarray,
     masks: np.ndarray,
 ) -> None:
-    expected_labels = len(DISEASE_LABELS)
     if targets.shape != probabilities.shape or targets.shape != masks.shape:
         raise ValueError(
             "targets, probabilities, and masks must have identical shapes"
         )
-    if targets.ndim != 2 or targets.shape[1] != expected_labels:
+    if targets.ndim != 2:
         raise ValueError(
-            f"Expected arrays shaped [studies, {expected_labels}], "
-            f"got {targets.shape}"
+            f"Expected arrays shaped [studies, labels], got {targets.shape}"
         )
