@@ -74,6 +74,14 @@ def build_parser() -> argparse.ArgumentParser:
             "0 disables progress output."
         ),
     )
+    parser.add_argument(
+        "--skip-local-image-audit",
+        action="store_true",
+        help=(
+            "Skip opening/verifying every local PNG. The manifest audit will "
+            "record that this check was explicitly skipped."
+        ),
+    )
     return parser
 
 
@@ -90,6 +98,7 @@ def main(argv: list[str] | None = None) -> int:
         metadata_page_size=args.metadata_page_size,
         png_page_size=args.png_page_size,
         image_progress_every=args.image_progress_every,
+        skip_local_image_audit=args.skip_local_image_audit,
     )
     for name, path in outputs.items():
         print(f"[CompetitionManifest] {name}: {path}")
