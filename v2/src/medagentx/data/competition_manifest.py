@@ -422,6 +422,7 @@ def _audit_local_pngs(
             f"missing={len(missing)}, unreadable={len(unreadable)}"
         )
     return {
+        "enabled": True,
         "checked": int(len(view_frame)),
         "missing": 0,
         "unreadable": 0,
@@ -556,6 +557,7 @@ def build_competition_manifest(
     metadata_page_size: int = 50_000,
     png_page_size: int = 100_000,
     image_progress_every: int = 1_000,
+    skip_local_image_audit: bool = False,
 ) -> dict[str, Path]:
     """Fetch, validate, and write the competition manifest artifacts."""
     if not isinstance(client, RedivisClient):
@@ -727,11 +729,20 @@ def build_competition_manifest(
             f"expected={EXPECTED_VALID_STUDIES}, observed={len(valid_studies)}"
         )
 
-    local_image_audit = _audit_local_pngs(
-        train_views,
-        image_root,
-        progress_every=image_progress_every,
-    )
+    if skip_local_image_audit:
+        local_image_audit = {
+            "enabled": False,
+            "checked": 0,
+            "missing": None,
+            "unreadable": None,
+            "reason": "explicitly_skipped_by_cli_flag",
+        }
+    else:
+        local_image_audit = _audit_local_pngs(
+            train_views,
+            image_root,
+            progress_every=image_progress_every,
+        )
     study_labels = _build_study_labels(
         train_views,
         findings["records"],
