@@ -76,6 +76,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-train-studies", type=int, default=None)
     parser.add_argument("--max-dev-studies", type=int, default=None)
     parser.add_argument(
+        "--progress-every",
+        type=int,
+        default=500,
+        help="Print train/validation batch progress every N batches; 0 disables it.",
+    )
+    parser.add_argument(
         "--no-mixed-precision",
         action="store_true",
         help="Disable CUDA mixed precision.",
@@ -125,6 +131,8 @@ def main(argv: list[str] | None = None) -> int:
             raise ValueError(f"{name.replace('_', '-')} must be > 0")
     if args.num_workers < 0:
         raise ValueError("num-workers must be >= 0")
+    if args.progress_every < 0:
+        raise ValueError("progress-every must be >= 0")
     if args.backbone_lr <= 0 or args.head_lr <= 0:
         raise ValueError("learning rates must be > 0")
     if args.weight_decay < 0 or args.max_grad_norm < 0:
@@ -223,6 +231,7 @@ def main(argv: list[str] | None = None) -> int:
         label_policy_version="chexpert_ignore_uncertain_v1",
         split_policy_version=COMPETITION_SPLIT_POLICY_VERSION,
         image_source="png_train",
+        progress_every=args.progress_every,
     )
 
     args.output_root.mkdir(parents=True, exist_ok=True)

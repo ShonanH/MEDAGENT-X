@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import math
 import random
+import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -63,6 +64,7 @@ class TrainingConfig:
     label_policy_version: str = CHEXPERT_TRAINING_POLICY_VERSION
     split_policy_version: str = SPLIT_POLICY_VERSION
     image_source: str = "dicom"
+    progress_every: int = 0
 
 
 def set_reproducible_seed(seed: int) -> None:
@@ -143,6 +145,28 @@ def _move_batch(batch: dict[str, Any], device: torch.device) -> dict[str, Any]:
     return output
 
 
+def _print_batch_progress(
+    *,
+    phase: str,
+    epoch: int | None,
+    completed: int,
+    total: int,
+    started: float,
+) -> None:
+    """Print throughput and ETA for a long-running loader pass."""
+    elapsed = max(time.perf_counter() - started, 1e-6)
+    rate = completed / elapsed
+    remaining = (total - completed) / rate if rate > 0 else 0.0
+    epoch_text = f" epoch={epoch}" if epoch is not None else ""
+    percent = 100.0 * completed / max(total, 1)
+    print(
+        f"[Vision] phase={phase}{epoch_text} batch={completed}/{total} "
+        f"({percent:.1f}%, {rate:.2f} batches/s, "
+        f"eta={remaining / 60.0:.1f} min)",
+        flush=True,
+    )
+
+
 def train_one_epoch(
     model: Any,
     loader: Any,
@@ -153,10 +177,14 @@ def train_one_epoch(
     mixed_precision: bool,
     config: TrainingConfig,
     scheduler: torch.optim.lr_scheduler.LRScheduler | None = None,
+    epoch: int | None = None,
+    progress_every: int = 0,
 ) -> float:
     """Train one epoch and return supervised-cell-weighted masked loss."""
     if gradient_accumulation_steps <= 0:
         raise ValueError("gradient_accumulation_steps must be > 0")
+    if progress_every < 0:
+        raise ValueError("progress_every must be >= 0")
 
     model.train()
     optimizer.zero_grad(set_to_none=True)
@@ -164,6 +192,8 @@ def train_one_epoch(
     scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
     loss_sum = 0.0
     supervised_sum = 0
+    total_batches = len(loader)
+    started = time.perf_counter()
 
     for step, raw_batch in enumerate(loader):
         batch = _move_batch(raw_batch, device)
@@ -205,6 +235,19 @@ def train_one_epoch(
 
         loss_sum += float(loss.detach().item()) * supervised
         supervised_sum += supervised
+        completed = step + 1
+        if progress_every and (
+            completed == 1
+            or completed % progress_every == 0
+            or completed == total_batches
+        ):
+            _print_batch_progress(
+                phase="train",
+                epoch=epoch,
+                completed=completed,
+                total=total_batches,
+                started=started,
+            )
 
     return loss_sum / max(supervised_sum, 1)
 
@@ -217,6 +260,9 @@ def collect_predictions(
     device: torch.device,
     mixed_precision: bool,
     config: TrainingConfig,
+    phase: str = "eval",
+    epoch: int | None = None,
+    progress_every: int = 0,
 ) -> dict[str, Any]:
     """Collect study-level probabilities, masks, metadata, and masked loss."""
     model.eval()
@@ -230,8 +276,12 @@ def collect_predictions(
     dicom_paths: list[tuple[str, ...]] = []
     loss_sum = 0.0
     supervised_sum = 0
+    if progress_every < 0:
+        raise ValueError("progress_every must be >= 0")
+    total_batches = len(loader)
+    started = time.perf_counter()
 
-    for raw_batch in loader:
+    for step, raw_batch in enumerate(loader):
         batch = _move_batch(raw_batch, device)
         with torch.autocast(
             device_type=device.type,
@@ -261,6 +311,19 @@ def collect_predictions(
         dicom_paths.extend(raw_batch["dicom_paths"])
         loss_sum += float(loss.detach().item()) * supervised
         supervised_sum += supervised
+        completed = step + 1
+        if progress_every and (
+            completed == 1
+            or completed % progress_every == 0
+            or completed == total_batches
+        ):
+            _print_batch_progress(
+                phase=phase,
+                epoch=epoch,
+                completed=completed,
+                total=total_batches,
+                started=started,
+            )
 
     return {
         "probabilities": np.concatenate(probabilities, axis=0),
@@ -461,6 +524,8 @@ def train_with_validation(
             mixed_precision=config.mixed_precision,
             config=config,
             scheduler=scheduler,
+            epoch=epoch,
+            progress_every=config.progress_every,
         )
         val_predictions = collect_predictions(
             model,
@@ -468,6 +533,9 @@ def train_with_validation(
             device=device,
             mixed_precision=config.mixed_precision,
             config=config,
+            phase="validation",
+            epoch=epoch,
+            progress_every=config.progress_every,
         )
         thresholds = tune_validation_thresholds(
             val_predictions["targets"],
