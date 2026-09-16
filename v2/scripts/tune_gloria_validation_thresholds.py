@@ -164,6 +164,36 @@ def _load_joined_rows(
     )
 
 
+def _validation_normalization(scores_path: Path) -> dict[str, dict[str, float]]:
+    scores = pd.read_csv(scores_path)
+    normalization: dict[str, dict[str, float]] = {}
+    for label in LABELS:
+        raw_column = f"raw_{label}"
+        if raw_column not in scores.columns:
+            raise ValueError(
+                f"Score file is missing raw values required for {label}: {raw_column}"
+            )
+        raw = scores[raw_column].to_numpy(dtype=float)
+        mean = float(np.mean(raw))
+        std = float(np.std(raw, ddof=0))
+        if not np.isfinite(std) or std <= 0:
+            raise ValueError(f"Invalid validation standard deviation for {label}: {std}")
+        reconstructed = (raw - mean) / std
+        saved = scores[label].to_numpy(dtype=float)
+        maximum_error = float(np.max(np.abs(reconstructed - saved)))
+        if maximum_error > 1e-5:
+            raise ValueError(
+                f"Saved normalized scores for {label} do not match its raw scores; "
+                f"maximum error={maximum_error}"
+            )
+        normalization[label] = {
+            "raw_mean": mean,
+            "raw_std": std,
+            "method": "zscore_population",
+        }
+    return normalization
+
+
 def main() -> None:
     args = build_parser().parse_args()
     scores_path = _require_file(args.scores, "GLoRIA validation scores")
@@ -174,6 +204,7 @@ def main() -> None:
     joined = _load_joined_rows(
         scores_path, ground_truth_path, args.expected_studies
     )
+    normalization = _validation_normalization(scores_path)
     selected_rows: list[dict[str, Any]] = []
     prediction_frames: list[pd.DataFrame] = []
 
@@ -262,6 +293,7 @@ def main() -> None:
             str(row["label"]): float(row["threshold"])
             for row in selected_rows
         },
+        "validation_normalization": normalization,
         "scores_csv": str(scores_path),
         "ground_truth_csv": str(ground_truth_path),
     }
