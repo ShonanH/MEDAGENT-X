@@ -55,6 +55,10 @@ LABELS: tuple[str, ...] = (
 MODEL_NAME = "gloria_resnet50_zero_shot"
 
 
+def _raw_column(label: str) -> str:
+    return f"raw_{label}"
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
@@ -143,20 +147,32 @@ def _score_images(
         stop = min(start + batch_size, len(frontal))
         batch = frontal.iloc[start:stop].reset_index(drop=True)
         processed_images = model.process_img(batch["image_path"].tolist(), device)
+        raw_by_label: dict[str, np.ndarray] = {}
         with torch.inference_mode():
-            scores = gloria.zero_shot_classification(
-                model, processed_images, processed_text
-            )
-        scores = scores.reset_index(drop=True)
-        missing_labels = sorted(set(LABELS) - set(scores.columns))
+            for label, class_text in processed_text.items():
+                if label not in LABELS:
+                    continue
+                similarities = gloria.get_similarities(
+                    model,
+                    processed_images,
+                    class_text,
+                    similarity_type="both",
+                )
+                # Match GLoRIA's official zero-shot implementation: use the
+                # strongest matching prompt for each image and class.
+                raw_by_label[_raw_column(label)] = similarities.max(axis=1)
+
+        missing_labels = [
+            label for label in LABELS if _raw_column(label) not in raw_by_label
+        ]
         if missing_labels:
             raise RuntimeError(f"GLoRIA output is missing labels: {missing_labels}")
-        if len(scores) != len(batch):
-            raise RuntimeError(
-                f"Batch returned {len(scores)} rows for {len(batch)} images"
-            )
 
-        output = scores.loc[:, LABELS].copy()
+        output = pd.DataFrame(raw_by_label)
+        if len(output) != len(batch):
+            raise RuntimeError(
+                f"Batch returned {len(output)} rows for {len(batch)} images"
+            )
         output.insert(0, "image_path", batch["image_path"])
         output.insert(0, "dicom_path", batch["dicom_path"].astype(str))
         output.insert(0, "study_key", batch["study_key"].astype(str))
@@ -164,20 +180,30 @@ def _score_images(
         batches.append(output)
         print(f"Processed {stop}/{len(frontal)} frontal images", flush=True)
 
-        del processed_images, scores
+        del processed_images
         gc.collect()
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
 
     result = pd.concat(batches, ignore_index=True)
-    if result.loc[:, LABELS].isna().any().any():
+    raw_columns = [_raw_column(label) for label in LABELS]
+    if result.loc[:, raw_columns].isna().any().any():
         raise RuntimeError("GLoRIA produced missing scores")
+    # This image-level normalization is saved for audit only. The final
+    # comparison uses study-level normalization after multi-view averaging.
+    normalized = gloria.utils.normalize(result.loc[:, raw_columns].to_numpy())
+    result.loc[:, list(LABELS)] = normalized
     return result
 
 
-def _aggregate_studies(image_scores: pd.DataFrame) -> pd.DataFrame:
+def _aggregate_studies(gloria: Any, image_scores: pd.DataFrame) -> pd.DataFrame:
     grouped = image_scores.groupby("study_key", sort=True, as_index=False)
-    study_scores = grouped[list(LABELS)].mean()
+    raw_columns = [_raw_column(label) for label in LABELS]
+    study_scores = grouped[raw_columns].mean()
+    normalized = gloria.utils.normalize(
+        study_scores.loc[:, raw_columns].to_numpy()
+    )
+    study_scores.loc[:, list(LABELS)] = normalized
     view_counts = grouped.size().rename(columns={"size": "frontal_view_count"})
     view_paths = grouped["dicom_path"].agg(
         lambda values: json.dumps(list(values), separators=(",", ":"))
@@ -192,6 +218,7 @@ def _aggregate_studies(image_scores: pd.DataFrame) -> pd.DataFrame:
         "frontal_view_count",
         "frontal_dicom_paths",
         *LABELS,
+        *raw_columns,
     ]
     return study_scores.loc[:, ordered]
 
@@ -241,7 +268,7 @@ def main() -> None:
         device=args.device,
         batch_size=args.batch_size,
     )
-    study_scores = _aggregate_studies(image_scores)
+    study_scores = _aggregate_studies(gloria, image_scores)
     if len(study_scores) != args.expected_studies:
         raise RuntimeError(
             f"Expected {args.expected_studies} study rows, found {len(study_scores)}"
