@@ -53,6 +53,7 @@ LABELS: tuple[str, ...] = (
     "Pleural Effusion",
 )
 MODEL_NAME = "gloria_resnet50_zero_shot"
+PROMPT_SEED = 6
 
 
 def _raw_column(label: str) -> str:
@@ -257,6 +258,9 @@ def main() -> None:
     print("Loading GLoRIA checkpoint...", flush=True)
     model = gloria.load_gloria(name=str(checkpoint_path), device=args.device)
     model.eval()
+    # Match the official package's fixed prompt sampling seed and make it
+    # explicit so validation and test use exactly the same prompt set.
+    random.seed(PROMPT_SEED)
     prompts = gloria.generate_chexpert_class_prompts()
     processed_text = model.process_class_prompts(prompts, args.device)
 
