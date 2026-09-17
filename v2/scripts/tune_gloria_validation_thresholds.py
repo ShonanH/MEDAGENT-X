@@ -34,6 +34,7 @@ LABELS: tuple[str, ...] = (
 )
 MODEL_NAME = "gloria_resnet50_zero_shot"
 POLICY_VERSION = "gloria_zero_shot_max_f1_thresholds_v1"
+CONSTRAINED_POLICY_VERSION = "gloria_zero_shot_max_f1_specificity_floor_v1"
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -44,6 +45,15 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--ground-truth", type=Path, default=DEFAULT_GROUND_TRUTH)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_EXPERIMENT_DIR)
     parser.add_argument("--expected-studies", type=int, default=200)
+    parser.add_argument(
+        "--min-specificity",
+        type=float,
+        default=None,
+        help=(
+            "Optional validation-specificity floor. Use 0.60 to match the "
+            "exp17 MEDAGENT-X threshold-selection protocol."
+        ),
+    )
     return parser
 
 
@@ -88,11 +98,22 @@ def _metrics_at_threshold(
     }
 
 
-def _select_threshold(y_true: np.ndarray, scores: np.ndarray) -> dict[str, Any]:
+def _select_threshold(
+    y_true: np.ndarray,
+    scores: np.ndarray,
+    min_specificity: float | None,
+) -> dict[str, Any]:
     candidates = np.unique(scores.astype(float))
     if candidates.size == 0:
         raise ValueError("Cannot tune a threshold without scores")
     rows = [_metrics_at_threshold(y_true, scores, value) for value in candidates]
+    if min_specificity is not None:
+        rows = [row for row in rows if row["specificity"] >= min_specificity]
+        if not rows:
+            raise ValueError(
+                "No candidate threshold satisfies the requested validation "
+                f"specificity floor of {min_specificity}"
+            )
     # Deterministic tie-breaking: maximum F1, then maximum precision, then the
     # higher (more conservative) threshold.
     return max(
@@ -196,6 +217,8 @@ def _validation_normalization(scores_path: Path) -> dict[str, dict[str, float]]:
 
 def main() -> None:
     args = build_parser().parse_args()
+    if args.min_specificity is not None and not 0.0 <= args.min_specificity <= 1.0:
+        raise ValueError("--min-specificity must be between 0 and 1")
     scores_path = _require_file(args.scores, "GLoRIA validation scores")
     ground_truth_path = _require_file(args.ground_truth, "validation ground truth")
     output_dir = args.output_dir.expanduser().resolve()
@@ -215,7 +238,7 @@ def main() -> None:
         if len(np.unique(y_true)) != 2:
             raise ValueError(f"{label} does not contain both binary classes")
 
-        selected = _select_threshold(y_true, scores)
+        selected = _select_threshold(y_true, scores, args.min_specificity)
         selected.update(
             {
                 "label": label,
@@ -225,6 +248,7 @@ def main() -> None:
                 "auroc": float(roc_auc_score(y_true, scores)),
                 "average_precision": float(average_precision_score(y_true, scores)),
                 "selection_metric": "f1",
+                "minimum_specificity": args.min_specificity,
                 "tie_breaker": "precision_then_higher_threshold",
             }
         )
@@ -260,6 +284,7 @@ def main() -> None:
             "auroc",
             "average_precision",
             "selection_metric",
+            "minimum_specificity",
             "tie_breaker",
         ]
     ]
@@ -274,9 +299,18 @@ def main() -> None:
     micro_f1 = _safe_div(2 * total_tp, 2 * total_tp + total_fp + total_fn)
     summary = {
         "model_name": MODEL_NAME,
-        "policy_version": POLICY_VERSION,
+        "policy_version": (
+            CONSTRAINED_POLICY_VERSION
+            if args.min_specificity is not None
+            else POLICY_VERSION
+        ),
         "selection_split": "competition_val",
-        "selection_metric": "per_label_maximum_f1",
+        "selection_metric": (
+            "per_label_maximum_f1_with_specificity_floor"
+            if args.min_specificity is not None
+            else "per_label_maximum_f1"
+        ),
+        "minimum_specificity": args.min_specificity,
         "tie_breaker": "maximum_precision_then_higher_threshold",
         "study_count": args.expected_studies,
         "label_count": len(LABELS),
