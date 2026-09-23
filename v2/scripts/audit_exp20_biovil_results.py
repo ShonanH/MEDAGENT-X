@@ -454,20 +454,36 @@ def verify_predictions_against_scores(
         expected_scores = score_index[label].to_numpy(dtype=float)
         expected_raw = score_index[raw_column(label)].to_numpy(dtype=float)
         threshold = float(policy["selected_thresholds"][label])
-        if not np.allclose(
-            rows["score"].to_numpy(dtype=float),
-            expected_scores,
-            rtol=0.0,
-            atol=1e-9,
-        ):
-            raise RuntimeError(f"{description} scores differ for {label}")
-        if not np.allclose(
-            rows["raw_score"].to_numpy(dtype=float),
-            expected_raw,
-            rtol=0.0,
-            atol=1e-9,
-        ):
-            raise RuntimeError(f"{description} raw scores differ for {label}")
+        observed_scores = rows["score"].to_numpy(dtype=float)
+        observed_raw = rows["raw_score"].to_numpy(dtype=float)
+        score_difference = np.abs(observed_scores - expected_scores)
+        raw_difference = np.abs(observed_raw - expected_raw)
+        maximum_score_difference = float(np.max(score_difference))
+        maximum_raw_difference = float(np.max(raw_difference))
+        print(
+            f"{description} prediction-file maximum score differences for "
+            f"{label}: normalized={maximum_score_difference:.12g}, "
+            f"raw={maximum_raw_difference:.12g}"
+        )
+        if maximum_score_difference > 1e-6:
+            position = int(np.argmax(score_difference))
+            raise RuntimeError(
+                f"{description} normalized scores differ beyond float32 "
+                f"tolerance for {label}: "
+                f"study={str(score_index.index[position])!r}, "
+                f"expected={float(expected_scores[position])}, "
+                f"observed={float(observed_scores[position])}, "
+                f"difference={maximum_score_difference}"
+            )
+        if maximum_raw_difference > 1e-6:
+            position = int(np.argmax(raw_difference))
+            raise RuntimeError(
+                f"{description} raw scores differ beyond float32 tolerance "
+                f"for {label}: study={str(score_index.index[position])!r}, "
+                f"expected={float(expected_raw[position])}, "
+                f"observed={float(observed_raw[position])}, "
+                f"difference={maximum_raw_difference}"
+            )
         expected_predictions = (expected_scores >= threshold).astype(int)
         observed_predictions = rows["predicted_positive"].to_numpy(dtype=int)
         mismatch = observed_predictions != expected_predictions
