@@ -14,7 +14,6 @@ import pandas as pd
 import torch
 import torch.nn.functional as F
 from PIL import Image
-from transformers import BertTokenizer
 
 
 sys.dont_write_bytecode = True
@@ -214,7 +213,9 @@ def load_policy(path: Path) -> tuple[dict[str, Any], str]:
     return policy, observed_hash
 
 
-def load_biovil_classes(source_root: Path) -> tuple[Any, Any, Any, Any, Any]:
+def load_biovil_classes(
+    source_root: Path,
+) -> tuple[Any, Any, Any, Any, Any, Any]:
     source = str(source_root)
     if source not in sys.path:
         sys.path.insert(0, source)
@@ -226,6 +227,7 @@ def load_biovil_classes(source_root: Path) -> tuple[Any, Any, Any, Any, Any]:
         from health_multimodal.image.model.types import ImageEncoderType
         from health_multimodal.text.model.configuration_cxrbert import (
             CXRBertConfig,
+            CXRBertTokenizer,
         )
         from health_multimodal.text.model.modelling_cxrbert import CXRBertModel
     except Exception as error:
@@ -237,6 +239,7 @@ def load_biovil_classes(source_root: Path) -> tuple[Any, Any, Any, Any, Any]:
         ImageModel,
         ImageEncoderType,
         CXRBertConfig,
+        CXRBertTokenizer,
         CXRBertModel,
     )
 
@@ -338,6 +341,7 @@ def main() -> None:
         ImageModel,
         ImageEncoderType,
         CXRBertConfig,
+        CXRBertTokenizer,
         CXRBertModel,
     ) = load_biovil_classes(hi_ml_source)
 
@@ -347,7 +351,7 @@ def main() -> None:
         joint_feature_size=128,
         pretrained_model_path=image_checkpoint,
     ).eval().to(device)
-    tokenizer = BertTokenizer.from_pretrained(
+    tokenizer = CXRBertTokenizer.from_pretrained(
         model_dir, local_files_only=True
     )
     text_config = CXRBertConfig.from_pretrained(
