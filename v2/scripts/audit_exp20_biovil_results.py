@@ -410,8 +410,22 @@ def verify_normalization(
         std = float(normalization[label]["raw_std"])
         expected = (raw - mean) / std
         observed = scores[label].to_numpy(dtype=float)
-        if not np.allclose(expected, observed, rtol=0.0, atol=1e-8):
-            raise RuntimeError(f"{description} normalization failed for {label}")
+        absolute_difference = np.abs(expected - observed)
+        maximum_difference = float(np.max(absolute_difference))
+        print(
+            f"{description} normalization maximum difference for {label}: "
+            f"{maximum_difference:.12g}"
+        )
+        if maximum_difference > 1e-6:
+            maximum_index = int(np.argmax(absolute_difference))
+            study_key = str(scores.iloc[maximum_index]["study_key"])
+            raise RuntimeError(
+                f"{description} normalization failed beyond float32 "
+                f"tolerance for {label}: study={study_key!r}, "
+                f"expected={float(expected[maximum_index])}, "
+                f"observed={float(observed[maximum_index])}, "
+                f"difference={maximum_difference}"
+            )
         if validation:
             assert_close(
                 float(np.mean(observed)),
