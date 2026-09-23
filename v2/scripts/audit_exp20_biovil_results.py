@@ -469,11 +469,28 @@ def verify_predictions_against_scores(
         ):
             raise RuntimeError(f"{description} raw scores differ for {label}")
         expected_predictions = (expected_scores >= threshold).astype(int)
-        if not np.array_equal(
-            rows["predicted_positive"].to_numpy(dtype=int),
-            expected_predictions,
-        ):
-            raise RuntimeError(f"{description} predictions differ for {label}")
+        observed_predictions = rows["predicted_positive"].to_numpy(dtype=int)
+        mismatch = observed_predictions != expected_predictions
+        mismatch_count = int(np.sum(mismatch))
+        if mismatch_count:
+            boundary_distances = np.abs(expected_scores[mismatch] - threshold)
+            maximum_boundary_distance = float(np.max(boundary_distances))
+            print(
+                f"{description} threshold-boundary round-trip differences "
+                f"for {label}: count={mismatch_count}, "
+                f"maximum_distance={maximum_boundary_distance:.12g}"
+            )
+            if maximum_boundary_distance > 1e-12:
+                first_position = int(np.flatnonzero(mismatch)[0])
+                first_study = str(score_index.index[first_position])
+                raise RuntimeError(
+                    f"{description} predictions genuinely differ for {label}: "
+                    f"study={first_study!r}, "
+                    f"score={float(expected_scores[first_position])}, "
+                    f"threshold={threshold}, "
+                    f"expected={int(expected_predictions[first_position])}, "
+                    f"observed={int(observed_predictions[first_position])}"
+                )
         if not np.allclose(
             rows["threshold"].to_numpy(dtype=float),
             threshold,
