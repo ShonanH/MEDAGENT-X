@@ -364,13 +364,28 @@ def verify_study_aggregation(
     ]
     expected = image_scores.groupby("study_key", sort=True)[score_columns].mean()
     observed = study_scores.set_index("study_key").loc[expected.index]
-    if not np.allclose(
-        expected.to_numpy(dtype=float),
-        observed[score_columns].to_numpy(dtype=float),
-        rtol=0.0,
-        atol=1e-7,
-    ):
-        raise RuntimeError(f"{description} study aggregation changed")
+    expected_values = expected.to_numpy(dtype=float)
+    observed_values = observed[score_columns].to_numpy(dtype=float)
+    absolute_difference = np.abs(expected_values - observed_values)
+    maximum_difference = float(np.max(absolute_difference))
+    maximum_position = np.unravel_index(
+        int(np.argmax(absolute_difference)), absolute_difference.shape
+    )
+    maximum_study = str(expected.index[maximum_position[0]])
+    maximum_column = score_columns[maximum_position[1]]
+    print(
+        f"{description} aggregation maximum absolute difference: "
+        f"{maximum_difference:.12g}"
+    )
+    if maximum_difference > 1e-6:
+        expected_value = float(expected_values[maximum_position])
+        observed_value = float(observed_values[maximum_position])
+        raise RuntimeError(
+            f"{description} study aggregation changed beyond float32 "
+            f"tolerance: study={maximum_study!r}, "
+            f"column={maximum_column!r}, expected={expected_value}, "
+            f"observed={observed_value}, difference={maximum_difference}"
+        )
     expected_counts = image_scores.groupby("study_key").size().sort_index()
     observed_counts = observed["frontal_view_count"].astype(int).sort_index()
     if not expected_counts.equals(observed_counts):
