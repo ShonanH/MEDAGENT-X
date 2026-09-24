@@ -56,19 +56,24 @@ def build_study_training_records(
     study_labels: pd.DataFrame,
     *,
     split: str,
+    label_names: Sequence[str] = DISEASE_LABELS,
+    target_prefix: str = "training_target",
+    mask_prefix: str = "training_mask",
+    path_column: str = "dicom_path",
 ) -> list[StudyTrainingRecord]:
-    """Join split views to study-level U-mask targets."""
+    """Join split views to study-level masked targets for any image source."""
     _require_columns(
         view_splits,
-        ("study_key", "deid_patient_id", "dicom_path", "split"),
+        ("study_key", "deid_patient_id", path_column, "split"),
         "view_splits",
     )
+    label_names = tuple(label_names)
+    if not label_names:
+        raise ValueError("label_names must be non-empty")
     target_columns = [
-        f"training_target_{snake_label(label)}" for label in DISEASE_LABELS
+        f"{target_prefix}_{snake_label(label)}" for label in label_names
     ]
-    mask_columns = [
-        f"training_mask_{snake_label(label)}" for label in DISEASE_LABELS
-    ]
+    mask_columns = [f"{mask_prefix}_{snake_label(label)}" for label in label_names]
     _require_columns(
         study_labels,
         ("study_key", *target_columns, *mask_columns),
@@ -120,7 +125,7 @@ def build_study_training_records(
             )
 
         paths = tuple(
-            dict.fromkeys(rows["dicom_path"].astype(str).str.strip().tolist())
+            dict.fromkeys(rows[path_column].astype(str).str.strip().tolist())
         )
         if not paths or any(not path for path in paths):
             raise ValueError(f"Study {key!r} has no usable DICOM paths")
@@ -223,6 +228,12 @@ def dicom_to_pil_rgb(path: str | Path) -> Image.Image:
     return Image.fromarray(uint8, mode="L").convert("RGB")
 
 
+def raster_to_pil_rgb(path: str | Path) -> Image.Image:
+    """Load a standard raster image as a detached RGB PIL image."""
+    with Image.open(path) as image:
+        return image.convert("RGB").copy()
+
+
 class LightCxrAugment:
     """Light geometry/intensity augmentation for disease classification."""
 
@@ -263,19 +274,25 @@ class LightCxrAugment:
 
 
 class StudyDataset:
-    """Dataset that returns all quality-passed images for one study."""
+    """Dataset that returns all source images for one study."""
 
     def __init__(
         self,
         records: Sequence[StudyTrainingRecord],
         *,
-        dicom_root: str | Path,
+        dicom_root: str | Path | None = None,
+        image_root: str | Path | None = None,
         image_loader: Callable[[str | Path], Image.Image] = dicom_to_pil_rgb,
     ) -> None:
         if not records:
             raise ValueError("records must be non-empty")
         self.records = list(records)
-        self.dicom_root = Path(dicom_root)
+        if dicom_root is not None and image_root is not None:
+            raise ValueError("Pass only one of dicom_root or image_root")
+        root = image_root if image_root is not None else dicom_root
+        if root is None:
+            raise ValueError("An image_root or dicom_root is required")
+        self.image_root = Path(root)
         self.image_loader = image_loader
 
     def __len__(self) -> int:
@@ -285,7 +302,7 @@ class StudyDataset:
         record = self.records[index]
         images = [
             self.image_loader(
-                local_dicom_path(self.dicom_root, dicom_path)
+                local_dicom_path(self.image_root, dicom_path)
             )
             for dicom_path in record.dicom_paths
         ]
@@ -306,13 +323,19 @@ class InferenceStudyDataset:
         self,
         records: Sequence[StudyInferenceRecord],
         *,
-        dicom_root: str | Path,
+        dicom_root: str | Path | None = None,
+        image_root: str | Path | None = None,
         image_loader: Callable[[str | Path], Image.Image] = dicom_to_pil_rgb,
     ) -> None:
         if not records:
             raise ValueError("records must be non-empty")
         self.records = list(records)
-        self.dicom_root = Path(dicom_root)
+        if dicom_root is not None and image_root is not None:
+            raise ValueError("Pass only one of dicom_root or image_root")
+        root = image_root if image_root is not None else dicom_root
+        if root is None:
+            raise ValueError("An image_root or dicom_root is required")
+        self.image_root = Path(root)
         self.image_loader = image_loader
 
     def __len__(self) -> int:
@@ -322,7 +345,7 @@ class InferenceStudyDataset:
         record = self.records[index]
         images = [
             self.image_loader(
-                local_dicom_path(self.dicom_root, dicom_path)
+                local_dicom_path(self.image_root, dicom_path)
             )
             for dicom_path in record.dicom_paths
         ]

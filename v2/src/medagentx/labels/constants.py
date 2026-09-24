@@ -15,6 +15,14 @@ DISEASE_LABELS: tuple[str, ...] = (
     "Pleural Other",
 )
 
+CHEXPERT_COMPETITION_LABELS: tuple[str, ...] = (
+    "Atelectasis",
+    "Cardiomegaly",
+    "Consolidation",
+    "Edema",
+    "Pleural Effusion",
+)
+
 NON_DISEASE_LABELS: tuple[str, ...] = (
     "Support Devices",
     "No Finding",

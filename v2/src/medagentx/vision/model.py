@@ -7,9 +7,9 @@ from typing import Any, Iterable, Sequence
 import torch
 from torch import nn
 
+from medagentx.labels.constants import DISEASE_LABELS
 from medagentx.vision.constants import (
     DEFAULT_MODEL_NAME,
-    NUM_DISEASES,
     TRAINABLE_LAST_BLOCKS,
 )
 
@@ -73,14 +73,15 @@ def configure_partial_fine_tuning(
 
 
 class RadDinoStudyClassifier(nn.Module):
-    """Encode every view, pool by study, and predict 12 diseases."""
+    """Encode every view, pool by study, and predict configured labels."""
 
     def __init__(
         self,
         backbone: nn.Module,
         *,
         hidden_size: int,
-        num_labels: int = NUM_DISEASES,
+        num_labels: int | None = None,
+        label_names: Sequence[str] | None = None,
         dropout: float = 0.1,
         trainable_last_blocks: int = TRAINABLE_LAST_BLOCKS,
         pooling_mode: str = "mean",
@@ -88,18 +89,24 @@ class RadDinoStudyClassifier(nn.Module):
         super().__init__()
         if hidden_size <= 0:
             raise ValueError("hidden_size must be > 0")
-        if num_labels != NUM_DISEASES:
+        labels = tuple(label_names or DISEASE_LABELS)
+        if not labels:
+            raise ValueError("label_names must be non-empty")
+        resolved_num_labels = len(labels) if num_labels is None else num_labels
+        if resolved_num_labels != len(labels):
             raise ValueError(
-                f"num_labels must equal the locked 12 diseases, got {num_labels}"
+                f"num_labels={resolved_num_labels} does not match "
+                f"label_names={len(labels)}"
             )
 
         self.backbone = backbone
         self.hidden_size = hidden_size
-        self.num_labels = num_labels
+        self.num_labels = resolved_num_labels
+        self.label_names = labels
         self.trainable_last_blocks = trainable_last_blocks
         self.pooling_mode = pooling_mode.strip().lower()
-        if self.pooling_mode not in {"mean", "mean_max"}:
-            raise ValueError("pooling_mode must be 'mean' or 'mean_max'")
+        if self.pooling_mode not in {"mean", "mean_max", "max"}:
+            raise ValueError("pooling_mode must be 'mean', 'mean_max', or 'max'")
         self.freeze_summary = configure_partial_fine_tuning(
             self.backbone,
             trainable_last_blocks=trainable_last_blocks,
@@ -109,7 +116,7 @@ class RadDinoStudyClassifier(nn.Module):
         )
         self.classifier = nn.Sequential(
             nn.Dropout(dropout),
-            nn.Linear(classifier_input_size, num_labels),
+            nn.Linear(classifier_input_size, resolved_num_labels),
         )
 
     @classmethod
@@ -178,20 +185,34 @@ class RadDinoStudyClassifier(nn.Module):
             raise ValueError("Every study must contribute at least one view")
         mean_embeddings = mean_embeddings / counts.unsqueeze(1)
 
-        if self.pooling_mode == "mean_max":
+        if self.pooling_mode in {"mean_max", "max"}:
             max_embeddings = []
             for study_index in range(num_studies):
                 max_embeddings.append(
                     view_embeddings[study_indices == study_index].max(dim=0).values
                 )
-            study_embeddings = torch.cat(
-                [mean_embeddings, torch.stack(max_embeddings, dim=0)],
-                dim=1,
+            max_embeddings = torch.stack(max_embeddings, dim=0)
+            study_embeddings = (
+                torch.cat([mean_embeddings, max_embeddings], dim=1)
+                if self.pooling_mode == "mean_max"
+                else max_embeddings
             )
         else:
             study_embeddings = mean_embeddings
 
-        logits = self.classifier(study_embeddings)
+        if self.pooling_mode == "max":
+            # The competition baseline takes the maximum view probability.
+            # Since sigmoid is monotonic, max logits is equivalent and keeps
+            # the operation numerically stable.
+            view_logits = self.classifier(view_embeddings)
+            study_logits = []
+            for study_index in range(num_studies):
+                study_logits.append(
+                    view_logits[study_indices == study_index].max(dim=0).values
+                )
+            logits = torch.stack(study_logits, dim=0)
+        else:
+            logits = self.classifier(study_embeddings)
         return {
             "logits": logits,
             "study_embeddings": study_embeddings,

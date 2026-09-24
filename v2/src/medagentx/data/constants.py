@@ -15,6 +15,7 @@ REDIVIS_API_TOKEN_ENV = "REDIVIS_API_TOKEN"
 # Locked CheXpert Plus dataset + verified tables (REST-only).
 REDIVIS_DATASET_ID = "aimi.chexpert_plus:5yyj:v1_0"
 REDIVIS_METADATA_TABLE_ID = "df_chexpert_plus_240401:bavj"
+REDIVIS_PNG_TRAIN_INDEX_TABLE_ID = "png_train:s6cj"
 REDIVIS_DICOM_TRAIN_INDEX_TABLE_ID = "dicom_train:1934"
 REDIVIS_CHEXPERT_LABELS_INDEX_TABLE_ID = "chexpert_labels:pmec"
 
