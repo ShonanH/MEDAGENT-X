@@ -1,27 +1,24 @@
-"""Run only the Experiment 5 Llama review stage from cached Experiment 3 data.
+"""Run Experiment 5 Llama fusion with Experiment 3's saved predictions.
 
-This command never loads the vision checkpoint or opens the Chroma index.  It
-uses Experiment 3's permanent vision-prediction CSV and a cache of the ten
-retrieved report cases per study, then applies the Experiment 5 deterministic
-fusion and guarded Llama review.
+This follows the retrieval and guarded LLM-review behavior of
+``medagentx.cli.run_exp05_llm_fusion_with_retrieval_graph``, but it uses the
+probabilities, thresholds, and statuses in Experiment 3's
+``vision_study_predictions.csv`` as the fixed vision inputs.
 
-The retrieval cache must contain the *report text*, not merely per-label
-mention counts.  Llama needs the retrieved documents in order to make and
-citate a review decision.  Accepted cache inputs are:
+Experiment 3's CSV does not persist RAD-DINO embeddings. A forward pass over
+the DICOM views is therefore still required to regenerate *query embeddings*
+for Chroma retrieval. The generated classification probabilities are
+discarded; fusion always uses the saved Experiment 3 values. No vision
+prediction CSV is regenerated or substituted.
 
-* JSONL: one object per study, with ``study_key`` and ``retrieved_cases``;
-* CSV: the ``retrieved_cases.csv`` contract emitted by Experiment 7, including
-  ``query_study_key``, ``retrieved_rank``, and ``retrieved_document``.
+The command also writes ``retrieved_cases.csv`` so subsequent experiments have
+an auditable record of the retrieved report text and neighbor ranks.
 
-Example:
+Run from the repository root:
 
     ollama pull llama3.1:8b
     PYTHONPATH=v2/src python v2/scripts/run_exp05_llama_from_exp03.py \
-      --retrieval-cases path/to/test_retrieved_cases.jsonl \
       --allow-llm-fallback
-
-The output records both the cached source files and the fact that vision and
-retrieval were deliberately skipped.
 """
 
 from __future__ import annotations
@@ -29,6 +26,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -41,6 +39,7 @@ if str(_V2_SRC) not in sys.path:
     sys.path.insert(0, str(_V2_SRC))
 
 from medagentx.agents.label_fusion import LLM_REVIEW_POLICY_VERSION, LabelFusionAgent
+from medagentx.data.balanced_constants import DEFAULT_BALANCED_COHORT_ROOT
 from medagentx.labels.constants import DISEASE_LABELS
 from medagentx.labels.schema import snake_label
 from medagentx.labels.statuses import LabelStatus
@@ -57,6 +56,19 @@ from medagentx.reasoning.fuse import VisionLabelPrediction
 DEFAULT_SOURCE_VISION_CSV = Path(
     "v2/experiments/exp03_fusion_no_retrieval/vision_study_predictions.csv"
 )
+DEFAULT_LAST4_CHECKPOINT = (
+    Path(DEFAULT_BALANCED_COHORT_ROOT)
+    / "vision"
+    / "raddino_finetuned_v1_last4_blocks"
+    / "best_checkpoint.pt"
+)
+DEFAULT_LAST4_VECTOR_DB_DIR = (
+    Path(DEFAULT_BALANCED_COHORT_ROOT)
+    / "retrieval"
+    / "raddino_train_v1_last4_blocks"
+    / "chroma"
+)
+DEFAULT_COLLECTION_NAME = "medagentx_train_studies_v1"
 DEFAULT_OUTPUT_DIR = Path(
     "v2/experiments/exp05_llm_fusion_with_retrieval_graph/"
     "llama3_1_8b_from_exp03"
@@ -66,7 +78,16 @@ OUTPUT_FILENAMES = (
     "graph_fusion_results.jsonl",
     "vision_study_predictions.csv",
     "fusion_label_predictions.csv",
+    "retrieved_cases.csv",
 )
+
+
+def _default_device() -> str:
+    try:
+        import torch
+    except ImportError:
+        return "cpu"
+    return "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def _parse_status(value: object) -> LabelStatus:
@@ -89,9 +110,15 @@ def _require_columns(
         raise ValueError(f"{description} is missing required columns: {missing}")
 
 
-def _read_vision_predictions(path: Path) -> tuple[list[dict[str, str]], list[str]]:
+def _read_source_vision(path: Path) -> tuple[list[dict[str, str]], list[str]]:
     rows, columns = _read_csv(path)
-    required = ["study_key"]
+    required = [
+        "study_key",
+        "deid_patient_id",
+        "split",
+        "view_count",
+        "dicom_paths",
+    ]
     for label in DISEASE_LABELS:
         slug = snake_label(label)
         required.extend(
@@ -101,132 +128,18 @@ def _read_vision_predictions(path: Path) -> tuple[list[dict[str, str]], list[str
                 f"status_{slug}",
             )
         )
-    _require_columns(columns, required, description="source vision CSV")
+    _require_columns(columns, required, description="Experiment 3 vision CSV")
     if not rows:
-        raise ValueError("source vision CSV contains no study predictions")
+        raise ValueError("Experiment 3 vision CSV contains no study predictions")
     study_keys = [row["study_key"].strip() for row in rows]
     if any(not key for key in study_keys):
-        raise ValueError("source vision CSV contains an empty study_key")
+        raise ValueError("Experiment 3 vision CSV contains an empty study_key")
     if len(study_keys) != len(set(study_keys)):
-        raise ValueError("source vision CSV contains duplicate study_key values")
+        raise ValueError("Experiment 3 vision CSV contains duplicate study keys")
     return rows, columns
 
 
-def _as_float_or_none(value: object) -> float | None:
-    if value is None or str(value).strip() == "":
-        return None
-    return float(value)
-
-
-def _normalise_case(raw: dict[str, Any], *, description: str) -> dict[str, Any]:
-    document = raw.get("document", raw.get("retrieved_document", ""))
-    if not isinstance(document, str) or not document.strip():
-        raise ValueError(f"{description} has an empty retrieved document")
-    study_key = raw.get("study_key", raw.get("retrieved_study_key", ""))
-    if not str(study_key).strip():
-        raise ValueError(f"{description} has an empty retrieved study key")
-    patient_id = raw.get("deid_patient_id", raw.get("retrieved_deid_patient_id", ""))
-    return {
-        "study_key": str(study_key).strip(),
-        "deid_patient_id": str(patient_id or "").strip(),
-        "document": document.strip(),
-        "distance": _as_float_or_none(raw.get("distance")),
-        "similarity": _as_float_or_none(raw.get("similarity")),
-    }
-
-
-def _load_jsonl_cases(path: Path) -> dict[str, list[dict[str, Any]]]:
-    cases_by_study: dict[str, list[dict[str, Any]]] = {}
-    with path.open(encoding="utf-8") as handle:
-        for line_number, raw_line in enumerate(handle, start=1):
-            line = raw_line.strip()
-            if not line:
-                continue
-            try:
-                payload = json.loads(line)
-            except json.JSONDecodeError as exc:
-                raise ValueError(f"Invalid JSON on line {line_number} of {path}") from exc
-            if not isinstance(payload, dict):
-                raise ValueError(f"JSONL line {line_number} must be an object")
-            study_key = str(
-                payload.get("study_key", payload.get("query_study_key", ""))
-            ).strip()
-            raw_cases = payload.get("retrieved_cases")
-            if not study_key or not isinstance(raw_cases, list):
-                raise ValueError(
-                    f"JSONL line {line_number} must contain study_key and retrieved_cases"
-                )
-            if study_key in cases_by_study:
-                raise ValueError(f"Duplicate retrieval-cache study_key: {study_key}")
-            cases_by_study[study_key] = [
-                _normalise_case(
-                    raw_case,
-                    description=(
-                        f"retrieval case {case_index} for {study_key!r} "
-                        f"on JSONL line {line_number}"
-                    ),
-                )
-                for case_index, raw_case in enumerate(raw_cases, start=1)
-                if isinstance(raw_case, dict)
-            ]
-            if len(cases_by_study[study_key]) != len(raw_cases):
-                raise ValueError(
-                    f"retrieved_cases for {study_key!r} must contain objects only"
-                )
-    return cases_by_study
-
-
-def _load_csv_cases(path: Path) -> dict[str, list[dict[str, Any]]]:
-    rows, columns = _read_csv(path)
-    _require_columns(
-        columns,
-        ("query_study_key", "retrieved_rank", "retrieved_document"),
-        description="retrieval cases CSV",
-    )
-    by_study_and_rank: dict[tuple[str, int], dict[str, Any]] = {}
-    for row_number, row in enumerate(rows, start=2):
-        study_key = row["query_study_key"].strip()
-        if not study_key:
-            raise ValueError(f"retrieval cases CSV row {row_number} has an empty query_study_key")
-        try:
-            rank = int(row["retrieved_rank"])
-        except ValueError as exc:
-            raise ValueError(
-                f"retrieval cases CSV row {row_number} has an invalid retrieved_rank"
-            ) from exc
-        if rank <= 0:
-            raise ValueError(f"retrieval cases CSV row {row_number} has a non-positive rank")
-        key = (study_key, rank)
-        case = _normalise_case(
-            row, description=f"retrieval cases CSV row {row_number}"
-        )
-        existing = by_study_and_rank.get(key)
-        if existing is not None and existing != case:
-            raise ValueError(
-                "retrieval cases CSV contains different duplicate rows for "
-                f"study={study_key!r}, rank={rank}"
-            )
-        by_study_and_rank[key] = case
-    cases_by_study: dict[str, list[tuple[int, dict[str, Any]]]] = {}
-    for (study_key, rank), case in by_study_and_rank.items():
-        cases_by_study.setdefault(study_key, []).append((rank, case))
-    return {
-        study_key: [case for _, case in sorted(cases, key=lambda item: item[0])]
-        for study_key, cases in cases_by_study.items()
-    }
-
-
-def _load_retrieval_cases(path: Path) -> dict[str, list[dict[str, Any]]]:
-    if path.suffix.lower() == ".csv":
-        cases = _load_csv_cases(path)
-    else:
-        cases = _load_jsonl_cases(path)
-    if not cases:
-        raise ValueError("retrieval cache contains no study cases")
-    return cases
-
-
-def _vision_predictions(row: dict[str, str]) -> dict[str, VisionLabelPrediction]:
+def _source_vision_predictions(row: dict[str, str]) -> dict[str, VisionLabelPrediction]:
     predictions: dict[str, VisionLabelPrediction] = {}
     for label in DISEASE_LABELS:
         slug = snake_label(label)
@@ -237,6 +150,21 @@ def _vision_predictions(row: dict[str, str]) -> dict[str, VisionLabelPrediction]
             status=_parse_status(row[f"status_{slug}"]),
         )
     return predictions
+
+
+def _record_from_source_row(row: dict[str, str]) -> Any:
+    """Build an inference record solely to regenerate a retrieval embedding."""
+    from medagentx.vision.data import StudyInferenceRecord
+
+    paths = tuple(path.strip() for path in row["dicom_paths"].split("|") if path.strip())
+    if not paths:
+        raise ValueError(f"Study {row['study_key']!r} has no DICOM paths in Exp03")
+    return StudyInferenceRecord(
+        study_key=row["study_key"].strip(),
+        deid_patient_id=row["deid_patient_id"].strip(),
+        split=row["split"].strip(),
+        dicom_paths=paths,
+    )
 
 
 def _changed_labels(result: Any) -> list[str]:
@@ -276,30 +204,43 @@ def _fusion_rows(fusion_results: Sequence[Any]) -> list[dict[str, object]]:
     return rows
 
 
-def _write_csv(path: Path, rows: Sequence[dict[str, object]]) -> None:
-    fields = (
-        "study_key", "fusion_policy_version", "label", "probability", "threshold",
-        "vision_status", "deterministic_status", "fused_status", "in_gray_zone",
-        "positive_count", "negative_count", "llm_action", "llm_confidence",
-        "llm_evidence_assessment", "llm_applied", "llm_policy_reason",
-        "refinement_reason",
-    )
-    with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="raise")
-        writer.writeheader()
-        writer.writerows(rows)
-
-
-def _write_source_vision_csv(
+def _write_csv(
     path: Path,
-    rows: Sequence[dict[str, str]],
+    rows: Sequence[dict[str, object]],
     fields: Sequence[str],
 ) -> None:
-    """Write the selected Experiment 3 rows without altering their values."""
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="raise")
         writer.writeheader()
         writer.writerows(rows)
+
+
+def _retrieved_case_rows(
+    *,
+    source_row: dict[str, str],
+    retrieved_cases: Sequence[Any],
+) -> list[dict[str, object]]:
+    paths = [path.strip() for path in source_row["dicom_paths"].split("|") if path.strip()]
+    rows: list[dict[str, object]] = []
+    for view_index, dicom_path in enumerate(paths, start=1):
+        for rank, case in enumerate(retrieved_cases, start=1):
+            rows.append(
+                {
+                    "query_study_key": source_row["study_key"],
+                    "query_deid_patient_id": source_row["deid_patient_id"],
+                    "query_split": source_row["split"],
+                    "query_view_index": view_index,
+                    "query_view_count": len(paths),
+                    "query_dicom_path": dicom_path,
+                    "retrieved_rank": rank,
+                    "retrieved_study_key": case.study_key,
+                    "retrieved_deid_patient_id": case.deid_patient_id,
+                    "similarity": case.similarity,
+                    "distance": case.distance,
+                    "retrieved_document": case.document,
+                }
+            )
+    return rows
 
 
 def _prepare_output_dir(path: Path, *, overwrite: bool) -> None:
@@ -318,20 +259,22 @@ def _prepare_output_dir(path: Path, *, overwrite: bool) -> None:
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-vision-csv", type=Path, default=DEFAULT_SOURCE_VISION_CSV)
-    parser.add_argument(
-        "--retrieval-cases",
-        type=Path,
-        required=True,
-        help="JSONL or Exp07-compatible CSV containing retrieved report text for every source study.",
-    )
+    parser.add_argument("--cohort-root", type=Path, default=Path(DEFAULT_BALANCED_COHORT_ROOT))
+    parser.add_argument("--dicom-root", type=Path, default=None)
+    parser.add_argument("--checkpoint", type=Path, default=DEFAULT_LAST4_CHECKPOINT)
+    parser.add_argument("--vector-db-dir", type=Path, default=DEFAULT_LAST4_VECTOR_DB_DIR)
+    parser.add_argument("--collection-name", default=DEFAULT_COLLECTION_NAME)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument("--device", default=_default_device())
+    parser.add_argument("--num-workers", type=int, default=0)
+    parser.add_argument("--no-mixed-precision", action="store_true")
+    parser.add_argument("--retrieval-top-k", type=int, default=FUSION_RETRIEVAL_TOP_K)
+    parser.add_argument("--gray-zone-margin", type=float, default=GRAY_ZONE_MARGIN)
     parser.add_argument("--ollama-model", default="llama3.1:8b")
     parser.add_argument("--ollama-base-url", default=DEFAULT_OLLAMA_BASE_URL)
     parser.add_argument("--ollama-temperature", type=float, default=0.0)
     parser.add_argument("--ollama-timeout-seconds", type=int, default=DEFAULT_TIMEOUT_SECONDS)
-    parser.add_argument("--gray-zone-margin", type=float, default=GRAY_ZONE_MARGIN)
-    parser.add_argument("--retrieval-top-k", type=int, default=FUSION_RETRIEVAL_TOP_K)
-    parser.add_argument("--max-studies", type=int, default=None)
+    parser.add_argument("--progress-every", type=int, default=25)
     parser.add_argument("--allow-llm-fallback", action="store_true")
     parser.add_argument("--overwrite", action="store_true")
     return parser
@@ -339,125 +282,193 @@ def _build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = _build_parser().parse_args(argv)
-    if not args.source_vision_csv.is_file():
-        raise FileNotFoundError(f"Source vision CSV not found: {args.source_vision_csv}")
-    if not args.retrieval_cases.is_file():
-        raise FileNotFoundError(f"Retrieval cache not found: {args.retrieval_cases}")
-    if args.gray_zone_margin < 0:
-        raise ValueError("--gray-zone-margin must be >= 0")
+    if args.num_workers < 0:
+        raise ValueError("--num-workers must be >= 0")
     if args.retrieval_top_k <= 0:
         raise ValueError("--retrieval-top-k must be > 0")
+    if args.gray_zone_margin < 0:
+        raise ValueError("--gray-zone-margin must be >= 0")
     if args.ollama_timeout_seconds <= 0:
         raise ValueError("--ollama-timeout-seconds must be > 0")
-    if args.max_studies is not None and args.max_studies <= 0:
-        raise ValueError("--max-studies must be > 0")
+    if args.progress_every <= 0:
+        raise ValueError("--progress-every must be > 0")
+    if not args.source_vision_csv.is_file():
+        raise FileNotFoundError(f"Experiment 3 vision CSV not found: {args.source_vision_csv}")
 
-    vision_rows, vision_fields = _read_vision_predictions(args.source_vision_csv)
-    if args.max_studies is not None:
-        vision_rows = vision_rows[: args.max_studies]
-    retrieval_cases = _load_retrieval_cases(args.retrieval_cases)
-    required_studies = [row["study_key"] for row in vision_rows]
-    missing_studies = sorted(set(required_studies) - set(retrieval_cases))
-    if missing_studies:
-        raise ValueError(
-            "Retrieval cache lacks Experiment 3 studies; first missing keys: "
-            + ", ".join(missing_studies[:10])
-        )
-    wrong_count = [
-        (study_key, len(retrieval_cases[study_key]))
-        for study_key in required_studies
-        if len(retrieval_cases[study_key]) != args.retrieval_top_k
-    ]
-    if wrong_count:
-        examples = ", ".join(
-            f"{study_key} ({count})" for study_key, count in wrong_count[:10]
-        )
-        raise ValueError(
-            f"Each study must have exactly {args.retrieval_top_k} cached cases; "
-            f"violations: {examples}"
+    dicom_root = args.dicom_root or (args.cohort_root / "dicom_train")
+    required_paths = {
+        "DICOM root": dicom_root,
+        "checkpoint": args.checkpoint,
+        "Chroma vector database": args.vector_db_dir,
+    }
+    missing = [f"{name}: {path}" for name, path in required_paths.items() if not path.exists()]
+    if missing:
+        raise FileNotFoundError(
+            "These artifacts are required only to regenerate query embeddings and "
+            "retrieve reports:\n" + "\n".join(missing)
         )
 
+    source_rows, _ = _read_source_vision(args.source_vision_csv)
     _prepare_output_dir(args.output_dir, overwrite=args.overwrite)
-    llm_client = OllamaClient(
-        OllamaConfig(
-            model=args.ollama_model,
-            base_url=args.ollama_base_url,
-            temperature=args.ollama_temperature,
-            timeout_seconds=args.ollama_timeout_seconds,
-        )
+
+    from medagentx.reasoning.retrieve import (
+        open_retrieval_collection,
+        retrieve_similar_reports,
     )
-    agent = LabelFusionAgent(llm_client=llm_client, margin=args.gray_zone_margin)
+    from medagentx.vision.backend import FineTunedRadDinoBackend
+
+    backend = FineTunedRadDinoBackend.from_checkpoint(
+        args.checkpoint,
+        device=args.device,
+        mixed_precision=not args.no_mixed_precision,
+    )
+    collection = open_retrieval_collection(
+        args.vector_db_dir,
+        collection_name=args.collection_name,
+    )
+    agent = LabelFusionAgent(
+        llm_client=OllamaClient(
+            OllamaConfig(
+                model=args.ollama_model,
+                base_url=args.ollama_base_url,
+                temperature=args.ollama_temperature,
+                timeout_seconds=args.ollama_timeout_seconds,
+            )
+        ),
+        margin=args.gray_zone_margin,
+    )
 
     fusion_results = []
     graph_rows = []
+    retrieved_rows = []
     llm_requested = llm_succeeded = fallback_used = 0
     deterministic_changed = final_changed = 0
     started = time.perf_counter()
-    for index, row in enumerate(vision_rows, start=1):
-        study_key = row["study_key"]
+
+    for index, source_row in enumerate(source_rows, start=1):
         study_started = time.perf_counter()
-        result = agent.fuse(
-            study_key=study_key,
-            vision_predictions=_vision_predictions(row),
-            retrieved_cases=retrieval_cases[study_key],
+        record = _record_from_source_row(source_row)
+        generated_outputs = backend.predict_study_outputs(
+            [record],
+            dicom_root=dicom_root,
+            batch_size=1,
+            num_workers=args.num_workers,
         )
-        fusion_results.append(result.final_result)
-        llm_requested += int(result.llm_requested)
-        llm_succeeded += int(result.llm_succeeded)
-        fallback_used += int(result.fallback_used)
-        deterministic_changed_labels = _changed_labels(result.deterministic_result)
-        final_changed_labels = _changed_labels(result.final_result)
+        if len(generated_outputs) != 1:
+            raise RuntimeError(
+                f"Embedding pass returned {len(generated_outputs)} outputs for {record.study_key!r}"
+            )
+        query_output = generated_outputs[0]
+        if query_output.study_key != record.study_key:
+            raise RuntimeError(
+                "Embedding pass returned the wrong study key: "
+                f"expected={record.study_key!r}, got={query_output.study_key!r}"
+            )
+        retrieved_cases = retrieve_similar_reports(
+            collection,
+            query_output,
+            top_k=args.retrieval_top_k,
+        )
+        if len(retrieved_cases) != args.retrieval_top_k:
+            raise RuntimeError(
+                f"Retrieval returned {len(retrieved_cases)} cases for {record.study_key!r}; "
+                f"expected {args.retrieval_top_k}"
+            )
+        label_fusion = agent.fuse(
+            study_key=record.study_key,
+            vision_predictions=_source_vision_predictions(source_row),
+            retrieved_cases=retrieved_cases,
+        )
+        fusion_results.append(label_fusion.final_result)
+        retrieved_rows.extend(
+            _retrieved_case_rows(
+                source_row=source_row,
+                retrieved_cases=retrieved_cases,
+            )
+        )
+        llm_requested += int(label_fusion.llm_requested)
+        llm_succeeded += int(label_fusion.llm_succeeded)
+        fallback_used += int(label_fusion.fallback_used)
+        deterministic_changed_labels = _changed_labels(label_fusion.deterministic_result)
+        final_changed_labels = _changed_labels(label_fusion.final_result)
         deterministic_changed += len(deterministic_changed_labels)
         final_changed += len(final_changed_labels)
         graph_rows.append(
             {
                 "index": index,
-                "total": len(vision_rows),
+                "total": len(source_rows),
                 "elapsed_seconds": time.perf_counter() - study_started,
-                "study_key": study_key,
-                "retrieved_count": len(retrieval_cases[study_key]),
+                "study_key": record.study_key,
+                "retrieved_count": len(retrieved_cases),
                 "deterministic_changed_labels": deterministic_changed_labels,
                 "final_changed_labels": final_changed_labels,
                 "llm": {
-                    "requested": result.llm_requested,
-                    "succeeded": result.llm_succeeded,
-                    "fallback_used": result.fallback_used,
-                    "fallback_reasons": list(result.fallback_reasons),
-                    "reviewed_labels": list(result.reviewed_labels),
-                    "kept_labels": list(result.kept_labels),
-                    "vetoed_labels": list(result.vetoed_labels),
-                    "uncertain_labels": list(result.uncertain_labels),
+                    "requested": label_fusion.llm_requested,
+                    "succeeded": label_fusion.llm_succeeded,
+                    "fallback_used": label_fusion.fallback_used,
+                    "fallback_reasons": list(label_fusion.fallback_reasons),
+                    "reviewed_labels": list(label_fusion.reviewed_labels),
+                    "kept_labels": list(label_fusion.kept_labels),
+                    "vetoed_labels": list(label_fusion.vetoed_labels),
+                    "uncertain_labels": list(label_fusion.uncertain_labels),
                 },
             }
         )
-        if index == 1 or index % 25 == 0 or index == len(vision_rows):
+        if index == 1 or index % args.progress_every == 0 or index == len(source_rows):
             print(
                 "[Exp05LlamaFromExp03] "
-                f"{index}/{len(vision_rows)} study_key={study_key} "
-                f"llm_requested={result.llm_requested} "
-                f"llm_succeeded={result.llm_succeeded} "
-                f"fallback_used={result.fallback_used}"
+                f"{index}/{len(source_rows)} study_key={record.study_key} "
+                f"retrieved={len(retrieved_cases)} "
+                f"llm_requested={label_fusion.llm_requested} "
+                f"llm_succeeded={label_fusion.llm_succeeded} "
+                f"fallback_used={label_fusion.fallback_used}"
             )
 
     elapsed = time.perf_counter() - started
-    _write_source_vision_csv(
-        args.output_dir / "vision_study_predictions.csv",
-        vision_rows,
-        vision_fields,
+    shutil.copy2(args.source_vision_csv, args.output_dir / "vision_study_predictions.csv")
+    _write_csv(
+        args.output_dir / "fusion_label_predictions.csv",
+        _fusion_rows(fusion_results),
+        (
+            "study_key", "fusion_policy_version", "label", "probability", "threshold",
+            "vision_status", "deterministic_status", "fused_status", "in_gray_zone",
+            "positive_count", "negative_count", "llm_action", "llm_confidence",
+            "llm_evidence_assessment", "llm_applied", "llm_policy_reason",
+            "refinement_reason",
+        ),
     )
-    _write_csv(args.output_dir / "fusion_label_predictions.csv", _fusion_rows(fusion_results))
+    _write_csv(
+        args.output_dir / "retrieved_cases.csv",
+        retrieved_rows,
+        (
+            "query_study_key", "query_deid_patient_id", "query_split", "query_view_index",
+            "query_view_count", "query_dicom_path", "retrieved_rank", "retrieved_study_key",
+            "retrieved_deid_patient_id", "similarity", "distance", "retrieved_document",
+        ),
+    )
     with (args.output_dir / "graph_fusion_results.jsonl").open(
         "w", encoding="utf-8"
     ) as handle:
         for row in graph_rows:
             handle.write(json.dumps(row, sort_keys=True) + "\n")
+
     config = {
-        "experiment": "exp05_llm_fusion_from_exp03_cached_retrieval",
+        "experiment": "exp05_llm_fusion_with_exp03_predictions",
         "source_vision_csv": str(args.source_vision_csv),
-        "retrieval_cases": str(args.retrieval_cases),
+        "classification_predictions_reused_from_exp03": True,
+        "embedding_generation_required_for_retrieval": True,
+        "generated_classifier_probabilities_used": False,
+        "dicom_root": str(dicom_root),
+        "checkpoint": str(args.checkpoint),
+        "vector_db_dir": str(args.vector_db_dir),
+        "collection_name": args.collection_name,
         "output_dir": str(args.output_dir),
-        "pipeline_stages_skipped": ["vision", "retrieval"],
-        "pipeline_stages_executed": ["deterministic_fusion", "llm_label_review"],
+        "pipeline_stages_executed": [
+            "query_embedding_generation",
+            "retrieval",
+            "deterministic_fusion",
+            "llm_label_review",
+        ],
         "fusion_llm_policy_version": LLM_REVIEW_POLICY_VERSION,
         "ollama_model": args.ollama_model,
         "ollama_base_url": args.ollama_base_url,
@@ -465,12 +476,13 @@ def main(argv: list[str] | None = None) -> int:
         "ollama_timeout_seconds": args.ollama_timeout_seconds,
         "gray_zone_margin": args.gray_zone_margin,
         "retrieval_top_k": args.retrieval_top_k,
-        "study_count": len(vision_rows),
+        "study_count": len(source_rows),
         "llm_requested": llm_requested,
         "llm_succeeded": llm_succeeded,
         "fallback_used": fallback_used,
         "deterministic_changed_labels": deterministic_changed,
         "final_changed_labels": final_changed,
+        "retrieved_case_rows": len(retrieved_rows),
         "elapsed_seconds": elapsed,
     }
     (args.output_dir / "run_config.json").write_text(
@@ -478,7 +490,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     print(
         "[Exp05LlamaFromExp03] summary "
-        f"studies={len(vision_rows)} llm_requested={llm_requested} "
+        f"studies={len(source_rows)} llm_requested={llm_requested} "
         f"llm_succeeded={llm_succeeded} fallback_used={fallback_used} "
         f"deterministic_changed_labels={deterministic_changed} "
         f"final_changed_labels={final_changed}"
