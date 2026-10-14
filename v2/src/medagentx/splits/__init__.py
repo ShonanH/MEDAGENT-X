@@ -23,6 +23,14 @@ from medagentx.splits.constants import (
     VAL_RATIO,
     VAL_SPLIT,
 )
+from medagentx.splits.competition import (
+    COMPETITION_SPLIT_POLICY_VERSION,
+    DEFAULT_COMPETITION_SPLIT_SEED,
+    DEFAULT_DEV_FRACTION,
+    CompetitionSplitError,
+    build_competition_patient_split,
+    build_competition_split_artifacts,
+)
 
 __all__ = [
     "ALL_SPLITS",
@@ -35,8 +43,14 @@ __all__ = [
     "TRAIN_SPLIT",
     "VAL_RATIO",
     "VAL_SPLIT",
+    "COMPETITION_SPLIT_POLICY_VERSION",
+    "DEFAULT_COMPETITION_SPLIT_SEED",
+    "DEFAULT_DEV_FRACTION",
+    "CompetitionSplitError",
     "assign_patient_split",
     "build_and_write_splits",
+    "build_competition_patient_split",
+    "build_competition_split_artifacts",
     "build_patient_split_table",
     "build_study_split_table",
     "build_view_split_table",

@@ -79,6 +79,23 @@ def vision_status_map(
     return predictions
 
 
+def vision_score_map(
+    study_outputs: Sequence[VisionStudyOutput],
+    *,
+    labels: Sequence[str] = DISEASE_LABELS,
+) -> dict[tuple[str, str], float]:
+    """Flatten continuous vision probabilities into ranking keys."""
+    requested = set(labels)
+    scores: dict[tuple[str, str], float] = {}
+    for output in study_outputs:
+        for label_output in output.labels:
+            if label_output.label in requested:
+                scores[(output.study_key, label_output.label)] = (
+                    label_output.probability
+                )
+    return scores
+
+
 def fusion_status_map(
     fusion_results: Sequence[FusionStudyResult],
 ) -> dict[tuple[str, str], LabelStatus]:
@@ -125,7 +142,7 @@ def filter_gray_zone_ground_truth(
 def judge_summary_payload(name: str, result: JudgeResult) -> dict[str, Any]:
     """Serialize one Judge run for JSON reporting."""
     aggregate = result.aggregate_metrics
-    return {
+    payload = {
         "name": name,
         "judge_metric_version": result.judge_metric_version,
         "macro_precision": aggregate.macro_precision,
@@ -138,6 +155,18 @@ def judge_summary_payload(name: str, result: JudgeResult) -> dict[str, Any]:
         "label_count": len(result.per_label_metrics),
         "match_count": len(result.matches),
     }
+    if result.ranking_result is not None:
+        ranking = result.ranking_result
+        payload.update(
+            {
+                "macro_auroc": ranking.macro_auroc,
+                "macro_average_precision": ranking.macro_average_precision,
+                "ranking_metric_version": ranking.ranking_metric_version,
+                "ranking_label_count": ranking.requested_label_count,
+                "ranking_scored_label_count": ranking.scored_label_count,
+            }
+        )
+    return payload
 
 
 def named_judge_summary_payload(run: NamedJudgeRun) -> dict[str, Any]:
@@ -161,6 +190,9 @@ def run_named_judge_result(
     eval_scope: str,
     ground_truth_records: Sequence[GroundTruthRecord],
     predicted_statuses: Mapping[tuple[str, str], LabelStatus],
+    predicted_scores: Mapping[tuple[str, str], float] | None = None,
+    ranking_labels: Sequence[str] | None = None,
+    require_two_classes_per_ranking_label: bool = False,
 ) -> NamedJudgeRun:
     """Run Judge and keep the full result for diagnostic CSVs."""
     if not ground_truth_records:
@@ -174,6 +206,11 @@ def run_named_judge_result(
     result = run_judge(
         ground_truth_records=ground_truth_records,
         predicted_statuses=predicted_statuses,
+        predicted_scores=predicted_scores,
+        ranking_labels=ranking_labels,
+        require_two_classes_per_ranking_label=(
+            require_two_classes_per_ranking_label
+        ),
     )
     return NamedJudgeRun(name=name, eval_scope=eval_scope, result=result)
 
@@ -229,6 +266,78 @@ def per_label_metrics_frame(runs: Sequence[NamedJudgeRun]) -> pd.DataFrame:
                 }
             )
     return pd.DataFrame(rows)
+
+
+def ranking_metrics_frame(runs: Sequence[NamedJudgeRun]) -> pd.DataFrame:
+    """Build one AUROC/AP summary row per evaluated label."""
+    rows: list[dict[str, Any]] = []
+    for run in runs:
+        if run.result is None or run.result.ranking_result is None:
+            continue
+        for metrics in run.result.ranking_result.per_label_metrics:
+            rows.append(
+                {
+                    "run_name": run.name,
+                    "eval_scope": run.eval_scope,
+                    "label": metrics.label,
+                    "total_cells": metrics.total,
+                    "evaluated_cells": metrics.evaluated,
+                    "positive": metrics.positive,
+                    "negative": metrics.negative,
+                    "excluded_uncertain": metrics.excluded_uncertain,
+                    "excluded_unmentioned": metrics.excluded_unmentioned,
+                    "auroc": metrics.auroc,
+                    "average_precision": metrics.average_precision,
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def ranking_cells_frame(runs: Sequence[NamedJudgeRun]) -> pd.DataFrame:
+    """Build the auditable study-label inputs used for ranking metrics."""
+    rows: list[dict[str, Any]] = []
+    for run in runs:
+        if run.result is None or run.result.ranking_result is None:
+            continue
+        for cell in run.result.ranking_result.cells:
+            rows.append(
+                {
+                    "run_name": run.name,
+                    "eval_scope": run.eval_scope,
+                    "study_key": cell.study_key,
+                    "label": cell.label,
+                    "ground_truth_status": cell.ground_truth_status.value,
+                    "ground_truth_binary": cell.ground_truth_binary,
+                    "prediction_score": cell.prediction_score,
+                    "included": cell.included,
+                    "exclusion_reason": cell.exclusion_reason,
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def ranking_summary_payload(runs: Sequence[NamedJudgeRun]) -> dict[str, Any]:
+    """Serialize macro ranking results without categorical Judge metrics."""
+    payloads: list[dict[str, Any]] = []
+    for run in runs:
+        if run.result is None or run.result.ranking_result is None:
+            continue
+        ranking = run.result.ranking_result
+        payloads.append(
+            {
+                "name": run.name,
+                "eval_scope": run.eval_scope,
+                "macro_auroc": ranking.macro_auroc,
+                "macro_average_precision": ranking.macro_average_precision,
+                "ranking_metric_version": ranking.ranking_metric_version,
+                "requested_label_count": ranking.requested_label_count,
+                "scored_label_count": ranking.scored_label_count,
+                "complete": (
+                    ranking.scored_label_count == ranking.requested_label_count
+                ),
+            }
+        )
+    return {"runs": payloads}
 
 
 def uncertain_status_metrics_frame(runs: Sequence[NamedJudgeRun]) -> pd.DataFrame:

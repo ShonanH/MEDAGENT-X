@@ -19,6 +19,7 @@ from medagentx.data.constants import (
     REDIVIS_DATASET_ID,
     REDIVIS_DICOM_TRAIN_INDEX_TABLE_ID,
     REDIVIS_METADATA_TABLE_ID,
+    REDIVIS_PNG_TRAIN_INDEX_TABLE_ID,
 )
 
 TableKind = Literal["rows", "file_index"]
@@ -50,6 +51,7 @@ def _split_table_id(table_id: str) -> tuple[str, str]:
 
 _METADATA_SLUG, _METADATA_REF = _split_table_id(REDIVIS_METADATA_TABLE_ID)
 _DICOM_SLUG, _DICOM_REF = _split_table_id(REDIVIS_DICOM_TRAIN_INDEX_TABLE_ID)
+_PNG_SLUG, _PNG_REF = _split_table_id(REDIVIS_PNG_TRAIN_INDEX_TABLE_ID)
 _LABELS_SLUG, _LABELS_REF = _split_table_id(REDIVIS_CHEXPERT_LABELS_INDEX_TABLE_ID)
 
 TABLES: dict[str, RedivisTable] = {
@@ -65,6 +67,13 @@ TABLES: dict[str, RedivisTable] = {
         slug=_DICOM_SLUG,
         reference_id=_DICOM_REF,
         description="Train DICOM file index (path -> file_id).",
+        kind="file_index",
+    ),
+    "png_train_index": RedivisTable(
+        key="png_train_index",
+        slug=_PNG_SLUG,
+        reference_id=_PNG_REF,
+        description="Train PNG file index (relative image path -> file_id).",
         kind="file_index",
     ),
     "chexpert_labels_file_index": RedivisTable(
@@ -120,6 +129,16 @@ METADATA_COLUMNS: tuple[str, ...] = (
 # selected cohort so query responses stay under the Redivis 100MB rows limit.
 METADATA_IDENTITY_COLUMNS: tuple[str, ...] = (
     IDENTIFIER_COLUMNS + DEMOGRAPHIC_COLUMNS + VIEW_COLUMNS
+)
+
+COMPETITION_METADATA_COLUMNS: tuple[str, ...] = (
+    "path_to_image",
+    "frontal_lateral",
+    "ap_pa",
+    "deid_patient_id",
+    "patient_report_date_order",
+    "section_accession_number",
+    "split",
 )
 
 DICOM_INDEX_COLUMNS: tuple[str, ...] = (
@@ -209,6 +228,28 @@ ORDER BY path_to_dcm
     return _paged(sql, limit=limit, offset=offset)
 
 
+def build_competition_metadata_sql(
+    *,
+    limit: int | None = None,
+    offset: int | None = None,
+    columns: Sequence[str] = COMPETITION_METADATA_COLUMNS,
+) -> str:
+    """Build the bounded metadata query for train and released valid rows."""
+    if not columns:
+        raise ValueError("columns must be non-empty")
+
+    selected = ",\n  ".join(sql_quote_identifier(column) for column in columns)
+    table = get_table("metadata").qualified_reference
+    sql = f"""
+SELECT
+  {selected}
+FROM `{table}`
+WHERE split IN ('train', 'valid')
+ORDER BY path_to_image
+""".strip()
+    return _paged(sql, limit=limit, offset=offset)
+
+
 def build_metadata_reports_sql(paths: Sequence[str]) -> str:
     """Build report-column SQL for one batch of exact path_to_dcm values."""
     if not paths:
@@ -237,6 +278,25 @@ SELECT *
 FROM `{table}`
 LIMIT {int(limit)}
 """.strip()
+
+
+def build_png_train_index_sql(
+    *,
+    limit: int | None = None,
+    offset: int | None = None,
+) -> str:
+    """Build the PNG file-index query used by the competition manifest."""
+    table = get_table("png_train_index").qualified_reference
+    sql = f"""
+SELECT
+  `file_id`,
+  `file_name`,
+  `size`,
+  `md5_hash`
+FROM `{table}`
+ORDER BY file_name
+""".strip()
+    return _paged(sql, limit=limit, offset=offset)
 
 
 def build_dicom_train_index_sql(

@@ -1,0 +1,53 @@
+\subsection{Experimental Setup}
+\label{sec:experimental-setup}
+
+\subsubsection{Dataset, Cohort, and Partition Roles}
+
+The evaluation uses the quality-controlled, study-level cohort constructed from CheXpert Plus as described in Section~3.2 \cite{chambon2024chexpertplus}. The resulting resource-constrained cohort contains 5,299 chest-radiograph studies partitioned at the patient level into 3,538 training studies, 855 validation studies, and 906 test studies. A study, rather than an individual radiographic view, is the unit of model supervision and evaluation: all quality-passed frontal and lateral views belonging to the same study are processed jointly and receive the same 12-label study-level target vector. The label space is the fixed disease set defined in Section~3.1, and supervision follows the CheXpert status semantics for positive, negative, uncertain, and unmentioned findings \cite{irvin2019chexpert}. Only study--label cells with valid binary supervision contribute to model fitting through the mask defined in Section~3.2.
+
+\begin{table}[H]
+\centering
+\caption{Study-level data partitions and their roles in model development and evaluation. Partition membership is assigned at the patient level; therefore, studies from one patient cannot occur in more than one partition.}
+\label{tab:experimental-partitions}
+\begin{tabular}{lrl}
+\toprule
+Partition & Studies & Experimental role \\
+\midrule
+Training & 3,538 & Vision-model fitting and retrieval corpus \\
+Validation & 855 & Checkpoint, threshold, and policy selection \\
+Test & 906 & Frozen final evaluation \\
+\midrule
+Total & 5,299 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The three partitions have non-overlapping patients. The training partition is used both to optimize the vision model and to construct the image-to-report retrieval index. The validation partition is used to select the vision checkpoint, determine label-specific operating thresholds, and develop the fixed fusion policy. No validation study is inserted into the retrieval corpus. The test partition is held fixed and is not used for parameter estimation, threshold selection, retrieval-index construction, fusion-rule development, or model selection. Every evaluated configuration uses the same 906 test studies, preventing test-composition differences from confounding comparisons between pipeline configurations.
+
+\subsubsection{Operating Thresholds and Gray-Zone Evaluation}
+
+The checkpoint produces one sigmoid score per disease, but classification uses label-specific validation operating points rather than a shared threshold. In the label ordering
+\[
+\begin{split}
+(&\text{Atelectasis},\text{Cardiomegaly},\text{Consolidation},\text{Edema},
+\text{Enlarged Cardiomediastinum},\text{Fracture},\\
+&\text{Lung Lesion},\text{Lung Opacity},\text{Pleural Effusion},
+\text{Pleural Other},\text{Pneumonia},\text{Pneumothorax}),
+\end{split}
+\]
+the final inference threshold vector is
+\[
+\boldsymbol{\tau}=
+(0.56,0.50,0.45,0.453857,0.35,0.42,0.39,0.62,0.60,0.45,0.28,0.33).
+\]
+The epoch-2 checkpoint originally stored an edema threshold of $0.52$; the final evaluation artifacts apply a validation-derived edema override of $0.453857$, while retaining the checkpoint thresholds for the other eleven labels. This fixed threshold vector is applied uniformly throughout evaluation and is never estimated from test labels.
+
+The gray-zone margin is fixed to $\delta=0.15$. For comparative analysis, gray-zone membership is frozen from the vision-only baseline outputs, producing 1,812 gray-zone cells among the 10,872 test study--label cells. Freezing this mask ensures that every pipeline configuration is evaluated on the same threshold-adjacent decisions. Full-test results are computed over all 10,872 cells, whereas gray-zone results are restricted to this fixed subset.
+
+\subsubsection{Retrieval and Agentic Inference Configuration}
+
+Retrieval-enabled configurations use the training-only index and retrieval procedure defined in Section~3.3 with $K=10$. Both LLM roles are instantiated with Qwen3-14B \cite{yang2025qwen3}, served locally through Ollama at temperature $0$ with a 300-second request timeout \cite{ollama2024structured}. Vision inference uses a batch size of one study, automatic mixed precision, and zero data-loading workers. The cohort, RAD-DINO checkpoint, label-specific thresholds, gray-zone margin, retrieval corpus, and test partition remain fixed across all evaluated configurations.
+
+\subsubsection{Evaluation Protocol}
+
+All configurations are evaluated using the fixed Judge policy defined in Section~3.4. Evaluation covers the same 906 test studies and 12 target labels, yielding 10,872 candidate study--label decisions. Results are reported on both the complete test scope and the frozen 1,812-cell vision-only gray-zone scope. For each scope, we report macro and micro precision, recall, and F1 together with coverage. Identical test records, ground-truth masks, and gray-zone membership are used for every configuration, enabling direct comparison under a common evaluation protocol.

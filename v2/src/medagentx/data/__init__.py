@@ -11,15 +11,18 @@ if str(_V2_SRC) not in sys.path:
 
 from medagentx.data.catalog import (
     METADATA_IDENTITY_COLUMNS,
+    COMPETITION_METADATA_COLUMNS,
     REPORT_COLUMNS,
     TABLES,
     RedivisTable,
     build_chexpert_labels_index_sql,
+    build_competition_metadata_sql,
     build_dicom_train_index_probe_sql,
     build_dicom_train_index_sql,
     build_findings_fixed_lookup_sql,
     build_metadata_reports_sql,
     build_metadata_train_sql,
+    build_png_train_index_sql,
     get_table,
 )
 from medagentx.data.balanced_constants import (
@@ -47,6 +50,7 @@ from medagentx.data.constants import (
     REDIVIS_CHEXPERT_LABELS_INDEX_TABLE_ID,
     REDIVIS_DATASET_ID,
     REDIVIS_DICOM_TRAIN_INDEX_TABLE_ID,
+    REDIVIS_PNG_TRAIN_INDEX_TABLE_ID,
     REDIVIS_METADATA_TABLE_ID,
 )
 from medagentx.data.cohort import (
@@ -55,6 +59,14 @@ from medagentx.data.cohort import (
     load_findings_for_cohort,
     summarize_label_gated_cohort,
     write_label_gated_cohort_artifacts,
+)
+from medagentx.data.competition_manifest import (
+    CompetitionManifestError,
+    build_competition_manifest,
+    fetch_competition_metadata,
+    fetch_png_train_index,
+    normalize_image_path,
+    study_key_from_image_path,
 )
 from medagentx.data.dicoms import (
     DEFAULT_DOWNLOAD_WORKERS,
@@ -82,6 +94,11 @@ from medagentx.data.paths import (
     patient_id_from_study_key,
     study_key_from_path,
 )
+from medagentx.data.png_download import (
+    DEFAULT_PNG_DOWNLOAD_WORKERS,
+    DEFAULT_PNG_PROGRESS_EVERY,
+    download_png_train,
+)
 from medagentx.data.redivis_client import (
     RedivisClient,
     RedivisDownloadResult,
@@ -102,9 +119,12 @@ __all__ = [
     "BALANCED_EVAL_MODE",
     "DEFAULT_DOWNLOAD_WORKERS",
     "DEFAULT_PROGRESS_EVERY",
+    "DEFAULT_PNG_DOWNLOAD_WORKERS",
+    "DEFAULT_PNG_PROGRESS_EVERY",
     "DEFAULT_SPLIT",
     "MAX_STUDIES_PER_PATIENT",
     "METADATA_IDENTITY_COLUMNS",
+    "COMPETITION_METADATA_COLUMNS",
     "NEGATIVE_TO_POSITIVE_RATIO",
     "POST_QUALITY_POSITIVE_TARGETS",
     "PRE_QUALITY_POSITIVE_TARGETS",
@@ -116,11 +136,13 @@ __all__ = [
     "REDIVIS_CHEXPERT_LABELS_INDEX_TABLE_ID",
     "REDIVIS_DATASET_ID",
     "REDIVIS_DICOM_TRAIN_INDEX_TABLE_ID",
+    "REDIVIS_PNG_TRAIN_INDEX_TABLE_ID",
     "REDIVIS_METADATA_TABLE_ID",
     "TABLES",
     "RedivisClient",
     "RedivisDownloadResult",
     "RedivisTable",
+    "CompetitionManifestError",
     "aggregate_patient_features",
     "apply_eligibility_limits",
     "apply_label_gated_cohort",
@@ -129,6 +151,8 @@ __all__ = [
     "build_patient_label_features",
     "build_study_label_features",
     "build_chexpert_labels_index_sql",
+    "build_competition_metadata_sql",
+    "build_competition_manifest",
     "build_dicom_file_id_lookup",
     "build_dicom_train_index_probe_sql",
     "build_dicom_train_index_sql",
@@ -136,13 +160,17 @@ __all__ = [
     "build_findings_fixed_lookup_sql",
     "build_metadata_reports_sql",
     "build_metadata_train_sql",
+    "build_png_train_index_sql",
     "clean_dicom_path",
     "download_eligible_dicoms",
+    "download_png_train",
     "EnrichedCohortSelection",
     "ensure_findings_fixed_json",
     "fetch_dicom_train_index",
     "fetch_eligible_dicom_rows",
     "fetch_metadata_train_rows",
+    "fetch_competition_metadata",
+    "fetch_png_train_index",
     "FindingsIndex",
     "FindingsRecord",
     "get_table",
@@ -150,6 +178,7 @@ __all__ = [
     "load_findings_for_cohort",
     "local_dicom_path",
     "normalize_path_to_image",
+    "normalize_image_path",
     "path_to_image_join_key",
     "path_to_image_join_keys",
     "path_to_image_key_from_row",
@@ -159,6 +188,7 @@ __all__ = [
     "reuse_existing_dicoms",
     "select_enriched_cohort",
     "study_key_from_path",
+    "study_key_from_image_path",
     "summarize_download_status",
     "summarize_findings_index",
     "summarize_label_gated_cohort",

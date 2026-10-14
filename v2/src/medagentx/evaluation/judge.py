@@ -24,6 +24,7 @@ from medagentx.evaluation.metrics import (
     compute_status_confusion_counts,
     compute_uncertain_status_metrics,
 )
+from medagentx.evaluation.ranking import RankingResult, compute_ranking_metrics
 from medagentx.labels.statuses import LabelStatus
 
 
@@ -36,6 +37,7 @@ class JudgeResult:
     uncertain_status_metrics: tuple[UncertainStatusMetrics, ...]
     status_confusion_counts: tuple[StatusConfusionCount, ...]
     aggregate_metrics: AggregateMetrics
+    ranking_result: RankingResult | None = None
     judge_metric_version: str = JUDGE_METRIC_VERSION
 
 
@@ -47,12 +49,17 @@ def run_judge(
     *,
     ground_truth_records: Sequence[GroundTruthRecord],
     predicted_statuses: Mapping[tuple[str, str], LabelStatus],
+    predicted_scores: Mapping[tuple[str, str], float] | None = None,
+    ranking_labels: Sequence[str] | None = None,
+    require_two_classes_per_ranking_label: bool = False,
 ) -> JudgeResult:
     """Compare frozen GT rows to predicted statuses and compute metrics.
 
     Inputs:
       - ground_truth_records: frozen offline GT table rows
       - predicted_statuses: mapping of (study_key, label) -> LabelStatus
+      - predicted_scores: optional continuous scores for ranking metrics
+      - ranking_labels: labels included in AUROC/AP when scores are provided
 
     Locked behavior:
       - Does not parse reports
@@ -118,6 +125,17 @@ def run_judge(
         for count in compute_status_confusion_counts(by_label[label])
     )
     aggregate_metrics = compute_aggregate_metrics(per_label_metrics)
+    ranking_result = None
+    if predicted_scores is not None:
+        selected_labels = (
+            ranking_labels if ranking_labels is not None else tuple(sorted(by_label))
+        )
+        ranking_result = compute_ranking_metrics(
+            ground_truth_records=ground_truth_records,
+            predicted_scores=predicted_scores,
+            labels=selected_labels,
+            require_two_classes_per_label=require_two_classes_per_ranking_label,
+        )
 
     return JudgeResult(
         matches=tuple(matches),
@@ -125,4 +143,5 @@ def run_judge(
         uncertain_status_metrics=uncertain_status_metrics,
         status_confusion_counts=status_confusion_counts,
         aggregate_metrics=aggregate_metrics,
+        ranking_result=ranking_result,
     )

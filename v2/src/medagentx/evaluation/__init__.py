@@ -12,6 +12,7 @@ if str(_V2_SRC) not in sys.path:
 from medagentx.evaluation.constants import (
     GROUND_TRUTH_POLICY_VERSION,
     JUDGE_METRIC_VERSION,
+    RANKING_METRIC_VERSION,
 )
 from medagentx.evaluation.ground_truth import (
     GroundTruthRecord,
@@ -27,6 +28,12 @@ from medagentx.evaluation.metrics import (
     compute_aggregate_metrics,
     compute_label_metrics,
 )
+from medagentx.evaluation.ranking import (
+    LabelRankingMetrics,
+    RankingCell,
+    RankingResult,
+    compute_ranking_metrics,
+)
 
 __all__ = [
     "AggregateMetrics",
@@ -36,11 +43,16 @@ __all__ = [
     "JudgeResult",
     "LabelMatch",
     "LabelMetrics",
+    "LabelRankingMetrics",
     "MatchOutcome",
+    "RankingCell",
+    "RankingResult",
+    "RANKING_METRIC_VERSION",
     "build_ground_truth_records",
     "compare_statuses",
     "compute_aggregate_metrics",
     "compute_label_metrics",
+    "compute_ranking_metrics",
     "ground_truth_record_to_row",
     "is_binary_scoreable",
     "run_judge",
