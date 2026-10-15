@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: medagentx-setup
+  labels:
+    app.kubernetes.io/name: medagentx
+    app.kubernetes.io/component: setup
+spec:
+  activeDeadlineSeconds: 21600
+  restartPolicy: Never
+
+  imagePullSecrets:
+    - name: dockerhub-pull
+
+  containers:
+    - name: workspace
+      image: shonanmedagentx/medagentx:2026-10-14
+      imagePullPolicy: IfNotPresent
+      command: ['sh', '-c', 'sleep 21600']
+
+      resources:
+        requests:
+          cpu: '2'
+          memory: '8Gi'
+          ephemeral-storage: '20Gi'
+        limits:
+          cpu: '4'
+          memory: '16Gi'
+          ephemeral-storage: '40Gi'
+
+      volumeMounts:
+        - name: data
+          mountPath: /data
+        - name: runs
+          mountPath: /runs
+
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: medagentx-data
+    - name: runs
+      persistentVolumeClaim:
+        claimName: medagentx-runs
