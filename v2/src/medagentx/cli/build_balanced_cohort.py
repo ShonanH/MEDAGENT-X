@@ -429,7 +429,7 @@ def main(argv: list[str] | None = None) -> int:
         needs_download,
         dicom_root,
         overwrite=args.overwrite_dicoms,
-        resume=False,
+        resume=True,
         max_workers=args.download_workers,
         progress_every=args.progress_every,
     )
