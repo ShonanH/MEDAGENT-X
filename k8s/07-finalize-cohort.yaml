@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: medagentx-finalize-cohort-v1
+  labels:
+    app.kubernetes.io/name: medagentx
+    app.kubernetes.io/component: cohort-finalization
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 86400
+  ttlSecondsAfterFinished: 604800
+
+  template:
+    spec:
+      restartPolicy: Never
+
+      imagePullSecrets:
+        - name: dockerhub-pull
+
+      containers:
+        - name: finalize-cohort
+          image: shonanmedagentx/medagentx:2026-10-14-r1
+          imagePullPolicy: IfNotPresent
+
+          command:
+            - python
+            - -m
+            - medagentx.cli.finalize_balanced_cohort
+
+          args:
+            - --cohort-root
+            - /data/chexpert-plus/cohorts/label-enriched-15k-v1
+
+          env:
+            - name: PYTHONUNBUFFERED
+              value: '1'
+
+          resources:
+            requests:
+              cpu: '2'
+              memory: '8Gi'
+              ephemeral-storage: '20Gi'
+            limits:
+              cpu: '4'
+              memory: '16Gi'
+              ephemeral-storage: '40Gi'
+
+          volumeMounts:
+            - name: data
+              mountPath: /data
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: medagentx-data

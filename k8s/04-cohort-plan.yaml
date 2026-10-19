@@ -1,0 +1,75 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: medagentx-cohort-plan-v1
+  labels:
+    app.kubernetes.io/name: medagentx
+    app.kubernetes.io/component: cohort-planning
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 172800
+  ttlSecondsAfterFinished: 604800
+
+  template:
+    spec:
+      restartPolicy: Never
+
+      imagePullSecrets:
+        - name: dockerhub-pull
+
+      containers:
+        - name: cohort-plan
+          image: shonanmedagentx/medagentx:2026-10-14-r1
+          imagePullPolicy: IfNotPresent
+
+          command:
+            - python
+            - -m
+            - medagentx.cli.build_balanced_cohort
+
+          args:
+            - --output-root
+            - /data/chexpert-plus/cohorts/label-enriched-15k-v1
+            - --patient-cap
+            - '10000'
+            - --train-positive-target
+            - '750'
+            - --val-positive-target
+            - '188'
+            - --test-positive-target
+            - '188'
+            - --negative-ratio
+            - '2'
+            - --max-studies-per-patient
+            - '4'
+            - --skip-dicom-download
+
+          env:
+            - name: REDIVIS_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: redivis-credentials
+                  key: REDIVIS_API_TOKEN
+            - name: HF_HOME
+              value: /data/cache/huggingface
+            - name: PYTHONUNBUFFERED
+              value: '1'
+
+          resources:
+            requests:
+              cpu: '4'
+              memory: '16Gi'
+              ephemeral-storage: '40Gi'
+            limits:
+              cpu: '4'
+              memory: '16Gi'
+              ephemeral-storage: '60Gi'
+
+          volumeMounts:
+            - name: data
+              mountPath: /data
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: medagentx-data
