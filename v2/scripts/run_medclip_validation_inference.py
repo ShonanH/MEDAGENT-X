@@ -159,6 +159,7 @@ def load_medclip(device: torch.device, prompt_count: int) -> tuple[Any, Any, Any
             MedCLIPVisionModelViT,
             PromptClassifier,
         )
+        from medclip import constants as medclip_constants  # type: ignore[import-not-found]
         from medclip.prompts import (  # type: ignore[import-not-found]
             generate_chexpert_class_prompts,
             process_class_prompts,
@@ -170,7 +171,35 @@ def load_medclip(device: torch.device, prompt_count: int) -> tuple[Any, Any, Any
         ) from exc
 
     model = MedCLIPModel(vision_cls=MedCLIPVisionModelViT)
-    model.from_pretrained()
+    try:
+        model.from_pretrained()
+    except RuntimeError as exc:
+        # Older MedCLIP releases save this legacy, non-learned BERT buffer.
+        # It is absent in newer Transformers models, producing the exact
+        # ``Unexpected key(s) ... position_ids`` error. Do not use a blanket
+        # ``strict=False`` fallback: all learned weights must still match.
+        legacy_key = "text_model.model.embeddings.position_ids"
+        if legacy_key not in str(exc):
+            raise
+        checkpoint_path = (
+            Path.cwd()
+            / "pretrained"
+            / "medclip-vit"
+            / medclip_constants.WEIGHTS_NAME
+        )
+        if not checkpoint_path.is_file():
+            raise RuntimeError(
+                "MedCLIP downloaded a checkpoint but it was not found at "
+                f"{checkpoint_path}. Install MedCLIP from its GitHub source "
+                "or pass a compatible environment."
+            ) from exc
+        state_dict = torch.load(checkpoint_path, map_location="cpu")
+        if state_dict.pop(legacy_key, None) is None:
+            raise RuntimeError(
+                "MedCLIP failed to load for a reason other than its known "
+                "legacy position_ids checkpoint buffer."
+            ) from exc
+        model.load_state_dict(state_dict, strict=True)
     model = model.eval().to(device)
     classifier = PromptClassifier(model, ensemble=True).eval().to(device)
     processor = MedCLIPProcessor()
