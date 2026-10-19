@@ -1,4 +1,9 @@
-"""Tune per-label GLoRIA thresholds on expert CheXpert validation labels."""
+"""Tune frozen per-label thresholds on expert CheXpert validation labels.
+
+The defaults reproduce the GLoRIA experiment. ``--model-name`` and policy
+version arguments also let external baselines (for example MedCLIP) use the
+same validation-only calibration contract.
+"""
 
 from __future__ import annotations
 
@@ -44,6 +49,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--scores", type=Path, default=DEFAULT_SCORES)
     parser.add_argument("--ground-truth", type=Path, default=DEFAULT_GROUND_TRUTH)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_EXPERIMENT_DIR)
+    parser.add_argument("--model-name", default=MODEL_NAME)
+    parser.add_argument("--policy-version", default=POLICY_VERSION)
+    parser.add_argument(
+        "--constrained-policy-version", default=CONSTRAINED_POLICY_VERSION
+    )
     parser.add_argument("--expected-studies", type=int, default=200)
     parser.add_argument(
         "--min-specificity",
@@ -289,7 +299,7 @@ def main() -> None:
         ]
     ]
     predictions = pd.concat(prediction_frames, ignore_index=True)
-    predictions.insert(0, "model_name", MODEL_NAME)
+    predictions.insert(0, "model_name", args.model_name)
 
     total_tp = int(report["tp"].sum())
     total_fp = int(report["fp"].sum())
@@ -298,11 +308,11 @@ def main() -> None:
     micro_recall = _safe_div(total_tp, total_tp + total_fn)
     micro_f1 = _safe_div(2 * total_tp, 2 * total_tp + total_fp + total_fn)
     summary = {
-        "model_name": MODEL_NAME,
+        "model_name": args.model_name,
         "policy_version": (
-            CONSTRAINED_POLICY_VERSION
+            args.constrained_policy_version
             if args.min_specificity is not None
-            else POLICY_VERSION
+            else args.policy_version
         ),
         "selection_split": "competition_val",
         "selection_metric": (
