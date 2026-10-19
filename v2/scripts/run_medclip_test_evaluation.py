@@ -220,8 +220,8 @@ def main() -> None:
     device = torch.device(args.device)
     if device.type == "cuda" and not torch.cuda.is_available():
         raise RuntimeError(f"Requested {device}, but CUDA is unavailable")
-    classifier, processor, prompt_inputs, prompts = medclip.load_medclip(device, args.prompt_count)
-    image_scores = medclip.score_images(classifier=classifier, processor=processor, prompt_inputs=prompt_inputs, frontal=frontal, device=device, batch_size=args.batch_size)
+    classifier, preprocessing, prompt_inputs, prompts = medclip.load_medclip(device, args.prompt_count)
+    image_scores = medclip.score_images(classifier=classifier, preprocessing=preprocessing, prompt_inputs=prompt_inputs, frontal=frontal, device=device, batch_size=args.batch_size)
     study_scores, predictions = apply_frozen_policy(image_scores, policy)
     if len(study_scores) != args.expected_studies or len(predictions) != args.expected_studies * len(medclip.LABELS):
         raise RuntimeError("Unexpected MedCLIP held-out prediction count")

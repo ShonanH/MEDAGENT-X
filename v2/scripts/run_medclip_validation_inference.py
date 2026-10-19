@@ -155,7 +155,6 @@ def load_medclip(device: torch.device, prompt_count: int) -> tuple[Any, Any, Any
     try:
         from medclip import (  # type: ignore[import-not-found]
             MedCLIPModel,
-            MedCLIPProcessor,
             MedCLIPVisionModelViT,
             PromptClassifier,
         )
@@ -202,10 +201,18 @@ def load_medclip(device: torch.device, prompt_count: int) -> tuple[Any, Any, Any
         model.load_state_dict(state_dict, strict=True)
     model = model.eval().to(device)
     classifier = PromptClassifier(model, ensemble=True).eval().to(device)
-    processor = MedCLIPProcessor()
+    # Do not construct MedCLIPProcessor here. It subclasses the retired
+    # CLIPFeatureExtractor API, which breaks with current Transformers before
+    # inference begins. These are the exact grayscale preprocessing constants
+    # from MedCLIP's official feature extractor.
+    preprocessing = {
+        "image_size": int(medclip_constants.IMG_SIZE),
+        "image_mean": float(medclip_constants.IMG_MEAN),
+        "image_std": float(medclip_constants.IMG_STD),
+    }
     prompts = generate_chexpert_class_prompts(n=prompt_count)
     prompt_inputs = process_class_prompts(prompts)
-    return classifier, processor, prompt_inputs, prompts
+    return classifier, preprocessing, prompt_inputs, prompts
 
 
 def _move_to_device(value: Any, device: torch.device) -> Any:
@@ -218,10 +225,35 @@ def _move_to_device(value: Any, device: torch.device) -> Any:
     return value
 
 
+def prepare_medclip_pixels(images: list[Any], preprocessing: dict[str, float]) -> torch.Tensor:
+    """Reproduce MedCLIPFeatureExtractor without its obsolete HF base class."""
+    try:
+        from PIL import Image
+    except ImportError as exc:
+        raise RuntimeError("Pillow is required to preprocess MedCLIP images.") from exc
+    image_size = int(preprocessing["image_size"])
+    image_mean = float(preprocessing["image_mean"])
+    image_std = float(preprocessing["image_std"])
+    if image_std <= 0:
+        raise ValueError("MedCLIP image standard deviation must be positive")
+    resample = getattr(Image, "Resampling", Image).BICUBIC
+    tensors: list[torch.Tensor] = []
+    for image in images:
+        width, height = image.size
+        side = max(image_size, width, height)
+        padded = Image.new("L", (side, side), color=0)
+        padded.paste(image.convert("L"), ((side - width) // 2, (side - height) // 2))
+        resized = padded.resize((image_size, image_size), resample=resample)
+        values = np.asarray(resized, dtype=np.float32) / 255.0
+        normalized = (values - image_mean) / image_std
+        tensors.append(torch.from_numpy(normalized).unsqueeze(0))
+    return torch.stack(tensors, dim=0)
+
+
 def score_images(
     *,
     classifier: Any,
-    processor: Any,
+    preprocessing: dict[str, float],
     prompt_inputs: Any,
     frontal: pd.DataFrame,
     device: torch.device,
@@ -242,10 +274,10 @@ def score_images(
         try:
             for image_path in batch["image_path"]:
                 with Image.open(image_path) as image:
-                    images.append(image.convert("RGB"))
-            inputs = _move_to_device(
-                processor(images=images, return_tensors="pt"), device
-            )
+                    images.append(image.copy())
+            inputs = {
+                "pixel_values": prepare_medclip_pixels(images, preprocessing).to(device)
+            }
             inputs["prompt_inputs"] = _move_to_device(prompt_inputs, device)
             with torch.inference_mode():
                 output = classifier(**inputs)
@@ -367,10 +399,10 @@ def main() -> None:
         expected_frontal_images=args.expected_frontal_images,
         expected_studies=args.expected_studies,
     )
-    classifier, processor, prompt_inputs, prompts = load_medclip(device, args.prompt_count)
+    classifier, preprocessing, prompt_inputs, prompts = load_medclip(device, args.prompt_count)
     image_scores = score_images(
         classifier=classifier,
-        processor=processor,
+        preprocessing=preprocessing,
         prompt_inputs=prompt_inputs,
         frontal=frontal,
         device=device,
