@@ -18,12 +18,18 @@ import gc
 import hashlib
 import json
 import random
+import sys
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 import pandas as pd
 import torch
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+V2_SRC = PROJECT_ROOT / "v2" / "src"
+if str(V2_SRC) not in sys.path:
+    sys.path.insert(0, str(V2_SRC))
 
 import run_medclip_validation_inference as base
 from medagentx.data.dicoms import local_dicom_path
@@ -37,7 +43,6 @@ from medagentx.labels.constants import DISEASE_LABELS
 from medagentx.labels.schema import snake_label
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_COHORT_ROOT = PROJECT_ROOT / "v2" / "artifacts" / "cohort_balanced_v1"
 DEFAULT_OUTPUT_ROOT = PROJECT_ROOT / "v2" / "experiments" / "medclip_main_cohort"
 MODEL_NAME = "medclip_vit_zero_shot_main_cohort"
