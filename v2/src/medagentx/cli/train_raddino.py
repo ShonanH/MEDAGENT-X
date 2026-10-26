@@ -24,6 +24,7 @@ from medagentx.vision.constants import (
     DEFAULT_WEIGHT_DECAY,
     TRAINABLE_LAST_BLOCKS,
 )
+from medagentx.vision.cache import CachedImageLoader, RadDinoImageCache
 from medagentx.vision.data import (
     LightCxrAugment,
     StudyBatchCollator,
@@ -57,6 +58,15 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--view-splits-csv", type=Path, default=None)
     parser.add_argument("--study-labels-csv", type=Path, default=None)
     parser.add_argument("--dicom-root", type=Path, default=None)
+    parser.add_argument(
+        "--image-cache-root",
+        type=Path,
+        default=None,
+        help=(
+            "Validated immutable RAD-DINO cache root. When omitted, retain "
+            "the existing raw-DICOM input path."
+        ),
+    )
     parser.add_argument("--output-root", type=Path, default=None)
     parser.add_argument("--model-name", default=DEFAULT_MODEL_NAME)
     parser.add_argument(
@@ -113,6 +123,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--num-workers", type=int, default=DEFAULT_NUM_WORKERS
     )
+    parser.add_argument(
+        "--progress-every-batches",
+        type=int,
+        default=25,
+        help="Emit input/throughput diagnostics every N training batches.",
+    )
     parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
     parser.add_argument(
         "--max-train-studies",
@@ -152,8 +168,18 @@ def _loader(
     batch_size: int,
     num_workers: int,
     train: bool,
+    image_cache_root: Path | None = None,
 ) -> DataLoader:
-    dataset = StudyDataset(records, dicom_root=dicom_root)
+    image_loader = (
+        CachedImageLoader(dicom_root=dicom_root, cache_root=image_cache_root)
+        if image_cache_root is not None
+        else None
+    )
+    dataset = StudyDataset(
+        records,
+        dicom_root=dicom_root,
+        **({"image_loader": image_loader} if image_loader is not None else {}),
+    )
     collator = StudyBatchCollator(
         processor,
         augment=LightCxrAugment() if train else None,
@@ -196,6 +222,8 @@ def main(argv: list[str] | None = None) -> int:
         raise ValueError("max-grad-norm must be >= 0")
     if args.num_workers < 0:
         raise ValueError("num-workers must be >= 0")
+    if args.progress_every_batches <= 0:
+        raise ValueError("progress-every-batches must be > 0")
     for name in (
         "max_train_studies",
         "max_val_studies",
@@ -248,6 +276,39 @@ def main(argv: list[str] | None = None) -> int:
     print(f"[Vision] model={args.model_name} device={device}")
 
     processor = AutoImageProcessor.from_pretrained(args.model_name)
+    image_processor_config = {
+        "model_name": args.model_name,
+        "config": processor.to_dict(),
+    }
+    image_cache: RadDinoImageCache | None = None
+    if args.image_cache_root is not None:
+        image_cache = RadDinoImageCache(args.image_cache_root)
+        required_paths = [
+            path
+            for records in (train_records, val_records, test_records)
+            for record in records
+            for path in record.dicom_paths
+        ]
+        image_cache.validate_training_inputs(
+            cohort_root=cohort_root,
+            dicom_root=dicom_root,
+            view_splits_csv=view_splits_csv,
+            required_paths=required_paths,
+            image_processor_config=image_processor_config,
+        )
+        for split_name, records in (
+            ("train", train_records),
+            ("val", val_records),
+            ("test", test_records),
+        ):
+            print(
+                f"[Vision] cache planned split={split_name} "
+                f"studies={len(records)} "
+                f"images={sum(len(record.dicom_paths) for record in records)}"
+            )
+        print(
+            f"[Vision] cache_mode=validated cache_id={image_cache.cache_id}"
+        )
     train_loader = _loader(
         train_records,
         dicom_root=dicom_root,
@@ -255,6 +316,7 @@ def main(argv: list[str] | None = None) -> int:
         batch_size=args.batch_size,
         num_workers=args.num_workers,
         train=True,
+        image_cache_root=args.image_cache_root,
     )
     val_loader = _loader(
         val_records,
@@ -263,6 +325,7 @@ def main(argv: list[str] | None = None) -> int:
         batch_size=args.batch_size,
         num_workers=args.num_workers,
         train=False,
+        image_cache_root=args.image_cache_root,
     )
     test_loader = _loader(
         test_records,
@@ -271,6 +334,7 @@ def main(argv: list[str] | None = None) -> int:
         batch_size=args.batch_size,
         num_workers=args.num_workers,
         train=False,
+        image_cache_root=args.image_cache_root,
     )
 
     model = RadDinoStudyClassifier.from_pretrained(
@@ -298,6 +362,7 @@ def main(argv: list[str] | None = None) -> int:
         selection_metric=args.selection_metric,
         warmup_ratio=args.warmup_ratio,
         max_grad_norm=args.max_grad_norm,
+        progress_every_batches=args.progress_every_batches,
     )
     output_root.mkdir(parents=True, exist_ok=True)
     (output_root / "run_config.json").write_text(
@@ -306,6 +371,12 @@ def main(argv: list[str] | None = None) -> int:
                 "view_splits_csv": str(view_splits_csv),
                 "study_labels_csv": str(study_labels_csv),
                 "dicom_root": str(dicom_root),
+                "image_cache_root": (
+                    str(args.image_cache_root) if args.image_cache_root else None
+                ),
+                "cache_mode": "cached" if image_cache else "raw_dicom",
+                "cache_manifest_id": image_cache.cache_id if image_cache else None,
+                "image_processor": image_processor_config,
                 "output_root": str(output_root),
                 "device": str(device),
                 "train_studies": len(train_records),
@@ -369,6 +440,43 @@ def main(argv: list[str] | None = None) -> int:
     (output_root / "test_metrics.json").write_text(
         json.dumps(test_metrics, indent=2, sort_keys=True)
     )
+    if image_cache is not None:
+        completed_epochs = int(result["epochs_completed"])
+        split_records = {
+            "train": train_records,
+            "val": val_records,
+            "test": test_records,
+        }
+        split_passes = {
+            "train": completed_epochs,
+            # One validation pass per epoch plus best-checkpoint evaluation.
+            "val": completed_epochs + 1,
+            "test": 1,
+        }
+        cache_usage = {
+            split: {
+                "studies_per_pass": len(records),
+                "views_per_pass": sum(
+                    len(record.dicom_paths) for record in records
+                ),
+                "passes": split_passes[split],
+                "studies_read": len(records) * split_passes[split],
+                "views_read": sum(
+                    len(record.dicom_paths) for record in records
+                )
+                * split_passes[split],
+            }
+            for split, records in split_records.items()
+        }
+        (output_root / "cache_usage.json").write_text(
+            json.dumps(cache_usage, indent=2, sort_keys=True) + "\n"
+        )
+        for split, usage in cache_usage.items():
+            print(
+                f"[Vision] cache actual split={split} "
+                f"studies_read={usage['studies_read']} "
+                f"views_read={usage['views_read']}"
+            )
     print(
         f"[Vision] best_epoch={result['best_epoch']} "
         f"best_val_{config.selection_metric}={result['best_score']}"

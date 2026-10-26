@@ -1,0 +1,336 @@
+MEDAGENT-X DICOM CACHE OPTIMIZATION: ENGINEERING HANDOFF
+=========================================================
+
+Purpose
+-------
+Make RAD-DINO training data delivery fast enough to keep a GPU busy. The
+current system repeatedly performs expensive DICOM work on a remote RBD PVC
+for every epoch. Implement a versioned, validated cache of deterministic
+image preprocessing results, then train from that cache.
+
+This is a performance optimization. It must not change cohort membership,
+patient-disjoint splits, label policy, or the intended image semantics.
+
+
+1. CURRENT SETUP AND ITS LIMITATIONS
+====================================
+
+Repository and runtime
+----------------------
+- Local repository: /Users/shonanhendre/Desktop/MEDAGENT-X
+- Python source: v2/src/medagentx
+- Kubernetes manifests: k8s/
+- Training image: shonanmedagentx/medagentx:2026-10-16-r2
+- /workspace is baked into the image and is not persistent. Any source-code
+  change requires a new image build and push before it can run on NRP.
+
+Storage and cluster constraints
+-------------------------------
+- Namespace: csun-masadinia-medagentx
+- PVC medagentx-data: 1500 GiB, mounted at /data
+- PVC medagentx-runs: 300 GiB, mounted at /runs
+- Both PVCs are ReadWriteOnce (RWO). A cache builder must not be scheduled on
+  another node while a training pod has these PVCs mounted. Doing so will
+  commonly cause a Multi-Attach/Pending condition.
+- Deleting a Job or Pod does not delete PVC contents. Never delete either PVC.
+- Existing data is on RBD-backed storage. Thousands of small, scattered image
+  reads are expensive relative to GPU compute.
+
+Completed cohort
+----------------
+- Cohort root:
+  /data/chexpert-plus/cohorts/label-enriched-15k-v1
+- DICOM root:
+  /data/chexpert-plus/cohorts/label-enriched-15k-v1/dicom_train
+- 17,912 DICOM views; 15,193 quality-passed studies; approximately 228 GB
+  of downloaded DICOM data.
+- Patient-disjoint splits:
+  train 10,178 studies; validation 2,501; test 2,514.
+
+Current single-A100 training configuration
+------------------------------------------
+- Model: microsoft/rad-dino
+- Fine-tunes only the final two transformer blocks.
+- Batch size 8; gradient accumulation 1; up to 15 epochs.
+- Early stopping patience 5; four DataLoader workers.
+- Asymmetric loss; select best checkpoint by validation macro-F1.
+- CPU request/limit 4; RAM request/limit 16 GiB; ephemeral storage 60 GiB.
+- /dev/shm is an 8 GiB memory-backed emptyDir.
+- A100 jobs must request nvidia.com/a100: 1, not nvidia.com/gpu: 1.
+
+Observed behavior and bottleneck evidence
+-----------------------------------------
+- The first A100 training epoch completed successfully with:
+  train_loss=0.06592, val_loss=0.06548, macro_AUROC=0.79164,
+  macro_F1=0.48308.
+- It took approximately 80-90 minutes to complete an epoch.
+- The A100 had the model loaded (about 4.5 GiB allocated) but repeatedly
+  showed 0% utilization while input workers were active.
+- Four DataLoader workers consumed CPU; additional workers were observed in
+  Linux D state (uninterruptible I/O wait), consistent with storage waits.
+- The data PVC was mounted correctly and had ample capacity; /dev/shm was
+  correctly mounted and mostly empty. This is not a missing-volume or GPU
+  quota issue.
+
+Why the current code is slow
+----------------------------
+The current input path is in v2/src/medagentx/vision/data.py.
+
+For every DICOM view, on every epoch, StudyDataset.__getitem__ calls
+dicom_to_pil_rgb(), which:
+1. calls pydicom.dcmread() from the RBD PVC;
+2. decodes the image pixel data;
+3. applies RescaleSlope/RescaleIntercept;
+4. handles MONOCHROME1 inversion;
+5. calculates 0.5th and 99.5th percentiles over the pixel array;
+6. produces normalized uint8 pixels and converts them to PIL RGB.
+
+For training, LightCxrAugment then applies random flip, rotation, brightness,
+and contrast. The Hugging Face image processor subsequently resizes and
+normalizes the batch. No decoded-image cache exists. The same raw DICOM files
+are therefore remotely read and decoded for every epoch and for repeated
+experiments.
+
+The trainer also only prints metrics after a full train pass plus validation
+pass. It has no periodic batch/throughput logging, making stalls or slow input
+delivery hard to identify during a run.
+
+
+2. CONCEPTUALLY WHAT NEEDS TO BE DONE
+======================================
+
+Replace repeated DICOM decoding with a two-stage pipeline:
+
+    Raw DICOMs on /data
+        -> one-time deterministic preprocessing/cache build
+        -> persistent, versioned RAD-DINO image cache
+        -> per-epoch random augmentation plus batching
+        -> RAD-DINO training
+
+The cache should contain the output of the deterministic part of the existing
+DICOM conversion path. Keep random augmentation at training time so every
+epoch still sees randomized views.
+
+Recommended cache semantics
+---------------------------
+- Preserve the current DICOM behavior exactly before random augmentation:
+  decode pixels; slope/intercept; MONOCHROME1 handling; per-image percentile
+  normalization; uint8 conversion.
+- Prefer lossless cached grayscale/uint8 assets or a similarly verifiable
+  tensor representation. Do not silently change intensity scaling.
+- Keep horizontal flips, rotations, brightness, and contrast random and in
+  the training DataLoader.
+- Avoid changing augmentation order accidentally. In particular, resizing
+  before caching may change the result if the previous pipeline augmented
+  before the image processor resized. Make this choice explicit and validate
+  it against the current implementation.
+
+Storage layout
+--------------
+- Use a new, immutable cache directory, for example:
+  /data/chexpert-plus/cohorts/label-enriched-15k-v1/raddino-cache-v1
+- Never overwrite the original DICOMs or cohort split files.
+- Include a manifest containing: source cohort identifier; source split-file
+  checksums; DICOM path list/checksum; preprocessing version; image-processor
+  configuration; cache format; creation time; cache file count; failures.
+- For the future full cohort, use reasonably large sequential shards rather
+  than one small cache file per image. Shards reduce metadata operations and
+  remote random-read latency.
+
+Optional second cache layer
+---------------------------
+- The canonical cache belongs on persistent /data.
+- An optional init container can copy the cache to an emptyDir/local-scratch
+  volume before training. This can further reduce per-epoch storage latency.
+- Do not plan this until cache size is measured. The current 60 GiB ephemeral
+  limit cannot hold the 228 GB raw cohort. Size any local cache volume from
+  measured cached size plus headroom.
+
+
+3. SPECIFIC INSTRUCTIONS FOR IMPLEMENTATION
+===========================================
+
+Phase A: design and test the deterministic preprocessor
+--------------------------------------------------------
+1. Inspect and preserve the logic in:
+   v2/src/medagentx/vision/data.py
+   - dicom_to_pil_rgb()
+   - LightCxrAugment
+   - StudyDataset
+   - StudyBatchCollator
+
+2. Add a dedicated, versioned cache module and CLI. Suggested names:
+   - v2/src/medagentx/vision/cache.py
+   - v2/src/medagentx/cli/build_raddino_cache.py
+
+3. The cache-builder CLI should accept at minimum:
+   - --cohort-root
+   - --dicom-root
+   - --output-root
+   - --cache-version
+   - --overwrite only when explicitly requested
+   - --num-workers
+   - --sample-limit for fast validation
+
+4. Generate a manifest before and after processing. Record every source view
+   and output artifact, including failures. A failed image must never be
+   silently omitted: fail the build by default or produce an explicit,
+   reviewable failures report.
+
+5. Start with a small sample cache. For a representative set of DICOMs,
+   compare the cache output with the existing dicom_to_pil_rgb() output.
+   Define exact or tightly bounded pixel-equivalence criteria before building
+   the full cache.
+
+Phase B: implement cached dataset loading
+-----------------------------------------
+1. Add a cache-aware dataset/loader path; do not replace the raw-DICOM path
+   until validation proves equivalence.
+2. Add an explicit CLI option to train_raddino, such as --image-cache-root.
+   The flag should select cached data only when a validated manifest is found.
+3. Keep existing study grouping, DICOM-path provenance, labels, masks, and
+   patient-disjoint split files unchanged. The cache is an image transport
+   optimization, not a new cohort definition.
+4. Keep LightCxrAugment active for training only. Validation and test must
+   remain deterministic, matching current behavior.
+5. Ensure the model's image processor receives the same channel count and
+   compatible image representation as before.
+
+Phase C: add observability
+--------------------------
+1. Add periodic training logs every 25-50 batches, including:
+   - epoch number and batch number;
+   - elapsed time;
+   - studies/second and views/second;
+   - data-loading time versus GPU-step time, if practical;
+   - GPU memory used, if practical.
+2. Print the cache manifest ID and cache mode into run_config.json.
+3. Report the number of images/studies actually read from cache for each
+   split.
+
+Phase D: tests and acceptance criteria
+---------------------------------------
+1. Unit-test deterministic cache generation with a small set of fixture
+   DICOMs.
+2. Test that raw and cached loaders yield the same study keys, labels, masks,
+   view counts, and deterministic image pixels before random augmentation.
+3. Run a small cached smoke train, then a one-epoch cached run on NRP.
+4. Compare cached and raw one-epoch behavior. Small differences caused by
+   deliberately changed interpolation or random augmentation order must be
+   documented; unexplained differences are a release blocker.
+5. Do not make performance claims until measured. Success means substantially
+   higher sustained GPU utilization and materially lower epoch time than the
+   observed 80-90 minutes.
+
+Phase E: image and Kubernetes delivery
+--------------------------------------
+1. Build and push a new, immutable Docker image tag containing the cache
+   builder and cache-aware trainer. Do not modify an existing image tag.
+2. Add a CPU-oriented cache-builder Job manifest. It should mount /data and
+   /runs, request only the CPU/RAM it can use, and never request a GPU.
+3. Run the cache-builder Job only after the active A100 training Job and any
+   medagentx-setup Pod have released the RWO PVCs.
+4. Add a separate A100 cached-training Job manifest that:
+   - requests nvidia.com/a100: 1 in both requests and limits;
+   - points --image-cache-root at the validated cache;
+   - retains /dev/shm emptyDir;
+   - writes to a new /runs output directory rather than overwriting the raw
+     baseline;
+   - retains existing cohort, split, model, loss, metric, and early-stopping
+     settings unless an intentional experiment change is recorded.
+5. Before applying each manifest, server-side dry-run it. Delete only the
+   specifically named cache/training Job when a rerun is needed; never delete
+   medagentx-data or medagentx-runs PVCs.
+
+Recommended initial resource experiment
+----------------------------------------
+- Cache builder: start with 8 CPU, 32 GiB RAM, and adequate ephemeral storage
+  only if it uses temporary local files. Tune from observed throughput.
+- Cached trainer: begin with the existing single A100 configuration, then
+  benchmark 8 CPU / 8 DataLoader workers, 32 GiB RAM, and 16 GiB /dev/shm.
+- Do not add 4-GPU distributed training until the cache keeps one A100
+  substantially utilized. Distributed training will amplify an unfixed input
+  bottleneck.
+
+
+4. POTENTIAL SETBACKS AND WHAT TO LOOK OUT FOR
+================================================
+
+1. Storage capacity
+   - The current 15k raw DICOM cohort is about 228 GB and /data has about
+     1.3 TiB free, so a 15k cache is likely feasible but must be measured.
+   - The candidate full cohort has 210,740 views. At comparable raw-view size,
+     it may require roughly 2.4 TiB for raw DICOMs alone, before cache,
+     Hugging Face artifacts, or outputs. Plan for at least 3 TiB persistent
+     data capacity before the full-cohort phase.
+
+2. RWO PVC attachment and contention
+   - A second pod on a different node cannot safely mount the PVCs while the
+     A100 job uses them.
+   - A companion pod forced onto the same node would compete for the same RBD
+     reads and CPU resources, making current training slower.
+   - Build the cache after releasing the training Job, or provision a separate
+     independent source copy/snapshot with appropriate storage access.
+
+3. Cache correctness and scientific validity
+   - A cache can silently change clinical image semantics if it omits DICOM
+     rescale fields, MONOCHROME1 inversion, or the exact normalization logic.
+   - Do not use lossy compression unless it is an intentional, validated
+     experiment decision.
+   - Never fit global image normalization statistics across train, validation,
+     and test. Per-image deterministic normalization is safe and matches the
+     current code.
+
+4. Augmentation-order drift
+   - Random augmentation currently occurs before the Hugging Face processor.
+     Caching post-resize images and augmenting them later changes the pipeline.
+   - Preserve order where possible; otherwise compare raw/cached tensors and
+     document the changed experiment.
+
+5. Cache identity and stale artifacts
+   - A cache may be invalid after any change to cohort membership, DICOM path,
+     split files, preprocessing code, processor version, target size, or
+     source image version.
+   - Use immutable version directories and a machine-readable manifest. Fail
+     training if required manifest fields do not match the requested cohort.
+
+6. Many small files
+   - Simply turning every DICOM into one separate tiny cache file can retain
+     metadata/random-read pressure on RBD, especially for the full cohort.
+   - Use sequential shards for large-scale cache data, and benchmark shard
+     size before full production build.
+
+7. Resource tuning can backfire
+   - More workers without more CPU can cause context switching and no speedup.
+   - More workers can also worsen RBD contention. Change one variable at a
+     time and measure views/second and sustained GPU utilization.
+
+8. Local cache lifecycle
+   - emptyDir/local scratch is deleted when a Pod ends, fails, or moves.
+   - Treat local copies as disposable acceleration, never as the only cache.
+
+9. Operational safety
+   - The active Job has already produced a valid epoch-1 baseline checkpoint
+     in /runs. Deleting its Job does not delete this persisted output.
+   - Do not overwrite that run directory when starting cached experiments.
+   - The current A100 quota is one GPU. Keep the cache builder CPU-only and
+     release the A100 before launching another GPU job.
+
+10. Full-cohort readiness
+    - Do not treat caching as a substitute for the full cohort workflow. The
+      full dataset still requires complete acquisition, quality checks, and a
+      fresh patient-disjoint split before its cache or training run begins.
+
+
+Definition of done
+------------------
+- A validated, versioned cache exists for the completed 15k cohort.
+- Cached and raw loaders are equivalent before random augmentation.
+- A new immutable image tag contains cache-builder and cache-aware training
+  code.
+- A CPU cache Job and an A100 cached-training Job are documented and pass
+  server-side validation.
+- A one-epoch cached benchmark shows clear improvement over the observed
+  80-90 minute raw-DICOM epoch without unexplained metric or input changes.
+- All results, manifests, cache IDs, image tags, and output paths are
+  recorded for reproducibility.
