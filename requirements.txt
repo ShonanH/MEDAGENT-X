@@ -6,7 +6,7 @@ torch
 torchvision
 torchaudio
 timm
-transformers
+transformers==4.46.3
 monai
 pydicom
 nibabel

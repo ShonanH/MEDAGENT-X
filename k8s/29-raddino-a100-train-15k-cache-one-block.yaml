@@ -1,0 +1,106 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: medagentx-raddino-a100-15k-cache-one-block-v1
+  labels:
+    app.kubernetes.io/name: medagentx
+    app.kubernetes.io/component: vision-training
+    app.kubernetes.io/experiment: one-trainable-block
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 604800
+  ttlSecondsAfterFinished: 604800
+
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: NotIn
+                    values:
+                      - nautilus-ext-gpu01.fullerton.edu
+      restartPolicy: Never
+
+      imagePullSecrets:
+        - name: dockerhub-pull
+
+      containers:
+        - name: raddino-train
+          image: shonanmedagentx/medagentx:2026-10-26-raddino-cache-v2
+          imagePullPolicy: Always
+
+          command:
+            - python
+            - -m
+            - medagentx.cli.train_raddino
+
+          args:
+            - --cohort-root
+            - /data/chexpert-plus/cohorts/label-enriched-15k-v1
+            - --image-cache-root
+            - /data/chexpert-plus/cohorts/label-enriched-15k-v1/raddino-cache-v1
+            - --output-root
+            - /runs/medagentx/training/raddino-a100-15k-cache-one-block-v1
+            - --device
+            - cuda
+            - --batch-size
+            - '8'
+            - --gradient-accumulation-steps
+            - '1'
+            - --epochs
+            - '15'
+            - --early-stopping-patience
+            - '5'
+            - --num-workers
+            - '4'
+            - --progress-every-batches
+            - '25'
+            - --trainable-last-blocks
+            - '1'
+            - --loss-name
+            - asymmetric
+            - --selection-metric
+            - macro_f1
+
+          env:
+            - name: HF_HOME
+              value: /data/cache/huggingface
+            - name: TORCH_HOME
+              value: /data/cache/torch
+            - name: PYTHONUNBUFFERED
+              value: '1'
+
+          resources:
+            requests:
+              cpu: '4'
+              memory: '16Gi'
+              ephemeral-storage: '60Gi'
+              nvidia.com/a100: 1
+            limits:
+              cpu: '4'
+              memory: '16Gi'
+              ephemeral-storage: '60Gi'
+              nvidia.com/a100: 1
+
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: runs
+              mountPath: /runs
+            - name: dshm
+              mountPath: /dev/shm
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: medagentx-data
+        - name: runs
+          persistentVolumeClaim:
+            claimName: medagentx-runs
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 8Gi

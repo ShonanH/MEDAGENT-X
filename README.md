@@ -1,86 +1,137 @@
 # MEDAGENT-X
 
-Multi-agent medical imaging pipeline for CheXpert Plus chest X-ray analysis.
+## Introduction
 
-The project combines image classifiers (DenseNet, ConvNeXt + RAD-DINO fusion), retrieval over similar cases, deterministic disease labeling, and LLM-assisted report writing — with a quality gate as the first safety check.
+MEDAGENT-X is an offline, research-oriented pipeline for multi-label chest X-ray analysis using CheXpert-style findings. It builds a label-enriched DICOM cohort, filters unusable images, trains a RAD-DINO vision model, retrieves similar training studies, applies deterministic label fusion, and evaluates predictions with a structured offline Judge.
 
-## Project layout
+The maintained codebase lives in [`v2/src/medagentx`](v2/src/medagentx). Pipeline artifacts are written beneath `v2/artifacts/` by default and are intentionally not committed. The system is for research and evaluation only; it is not a clinical decision-support device.
 
-Everything lives under `src/`:
+The main workflow is:
 
+```text
+Redivis data -> balanced cohort -> DICOM quality gate -> labels and patient splits
+             -> RAD-DINO training -> train-only retrieval index
+             -> vision / deterministic fusion -> offline evaluation
 ```
-src/
-  medagentx/          # Python package (agents, fusion, classifiers, helpers)
-    cli/              # Pipeline scripts numbered 01-17 in run order
-    agents/
-    fusion/
-    ...
-  data/               # Local datasets and manifests (not committed)
-  outputs/            # Pipeline artifacts and model outputs
-  tests/              # Unit tests
-```
-
-Repo root keeps only packaging and docs:
-
-- `README.md`
-- `requirements.txt`
-- `pyproject.toml`
 
 ## Setup
+
+Use Python 3.10 or later. From the repository root, create an environment, install dependencies, and make the v2 source tree importable:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -e .
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+export PYTHONPATH="$PWD/v2/src${PYTHONPATH:+:$PYTHONPATH}"
 ```
 
-Set your Redivis token when fetching metadata:
+For CUDA 12.1 GPU environments, `requirements-nrp.txt` pins the PyTorch CUDA wheels used by `Dockerfile.nrp`:
 
 ```bash
-export REDIVIS_ACCESS_TOKEN='your_token'
+python -m pip install -r requirements-nrp.txt
+export PYTHONPATH="$PWD/v2/src${PYTHONPATH:+:$PYTHONPATH}"
 ```
 
-## Running the pipeline
-
-CLI scripts are numbered **01–17** in recommended run order under `src/medagentx/cli/`.
+The cohort-build command accesses Redivis. Set a token with access to the required MIMIC-CXR / CheXpert-aligned data before running it:
 
 ```bash
-# Labels + metadata
-python src/medagentx/cli/01_fetch_redivis_chexpert_rows.py
-python src/medagentx/cli/02_fetch_redivis_chexpert_labels.py --download-findings
-python src/medagentx/cli/03_build_fusion_report_label_table.py
-
-# DICOMs + image features
-python src/medagentx/cli/04_build_chexpert_manifest.py
-python src/medagentx/cli/05_download_manifest_dicoms.py
-python src/medagentx/cli/06_extract_convnext_features.py
-python src/medagentx/cli/07_extract_raddino_features.py
-
-# Quality gate cohort (must run before splits + fusion training)
-python src/medagentx/cli/08_build_unified_evidence_manifest.py
-python src/medagentx/cli/09_build_quality_evidence_manifest.py
-python src/medagentx/cli/10_run_quality_gate.py
-python src/medagentx/cli/11_build_patient_splits.py
-
-# Fusion training on quality-gate-passing patients only
-python src/medagentx/cli/12_train_fusion_classifier.py
-
-# Agent workflow
-python src/medagentx/cli/13_build_chexpert_vector_db.py
-python src/medagentx/cli/14_run_densenet_predictions.py
-python src/medagentx/cli/15_run_fusion_inference.py
-python src/medagentx/cli/16_build_ensemble_classifier_predictions.py
-python src/medagentx/cli/17_run_bulk_medagentx_and_judge.py
+export REDIVIS_API_TOKEN='your_token'
 ```
 
-See `src/medagentx/cli/__init__.py` for the full list.
+Optional LLM graph workflows use a reachable Ollama server. Their defaults are `http://localhost:11434` and `gpt-oss:120b`; override them with `MEDAGENTX_OLLAMA_BASE_URL` and `MEDAGENTX_OLLAMA_MODEL`, or the corresponding CLI arguments.
 
-## Tests
+## CLI Files to run in order to reproduce
+
+Run commands as modules from the repository root. The sequence below is the canonical balanced-cohort workflow; each command's defaults use `v2/artifacts/cohort_balanced_v1` as the cohort root. It downloads source data and DICOMs, and training benefits substantially from a CUDA-capable GPU.
+
+1. Build the label-enriched cohort. This is the data-acquisition step and writes `eligible_dicom_rows.csv`, report text, DICOMs, selection audits, and pre-quality labels.
+
+   ```bash
+   python -m medagentx.cli.build_balanced_cohort
+   ```
+
+2. Run the DICOM-only quality gate. Failed views are excluded, while studies with at least one usable view are retained.
+
+   ```bash
+   python -m medagentx.cli.run_quality_gate
+   ```
+
+3. Finalize the quality-passed cohort. This creates the canonical `study_label_table.csv` and deterministic patient-level `train` / `val` / `test` splits (70 / 15 / 15, seed 42).
+
+   ```bash
+   python -m medagentx.cli.finalize_balanced_cohort
+   ```
+
+4. Fine-tune the RAD-DINO multi-label vision model. The selected checkpoint is written to `vision/raddino_finetuned_v1/best_checkpoint.pt` under the cohort root.
+
+   ```bash
+   python -m medagentx.cli.train_raddino
+   ```
+
+5. Build a Chroma retrieval index from **train-split studies only**. This must precede fusion evaluation to avoid validation/test leakage.
+
+   ```bash
+   python -m medagentx.cli.build_retrieval_index
+   ```
+
+6. Evaluate vision and deterministic retrieval fusion on validation data. This produces the validation predictions needed for threshold tuning.
+
+   ```bash
+   python -m medagentx.cli.run_fusion_eval --split val
+   ```
+
+7. Tune constrained per-label vision thresholds using the validation outputs.
+
+   ```bash
+   python -m medagentx.cli.tune_vision_thresholds
+   ```
+
+8. Produce standalone test-split vision predictions using the tuned policy (optional, but useful for a vision-only baseline).
+
+   ```bash
+   python -m medagentx.cli.predict_raddino \
+     --split test \
+     --threshold-policy-json v2/artifacts/cohort_balanced_v1/reasoning/fusion_eval_v1/val/threshold_tuning/threshold_policy_v2.json
+   ```
+
+9. Run the final held-out fusion evaluation with the same threshold policy. Results, per-label metrics, confusion tables, and Judge summaries are written below `reasoning/fusion_eval_v1/test/`.
+
+   ```bash
+   python -m medagentx.cli.run_fusion_eval \
+     --split test \
+     --threshold-policy-json v2/artifacts/cohort_balanced_v1/reasoning/fusion_eval_v1/val/threshold_tuning/threshold_policy_v2.json
+   ```
+
+`build_patient_splits` is available when splits alone need to be regenerated after the quality gate, but it is already performed by `finalize_balanced_cohort` in the canonical sequence. `fetch_stage_a_data` and `build_study_labels` provide the earlier unbalanced acquisition/labeling path; do not insert them into the balanced workflow unless you are intentionally creating or auditing a separate cohort.
+
+For a quick smoke test, add suitable limits such as `--max-studies 10` where supported. Do not treat a limited run as a reproduced evaluation. CLI options and their current defaults are available with:
 
 ```bash
-pytest
+python -m medagentx.cli.train_raddino --help
 ```
 
-## Data policy
+Run the test suite with:
 
-Do not commit datasets, DICOM files, checkpoints, or private metadata. Keep downloads under `src/data/`.
+```bash
+PYTHONPATH=v2/src pytest v2/tests
+```
+
+## Acknowledgements
+
+MEDAGENT-X builds on the MIMIC-CXR and CheXpert research ecosystems and requires users to follow the applicable dataset-access agreements, privacy requirements, and citation guidance. It uses RAD-DINO through Hugging Face Transformers, PyTorch and TorchVision for vision modeling, Chroma for retrieval storage, LangGraph for optional graph workflows, and Redivis for data access.
+
+Please cite the relevant upstream datasets, models, and software when publishing results derived from this project.
+
+## Repository layout and data handling
+
+```text
+v2/
+  src/medagentx/       # Package: data, labels, quality, vision, retrieval, reasoning, graphs, CLIs
+  tests/               # Unit and contract tests
+  scripts/             # Experiment, audit, and documentation helpers
+  artifacts/           # Generated data, models, indexes, and evaluations (not committed)
+k8s/                   # Storage, setup-pod, and GPU smoke-test manifests
+```
+
+Do not commit DICOMs, datasets, access tokens, private metadata, model checkpoints, vector databases, or generated cohort artifacts. Keep those files under `v2/artifacts/` or another secure location outside version control.

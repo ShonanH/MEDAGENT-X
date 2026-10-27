@@ -192,11 +192,12 @@ def build_study_inference_records(
     return records
 
 
-def dicom_to_pil_rgb(path: str | Path) -> Image.Image:
-    """Load one grayscale DICOM as an intensity-normalized RGB image."""
-    import pydicom
+def dicom_dataset_to_uint8(dataset: Any) -> np.ndarray:
+    """Apply the locked deterministic DICOM preprocessing to one dataset.
 
-    dataset = pydicom.dcmread(path)
+    This is intentionally shared by the raw loader and the cache builder so a
+    cached image is exactly the raw image immediately before augmentation.
+    """
     pixels = np.asarray(dataset.pixel_array, dtype=np.float32)
     if pixels.ndim != 2 or pixels.size == 0:
         raise ValueError(
@@ -219,8 +220,17 @@ def dicom_to_pil_rgb(path: str | Path) -> Image.Image:
         normalized = np.zeros_like(pixels, dtype=np.float32)
     else:
         normalized = np.clip((pixels - low) / (high - low), 0.0, 1.0)
-    uint8 = np.rint(normalized * 255.0).astype(np.uint8)
-    return Image.fromarray(uint8, mode="L").convert("RGB")
+    return np.rint(normalized * 255.0).astype(np.uint8)
+
+
+def dicom_to_pil_rgb(path: str | Path) -> Image.Image:
+    """Load one grayscale DICOM as an intensity-normalized RGB image."""
+    import pydicom
+
+    dataset = pydicom.dcmread(path)
+    return Image.fromarray(dicom_dataset_to_uint8(dataset), mode="L").convert(
+        "RGB"
+    )
 
 
 class LightCxrAugment:

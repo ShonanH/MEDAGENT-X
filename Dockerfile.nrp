@@ -1,0 +1,31 @@
+# CUDA 12.1 has broad compatibility with NRP GPU nodes.
+FROM nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.10 \
+    python3-pip \
+    python3.10-venv \
+    git \
+    libgl1 \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN ln -sf /usr/bin/python3.10 /usr/local/bin/python \
+    && python -m pip install --upgrade pip setuptools wheel
+
+COPY requirements-nrp.txt /tmp/requirements-nrp.txt
+RUN python -m pip install -r /tmp/requirements-nrp.txt
+
+WORKDIR /workspace
+
+COPY pyproject.toml README.md ./
+COPY v2/src ./src
+RUN python -m pip install --no-deps -e .
+
+CMD ["bash"]

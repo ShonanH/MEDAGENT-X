@@ -1,0 +1,54 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: medagentx-raddino-model-ready-cache-build-15k-v1
+  labels:
+    app.kubernetes.io/name: medagentx
+    app.kubernetes.io/component: vision-cache
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 604800
+  ttlSecondsAfterFinished: 604800
+  template:
+    spec:
+      restartPolicy: Never
+      imagePullSecrets:
+        - name: dockerhub-pull
+      containers:
+        - name: build-model-ready-cache
+          image: shonanmedagentx/medagentx:2026-10-27-raddino-gpu-cache-v1
+          imagePullPolicy: Always
+          command:
+            - python
+            - -m
+            - medagentx.cli.build_raddino_model_ready_cache
+          args:
+            - --raw-cache-root
+            - /data/chexpert-plus/cohorts/label-enriched-15k-v1/raddino-cache-v1
+            - --output-root
+            - /data/chexpert-plus/cohorts/label-enriched-15k-v1
+            - --cache-version
+            - raddino-model-ready-v1
+            - --model-name
+            - microsoft/rad-dino
+          env:
+            - name: HF_HOME
+              value: /data/cache/huggingface
+            - name: PYTHONUNBUFFERED
+              value: '1'
+          resources:
+            requests:
+              cpu: '4'
+              memory: '16Gi'
+              ephemeral-storage: '60Gi'
+            limits:
+              cpu: '4'
+              memory: '16Gi'
+              ephemeral-storage: '60Gi'
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: medagentx-data

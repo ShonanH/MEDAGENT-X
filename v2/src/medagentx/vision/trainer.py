@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import math
 import random
+import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -59,6 +60,7 @@ class TrainingConfig:
     selection_metric: str = "macro_f1"
     warmup_ratio: float = 0.05
     max_grad_norm: float = 1.0
+    progress_every_batches: int = 25
 
 
 def set_reproducible_seed(seed: int) -> None:
@@ -148,6 +150,7 @@ def train_one_epoch(
     gradient_accumulation_steps: int,
     mixed_precision: bool,
     config: TrainingConfig,
+    epoch: int,
     scheduler: torch.optim.lr_scheduler.LRScheduler | None = None,
 ) -> float:
     """Train one epoch and return supervised-cell-weighted masked loss."""
@@ -160,8 +163,17 @@ def train_one_epoch(
     scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
     loss_sum = 0.0
     supervised_sum = 0
+    epoch_started = time.perf_counter()
+    interval_started = epoch_started
+    data_wait_seconds = 0.0
+    studies_seen = 0
+    views_seen = 0
+    iterator = iter(loader)
 
-    for step, raw_batch in enumerate(loader):
+    for step in range(len(loader)):
+        data_started = time.perf_counter()
+        raw_batch = next(iterator)
+        data_wait_seconds += time.perf_counter() - data_started
         batch = _move_batch(raw_batch, device)
         with torch.autocast(
             device_type=device.type,
@@ -201,6 +213,29 @@ def train_one_epoch(
 
         loss_sum += float(loss.detach().item()) * supervised
         supervised_sum += supervised
+        studies_seen += int(raw_batch["num_studies"])
+        views_seen += int(raw_batch["pixel_values"].shape[0])
+        if (step + 1) % config.progress_every_batches == 0 or step + 1 == len(loader):
+            if device.type == "cuda":
+                torch.cuda.synchronize(device)
+            elapsed = time.perf_counter() - epoch_started
+            interval_elapsed = time.perf_counter() - interval_started
+            step_seconds = max(interval_elapsed - data_wait_seconds, 0.0)
+            gpu_memory = (
+                torch.cuda.max_memory_allocated(device) / (1024**3)
+                if device.type == "cuda"
+                else 0.0
+            )
+            print(
+                f"[Vision] train epoch={epoch} batch={step + 1}/{len(loader)} "
+                f"elapsed={elapsed:.1f}s studies_per_s={studies_seen / elapsed:.2f} "
+                f"views_per_s={views_seen / elapsed:.2f} "
+                f"data_wait_s={data_wait_seconds:.1f} step_s={step_seconds:.1f} "
+                f"gpu_mem_gib={gpu_memory:.2f}",
+                flush=True,
+            )
+            data_wait_seconds = 0.0
+            interval_started = time.perf_counter()
 
     return loss_sum / max(supervised_sum, 1)
 
@@ -453,6 +488,7 @@ def train_with_validation(
             gradient_accumulation_steps=config.gradient_accumulation_steps,
             mixed_precision=config.mixed_precision,
             config=config,
+            epoch=epoch,
             scheduler=scheduler,
         )
         val_predictions = collect_predictions(
@@ -543,6 +579,7 @@ def train_with_validation(
         "history_path": output / "training_history.csv",
         "best_epoch": best_epoch,
         "best_score": best_score,
+        "epochs_completed": len(history),
     }
 
 

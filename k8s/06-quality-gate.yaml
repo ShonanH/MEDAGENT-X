@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: medagentx-quality-v1
+  labels:
+    app.kubernetes.io/name: medagentx
+    app.kubernetes.io/component: quality-gate
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 172800
+  ttlSecondsAfterFinished: 604800
+
+  template:
+    spec:
+      restartPolicy: Never
+
+      imagePullSecrets:
+        - name: dockerhub-pull
+
+      containers:
+        - name: quality-gate
+          image: shonanmedagentx/medagentx:2026-10-14-r1
+          imagePullPolicy: IfNotPresent
+
+          command:
+            - python
+            - -m
+            - medagentx.cli.run_quality_gate
+
+          args:
+            - --cohort-root
+            - /data/chexpert-plus/cohorts/label-enriched-15k-v1
+
+          env:
+            - name: PYTHONUNBUFFERED
+              value: '1'
+
+          resources:
+            requests:
+              cpu: '4'
+              memory: '16Gi'
+              ephemeral-storage: '40Gi'
+            limits:
+              cpu: '4'
+              memory: '16Gi'
+              ephemeral-storage: '60Gi'
+
+          volumeMounts:
+            - name: data
+              mountPath: /data
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: medagentx-data

@@ -1,0 +1,82 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: medagentx-raddino-cache-build-15k-v1
+  labels:
+    app.kubernetes.io/name: medagentx
+    app.kubernetes.io/component: vision-cache-build
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 172800
+  ttlSecondsAfterFinished: 604800
+
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: NotIn
+                    values:
+                      - nautilus-ext-gpu01.fullerton.edu
+      restartPolicy: Never
+
+      imagePullSecrets:
+        - name: dockerhub-pull
+
+      containers:
+        - name: raddino-cache-build
+          image: shonanmedagentx/medagentx:2026-10-26-raddino-cache-v2
+          imagePullPolicy: Always
+
+          command:
+            - python
+            - -m
+            - medagentx.cli.build_raddino_cache
+
+          args:
+            - --cohort-root
+            - /data/chexpert-plus/cohorts/label-enriched-15k-v1
+            - --dicom-root
+            - /data/chexpert-plus/cohorts/label-enriched-15k-v1/dicom_train
+            # The final cache root is:
+            # /data/chexpert-plus/cohorts/label-enriched-15k-v1/raddino-cache-v1
+            - --output-root
+            - /data/chexpert-plus/cohorts/label-enriched-15k-v1
+            - --cache-version
+            - raddino-cache-v1
+            - --model-name
+            - microsoft/rad-dino
+            - --num-workers
+            - '4'
+            - --shard-size-mib
+            - '512'
+
+          env:
+            - name: HF_HOME
+              value: /data/cache/huggingface
+            - name: TORCH_HOME
+              value: /data/cache/torch
+            - name: PYTHONUNBUFFERED
+              value: '1'
+
+          resources:
+            requests:
+              cpu: '4'
+              memory: '16Gi'
+              ephemeral-storage: '60Gi'
+            limits:
+              cpu: '4'
+              memory: '16Gi'
+              ephemeral-storage: '60Gi'
+
+          volumeMounts:
+            - name: data
+              mountPath: /data
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: medagentx-data
