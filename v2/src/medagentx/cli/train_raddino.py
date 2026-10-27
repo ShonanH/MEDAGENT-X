@@ -31,8 +31,10 @@ from medagentx.vision.data import (
     StudyDataset,
     build_study_training_records,
 )
+from medagentx.vision.gpu_data import GpuResidentStudyLoader
 from medagentx.vision.metrics import compute_masked_metrics
 from medagentx.vision.model import RadDinoStudyClassifier
+from medagentx.vision.model_ready_cache import ModelReadyImageCache
 from medagentx.vision.trainer import (
     TrainingConfig,
     collect_predictions,
@@ -66,6 +68,22 @@ def build_parser() -> argparse.ArgumentParser:
             "Validated immutable RAD-DINO cache root. When omitted, retain "
             "the existing raw-DICOM input path."
         ),
+    )
+    parser.add_argument(
+        "--model-ready-cache-root",
+        type=Path,
+        default=None,
+        help=(
+            "Validated compact fixed-shape cache. Its full uint8 view tensor "
+            "is preloaded to CUDA once; it cannot be combined with "
+            "--image-cache-root."
+        ),
+    )
+    parser.add_argument(
+        "--gpu-cache-preload-chunk-size",
+        type=int,
+        default=64,
+        help="Views copied to GPU in each model-ready-cache preload chunk.",
     )
     parser.add_argument("--output-root", type=Path, default=None)
     parser.add_argument("--model-name", default=DEFAULT_MODEL_NAME)
@@ -200,6 +218,12 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     if args.batch_size <= 0:
         raise ValueError("batch-size must be > 0")
+    if args.gpu_cache_preload_chunk_size <= 0:
+        raise ValueError("gpu-cache-preload-chunk-size must be > 0")
+    if args.image_cache_root is not None and args.model_ready_cache_root is not None:
+        raise ValueError(
+            "Use exactly one of --image-cache-root and --model-ready-cache-root"
+        )
     if args.gradient_accumulation_steps <= 0:
         raise ValueError("gradient-accumulation-steps must be > 0")
     if args.epochs <= 0:
@@ -280,9 +304,17 @@ def main(argv: list[str] | None = None) -> int:
         "model_name": args.model_name,
         "config": processor.to_dict(),
     }
-    image_cache: RadDinoImageCache | None = None
+    image_cache: RadDinoImageCache | ModelReadyImageCache | None = None
+    cache_mode = "raw_dicom"
     if args.image_cache_root is not None:
         image_cache = RadDinoImageCache(args.image_cache_root)
+        cache_mode = "lossless_cached"
+    elif args.model_ready_cache_root is not None:
+        if device.type != "cuda":
+            raise ValueError("--model-ready-cache-root requires --device cuda")
+        image_cache = ModelReadyImageCache(args.model_ready_cache_root)
+        cache_mode = "gpu_resident_model_ready"
+    if image_cache is not None:
         required_paths = [
             path
             for records in (train_records, val_records, test_records)
@@ -307,35 +339,63 @@ def main(argv: list[str] | None = None) -> int:
                 f"images={sum(len(record.dicom_paths) for record in records)}"
             )
         print(
-            f"[Vision] cache_mode=validated cache_id={image_cache.cache_id}"
+            f"[Vision] cache_mode={cache_mode} cache_id={image_cache.cache_id}"
         )
-    train_loader = _loader(
-        train_records,
-        dicom_root=dicom_root,
-        processor=processor,
-        batch_size=args.batch_size,
-        num_workers=args.num_workers,
-        train=True,
-        image_cache_root=args.image_cache_root,
-    )
-    val_loader = _loader(
-        val_records,
-        dicom_root=dicom_root,
-        processor=processor,
-        batch_size=args.batch_size,
-        num_workers=args.num_workers,
-        train=False,
-        image_cache_root=args.image_cache_root,
-    )
-    test_loader = _loader(
-        test_records,
-        dicom_root=dicom_root,
-        processor=processor,
-        batch_size=args.batch_size,
-        num_workers=args.num_workers,
-        train=False,
-        image_cache_root=args.image_cache_root,
-    )
+    if isinstance(image_cache, ModelReadyImageCache):
+        config_values = image_processor_config["config"]
+        cached_pixels = image_cache.preload_to_device(
+            device, chunk_size=args.gpu_cache_preload_chunk_size
+        )
+        loader_kwargs = {
+            "path_to_index": image_cache.path_to_index,
+            "cached_pixels": cached_pixels,
+            "batch_size": args.batch_size,
+            "image_mean": config_values["image_mean"],
+            "image_std": config_values["image_std"],
+        }
+        train_loader = GpuResidentStudyLoader(
+            train_records, train=True, **loader_kwargs
+        )
+        val_loader = GpuResidentStudyLoader(
+            val_records, train=False, **loader_kwargs
+        )
+        test_loader = GpuResidentStudyLoader(
+            test_records, train=False, **loader_kwargs
+        )
+        print(
+            "[Vision] model-ready cache preloaded to GPU "
+            f"views={len(cached_pixels)} resident_gib="
+            f"{cached_pixels.numel() / (1024**3):.2f}",
+            flush=True,
+        )
+    else:
+        train_loader = _loader(
+            train_records,
+            dicom_root=dicom_root,
+            processor=processor,
+            batch_size=args.batch_size,
+            num_workers=args.num_workers,
+            train=True,
+            image_cache_root=args.image_cache_root,
+        )
+        val_loader = _loader(
+            val_records,
+            dicom_root=dicom_root,
+            processor=processor,
+            batch_size=args.batch_size,
+            num_workers=args.num_workers,
+            train=False,
+            image_cache_root=args.image_cache_root,
+        )
+        test_loader = _loader(
+            test_records,
+            dicom_root=dicom_root,
+            processor=processor,
+            batch_size=args.batch_size,
+            num_workers=args.num_workers,
+            train=False,
+            image_cache_root=args.image_cache_root,
+        )
 
     model = RadDinoStudyClassifier.from_pretrained(
         args.model_name,
@@ -374,7 +434,12 @@ def main(argv: list[str] | None = None) -> int:
                 "image_cache_root": (
                     str(args.image_cache_root) if args.image_cache_root else None
                 ),
-                "cache_mode": "cached" if image_cache else "raw_dicom",
+                "model_ready_cache_root": (
+                    str(args.model_ready_cache_root)
+                    if args.model_ready_cache_root
+                    else None
+                ),
+                "cache_mode": cache_mode,
                 "cache_manifest_id": image_cache.cache_id if image_cache else None,
                 "image_processor": image_processor_config,
                 "output_root": str(output_root),

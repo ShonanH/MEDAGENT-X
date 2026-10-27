@@ -384,6 +384,159 @@ def _pixel_validation_paths(
     return sorted(paths)
 
 
+def _finalization_validation_paths(
+    entries: Sequence[dict[str, Any]], *, views_per_split: int
+) -> list[str]:
+    """Select a bounded, deterministic exact-pixel validation sample.
+
+    This is deliberately narrower than the original full-build validation
+    selector.  It covers a fixed number of views from every split plus one
+    representative of each preprocessing edge case and all views from one
+    multi-view study.  It is used only to recover a fully written cache whose
+    prior validation was interrupted before its completion marker was written.
+    """
+    if views_per_split <= 0:
+        raise ValueError("views-per-split must be > 0")
+
+    ordered = sorted(entries, key=lambda entry: entry["dicom_path"])
+    paths_by_split: dict[str, list[str]] = {}
+    for entry in ordered:
+        paths_by_split.setdefault(entry["split"], []).append(
+            entry["dicom_path"]
+        )
+    paths = {
+        path
+        for split in sorted(paths_by_split)
+        for path in paths_by_split[split][:views_per_split]
+    }
+
+    def include_first(predicate: Any) -> None:
+        match = next((entry for entry in ordered if predicate(entry)), None)
+        if match is not None:
+            paths.add(match["dicom_path"])
+
+    include_first(
+        lambda entry: entry["photometric_interpretation"] == "MONOCHROME1"
+    )
+    include_first(
+        lambda entry: entry["rescale_slope"] != 1.0
+        or entry["rescale_intercept"] != 0.0
+    )
+    for bit_depth in sorted({entry["bits_allocated"] for entry in ordered}):
+        include_first(lambda entry, bits=bit_depth: entry["bits_allocated"] == bits)
+
+    study_counts: dict[str, int] = {}
+    for entry in ordered:
+        study_counts[entry["study_key"]] = (
+            study_counts.get(entry["study_key"], 0) + 1
+        )
+    multi_view_study = next(
+        (
+            study_key
+            for study_key in sorted(study_counts)
+            if study_counts[study_key] > 1
+        ),
+        None,
+    )
+    if multi_view_study is not None:
+        paths.update(
+            entry["dicom_path"]
+            for entry in ordered
+            if entry["study_key"] == multi_view_study
+        )
+    return sorted(paths)
+
+
+def finalize_interrupted_raddino_cache(
+    *,
+    cache_root: str | Path,
+    dicom_root: str | Path,
+    validation_views_per_split: int = 100,
+) -> Path:
+    """Finalize an intact cache whose validation process was interrupted.
+
+    The cache must already contain every indexed source view, have no decode
+    failures, and be in ``validating`` state.  The function never rebuilds or
+    changes image shards.  It writes ``COMPLETE.json`` only after exact raw
+    DICOM-versus-cache pixel validation succeeds on a deterministic sample.
+    """
+    root = Path(cache_root).resolve()
+    cache = RadDinoImageCache(root, require_complete=False)
+    manifest = dict(cache.manifest)
+    if (root / COMPLETE_MARKER_NAME).exists() or manifest.get("status") == "complete":
+        raise FileExistsError(f"Cache is already complete: {root}")
+    if manifest.get("status") != "validating":
+        raise CacheValidationError(
+            "Only a fully written cache in validating state can be finalized"
+        )
+    if manifest.get("failure_count") != 0:
+        raise CacheValidationError("Cannot finalize a cache with decode failures")
+    if not manifest.get("is_full_source_inventory"):
+        raise CacheValidationError("Cannot finalize a sample cache for training")
+    if manifest.get("cached_view_count") != manifest.get("source_view_count"):
+        raise CacheValidationError(
+            "Cannot finalize a cache that does not contain every source view"
+        )
+
+    paths = _finalization_validation_paths(
+        list(cache._index.values()),
+        views_per_split=validation_views_per_split,
+    )
+    manifest_path = root / MANIFEST_NAME
+    try:
+        validate_cache_pixels(
+            root,
+            dicom_root=dicom_root,
+            paths=paths,
+            require_complete=False,
+        )
+    except Exception as error:
+        manifest.update(
+            {
+                "status": "failed",
+                "pixel_validation": {
+                    "status": "failed",
+                    "view_count": len(paths),
+                    "error_type": type(error).__name__,
+                    "error": str(error),
+                },
+            }
+        )
+        manifest_path.write_text(
+            json.dumps(manifest, indent=2, sort_keys=True) + "\n"
+        )
+        raise RuntimeError(
+            "Interrupted-cache pixel validation failed; cache remains incomplete: "
+            f"{error}"
+        ) from error
+
+    manifest.update(
+        {
+            "status": "complete",
+            "pixel_validation": {
+                "status": "exact_match",
+                "view_count": len(paths),
+                "validation_scope": "deterministic_stratified_edge_sample",
+                "views_per_split": validation_views_per_split,
+            },
+        }
+    )
+    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+    (root / COMPLETE_MARKER_NAME).write_text(
+        json.dumps(
+            {
+                "manifest": MANIFEST_NAME,
+                "manifest_sha256": sha256_file(manifest_path),
+                "status": "complete",
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n"
+    )
+    return root
+
+
 def build_raddino_cache(
     *,
     cohort_root: str | Path,

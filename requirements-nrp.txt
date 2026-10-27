@@ -9,7 +9,7 @@ pandas>=2.2.0
 scipy
 scikit-learn
 timm
-transformers
+transformers==4.46.3
 monai
 pydicom
 nibabel

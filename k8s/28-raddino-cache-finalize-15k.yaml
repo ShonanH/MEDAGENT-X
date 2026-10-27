@@ -1,0 +1,68 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: medagentx-raddino-cache-finalize-15k-v1
+  labels:
+    app.kubernetes.io/name: medagentx
+    app.kubernetes.io/component: vision-cache-finalize
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 86400
+  ttlSecondsAfterFinished: 604800
+
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: NotIn
+                    values:
+                      - nautilus-ext-gpu01.fullerton.edu
+      restartPolicy: Never
+
+      imagePullSecrets:
+        - name: dockerhub-pull
+
+      containers:
+        - name: raddino-cache-finalize
+          image: shonanmedagentx/medagentx:2026-10-26-raddino-cache-v2
+          imagePullPolicy: Always
+
+          command:
+            - python
+            - -m
+            - medagentx.cli.finalize_raddino_cache
+
+          args:
+            - --cache-root
+            - /data/chexpert-plus/cohorts/label-enriched-15k-v1/raddino-cache-v1
+            - --dicom-root
+            - /data/chexpert-plus/cohorts/label-enriched-15k-v1/dicom_train
+            - --validation-views-per-split
+            - '100'
+
+          env:
+            - name: PYTHONUNBUFFERED
+              value: '1'
+
+          resources:
+            requests:
+              cpu: '4'
+              memory: '16Gi'
+              ephemeral-storage: '60Gi'
+            limits:
+              cpu: '4'
+              memory: '16Gi'
+              ephemeral-storage: '60Gi'
+
+          volumeMounts:
+            - name: data
+              mountPath: /data
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: medagentx-data

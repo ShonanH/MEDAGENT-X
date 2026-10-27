@@ -18,6 +18,7 @@ from medagentx.vision.cache import (
     CachedImageLoader,
     RadDinoImageCache,
     build_raddino_cache,
+    finalize_interrupted_raddino_cache,
     validate_cache_pixels,
 )
 from medagentx.vision.data import StudyDataset, StudyTrainingRecord, dicom_to_pil_rgb
@@ -196,3 +197,38 @@ def test_failure_report_never_creates_success_marker(tmp_path: Path) -> None:
     assert len(failures) == 1
     with pytest.raises(Exception, match="not complete"):
         RadDinoImageCache(root)
+
+
+def test_finalize_interrupted_cache_validates_sample_then_writes_marker(
+    tmp_path: Path,
+) -> None:
+    cohort, dicom_root, views = _source_inventory(tmp_path)
+    cache_root = build_raddino_cache(
+        cohort_root=cohort,
+        dicom_root=dicom_root,
+        output_root=tmp_path / "caches",
+        cache_version="raddino-cache-finalize-v1",
+        view_splits_csv=views,
+        image_processor_config=PROCESSOR,
+    )
+    marker = cache_root / COMPLETE_MARKER_NAME
+    marker.unlink()
+    manifest_path = cache_root / "manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    manifest.pop("pixel_validation", None)
+    manifest["status"] = "validating"
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
+
+    finalized_root = finalize_interrupted_raddino_cache(
+        cache_root=cache_root,
+        dicom_root=dicom_root,
+        validation_views_per_split=1,
+    )
+
+    assert finalized_root == cache_root
+    finalized = json.loads(manifest_path.read_text())
+    assert finalized["status"] == "complete"
+    assert finalized["pixel_validation"]["status"] == "exact_match"
+    assert finalized["pixel_validation"]["view_count"] == 3
+    assert marker.is_file()
+    RadDinoImageCache(cache_root)
