@@ -34,6 +34,7 @@ from medagentx.retrieval.index import (
     write_chroma_index,
     write_index_manifest,
 )
+from medagentx.vision.cache import sha256_file
 from medagentx.vision.data import build_study_inference_records
 
 
@@ -91,6 +92,21 @@ def build_parser() -> argparse.ArgumentParser:
             "Defaults to output-root/study_embeddings.npz. Saved after embed; "
             "reused with --reuse-embeddings."
         ),
+    )
+    parser.add_argument(
+        "--model-ready-cache-root",
+        type=Path,
+        default=None,
+        help=(
+            "Optional validated fixed-shape image cache to preload on CUDA "
+            "instead of decoding DICOMs during embedding."
+        ),
+    )
+    parser.add_argument(
+        "--gpu-cache-preload-chunk-size",
+        type=int,
+        default=64,
+        help="Views copied to the GPU per model-ready-cache preload chunk.",
     )
     parser.add_argument(
         "--collection-name",
@@ -152,6 +168,8 @@ def main(argv: list[str] | None = None) -> int:
         raise ValueError("max-document-chars must be > 0")
     if args.progress_every <= 0:
         raise ValueError("progress-every must be > 0")
+    if args.gpu_cache_preload_chunk_size <= 0:
+        raise ValueError("gpu-cache-preload-chunk-size must be > 0")
     if args.max_studies is not None and args.max_studies <= 0:
         raise ValueError("max-studies must be > 0")
 
@@ -180,10 +198,19 @@ def main(argv: list[str] | None = None) -> int:
             raise FileNotFoundError(f"Required retrieval artifact missing: {path}")
     if not dicom_root.exists():
         raise FileNotFoundError(f"DICOM root missing: {dicom_root}")
+    if (
+        args.model_ready_cache_root is not None
+        and not args.model_ready_cache_root.is_dir()
+    ):
+        raise FileNotFoundError(
+            f"Model-ready cache missing: {args.model_ready_cache_root}"
+        )
 
     device = torch.device(args.device)
     if device.type == "cuda" and not torch.cuda.is_available():
         raise RuntimeError("CUDA requested but torch.cuda.is_available() is false")
+    if args.model_ready_cache_root is not None and device.type != "cuda":
+        raise ValueError("--model-ready-cache-root requires --device cuda")
 
     print(f"[Retrieval] loading views from {views_csv}")
     views = pd.read_csv(views_csv, dtype=str)
@@ -234,11 +261,17 @@ def main(argv: list[str] | None = None) -> int:
 
     checkpoint_meta: dict[str, object] = {
         "checkpoint": str(checkpoint_path),
+        "checkpoint_sha256": sha256_file(checkpoint_path),
         "device": str(device),
         "batch_size": args.batch_size,
         "num_workers": args.num_workers,
         "split": args.split,
         "study_count": len(records),
+        "model_ready_cache_root": (
+            str(args.model_ready_cache_root)
+            if args.model_ready_cache_root is not None
+            else None
+        ),
     }
 
     embedding_payload: dict[str, object] | None = None
@@ -247,12 +280,22 @@ def main(argv: list[str] | None = None) -> int:
         embedding_payload = load_embeddings_cache(embeddings_cache)
         if embedding_payload is None:
             print("[Retrieval] cache miss; will embed from DICOMs")
-        elif len(embedding_payload["study_keys"]) != len(records):
-            print(
-                "[Retrieval] cache study count mismatch; will re-embed from DICOMs"
+        elif embedding_payload["study_keys"] != [
+            record.study_key for record in records
+        ]:
+            raise ValueError(
+                "Embeddings cache study identities/order do not match this run"
             )
-            embedding_payload = None
+        elif embedding_payload["meta"].get("checkpoint_sha256") != (
+            checkpoint_meta["checkpoint_sha256"]
+        ):
+            raise ValueError(
+                "Embeddings cache checkpoint SHA-256 does not match this run"
+            )
         else:
+            checkpoint_meta["input_cache"] = embedding_payload["meta"].get(
+                "input_cache"
+            )
             print(
                 f"[Retrieval] reusing cached embeddings "
                 f"studies={len(embedding_payload['study_keys'])}"
@@ -273,7 +316,12 @@ def main(argv: list[str] | None = None) -> int:
             num_workers=args.num_workers,
             mixed_precision=not args.no_mixed_precision,
             progress_every=args.progress_every,
+            model_ready_cache_root=args.model_ready_cache_root,
+            cohort_root=cohort_root,
+            view_splits_csv=views_csv,
+            gpu_cache_preload_chunk_size=args.gpu_cache_preload_chunk_size,
         )
+        checkpoint_meta["input_cache"] = embedding_payload["input_cache"]
         if len(embedding_payload["study_keys"]) != len(records):
             raise RuntimeError(
                 "Embedding extraction returned an unexpected study count"
@@ -287,11 +335,43 @@ def main(argv: list[str] | None = None) -> int:
     else:
         embedding_payload["checkpoint"] = {"vision_backend_id": EMBEDDING_BACKEND_ID}
 
+    all_embedding_study_keys = list(embedding_payload["study_keys"])
+    all_embedding_patient_ids = list(embedding_payload["patient_ids"])
+    included_indices: list[int] = []
+    excluded_rows: list[dict[str, str]] = []
+    for index, (study_key, patient_id) in enumerate(
+        zip(all_embedding_study_keys, all_embedding_patient_ids)
+    ):
+        if str(documents.get(study_key, "")).strip():
+            included_indices.append(index)
+        else:
+            excluded_rows.append(
+                {
+                    "study_key": study_key,
+                    "deid_patient_id": patient_id,
+                    "reason": "empty_findings_and_impression",
+                }
+            )
+    if not included_indices:
+        raise ValueError("No report-bearing train studies remain for indexing")
+    output_root.mkdir(parents=True, exist_ok=True)
+    exclusions_path = output_root / "excluded_empty_report_studies.csv"
+    pd.DataFrame(
+        excluded_rows,
+        columns=("study_key", "deid_patient_id", "reason"),
+    ).to_csv(exclusions_path, index=False)
+    print(
+        "[Retrieval] report eligibility "
+        f"eligible={len(included_indices)} excluded_empty={len(excluded_rows)}"
+    )
+
     print("[Retrieval] assembling index records")
     indexed = build_index_records(
-        embeddings=embedding_payload["embeddings"],
-        study_keys=embedding_payload["study_keys"],
-        patient_ids=embedding_payload["patient_ids"],
+        embeddings=embedding_payload["embeddings"][included_indices],
+        study_keys=[all_embedding_study_keys[index] for index in included_indices],
+        patient_ids=[
+            all_embedding_patient_ids[index] for index in included_indices
+        ],
         documents=documents,
     )
     collection = write_chroma_index(
@@ -309,7 +389,12 @@ def main(argv: list[str] | None = None) -> int:
             "reports_csv": str(reports_csv),
             "dicom_root": str(dicom_root),
             "checkpoint": str(checkpoint_path),
+            "checkpoint_sha256": checkpoint_meta["checkpoint_sha256"],
             "embeddings_cache": str(embeddings_cache),
+            "model_ready_cache_root": checkpoint_meta[
+                "model_ready_cache_root"
+            ],
+            "input_cache": checkpoint_meta.get("input_cache"),
             "vector_db_dir": str(vector_db_dir),
             "collection_name": args.collection_name,
             "split": args.split,
@@ -317,6 +402,9 @@ def main(argv: list[str] | None = None) -> int:
             "batch_size": args.batch_size,
             "num_workers": args.num_workers,
             "max_studies": args.max_studies,
+            "embedding_studies": len(all_embedding_study_keys),
+            "excluded_empty_report_studies": len(excluded_rows),
+            "exclusions_path": str(exclusions_path),
             "max_document_chars": args.max_document_chars,
             "embedding_backend_id": embedding_payload["checkpoint"].get(
                 "vision_backend_id",

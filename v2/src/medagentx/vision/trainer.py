@@ -594,6 +594,7 @@ def load_finetuned_checkpoint(
     checkpoint = torch.load(
         checkpoint_path,
         map_location="cpu",
+        weights_only=True,
     )
     if checkpoint.get("disease_labels") != list(DISEASE_LABELS):
         raise ValueError("Checkpoint disease label order is incompatible")

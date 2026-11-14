@@ -40,6 +40,7 @@ from medagentx.vision.trainer import (
     collect_predictions,
     load_finetuned_checkpoint,
     prediction_table,
+    set_reproducible_seed,
     train_with_validation,
 )
 
@@ -167,6 +168,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Development-only cap for a runtime smoke test.",
     )
     parser.add_argument(
+        "--skip-test",
+        action="store_true",
+        help=(
+            "Do not build test records/loaders or evaluate the held-out test "
+            "split. Use for validation-only development experiments."
+        ),
+    )
+    parser.add_argument(
         "--device",
         default="cuda" if torch.cuda.is_available() else "cpu",
     )
@@ -214,7 +223,7 @@ def _loader(
 
 
 def main(argv: list[str] | None = None) -> int:
-    """Train, select on validation AUROC, and evaluate once on test."""
+    """Train and select on validation, with optional one-time test evaluation."""
     args = build_parser().parse_args(argv)
     if args.batch_size <= 0:
         raise ValueError("batch-size must be > 0")
@@ -278,24 +287,45 @@ def main(argv: list[str] | None = None) -> int:
     if device.type == "cuda" and not torch.cuda.is_available():
         raise RuntimeError("CUDA requested but torch.cuda.is_available() is false")
 
+    # Seed before constructing the classifier so its randomly initialized head
+    # is identical across runs that use the same experiment seed. The trainer
+    # resets this seed before optimization for deterministic batch ordering and
+    # augmentation sampling.
+    set_reproducible_seed(args.seed)
+
     views = pd.read_csv(view_splits_csv, dtype=str)
     labels = pd.read_csv(study_labels_csv, dtype=str)
     train_records = build_study_training_records(
         views, labels, split="train"
     )
     val_records = build_study_training_records(views, labels, split="val")
-    test_records = build_study_training_records(views, labels, split="test")
+    test_records = (
+        None
+        if args.skip_test
+        else build_study_training_records(views, labels, split="test")
+    )
     if args.max_train_studies is not None:
         train_records = train_records[: args.max_train_studies]
     if args.max_val_studies is not None:
         val_records = val_records[: args.max_val_studies]
-    if args.max_test_studies is not None:
+    if args.max_test_studies is not None and test_records is not None:
         test_records = test_records[: args.max_test_studies]
-    if not train_records or not val_records or not test_records:
-        raise ValueError("Development study limits must leave every split non-empty")
+    if not train_records or not val_records or (
+        test_records is not None and not test_records
+    ):
+        raise ValueError(
+            "Development study limits must leave every evaluated split non-empty"
+        )
+    split_records = {
+        "train": train_records,
+        "val": val_records,
+    }
+    if test_records is not None:
+        split_records["test"] = test_records
     print(
         f"[Vision] studies train={len(train_records)} "
-        f"val={len(val_records)} test={len(test_records)}"
+        f"val={len(val_records)} "
+        f"test={len(test_records) if test_records is not None else 'skipped'}"
     )
     print(f"[Vision] model={args.model_name} device={device}")
 
@@ -317,7 +347,7 @@ def main(argv: list[str] | None = None) -> int:
     if image_cache is not None:
         required_paths = [
             path
-            for records in (train_records, val_records, test_records)
+            for records in split_records.values()
             for record in records
             for path in record.dicom_paths
         ]
@@ -328,11 +358,7 @@ def main(argv: list[str] | None = None) -> int:
             required_paths=required_paths,
             image_processor_config=image_processor_config,
         )
-        for split_name, records in (
-            ("train", train_records),
-            ("val", val_records),
-            ("test", test_records),
-        ):
+        for split_name, records in split_records.items():
             print(
                 f"[Vision] cache planned split={split_name} "
                 f"studies={len(records)} "
@@ -359,8 +385,10 @@ def main(argv: list[str] | None = None) -> int:
         val_loader = GpuResidentStudyLoader(
             val_records, train=False, **loader_kwargs
         )
-        test_loader = GpuResidentStudyLoader(
-            test_records, train=False, **loader_kwargs
+        test_loader = (
+            GpuResidentStudyLoader(test_records, train=False, **loader_kwargs)
+            if test_records is not None
+            else None
         )
         print(
             "[Vision] model-ready cache preloaded to GPU "
@@ -387,14 +415,18 @@ def main(argv: list[str] | None = None) -> int:
             train=False,
             image_cache_root=args.image_cache_root,
         )
-        test_loader = _loader(
-            test_records,
-            dicom_root=dicom_root,
-            processor=processor,
-            batch_size=args.batch_size,
-            num_workers=args.num_workers,
-            train=False,
-            image_cache_root=args.image_cache_root,
+        test_loader = (
+            _loader(
+                test_records,
+                dicom_root=dicom_root,
+                processor=processor,
+                batch_size=args.batch_size,
+                num_workers=args.num_workers,
+                train=False,
+                image_cache_root=args.image_cache_root,
+            )
+            if test_records is not None
+            else None
         )
 
     model = RadDinoStudyClassifier.from_pretrained(
@@ -446,7 +478,10 @@ def main(argv: list[str] | None = None) -> int:
                 "device": str(device),
                 "train_studies": len(train_records),
                 "val_studies": len(val_records),
-                "test_studies": len(test_records),
+                "test_studies": (
+                    len(test_records) if test_records is not None else None
+                ),
+                "evaluate_test": not args.skip_test,
                 "pooling_mode": args.pooling_mode,
                 "trainable_last_blocks": args.trainable_last_blocks,
                 "training_config": config.__dict__,
@@ -479,45 +514,43 @@ def main(argv: list[str] | None = None) -> int:
         mixed_precision=config.mixed_precision,
         config=config,
     )
-    test_predictions = collect_predictions(
-        best_model,
-        test_loader,
-        device=device,
-        mixed_precision=config.mixed_precision,
-        config=config,
-    )
     prediction_table(val_predictions, thresholds, split="val").to_csv(
         output_root / "val_study_predictions.csv",
         index=False,
     )
-    prediction_table(test_predictions, thresholds, split="test").to_csv(
-        output_root / "test_study_predictions.csv",
-        index=False,
-    )
-    test_metrics = compute_masked_metrics(
-        test_predictions["targets"],
-        test_predictions["probabilities"],
-        test_predictions["masks"],
-        thresholds,
-    )
-    test_metrics["masked_loss"] = test_predictions["masked_loss"]
-    test_metrics["loss_name"] = config.loss_name
-    (output_root / "test_metrics.json").write_text(
-        json.dumps(test_metrics, indent=2, sort_keys=True)
-    )
+    test_metrics: dict[str, object] | None = None
+    if test_loader is not None:
+        test_predictions = collect_predictions(
+            best_model,
+            test_loader,
+            device=device,
+            mixed_precision=config.mixed_precision,
+            config=config,
+        )
+        prediction_table(test_predictions, thresholds, split="test").to_csv(
+            output_root / "test_study_predictions.csv",
+            index=False,
+        )
+        test_metrics = compute_masked_metrics(
+            test_predictions["targets"],
+            test_predictions["probabilities"],
+            test_predictions["masks"],
+            thresholds,
+        )
+        test_metrics["masked_loss"] = test_predictions["masked_loss"]
+        test_metrics["loss_name"] = config.loss_name
+        (output_root / "test_metrics.json").write_text(
+            json.dumps(test_metrics, indent=2, sort_keys=True)
+        )
     if image_cache is not None:
         completed_epochs = int(result["epochs_completed"])
-        split_records = {
-            "train": train_records,
-            "val": val_records,
-            "test": test_records,
-        }
         split_passes = {
             "train": completed_epochs,
             # One validation pass per epoch plus best-checkpoint evaluation.
             "val": completed_epochs + 1,
-            "test": 1,
         }
+        if test_records is not None:
+            split_passes["test"] = 1
         cache_usage = {
             split: {
                 "studies_per_pass": len(records),
@@ -546,10 +579,13 @@ def main(argv: list[str] | None = None) -> int:
         f"[Vision] best_epoch={result['best_epoch']} "
         f"best_val_{config.selection_metric}={result['best_score']}"
     )
-    print(
-        f"[Vision] test macro_auroc={test_metrics['macro_auroc']} "
-        f"macro_f1={test_metrics['macro_f1']}"
-    )
+    if test_metrics is None:
+        print("[Vision] test evaluation skipped")
+    else:
+        print(
+            f"[Vision] test macro_auroc={test_metrics['macro_auroc']} "
+            f"macro_f1={test_metrics['macro_f1']}"
+        )
     print(f"[Vision] checkpoint -> {result['checkpoint_path']}")
     return 0
 

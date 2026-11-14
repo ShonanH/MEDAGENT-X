@@ -8,7 +8,7 @@ from typing import Any, Iterator, Sequence
 import torch
 from torch.nn import functional as F
 
-from medagentx.vision.data import StudyTrainingRecord
+from medagentx.vision.data import StudyInferenceRecord, StudyTrainingRecord
 
 
 class GpuResidentStudyLoader:
@@ -21,7 +21,7 @@ class GpuResidentStudyLoader:
 
     def __init__(
         self,
-        records: Sequence[StudyTrainingRecord],
+        records: Sequence[StudyTrainingRecord | StudyInferenceRecord],
         *,
         path_to_index: dict[str, int],
         cached_pixels: torch.Tensor,
@@ -40,6 +40,14 @@ class GpuResidentStudyLoader:
         ):
             raise ValueError("cached_pixels must have shape [views, 1, 518, 518]")
         self.records = list(records)
+        # Match the torch DataLoader interface used by shared collectors.
+        self.dataset = self.records
+        self.include_targets = isinstance(self.records[0], StudyTrainingRecord)
+        if any(
+            isinstance(record, StudyTrainingRecord) != self.include_targets
+            for record in self.records
+        ):
+            raise ValueError("records must not mix training and inference rows")
         self.batch_size = batch_size
         self.train = train
         self.cached_pixels = cached_pixels
@@ -109,7 +117,7 @@ class GpuResidentStudyLoader:
             pixels = self._augment(pixels)
         pixels = pixels.expand(-1, 3, -1, -1)
         pixel_values = (pixels - self.mean) / self.std
-        return {
+        batch: dict[str, Any] = {
             "pixel_values": pixel_values,
             "study_indices": torch.tensor(
                 study_indices, device=self.device, dtype=torch.long
@@ -120,17 +128,24 @@ class GpuResidentStudyLoader:
             "splits": [record.split for record in records],
             "dicom_paths": [record.dicom_paths for record in records],
             "view_counts": [len(record.dicom_paths) for record in records],
-            "targets": torch.tensor(
-                [record.targets for record in records],
-                device=self.device,
-                dtype=torch.float32,
-            ),
-            "masks": torch.tensor(
-                [record.masks for record in records],
-                device=self.device,
-                dtype=torch.float32,
-            ),
         }
+        if self.include_targets:
+            training_records = [
+                record
+                for record in records
+                if isinstance(record, StudyTrainingRecord)
+            ]
+            batch["targets"] = torch.tensor(
+                [record.targets for record in training_records],
+                device=self.device,
+                dtype=torch.float32,
+            )
+            batch["masks"] = torch.tensor(
+                [record.masks for record in training_records],
+                device=self.device,
+                dtype=torch.float32,
+            )
+        return batch
 
     def __iter__(self) -> Iterator[dict[str, Any]]:
         if self.train:

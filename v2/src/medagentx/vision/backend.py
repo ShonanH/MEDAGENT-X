@@ -8,7 +8,6 @@ from typing import Mapping, Sequence
 import pandas as pd
 import torch
 from torch.utils.data import DataLoader
-from transformers import AutoImageProcessor
 
 from medagentx.vision.constants import VISION_BACKEND_ID
 from medagentx.vision.data import (
@@ -16,11 +15,14 @@ from medagentx.vision.data import (
     StudyBatchCollator,
     StudyInferenceRecord,
 )
+from medagentx.vision.gpu_data import GpuResidentStudyLoader
 from medagentx.vision.inference_output import (
     VisionStudyOutput,
     build_study_outputs,
     study_outputs_to_prediction_frame,
 )
+from medagentx.vision.processor import load_training_image_processor
+from medagentx.vision.model_ready_cache import ModelReadyImageCache
 from medagentx.vision.trainer import (
     collect_inference_predictions,
     load_finetuned_checkpoint,
@@ -36,12 +38,14 @@ class FineTunedRadDinoBackend:
         model: object,
         processor: object,
         thresholds: dict[str, float],
+        model_name: str,
         device: torch.device,
         mixed_precision: bool = True,
     ) -> None:
         self.model = model
         self.processor = processor
         self.thresholds = dict(thresholds)
+        self.model_name = str(model_name)
         self.device = device
         self.mixed_precision = mixed_precision
 
@@ -62,13 +66,15 @@ class FineTunedRadDinoBackend:
             checkpoint_path,
             device=resolved_device,
         )
-        processor = AutoImageProcessor.from_pretrained(
-            checkpoint["model_name"]
+        processor = load_training_image_processor(
+            checkpoint_path,
+            checkpoint,
         )
         return cls(
             model=model,
             processor=processor,
             thresholds=checkpoint["thresholds"],
+            model_name=str(checkpoint["model_name"]),
             device=resolved_device,
             mixed_precision=mixed_precision,
         )
@@ -128,6 +134,70 @@ class FineTunedRadDinoBackend:
             dicom_root=dicom_root,
             batch_size=batch_size,
             num_workers=num_workers,
+        )
+        return build_study_outputs(
+            predictions,
+            self.thresholds,
+            vision_backend_id=self.backend_id,
+            threshold_overrides=threshold_overrides,
+        )
+
+    def predict_study_outputs_from_model_ready_cache(
+        self,
+        records: Sequence[StudyInferenceRecord],
+        *,
+        cache_root: str | Path,
+        cohort_root: str | Path,
+        dicom_root: str | Path,
+        view_splits_csv: str | Path,
+        batch_size: int,
+        preload_chunk_size: int = 64,
+        threshold_overrides: Mapping[str, float] | None = None,
+    ) -> list[VisionStudyOutput]:
+        """Run inference from the validated GPU-resident uint8 image cache."""
+        if self.device.type != "cuda":
+            raise ValueError("The model-ready image cache requires a CUDA device")
+        if preload_chunk_size <= 0:
+            raise ValueError("preload_chunk_size must be > 0")
+
+        image_processor_config = {
+            "model_name": self.model_name,
+            "config": self.processor.to_dict(),
+        }
+        image_cache = ModelReadyImageCache(cache_root)
+        image_cache.validate_training_inputs(
+            cohort_root=cohort_root,
+            dicom_root=dicom_root,
+            view_splits_csv=view_splits_csv,
+            required_paths=(
+                path for record in records for path in record.dicom_paths
+            ),
+            image_processor_config=image_processor_config,
+        )
+        cached_pixels = image_cache.preload_to_device(
+            self.device,
+            chunk_size=preload_chunk_size,
+        )
+        loader = GpuResidentStudyLoader(
+            records,
+            path_to_index=image_cache.path_to_index,
+            cached_pixels=cached_pixels,
+            batch_size=batch_size,
+            train=False,
+            image_mean=image_processor_config["config"]["image_mean"],
+            image_std=image_processor_config["config"]["image_std"],
+        )
+        print(
+            "[Vision] model-ready cache preloaded to GPU "
+            f"views={len(cached_pixels)} resident_gib="
+            f"{cached_pixels.numel() / (1024**3):.2f}",
+            flush=True,
+        )
+        predictions = collect_inference_predictions(
+            self.model,
+            loader,
+            device=self.device,
+            mixed_precision=self.mixed_precision,
         )
         return build_study_outputs(
             predictions,
