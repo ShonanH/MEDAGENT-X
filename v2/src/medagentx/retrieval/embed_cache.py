@@ -59,8 +59,12 @@ def load_embeddings_cache(cache_path: str | Path) -> dict[str, Any] | None:
         study_keys = [str(value) for value in archive["study_keys"].tolist()]
         patient_ids = [str(value) for value in archive["patient_ids"].tolist()]
 
+    meta_path = embeddings_cache_meta_path(path)
+    meta = json.loads(meta_path.read_text()) if meta_path.is_file() else {}
+
     return {
         "embeddings": embeddings,
         "study_keys": study_keys,
         "patient_ids": patient_ids,
+        "meta": meta,
     }

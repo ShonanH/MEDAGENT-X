@@ -15,7 +15,7 @@ from pydicom.dataset import FileDataset, FileMetaDataset
 from pydicom.uid import ExplicitVRLittleEndian, generate_uid
 
 from medagentx.vision.cache import build_raddino_cache
-from medagentx.vision.data import StudyTrainingRecord
+from medagentx.vision.data import StudyInferenceRecord, StudyTrainingRecord
 from medagentx.vision.gpu_data import GpuResidentStudyLoader
 from medagentx.vision.model_ready_cache import (
     ModelReadyImageCache,
@@ -151,3 +151,32 @@ def test_gpu_resident_loader_preserves_study_view_mapping_without_augmentation()
     assert batch["view_counts"] == [2, 1]
     assert batch["pixel_values"].shape == (3, 3, 518, 518)
     assert torch.allclose(batch["pixel_values"][1], torch.full((3, 518, 518), 20 / 255))
+
+
+def test_gpu_resident_loader_supports_inference_records() -> None:
+    records = [
+        StudyInferenceRecord(
+            study_key="one",
+            deid_patient_id="p1",
+            split="train",
+            dicom_paths=("a", "b"),
+        )
+    ]
+    pixels = torch.zeros((2, 1, 518, 518), dtype=torch.uint8)
+    loader = GpuResidentStudyLoader(
+        records,
+        path_to_index={"a": 0, "b": 1},
+        cached_pixels=pixels,
+        batch_size=1,
+        train=False,
+        image_mean=(0.0, 0.0, 0.0),
+        image_std=(1.0, 1.0, 1.0),
+    )
+
+    batch = next(iter(loader))
+
+    assert len(loader.dataset) == 1
+    assert batch["study_keys"] == ["one"]
+    assert batch["study_indices"].tolist() == [0, 0]
+    assert "targets" not in batch
+    assert "masks" not in batch

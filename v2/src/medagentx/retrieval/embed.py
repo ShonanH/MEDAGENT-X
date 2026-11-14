@@ -9,7 +9,6 @@ from typing import Any, Sequence
 import numpy as np
 import torch
 from torch.utils.data import DataLoader
-from transformers import AutoImageProcessor
 
 from medagentx.retrieval.constants import DEFAULT_PROGRESS_EVERY_BATCHES
 from medagentx.vision.data import (
@@ -17,7 +16,10 @@ from medagentx.vision.data import (
     StudyBatchCollator,
     StudyInferenceRecord,
 )
+from medagentx.vision.gpu_data import GpuResidentStudyLoader
+from medagentx.vision.model_ready_cache import ModelReadyImageCache
 from medagentx.vision.trainer import load_finetuned_checkpoint
+from medagentx.vision.processor import load_training_image_processor
 
 
 def _move_batch(batch: dict[str, Any], device: torch.device) -> dict[str, Any]:
@@ -171,10 +173,7 @@ def load_embedding_model(
         checkpoint_path,
         device=resolved_device,
     )
-    processor = AutoImageProcessor.from_pretrained(
-        checkpoint["model_name"],
-        use_fast=True,
-    )
+    processor = load_training_image_processor(checkpoint_path, checkpoint)
     print(
         f"[Retrieval] checkpoint ready model={checkpoint['model_name']} "
         f"elapsed={time.perf_counter() - started:.1f}s"
@@ -192,6 +191,10 @@ def extract_study_embeddings(
     num_workers: int,
     mixed_precision: bool = True,
     progress_every: int = DEFAULT_PROGRESS_EVERY_BATCHES,
+    model_ready_cache_root: str | Path | None = None,
+    cohort_root: str | Path | None = None,
+    view_splits_csv: str | Path | None = None,
+    gpu_cache_preload_chunk_size: int = 64,
 ) -> dict[str, Any]:
     """End-to-end helper: load checkpoint and embed the provided studies."""
     resolved_device = torch.device(device)
@@ -199,14 +202,67 @@ def extract_study_embeddings(
         checkpoint_path,
         device=resolved_device,
     )
-    loader = build_study_embedding_loader(
-        records,
-        dicom_root=dicom_root,
-        processor=processor,
-        batch_size=batch_size,
-        num_workers=num_workers,
-        device=resolved_device,
-    )
+    input_cache: dict[str, Any]
+    if model_ready_cache_root is None:
+        loader = build_study_embedding_loader(
+            records,
+            dicom_root=dicom_root,
+            processor=processor,
+            batch_size=batch_size,
+            num_workers=num_workers,
+            device=resolved_device,
+        )
+        input_cache = {"mode": "raw_dicom"}
+    else:
+        if resolved_device.type != "cuda":
+            raise ValueError("model-ready cache embedding requires CUDA")
+        if cohort_root is None or view_splits_csv is None:
+            raise ValueError(
+                "cohort_root and view_splits_csv are required with "
+                "model_ready_cache_root"
+            )
+        if gpu_cache_preload_chunk_size <= 0:
+            raise ValueError("gpu_cache_preload_chunk_size must be > 0")
+        cache = ModelReadyImageCache(model_ready_cache_root)
+        image_processor_config = {
+            "model_name": checkpoint["model_name"],
+            "config": processor.to_dict(),
+        }
+        cache.validate_training_inputs(
+            cohort_root=cohort_root,
+            dicom_root=dicom_root,
+            view_splits_csv=view_splits_csv,
+            required_paths=(
+                path for record in records for path in record.dicom_paths
+            ),
+            image_processor_config=image_processor_config,
+        )
+        cached_pixels = cache.preload_to_device(
+            resolved_device,
+            chunk_size=gpu_cache_preload_chunk_size,
+        )
+        config_values = image_processor_config["config"]
+        loader = GpuResidentStudyLoader(
+            records,
+            path_to_index=cache.path_to_index,
+            cached_pixels=cached_pixels,
+            batch_size=batch_size,
+            train=False,
+            image_mean=config_values["image_mean"],
+            image_std=config_values["image_std"],
+        )
+        input_cache = {
+            "mode": "gpu_resident_model_ready",
+            "root": str(Path(model_ready_cache_root)),
+            "cache_id": cache.cache_id,
+            "view_count": int(cache.manifest["view_count"]),
+        }
+        print(
+            "[Retrieval] model-ready cache preloaded to GPU "
+            f"views={len(cached_pixels)} resident_gib="
+            f"{cached_pixels.numel() / (1024**3):.2f}",
+            flush=True,
+        )
     payload = collect_study_embeddings(
         model,
         loader,
@@ -215,4 +271,5 @@ def extract_study_embeddings(
         progress_every=progress_every,
     )
     payload["checkpoint"] = checkpoint
+    payload["input_cache"] = input_cache
     return payload

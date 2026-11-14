@@ -1,11 +1,19 @@
 # CUDA 12.1 has broad compatibility with NRP GPU nodes.
 FROM nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
 
+ARG TARGETARCH
+
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
+
+RUN test "$TARGETARCH" = "amd64" || ( \
+      echo "NRP CUDA images must be built for linux/amd64. " \
+      "Use: docker build --platform=linux/amd64 ..." >&2; \
+      exit 1 \
+    )
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3.10 \

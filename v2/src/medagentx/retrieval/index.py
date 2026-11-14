@@ -216,6 +216,12 @@ def write_chroma_index(
             "hnsw:space": CHROMA_DISTANCE_SPACE,
         },
     )
+    existing_count = collection.count()
+    if existing_count:
+        raise ValueError(
+            f"Chroma collection {collection_name!r} is not empty "
+            f"(count={existing_count}); rerun with --rebuild"
+        )
 
     ids = [chroma_document_id(record.study_key) for record in records]
     documents = [record.document for record in records]
@@ -228,17 +234,36 @@ def write_chroma_index(
         for record in records
     ]
 
+    max_batch_size_method = getattr(client, "get_max_batch_size", None)
+    max_batch_size = (
+        int(max_batch_size_method())
+        if callable(max_batch_size_method)
+        else 1_000
+    )
+    write_batch_size = max(1, min(1_000, max_batch_size))
     print(
         f"[Retrieval] writing {len(records)} study embeddings to Chroma "
-        f"(space={CHROMA_DISTANCE_SPACE})"
+        f"(space={CHROMA_DISTANCE_SPACE}, batch_size={write_batch_size})"
     )
-    collection.add(
-        ids=ids,
-        documents=documents,
-        metadatas=metadatas,
-        embeddings=embeddings,
-    )
-    print(f"[Retrieval] Chroma write complete count={collection.count()}")
+    for start in range(0, len(records), write_batch_size):
+        end = min(start + write_batch_size, len(records))
+        collection.add(
+            ids=ids[start:end],
+            documents=documents[start:end],
+            metadatas=metadatas[start:end],
+            embeddings=embeddings[start:end],
+        )
+        print(
+            f"[Retrieval] Chroma write progress {end}/{len(records)}",
+            flush=True,
+        )
+    final_count = collection.count()
+    if final_count != len(records):
+        raise RuntimeError(
+            "Chroma collection count mismatch: "
+            f"expected={len(records)} actual={final_count}"
+        )
+    print(f"[Retrieval] Chroma write complete count={final_count}")
     return collection
 
 

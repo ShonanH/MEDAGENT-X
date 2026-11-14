@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import json
+from pathlib import Path
 from typing import Any, Mapping
 
 import numpy as np
@@ -11,6 +13,8 @@ from medagentx.labels.constants import DISEASE_LABELS
 from medagentx.labels.schema import snake_label
 from medagentx.labels.statuses import LabelStatus
 from medagentx.vision.constants import VISION_BACKEND_ID
+
+VISION_OUTPUT_CACHE_SCHEMA_VERSION = 1
 
 
 @dataclass(frozen=True)
@@ -137,3 +141,146 @@ def study_outputs_to_prediction_frame(outputs: list[VisionStudyOutput]):
             row[f"status_{slug}"] = label_output.status.value
         rows.append(row)
     return pd.DataFrame(rows)
+
+
+def _vision_cache_meta_path(path: str | Path) -> Path:
+    resolved = Path(path)
+    return resolved.with_suffix(resolved.suffix + ".meta.json")
+
+
+def save_vision_study_outputs(
+    path: str | Path,
+    outputs: list[VisionStudyOutput],
+    *,
+    metadata: Mapping[str, Any] | None = None,
+) -> None:
+    """Persist prediction probabilities and retrieval embeddings losslessly."""
+    if not outputs:
+        raise ValueError("outputs must not be empty")
+    resolved = Path(path)
+    resolved.parent.mkdir(parents=True, exist_ok=True)
+
+    embeddings = np.asarray(
+        [output.study_embedding for output in outputs], dtype=np.float32
+    )
+    probabilities = np.asarray(
+        [
+            [label_output.probability for label_output in output.labels]
+            for output in outputs
+        ],
+        dtype=np.float32,
+    )
+    thresholds = np.asarray(
+        [
+            [label_output.threshold for label_output in output.labels]
+            for output in outputs
+        ],
+        dtype=np.float32,
+    )
+    expected_label_order = tuple(DISEASE_LABELS)
+    for output in outputs:
+        if tuple(item.label for item in output.labels) != expected_label_order:
+            raise ValueError(
+                f"Unexpected label order in vision output {output.study_key!r}"
+            )
+
+    np.savez_compressed(
+        resolved,
+        study_keys=np.asarray([output.study_key for output in outputs]),
+        patient_ids=np.asarray([output.deid_patient_id for output in outputs]),
+        splits=np.asarray([output.split for output in outputs]),
+        view_counts=np.asarray([output.view_count for output in outputs], dtype=np.int32),
+        dicom_paths_json=np.asarray(
+            [json.dumps(output.dicom_paths) for output in outputs]
+        ),
+        vision_backend_ids=np.asarray(
+            [output.vision_backend_id for output in outputs]
+        ),
+        embeddings=embeddings,
+        probabilities=probabilities,
+        thresholds=thresholds,
+    )
+    cache_metadata = {
+        "schema_version": VISION_OUTPUT_CACHE_SCHEMA_VERSION,
+        "study_count": len(outputs),
+        "embedding_dimension": int(embeddings.shape[1]),
+        "label_order": list(DISEASE_LABELS),
+        **dict(metadata or {}),
+    }
+    _vision_cache_meta_path(resolved).write_text(
+        json.dumps(cache_metadata, indent=2, sort_keys=True) + "\n"
+    )
+
+
+def load_vision_study_outputs(
+    path: str | Path,
+) -> tuple[list[VisionStudyOutput], dict[str, Any]]:
+    """Load a cache created by :func:`save_vision_study_outputs`."""
+    resolved = Path(path)
+    meta_path = _vision_cache_meta_path(resolved)
+    if not resolved.is_file() or not meta_path.is_file():
+        raise FileNotFoundError(
+            f"Vision output cache or metadata is missing: {resolved}"
+        )
+    metadata = json.loads(meta_path.read_text())
+    if metadata.get("schema_version") != VISION_OUTPUT_CACHE_SCHEMA_VERSION:
+        raise ValueError("Unsupported vision output cache schema")
+    if metadata.get("label_order") != list(DISEASE_LABELS):
+        raise ValueError("Vision output cache label order is incompatible")
+
+    with np.load(resolved, allow_pickle=False) as payload:
+        arrays = {name: payload[name] for name in payload.files}
+    required = {
+        "study_keys",
+        "patient_ids",
+        "splits",
+        "view_counts",
+        "dicom_paths_json",
+        "vision_backend_ids",
+        "embeddings",
+        "probabilities",
+        "thresholds",
+    }
+    missing = sorted(required - set(arrays))
+    if missing:
+        raise ValueError(f"Vision output cache is missing arrays: {missing}")
+
+    study_count = len(arrays["study_keys"])
+    if metadata.get("study_count") != study_count:
+        raise ValueError("Vision output cache study count does not match metadata")
+    if arrays["embeddings"].shape[0] != study_count:
+        raise ValueError("Vision output embedding count mismatch")
+    expected_matrix_shape = (study_count, len(DISEASE_LABELS))
+    if arrays["probabilities"].shape != expected_matrix_shape:
+        raise ValueError("Vision output probability shape mismatch")
+    if arrays["thresholds"].shape != expected_matrix_shape:
+        raise ValueError("Vision output threshold shape mismatch")
+
+    outputs: list[VisionStudyOutput] = []
+    for index in range(study_count):
+        labels = tuple(
+            VisionLabelOutput.from_probability(
+                label,
+                float(arrays["probabilities"][index, label_index]),
+                float(arrays["thresholds"][index, label_index]),
+            )
+            for label_index, label in enumerate(DISEASE_LABELS)
+        )
+        outputs.append(
+            VisionStudyOutput(
+                study_key=str(arrays["study_keys"][index]),
+                deid_patient_id=str(arrays["patient_ids"][index]),
+                split=str(arrays["splits"][index]),
+                view_count=int(arrays["view_counts"][index]),
+                dicom_paths=tuple(
+                    str(value)
+                    for value in json.loads(str(arrays["dicom_paths_json"][index]))
+                ),
+                vision_backend_id=str(arrays["vision_backend_ids"][index]),
+                study_embedding=tuple(
+                    float(value) for value in arrays["embeddings"][index]
+                ),
+                labels=labels,
+            )
+        )
+    return outputs, metadata

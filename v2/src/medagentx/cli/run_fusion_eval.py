@@ -21,7 +21,7 @@ from medagentx.evaluation.fusion_eval import (
     per_label_metrics_frame,
     run_named_judge_result,
     status_confusion_by_label_frame,
-    study_labels_to_ground_truth,
+    study_labels_to_ground_truth_strata,
     study_outputs_by_key,
     uncertain_status_metrics_frame,
     vision_status_map,
@@ -41,9 +41,14 @@ from medagentx.reasoning.retrieve import (
 from medagentx.reasoning.vision_adapter import fusion_vision_inputs
 from medagentx.retrieval.constants import DEFAULT_COLLECTION_NAME
 from medagentx.vision.backend import FineTunedRadDinoBackend
+from medagentx.vision.cache import sha256_file
 from medagentx.vision.constants import DEFAULT_BATCH_SIZE, DEFAULT_NUM_WORKERS
 from medagentx.vision.data import build_study_inference_records
-from medagentx.vision.inference_output import study_outputs_to_prediction_frame
+from medagentx.vision.inference_output import (
+    load_vision_study_outputs,
+    save_vision_study_outputs,
+    study_outputs_to_prediction_frame,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -97,6 +102,21 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--batch-size", type=int, default=DEFAULT_BATCH_SIZE)
     parser.add_argument("--num-workers", type=int, default=DEFAULT_NUM_WORKERS)
     parser.add_argument(
+        "--model-ready-cache-root",
+        type=Path,
+        default=None,
+        help=(
+            "Optional validated model-ready image cache. When provided, "
+            "vision inference uses the GPU-resident cache instead of DICOM reads."
+        ),
+    )
+    parser.add_argument(
+        "--gpu-cache-preload-chunk-size",
+        type=int,
+        default=64,
+        help="Views copied to GPU per model-ready-cache preload chunk.",
+    )
+    parser.add_argument(
         "--device",
         default="cuda" if torch.cuda.is_available() else "cpu",
     )
@@ -127,6 +147,20 @@ def build_parser() -> argparse.ArgumentParser:
         default=25,
         help="Log retrieval/fusion progress every N studies.",
     )
+    parser.add_argument(
+        "--vision-outputs-cache",
+        type=Path,
+        default=None,
+        help=(
+            "Lossless probabilities/embedding cache. Defaults to "
+            "output-dir/vision_study_outputs.npz."
+        ),
+    )
+    parser.add_argument(
+        "--reuse-vision-outputs",
+        action="store_true",
+        help="Skip vision inference and reuse a strictly compatible cache.",
+    )
     return parser
 
 
@@ -137,6 +171,8 @@ def main(argv: list[str] | None = None) -> int:
         raise ValueError("batch-size must be > 0")
     if args.num_workers < 0:
         raise ValueError("num-workers must be >= 0")
+    if args.gpu_cache_preload_chunk_size <= 0:
+        raise ValueError("gpu-cache-preload-chunk-size must be > 0")
     if args.gray_zone_margin < 0:
         raise ValueError("gray-zone-margin must be >= 0")
     if args.retrieval_top_k <= 0:
@@ -162,12 +198,23 @@ def main(argv: list[str] | None = None) -> int:
     output_dir = args.output_dir or (
         cohort_root / DEFAULT_FUSION_SUBDIR / args.split
     )
+    vision_outputs_cache = args.vision_outputs_cache or (
+        output_dir / "vision_study_outputs.npz"
+    )
 
     for path in (views_csv, study_labels_csv, checkpoint_path, vector_db_dir):
         if not path.exists():
             raise FileNotFoundError(f"Required fusion-eval artifact missing: {path}")
     if not dicom_root.exists():
         raise FileNotFoundError(f"DICOM root missing: {dicom_root}")
+    if (
+        args.model_ready_cache_root is not None
+        and not args.model_ready_cache_root.is_dir()
+    ):
+        raise FileNotFoundError(
+            "Model-ready cache root missing: "
+            f"{args.model_ready_cache_root}"
+        )
     threshold_overrides = None
     threshold_policy_version = None
     if args.threshold_policy_json is not None:
@@ -210,27 +257,83 @@ def main(argv: list[str] | None = None) -> int:
     if not records:
         raise ValueError(f"No studies found for split={args.split!r}")
 
-    print(
-        f"[FusionEval] loading checkpoint {checkpoint_path} onto {device}"
-    )
-    backend = FineTunedRadDinoBackend.from_checkpoint(
-        checkpoint_path,
-        device=device,
-        mixed_precision=not args.no_mixed_precision,
-    )
-
     vision_start = time.perf_counter()
-    print(
-        f"[FusionEval] running vision on {len(records)} studies "
-        f"(batch_size={args.batch_size}, num_workers={args.num_workers})"
-    )
-    study_outputs = backend.predict_study_outputs(
-        records,
-        dicom_root=dicom_root,
-        batch_size=args.batch_size,
-        num_workers=args.num_workers,
-        threshold_overrides=threshold_overrides,
-    )
+    checkpoint_sha256 = sha256_file(checkpoint_path)
+    if args.reuse_vision_outputs:
+        print(f"[FusionEval] reusing vision outputs from {vision_outputs_cache}")
+        study_outputs, vision_cache_metadata = load_vision_study_outputs(
+            vision_outputs_cache
+        )
+        expected_metadata = {
+            "checkpoint_sha256": checkpoint_sha256,
+            "split": args.split,
+            "threshold_policy_version": threshold_policy_version,
+            "threshold_overrides": threshold_overrides,
+        }
+        mismatches = {
+            key: (vision_cache_metadata.get(key), expected)
+            for key, expected in expected_metadata.items()
+            if vision_cache_metadata.get(key) != expected
+        }
+        expected_study_keys = [record.study_key for record in records]
+        actual_study_keys = [output.study_key for output in study_outputs]
+        if actual_study_keys != expected_study_keys:
+            mismatches["study_keys"] = (
+                f"cache_count={len(actual_study_keys)}",
+                f"expected_count={len(expected_study_keys)}",
+            )
+        if mismatches:
+            raise ValueError(
+                "Refusing incompatible vision output cache reuse: "
+                f"{mismatches}"
+            )
+    else:
+        print(
+            f"[FusionEval] loading checkpoint {checkpoint_path} onto {device}"
+        )
+        backend = FineTunedRadDinoBackend.from_checkpoint(
+            checkpoint_path,
+            device=device,
+            mixed_precision=not args.no_mixed_precision,
+        )
+        print(
+            f"[FusionEval] running vision on {len(records)} studies "
+            f"(batch_size={args.batch_size}, num_workers={args.num_workers})"
+        )
+        if args.model_ready_cache_root is None:
+            study_outputs = backend.predict_study_outputs(
+                records,
+                dicom_root=dicom_root,
+                batch_size=args.batch_size,
+                num_workers=args.num_workers,
+                threshold_overrides=threshold_overrides,
+            )
+        else:
+            study_outputs = backend.predict_study_outputs_from_model_ready_cache(
+                records,
+                cache_root=args.model_ready_cache_root,
+                cohort_root=cohort_root,
+                dicom_root=dicom_root,
+                view_splits_csv=views_csv,
+                batch_size=args.batch_size,
+                preload_chunk_size=args.gpu_cache_preload_chunk_size,
+                threshold_overrides=threshold_overrides,
+            )
+        save_vision_study_outputs(
+            vision_outputs_cache,
+            study_outputs,
+            metadata={
+                "checkpoint": str(checkpoint_path),
+                "checkpoint_sha256": checkpoint_sha256,
+                "split": args.split,
+                "threshold_policy_version": threshold_policy_version,
+                "threshold_overrides": threshold_overrides,
+            },
+        )
+        print(
+            "[FusionEval] saved reusable vision outputs -> "
+            f"{vision_outputs_cache}"
+        )
     vision_elapsed = time.perf_counter() - vision_start
     print(
         f"[FusionEval] vision complete studies={len(study_outputs)} "
@@ -270,46 +373,46 @@ def main(argv: list[str] | None = None) -> int:
     study_keys = [output.study_key for output in study_outputs]
     print(f"[FusionEval] loading ground truth from {study_labels_csv}")
     study_labels = pd.read_csv(study_labels_csv, dtype=str)
-    ground_truth_records = study_labels_to_ground_truth(
+    ground_truth = study_labels_to_ground_truth_strata(
         study_labels,
         study_keys=study_keys,
     )
     outputs_by_key = study_outputs_by_key(study_outputs)
-    gray_zone_records = filter_gray_zone_ground_truth(
-        ground_truth_records,
-        outputs_by_key,
-        margin=args.gray_zone_margin,
-    )
 
     vision_predictions = vision_status_map(study_outputs)
     fusion_predictions = fusion_status_map(fusion_results)
 
-    judge_runs = [
-        run_named_judge_result(
-            name="vision_full",
-            eval_scope="full",
-            ground_truth_records=ground_truth_records,
-            predicted_statuses=vision_predictions,
-        ),
-        run_named_judge_result(
-            name="fusion_full",
-            eval_scope="full",
-            ground_truth_records=ground_truth_records,
-            predicted_statuses=fusion_predictions,
-        ),
-        run_named_judge_result(
-            name="vision_gray_zone",
-            eval_scope="gray_zone",
-            ground_truth_records=gray_zone_records,
-            predicted_statuses=vision_predictions,
-        ),
-        run_named_judge_result(
-            name="fusion_gray_zone",
-            eval_scope="gray_zone",
-            ground_truth_records=gray_zone_records,
-            predicted_statuses=fusion_predictions,
-        ),
-    ]
+    policy_records = {
+        "explicit": ground_truth.explicit,
+        "no_finding_derived": ground_truth.no_finding_derived,
+        "combined_training_policy": ground_truth.combined,
+    }
+    judge_runs = []
+    gray_zone_counts: dict[str, int] = {}
+    for policy_name, full_records in policy_records.items():
+        gray_records = filter_gray_zone_ground_truth(
+            full_records,
+            outputs_by_key,
+            margin=args.gray_zone_margin,
+        )
+        gray_zone_counts[policy_name] = len(gray_records)
+        for scope, scope_records in (
+            ("full", full_records),
+            ("gray_zone", gray_records),
+        ):
+            for prediction_name, predictions in (
+                ("vision", vision_predictions),
+                ("fusion", fusion_predictions),
+            ):
+                judge_runs.append(
+                    run_named_judge_result(
+                        name=f"{prediction_name}_{policy_name}_{scope}",
+                        eval_scope=scope,
+                        ground_truth_records=scope_records,
+                        predicted_statuses=predictions,
+                        ground_truth_policy=policy_name,
+                    )
+                )
     judge_payload = {
         "split": args.split,
         "fusion_policy_version": FUSION_POLICY_VERSION,
@@ -321,9 +424,28 @@ def main(argv: list[str] | None = None) -> int:
         ),
         "gray_zone_margin": args.gray_zone_margin,
         "retrieval_top_k": args.retrieval_top_k,
+        "model_ready_cache_root": (
+            str(args.model_ready_cache_root)
+            if args.model_ready_cache_root is not None
+            else None
+        ),
+        "vision_outputs_cache": str(vision_outputs_cache),
+        "vision_outputs_reused": args.reuse_vision_outputs,
+        "checkpoint_sha256": checkpoint_sha256,
         "study_count": len(study_outputs),
-        "ground_truth_rows": len(ground_truth_records),
-        "gray_zone_rows": len(gray_zone_records),
+        "ground_truth_rows": {
+            name: len(records) for name, records in policy_records.items()
+        },
+        "gray_zone_rows": gray_zone_counts,
+        "ground_truth_scoreable_cells": {
+            "explicit": int(ground_truth.provenance["explicit_scoreable"].sum()),
+            "no_finding_derived": int(
+                ground_truth.provenance["no_finding_derived_scoreable"].sum()
+            ),
+            "combined_training_policy": int(
+                ground_truth.provenance["combined_scoreable"].sum()
+            ),
+        },
         "runs": [named_judge_summary_payload(run) for run in judge_runs],
     }
 
@@ -336,19 +458,35 @@ def main(argv: list[str] | None = None) -> int:
     fusion_changed_cells_csv = output_dir / "fusion_changed_cells.csv"
     uncertain_status_metrics_csv = output_dir / "uncertain_status_metrics.csv"
     status_confusion_csv = output_dir / "status_confusion_by_label.csv"
+    ground_truth_provenance_csv = output_dir / "ground_truth_provenance.csv"
 
     study_outputs_to_prediction_frame(study_outputs).to_csv(vision_csv, index=False)
     fusion_results_to_frame(fusion_results).to_csv(fusion_csv, index=False)
     per_label_metrics_frame(judge_runs).to_csv(per_label_metrics_csv, index=False)
-    fusion_change_analysis_frame(
-        ground_truth_records=ground_truth_records,
-        fusion_results=fusion_results,
-    ).to_csv(fusion_change_analysis_csv, index=False)
-    fusion_changed_cells_frame(
-        ground_truth_records=ground_truth_records,
-        fusion_results=fusion_results,
-        retrieved_top_k=args.retrieval_top_k,
-    ).to_csv(fusion_changed_cells_csv, index=False)
+    change_analysis_frames = []
+    changed_cell_frames = []
+    for policy_name, records_for_policy in policy_records.items():
+        change_frame = fusion_change_analysis_frame(
+            ground_truth_records=records_for_policy,
+            fusion_results=fusion_results,
+        )
+        change_frame.insert(0, "ground_truth_policy", policy_name)
+        change_analysis_frames.append(change_frame)
+        changed_frame = fusion_changed_cells_frame(
+            ground_truth_records=records_for_policy,
+            fusion_results=fusion_results,
+            retrieved_top_k=args.retrieval_top_k,
+        )
+        changed_frame.insert(0, "ground_truth_policy", policy_name)
+        changed_cell_frames.append(changed_frame)
+    pd.concat(change_analysis_frames, ignore_index=True).to_csv(
+        fusion_change_analysis_csv,
+        index=False,
+    )
+    pd.concat(changed_cell_frames, ignore_index=True).to_csv(
+        fusion_changed_cells_csv,
+        index=False,
+    )
     uncertain_status_metrics_frame(judge_runs).to_csv(
         uncertain_status_metrics_csv,
         index=False,
@@ -357,6 +495,7 @@ def main(argv: list[str] | None = None) -> int:
         status_confusion_csv,
         index=False,
     )
+    ground_truth.provenance.to_csv(ground_truth_provenance_csv, index=False)
     judge_json.write_text(json.dumps(judge_payload, indent=2, sort_keys=True) + "\n")
 
     print(f"[FusionEval] wrote vision predictions -> {vision_csv}")
@@ -373,6 +512,10 @@ def main(argv: list[str] | None = None) -> int:
         f"{uncertain_status_metrics_csv}"
     )
     print(f"[FusionEval] wrote status confusion -> {status_confusion_csv}")
+    print(
+        "[FusionEval] wrote ground-truth provenance -> "
+        f"{ground_truth_provenance_csv}"
+    )
     for run in judge_payload["runs"]:
         if run.get("skipped"):
             print(f"[FusionEval] {run['name']}: skipped ({run['reason']})")

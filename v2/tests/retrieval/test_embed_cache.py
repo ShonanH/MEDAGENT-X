@@ -27,4 +27,5 @@ def test_save_and_load_embeddings_cache(tmp_path) -> None:
     assert loaded is not None
     assert loaded["study_keys"] == payload["study_keys"]
     assert loaded["patient_ids"] == payload["patient_ids"]
+    assert loaded["meta"]["checkpoint"] == "ckpt.pt"
     np.testing.assert_allclose(loaded["embeddings"], payload["embeddings"])

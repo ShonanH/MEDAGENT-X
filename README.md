@@ -33,6 +33,14 @@ python -m pip install -r requirements-nrp.txt
 export PYTHONPATH="$PWD/v2/src${PYTHONPATH:+:$PYTHONPATH}"
 ```
 
+NRP A100 Jobs require a `linux/amd64` container image. When building from an
+Apple Silicon host, specify that platform explicitly:
+
+```bash
+docker build --platform=linux/amd64 -f Dockerfile.nrp \
+  -t shonanmedagentx/medagentx:your-immutable-tag .
+```
+
 The cohort-build command accesses Redivis. Set a token with access to the required MIMIC-CXR / CheXpert-aligned data before running it:
 
 ```bash
